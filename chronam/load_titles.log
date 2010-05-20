@@ -1,0 +1,21 @@
+[2010-05-12 04:28:19,435 INFO chronam.web.management.commands.load_titles] loading marcxml title records from /vol/ndnp/chronam/bib/data/titles-20100512.xml
+[2010-05-12 04:28:19,459 INFO chronam.web.title_loader] loading titles from: /vol/ndnp/chronam/bib/data/titles-20100512.xml
+[2010-05-12 04:28:21,035 INFO chronam.web.title_loader] records processed: 3
+[2010-05-12 04:28:21,036 INFO chronam.web.title_loader] records created: 3
+[2010-05-12 04:28:21,036 INFO chronam.web.title_loader] records updated: 0
+[2010-05-12 04:28:21,036 INFO chronam.web.title_loader] errors: 0
+[2010-05-12 04:28:21,036 INFO chronam.web.title_loader] missing lccns: 0
+[2010-05-12 04:28:21,036 INFO chronam.web.management.commands.load_titles] indexing new titles
+[2010-05-12 04:28:21,545 INFO chronam.web.index] indexing title: lccn=sn93067760
+[2010-05-12 04:28:22,028 INFO rdflib] version: 2.4.2
+[2010-05-12 04:28:22,327 INFO chronam.web.index] indexing title: lccn=2010218505
+[2010-05-12 04:28:23,660 INFO chronam.web.management.commands.load_titles] finished loading marcxml titles from /vol/ndnp/chronam/bib/data/titles-20100512.xml
+[2010-05-12 04:28:54,996 INFO chronam.web.management.commands.load_titles] loading marcxml title records from /vol/ndnp/chronam/bib/data/titles-20100512.xml
+[2010-05-12 04:28:55,001 INFO chronam.web.title_loader] loading titles from: /vol/ndnp/chronam/bib/data/titles-20100512.xml
+[2010-05-12 04:28:55,030 INFO chronam.web.title_loader] records processed: 3
+[2010-05-12 04:28:55,030 INFO chronam.web.title_loader] records created: 0
+[2010-05-12 04:28:55,030 INFO chronam.web.title_loader] records updated: 0
+[2010-05-12 04:28:55,030 INFO chronam.web.title_loader] errors: 0
+[2010-05-12 04:28:55,031 INFO chronam.web.title_loader] missing lccns: 0
+[2010-05-12 04:28:55,031 INFO chronam.web.management.commands.load_titles] indexing new titles
+[2010-05-12 04:28:55,182 INFO chronam.web.management.commands.load_titles] finished loading marcxml titles from /vol/ndnp/chronam/bib/data/titles-20100512.xml

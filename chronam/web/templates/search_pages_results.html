@@ -1,0 +1,117 @@
+{% extends "site.html" %}
+
+{% block extra_link_types %} 
+    {% if page.has_previous %}<link rel="prev" href="http://{{host}}{% url chronam_search_pages_results %}{{previous_url}}" />{% endif %} 
+    {% if page.has_next %}<link rel="next" href="http://{{host}}{% url chronam_search_pages_results %}{{next_url}}" />{% endif %} 
+    <link rel="alternate" type="application/atom+xml" href="http://{{host}}{% url chronam_search_pages_results %}?{{q}}%amp;page={{page.number}}&amp;format=atom" /> 
+    <link rel="alternate" type="application/json" href="http://{{host}}{% url chronam_search_pages_results %}?{{q}}&amp;page={{page.number}}&amp;format=json" /> 
+{% endblock %} 
+
+{% block box_right %}
+
+    <div id="searchnav">
+        Your fulltext search
+        {% if english_search %}
+        for: {{ english_search|safe }}
+        {% endif %}
+        returned {{ paginator.count }} results
+        <div>
+        </div>
+        <div class="pageNavigator">
+
+          <strong>Display: </strong>
+          {% block results_type %}
+          <a href="{% url chronam_search_pages_results_list view_type="list" %}?{{q}}&amp;page={{page.number}}&amp;sort={{sort}}">List View</a> | 
+          <a href="{% url chronam_search_pages_results %}?{{q}}&amp;page={{page.number}}&amp;sort={{sort}}">Thumbnail View</a> 
+          {% endblock results_type %}
+
+          <br/>
+
+             Sort by: 
+
+             {% ifequal sort 'relevance' %}
+             Relevance | 
+             {% else %}
+             <a href="?{{q}}&amp;sort=relevance&page={{page.number}}">Relevance</a>
+             |
+             {% endifequal %}
+
+             {% ifequal sort 'state' %}
+             State |
+             {% else %}
+             <a href="?{{q}}&amp;sort=state&page={{page.number}}">State</a> | 
+             {% endifequal %}
+
+             {% ifequal sort 'title' %}
+             Title |
+             {% else %}
+             <a href="?{{q}}&amp;sort=title&page={{page.number}}">Title</a> | 
+             {% endifequal %}
+
+             {% ifequal sort 'date' %}
+             Date 
+             {% else %}
+             <a href="?{{q}}&amp;sort=date&page={{page.number}}">Date</a>
+             {% endifequal %}
+             
+    {% ifnotequal paginator.num_pages 1 %}
+             <br />
+
+             <img src="{{script_name}}/images/arrow_bl.gif" width="9" height="9" alt=""/> 
+             {% if page.has_previous %}
+             <a rel="prev" href="{{previous_url}}">Previous</a>
+             {% else %}
+             Previous
+             {% endif %}
+             | 
+             {% for page_number in page_range_short %}
+             {% ifequal page_number "..." %}
+             ...
+             {% else %}
+
+             {% ifequal page_number page.number %}
+             <span class="off">{{page_number}}</span> 
+             {% else %}
+             <a href="?{{q}}&amp;page={{page_number}}&amp;sort={{sort}}">{{page_number}}</a> 
+             {% endifequal %}
+
+             {% endifequal %}
+             {% endfor %}
+             | 
+             {% if page.has_next %}
+             <a rel="next" href="{{next_url}}">Next</a> 
+             {% else %}
+             <span class="off">Next</span> 
+             {% endif %}
+             <img src="{{script_name}}/images/arrow.gif" width="9" height="9" alt="next"/> 
+
+             &nbsp;&nbsp;&nbsp;
+             <form action="" method="GET" style="display: inline;">
+                 <span style="white-space: nowrap;">Jump to page: <input type="text" name="page" value="{{page.number}}" size="6" /></span>
+                 <input type="hidden" name="ortext" value="{{query.ortext}}" />
+                 <input type="hidden" name="andtext" value="{{query.andtext}}" />
+                 <input type="hidden" name="phrasetext" value="{{query.phrasetext}}" />
+                 <input type="hidden" name="proxtext" value="{{query.proxtext}}" />
+                 <input type="hidden" name="proxValue" value="{{query.proxValue}}" />
+                 <input type="hidden" name="date1" value="{{query.date1}}" />
+                 <input type="hidden" name="date2" value="{{query.date2}}" />
+                 <input type="hidden" name="year" value="{{query.year}}" />
+                 <input type="hidden" name="sort" value="{{sort}}" />
+                 <input type="hidden" name="dateFilterType" value="{{ query.dateFilterType}}" />
+                 {% for lccn in lccns %}
+                 <input type="hidden" name="lccn" value="{{lccn}}" />
+                 {% endfor %}
+                 {% for state in states %}
+                 <input type="hidden" name="state" value="{{state}}" />
+                 {% endfor %}
+             </form>
+             <br/>
+    {% endifnotequal %}
+
+        </div>
+    </div>
+
+
+    {% block search_results_box %}{% endblock %}
+
+{% endblock %}

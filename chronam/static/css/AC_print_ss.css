@@ -1,0 +1,94 @@
+/* Print style sheet for Chronicling America http://chroniclingamerica.loc.gov */
+body {
+	color:#333;
+	width: auto;
+	margin:0px;
+	padding:0px;
+	background: #fff;
+	font:100% verdana, helvetica, sans-serif;
+}
+div#container {
+	width:auto;
+	height: auto;
+	margin-right:auto;
+	margin-left:auto;
+	margin-top:0px;
+	margin-bottom:0px;
+	padding:0px;
+	background-color: #fff; 
+	border: 1px solid #999;
+	color:#333;
+}
+/*  top navigation    */	
+div#topnav	{
+	display: none;
+}
+/* bread crumb navigation  */
+div#crumb_nav {
+	clear: both;
+	height: 30px;
+	padding: 0px 0px 0px 15px;
+	color: #fff;
+	background-color: #000;
+	border-top: 0px solid #999;
+	border-bottom: 1px solid #333;
+}
+div#crumb_nav div#crumb {
+	color: #fff;
+	text-align: left;
+	padding: 10px 0px 0px 0px;
+	font: 70% Verdana, Helvetica, sans-serif;
+}
+div#crumb_nav div#crumb a {
+	color: #ccc;
+	font-size: 95%;
+	font-weight: 100;
+}
+div#crumb_nav div#crumb span {
+	color: #fff;
+	font: 80% Verdana, Helvetica, sans-serif;
+	font-weight:700;
+}
+/* crumb nav ends*/
+div#content {
+	width: auto;
+	height: auto;
+	margin: 10px;
+	font:90% verdana, helvetica, sans-serif;
+	background-color: #fff;
+	text-align:left;
+	padding: 0px;
+}
+/* left nav rules */
+div#content div#box_left {
+	display: none;
+	width: 0px;
+	height: 0px;
+}
+div#box_right {
+    width: auto;
+    margin: 0px 0px 110px 0;
+    border: 0; 
+    padding: 0;
+    background-color: #fff;
+}
+
+
+/*  end left nav rules  */
+
+/*content formatting begins*/
+div#content {
+	width: auto;
+	margin: 15px;
+	height: auto;
+	font:90% verdana, helvetica, sans-serif;
+	background-color: transparent;
+	text-align:left;
+	padding: 0px 0px 0px 0px;
+}
+
+/*footer*/
+div#footer {
+	display: none;
+}
+/*footer ends*/

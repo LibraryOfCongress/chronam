@@ -1,0 +1,255 @@
+{% extends "site.html" %}
+
+{% block body_id %}chronam_page{% endblock %}
+
+{% block box_left %}
+{% endblock %}
+
+{% block more_style %}
+    <link rel="primaryTopic" href="{{ page.abstract_url }}" />
+    <link rel="resourcemap" type="application/rdf+xml" href="{% url chronam_page_dot_rdf page.issue.title.lccn, page.issue.date_issued, page.issue.edition, page.sequence %}" />
+    <link rel="alternate" type="image/jp2" href="{% url chronam_page_jp2 title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
+    <link rel="alternate" type="application/pdf" href="{% url chronam_page_pdf title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
+    <link rel="alternate" type="application/xml" href="{% url chronam_page_ocr_xml title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
+    <link rel="alternate" type="text/plain" href="{% url chronam_page_ocr_txt title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
+    <link rel="canonical" href="http://{{host}}{% url chronam_page title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
+    {% if page.on_flickr %}{% for flickr_url in page.flickr_urls.all %}<link rel="alternate" type="text/html" href="{{ flickr_url.value }}" />{% endfor %}{% endif %}
+
+<style type="text/css">
+.zoom .up,
+.zoom .down,
+.zoom .reset,
+.zoom .region {
+    cursor:pointer;
+    cursor:hand;
+}
+</style>
+
+<!--JS for tileviewer-->
+<script type="text/javascript" src="{{script_name}}/javascript/tileviewer.js" >
+</script>
+<script type="text/javascript" src="{{script_name}}/javascript/jquery-1.3.2.min.js">
+</script>
+<script type="text/javascript" src="{{script_name}}/javascript/jquery.mousewheel.js">
+</script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+        $.extend($.fn.disableTextSelect = function() {
+        	return this.each(function(){
+        		if($.browser.mozilla){//Firefox
+        			$(this).css('MozUserSelect','none');
+        		}else if($.browser.msie){//IE
+        			$(this).bind('selectstart',function(){return false;});
+        		}else{//Opera, etc.
+        			$(this).mousedown(function(){return false;});
+        		}
+        	});
+        });
+        $("#imageViewer, #imageViewer *, div.surface").disableTextSelect();
+	
+		
+        ImageViewer.HIGHLITE_IMAGE = "{{script_name}}/images/red_60.png";
+
+        var imageViewerElement = $("#imageViewer").get(0);
+
+        var width = {{page.jp2_width}};
+        var height = {{page.jp2_length}};
+
+        viewer = new ImageViewer(imageViewerElement, 1024, 
+                             width, height, 
+                             '{% url chronam_page page.issue.title.lccn,page.issue.date_issued,page.issue.edition,page.sequence %}', 
+                             '{{script_name}}/');
+
+        $("#pageNum").change(function(event) { document.location=$("#pageNum").val(); });
+
+/*
+        $(".zoom .up").click(function(event) { viewer.zoomIn(); });
+        $(".zoom .down").click(function(event) { viewer.zoomOut(); });
+        $('.zoom .reset').click(function(event) { viewer.reset(); });
+        $('.zoom .region').click(function(event) { viewer.startRegion() });
+*/
+
+        $(".zoom .up").click( function(event) { event.preventDefault(); viewer.zoomIn(); });
+        $(".zoom .down").click( function(event) { event.preventDefault(); viewer.zoomOut(); });
+        $('.zoom .reset').click( function(event) { event.preventDefault(); viewer.reset(); });
+        $('.zoom .region').click( function(event) { event.preventDefault(); viewer.startRegion() });
+        
+        $('.print').click(function(event) {
+                var location = viewer.printRegion();
+                window.open(location, "print");
+            });
+
+        // mousewheel event binding
+        $('div.surface').bind('mousewheel', function(event, delta) {
+            delta > 0 ? viewer.zoomIn() : viewer.zoomOut();
+            return false;
+        });  
+
+        $.each("{{words|default:""}}".split("+"), function(index, word) {
+            if (word!="") {
+                $.getJSON('{% url chronam_page_coordinates page.issue.title.lccn,page.issue.date_issued,page.issue.edition,page.sequence %};words='+word, function(all_coordinates) {
+                    var boxes = [];
+                    for (word in all_coordinates) {
+                        var coordinates = all_coordinates[word];
+                        for (k in coordinates) {
+                            var v = coordinates[k];
+                            box = new Box(v["hpos"] * width,
+                                          v["vpos"] * height,
+                                          v["width"] * width,
+                                          v["height"] * height);
+                            boxes.push(box);
+                        }
+                    }
+                    appendHighliteBoxes(viewer.imageViewerElement, boxes);
+                    updateViewer(viewer.imageViewerElement); 
+                });
+            }
+            });
+    });
+        
+</script>
+
+{% endblock %}
+
+
+{% block content %}
+
+            <!--Start imageViewer_nav-->
+            <div id="imageViewer_nav">
+                <!--Start head_nav-->
+                <div id="head_nav">
+                  <h2>{{issue.date_issued|date:"F d, Y"}}<span>, {% if issue.edition_label %}{{issue.edition_label}}, {% endif %}{% if page.section_label %}{{page.section_label}}, {% endif %}{% if page.number %}Page {{page.number}}, {% endif %}Image {{page.sequence}}</span></h2>
+
+                    <p><label for="pageNum">IMAGE:</label>
+                      <select name="pageNum" id="pageNum">
+                    {% for p in issue.pages.all%}
+                        <option value="{% url chronam_page title.lccn,issue.date_issued,issue.edition,p.sequence %}" {% ifequal p.sequence page.sequence %}selected="selected"{% endifequal %}>{{p.sequence}}</option>
+                    {% endfor %}
+                      </select>
+                      of {{issue.pages.all|length}}. Image provided by: {{image_credit}}.
+                    </p>
+
+                    <p><img src="{{script_name}}/images/permanent.gif" alt="" /> <strong>Persistent Link</strong> <a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}">http://{{host}}{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}</a></p>
+                    {% if page.on_flickr %}
+                    <p><img src="{{script_name}}/images/external-link-icon.png" alt="External link: {{ page.first_flickr_url }}" /> <strong>Flickr Link</strong> <a href="{{ page.first_flickr_url }}">{{ page.first_flickr_url }}</a></p>
+                    {% endif %}
+
+                  <p class="pagenav">
+                    <!--Previous page-->
+                    <img src="{{script_name}}/images/arrow_bl.gif" alt="" width="9" height="9" />&nbsp;
+
+{% if page.previous %}
+<a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.previous.sequence %}" shape="rect"><strong>Previous Page</strong></a> 
+{% else %}
+<span class="off">Previous Page</span>
+{% endif %}
+                     | 
+                    <!--Next page-->
+{% if page.next %}
+<a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.next.sequence %}"><strong>Next Page</strong></a>
+{% else %}
+<span class="off">Next Page</span>
+{% endif %}
+
+                    &nbsp;<img src="{{script_name}}/images/arrow_gr.gif" alt="" width="9" height="9" />
+                    &nbsp;&nbsp;&nbsp;
+                    <!--Previous issue-->
+                    <img src="{{script_name}}/images/arrow_bl.gif" alt="" width="9" height="9" />&nbsp;
+
+{% if previous_issue_first_page %}
+<a href="{% url chronam_page title.lccn,previous_issue_first_page.issue.date_issued,previous_issue_first_page.issue.edition,previous_issue_first_page.sequence %}" shape="rect"><strong>Previous Issue</strong></a>
+{% else %}
+<span class="off">Previous Issue</span>
+{% endif %}
+                     | 
+                    <!--Next issue-->
+{% if next_issue_first_page %}
+<a href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %}"><strong>Next Issue</strong></a>
+{% else %}
+<span class="off">Next Issue</span>
+{% endif %}
+
+                    &nbsp;<img src="{{script_name}}/images/arrow_gr.gif" alt="" width="9" height="9" />
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="{% url chronam_issue_pages title.lccn,issue.date_issued,issue.edition %}" shape="rect">All Pages</a> | 
+                    <a href="{% url chronam_issues title.lccn %}" shape="rect">Browse Issues</a> | 
+                    <a href="{% url chronam_title title.lccn %}" shape="rect">This Newspaper</a>
+                </p>
+       
+              </div>
+
+{% if page.jp2_filename %}
+
+            <!--End imageViewer_nav-->    
+            <!--Start zoom_nav-->
+            <div class="zoom">
+                <p>
+                    <strong>ZOOM</strong>&nbsp;
+                    <!--
+                    <img src="{{script_name}}/images/zoom.gif" alt="zoom region" width="97" height="13" class="region" />&nbsp;&nbsp;&nbsp;&nbsp;
+                    -->
+                    <img src="{{script_name}}/images/zoom2.gif" alt="zoom in" width="13" height="13" class="up" /> 
+                    <img src="{{script_name}}/images/minimize.gif" alt="zoom out" class="down" />&nbsp;&nbsp;&nbsp;
+                    <img src="{{script_name}}/images/enlarge.gif" alt="zoom region" class="region" />&nbsp;<span>DRAW ZOOM BOX</span>&nbsp;&nbsp;&nbsp;
+                    <img src="{{script_name}}/images/reset.gif" alt="refresh page" width="13" height="13" class="reset" />&nbsp;<span>RESET</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <strong>VIEW:</strong>&nbsp;&nbsp;
+                    <!--Text-->
+
+                    <a href="{% url chronam_page_ocr title.lccn,issue.date_issued,issue.edition,page.sequence %}"><img src="{{script_name}}/images/text.gif" alt="" width="13" height="11" /></a>&nbsp;<a href="{% url chronam_page_ocr title.lccn,issue.date_issued,issue.edition,page.sequence %}">Text</a>&nbsp;&nbsp;&nbsp;
+
+                    <!--PDF-->
+                    <a href="{% url chronam_page_pdf title.lccn, issue.date_issued, issue.edition, page.sequence %}"><img src="{{script_name}}/images/pdf.gif" alt="" width="13" height="12" /></a>&nbsp;<a href="{% url chronam_page_pdf title.lccn, issue.date_issued, issue.edition, page.sequence %}">PDF</a>&nbsp;&nbsp;&nbsp;
+
+                    <!--JP2-->
+                    <a href="{% url chronam_page_jp2 title.lccn, issue.date_issued, issue.edition, page.sequence %}"><img src="{{script_name}}/images/download.gif" alt="" width="7" height="12" /></a>&nbsp;<a href="{% url chronam_page_jp2 title.lccn, issue.date_issued, issue.edition, page.sequence %}">DOWNLOAD IMAGE</a> (JP2)&nbsp;&nbsp;&nbsp;
+
+                    <!--Print-->
+                    <a class="print" href="#"><img src="{{script_name}}/images/print2.gif" alt="" width="10" height="12" /></a>&nbsp;<a class="print" href="#">PRINT</a>
+                </p>
+            </div>                
+            <!--End zoom_nav-->
+            <!--Start imageViewer-->
+            <div class="imageViewer" id="imageViewer">
+                <div class="tilewell"> </div>
+                <div class="highlitewell"> </div>
+                <div class="surface"> </div>
+                <div class="regionhighlite"> </div>
+            </div>
+            <!--End imageViewer-->
+            <!--Start zoom_nav-->
+            <div class="zoom">
+                <p>
+                    <strong>ZOOM</strong>&nbsp;
+                    <img src="{{script_name}}/images/zoom2.gif" alt="zoom in" width="13" height="13" class="up" /> 
+                    <img src="{{script_name}}/images/minimize.gif" alt="zoom out" class="down" />&nbsp;&nbsp;&nbsp;
+                    <img src="{{script_name}}/images/enlarge.gif" alt="zoom region" class="region" />&nbsp;<span>DRAW ZOOM BOX</span>&nbsp;&nbsp;&nbsp;
+                    <img src="{{script_name}}/images/reset.gif" alt="refresh page" width="13" height="13" class="reset" />&nbsp;<span>RESET</span>&nbsp;&nbsp;
+                </p>
+            </div>                
+{% else %}
+
+<div class="missing">
+  <h3>Missing Page: {{explanation}}</h3>
+</div>
+
+{% endif %}
+            <!--End zoom_nav-->
+            </div>
+            
+            {% if bot %}
+            <!-- Hi Search Bot here's some OCR text for the image -->
+            <div>
+                {{ page.ocr.text }}
+            </div>
+            {% endif %}
+
+{% endblock %}
+
+
+{% block disclaimer %}
+    {% if page.on_flickr %}
+        {% include "disclaimer.html" %}
+    {% endif %}
+{% endblock %}

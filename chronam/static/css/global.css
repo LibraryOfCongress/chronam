@@ -1,0 +1,1405 @@
+body {
+    color: #333;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background: #fff;
+    font: normal 100%/100% verdana, helvetica, sans-serif;
+}
+a#skip {
+    position: absolute;
+    top:-100px;
+}
+a {
+    color: #036;
+    font-family: verdana, helvetica, sans-serif;
+    font-weight: 100;
+    text-decoration: underline; 
+}
+a.nonwrap {
+    white-space: nowrap;
+}
+a:link, a:hover, a:visited {
+    color: #036;
+    text-decoration: underline;
+    font-weight: 100;
+}
+img {
+    border: none;
+    border-width: 0px;
+}
+img.thumbnail {
+    border: 2px solid #ccc;
+}
+#container {
+    width: 760px;
+    height: auto;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+    background-color: #fff; 
+    border: 1px solid #999;
+    color: #333;
+    text-align: left;
+}
+/*  top navigation    */
+div#topnav {
+    height: 43px;
+    width: 760px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #fff url(../images/line.gif) top left no-repeat;
+    text-align: left;
+}
+div#topnav ul#menu	{
+    margin: 0;
+    padding: 0;
+}
+div#topnav ul#menu li {
+    margin: 0;
+    padding: 0;
+    display: inline;
+    list-style: none;
+}
+/* bread crumb  navigation  */
+#crumb {
+    clear: both;
+    height: auto;
+    width: auto;
+    margin: 0;
+    padding: 10px;
+    color: #fff;
+    background-color: #000;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #333;
+    text-align: left;
+    font: 70% Verdana, Helvetica, sans-serif;
+}
+#crumb a {
+    color: #ccc;
+    font-size: 95%;
+    font-weight: 100;
+}
+#crumb span {
+    color: #fff;
+    font: 80% Verdana, Helvetica, sans-serif;
+    font-weight:700;
+}
+#content {
+    width: 740px;
+    height: auto;
+    margin: 10px;
+    font:normal 90%/100% verdana, helvetica, sans-serif;
+    background-color: #fff;
+    text-align:left;
+    padding: 0px;
+}
+#box_left {
+    float: left;
+    width: 196px;
+    height: auto;
+    margin: 0px 0px 15px 0px;
+    font:85%/100% verdana, helvetica, sans-serif;
+    border: 1px solid #ccc;
+    text-align:left;
+    background: #fff url(../images/leftnav.jpg) 0px 0px no-repeat;
+    padding: 0px 0px 10px 0px;
+}
+#box_left ul {
+    padding: 5px 0px 5px 10px;
+    margin: 49px 0px 0px 0px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ccc;
+    border-top: 0px solid #ccc;
+}
+#box_left ul li {
+    list-style-type: none;
+    display:block;
+    font: bold 80%/120% verdana, helvetica, sans-serif;
+    background: transparent url(../images/arrow_o.gif) no-repeat 0px 5px;
+    padding: 2px 5px 2px 15px; 
+    margin: 1px 0px 1px 0px;
+}
+#box_left ul li#on {
+    background: transparent url(../images/arrow_grey.gif) no-repeat 0px 5px;
+    font: bold 80%/120% verdana, helvetica, sans-serif;
+    color: #666;
+}
+#box_left div#rss {
+    border-top: 1px solid #ccc;
+    margin:0;
+    width: auto;
+    padding: 15px 10px 5px 10px;
+}
+#box_left div#rss a {
+    font: bold 80%/120% Verdana, Arial, Helvetica, sans-serif;
+}
+#box_left ul li a {
+    font: bold 100%/120% Verdana, Arial, Helvetica, sans-serif;
+}
+#box_left p {
+    font: normal 85%/120% Verdana, Arial, Helvetica, sans-serif;
+    padding: 5px 5px 5px 10px;
+    margin: 0;
+    color: #666;
+}
+
+#box_left p.note {
+    font: normal 85%/120% Verdana, Arial, Helvetica, sans-serif;
+    padding: 5px 5px 5px 10px;
+    margin: 0;
+    color: #666;
+}
+
+/* bottom margin for issue 1062 */
+#box_right {
+    width: auto;
+    margin: 0px 0px 110px 208px;
+    border: 5px solid #d7c9b0; 
+    padding: 0;
+    background-color: #fff;
+}
+
+#box_right h2 {
+    font: 95% georgia, times, serif;
+    margin: 10px 0px 10px 0px;
+    color: #c66;
+    font-weight: 900;
+    padding: 0px 0px 0px 15px;
+}
+
+#box_right h2 span {
+    font: 95% georgia, times, serif;
+    color: #600;
+    font-size: 110%;
+    font-weight: 900;
+}
+
+#box_right h4 {
+    font: 95% georgia, times, serif;
+    color: #c66;
+    font-weight: 900;
+    margin: 0;
+    padding: 0px 0px 0px 15px;
+}
+
+#box_right h4.holding {
+    font: 95% georgia, times, serif;
+    color: #c66;
+    font-weight: 900;
+    margin-left: 15px;
+    padding: 0px 0px 0px 0px;
+}
+#box_right ul li {
+    list-style-type: none;
+    display:block;
+    font: bold 80%/120% verdana, helvetica, sans-serif;
+    background: transparent url(../images/dash.gif) no-repeat 0px 4px;
+    padding: 2px 5px 2px 15px; 
+    margin: 1px 0px 1px 0px;
+}
+#box-right ul, #box-right ul.holding {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+#box_right ul.holding li {
+    list-style: none;
+    display:block;
+    font: bold 60%/100% verdana, helvetica, sans-serif;
+    background: transparent;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px; 
+    color: #333;
+}
+#box_right ul li.down {
+    list-style-type: none;
+    display:block;
+    font: bold 80%/120% verdana, helvetica, sans-serif;
+    background: transparent url(../images/arrow_down.gif) no-repeat 0px 5px;
+    padding: 2px 5px 2px 15px; 
+    margin: 1px 0px 1px 0px;
+}
+#box_right ul li.dash {
+    list-style-type: none;
+    display:block;
+    
+    font: 70% verdana, helvetica, sans-serif;
+    background: transparent url(../images/dash.gif) no-repeat 0px 2px;
+    padding: 0px 5px 2px 15px; 
+    margin: 1px 0px 1px 0px;
+}
+
+#box_right ul li.search_result {
+    list-style-type: none;
+    display:block;
+    font-size: 100%;
+    font-weight: normal;
+    background: transparent url(../images/gt3.gif) no-repeat 0px -1px;
+    padding: 0px 5px 2px 15px; 
+    margin: 1px 0px 1px 0px;
+}
+
+#box_right ul li.search_result a {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+#box_right ul.help li {
+    list-style-type: none; 
+    display:block; 
+    font: 70% verdana, helvetica, sans-serif;
+    background: transparent url(../images/black_dot.gif) no-repeat 0px 4px; 
+    padding: 0px 5px 2px 15px; 
+    margin: 1px 0px 1px 0px;
+}
+
+#box_right ul li a {
+    font: bold 100%/120% Verdana, Arial, Helvetica, sans-serif;
+}
+
+#box_right ul li.subject {
+    font-size:100%;
+    display: block; 
+    margin-left: 0;
+    font-weight: normal;
+    position:relative; left:-28px; 
+}
+#box_right form {
+    margin: 0px 5px 10px 15px;
+}
+#box_right form p {
+    padding: 10px 10px 10px 0;
+    margin: 0;
+}
+#box_right form h2 {
+    color: #600;
+    padding: 5px 0 0 0;
+    margin: 0 0 0 0;
+    font: bold 120%/100% georgia, times, serif;
+    border-top: 1px solid #ccc;
+}
+#box_right form h2.noborder {
+    border: 0;
+}
+#box_right form h2.newspapers {
+    color: #600; 
+    margin: 10px 0px 10px -70px;
+    padding: 0;
+}
+
+#box_right form h2 span {
+    color: #666;
+    font-weight: 100;
+}
+#box_right fieldset {
+    margin: 10px 0 20px 0;
+    padding: 0;
+    border: 0;
+}
+#box_right form fieldset label {
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    font-size: 75%;
+    font-weight: 100;
+}
+label.bold {
+    font-weight: bold;
+    
+}
+#box_right fieldset select {
+    margin: 0px 0px 0px 0px;
+    background-color: #f7f7f7;
+    width: auto;
+    font-size: 90%;
+    border: 1px solid #999;
+}
+
+#box_right fieldset input {
+    margin: 0px 0px 0px 0px;
+    background-color: #f7f7f7;
+    width: 200px;
+    font-size: 90%;
+    border: 1px solid #999;
+}
+
+#box_right fieldset input.radio {
+    width: 30px;
+    margin: 0px 0px 0px 0px;
+    background-color: #fff;
+    width: auto;
+    border: 0px solid #999;
+}
+
+#box_right form input.submit {
+    background-color: #fff;
+    margin: 5px 0px 0px 0px;
+    width: auto; 
+    color: #ff6600;
+    font-weight: bold;
+    font-size: 100%;
+    border: 2px solid #ff6600;
+}
+
+#box_right form span.examples {
+    font-size: 70%;
+    font-style: italic;
+    font-weight: 100;
+}
+
+#box_right p {
+    color: #666;
+    padding: 5px 15px 5px 10px;
+    font-size: 70%;
+}
+div.pageNavigator {
+    color: #666;
+    padding: 5px 15px 5px 0px;
+    font-size: 105%;
+}
+#box_right p.holding {
+    color: #666;
+    margin-top: 0;
+    margin-left: 15px;
+    margin-bottom: 0;
+    padding: 0;
+    font-size: 70%;
+}
+
+#box_right table.help {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 15px;
+    font-size: 70%;
+}
+
+#box_right p.help {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #666; 
+    padding: 0px 15px 0px 15px;
+    font-size: 70%;
+}
+
+#box_right #listMode {
+    margin-top: 0px;
+    margin-left: 10px;
+    margin-bottom: 0px;
+    color: #666; 
+    font-size: 70%;
+}
+
+#box_right a.what {
+    font-size: 80%;
+}
+#box_right #nav_bot {
+    background-color: #fbf9ee;
+    padding: 5px;
+    text-align: right;
+    margin: 0;
+}
+
+#box_right #nav_bot a {
+    font: 70% verdana, helvetica, sans-serif;
+}
+
+#box_right #backToTop {
+    color: #000;
+    font: 70% verdana, helvetica, sans-serif;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#box_right table.titleTable {
+    background-color: #d7c9b0;
+}
+
+#box_right tr.lightGray {
+    height: 30px;
+    background-color: #eee;
+}
+
+#box_right tr.white {
+    height: 30px;
+    background-color: #fff;
+}
+
+#box_right tr.titleTableHeader {
+    background-color: #fbf9ee;
+    text-align: center;
+}
+
+#box_right td.titleTableCell {
+    font: bold 70% verdana, helvetica, sans-serif;
+}
+
+#box_right td.titleDataCell {
+    text-align: center;
+    font: 70% verdana, helvetica, sans-serif;
+}
+#box_right td.titleLeftDataCell {
+    text-align: left;
+    font: 70% verdana, helvetica, sans-serif;
+}
+#box_right #availableIssueList {
+    text-align: center;
+}
+
+#box_right p.availableH2 {
+    color: #000;
+    font: bold 110% helvetica, sans-serif;
+}
+
+#box_right #downloadChart {
+    width: 67%;
+    color: #000;
+    font: 70% helvetica, sans-serif;
+}
+#box_right #downloadChartIE {
+    width: 62%;
+    color: #000;
+    font: 70% helvetica, sans-serif;
+}
+#box_right #totalPageCount {
+    width: 33%;
+    color: #000;
+    font: 70% helvetica, sans-serif;
+}
+
+#box_right #totalPageCountIE {
+    width: 38%;
+    color: #000;
+    font: 70% helvetica, sans-serif;
+}
+
+#box_right #left p, #box_right #right p {
+    font: normal 75%/130% Verdana, Arial, Helvetica, sans-serif;
+    padding: 5px 10px 0px 10px;
+    margin: 0;
+    color: #333;
+}
+#box_right #left p.small {
+    font: normal 75%/120% Verdana, Arial, Helvetica, sans-serif;
+    color: #666;
+}
+#box_right div.columns div.right form select, #box_right div.columns div.left form select {
+    margin: 0px 0px 10px 0px;
+}
+
+#box_right div.columns div.right select {
+    margin: 0px 0px 0px 0px;
+    width: 295px;
+    padding: 0;
+}
+box_right div.columns div.left select {
+    width:108px;
+    margin: 0;
+    padding: 0;
+}
+#box_right div.columns {
+    margin: 10px 0 10px 0;
+    padding: 0;
+    border-top: 0;
+    width: 95%;
+    height: 150px;
+}
+#box_right div.columns div.right {
+    float: right;
+    width: 60%;
+    height: 100%;
+    padding: 0 0 0;
+    margin: 0 0 0 0;
+}
+#box_right div.columns div.left {
+    /*float: left;*/
+    width: 37%;
+    height: 100%;
+    border-right: 0px #ccc solid;
+    padding: 0;
+    margin: 0 0 0 0;
+}
+.page_head {
+    width: auto;
+    height: auto;
+    margin: 0px 0px 10px 208px;
+    font:normal 90%/100% verdana, helvetica, sans-serif;
+    background: transparent url(../images/ph_top.gif) top left no-repeat;
+    text-align:left;
+    padding: 2px 0px 2px 0px;
+}
+.page_head h1 {
+    color: #343268;
+    padding: 10px 0px 10px 10px;
+    margin: 0;
+    font: bold 140%/105% Georgia, "Times New Roman", Times, serif;
+    display: block;
+    background: transparent url(../images/ph_bot.gif) bottom left no-repeat;
+}
+.page_head h1.oneline {
+    padding: 15px 0px 15px 10px;
+}
+.page_head h1 span {
+    color: #000;
+    font-size: 75%;
+    font-weight: 200;
+}
+.page_head h1 span a {
+    color: #036;
+    font-size: 80%;
+    font-weight: 200;
+}
+
+#searchnav {
+    height: auto;
+    width: auto;
+    margin: 0 0 10px 0;
+    font-size: 70%;
+    background-color: #fff;
+    padding: 5px 5px 5px 10px;
+    border-bottom: 2px solid #d7c9a5;
+}
+
+#searchnav span.right {
+    position: relative;
+    left: 120px;
+}
+
+#searchnav span.off {
+    color: #999;
+    font-weight: 700;
+}
+
+#searchnav span.offnonwrap {
+    white-space: nowrap;
+    color: #999;
+    font-weight: 700;
+}
+
+#searchnav #align_left {
+    text-align: left;
+}
+
+#searchnav a {
+    color: #003366;
+    line-height: 200%;
+    font-size: 90%;
+}
+
+#search_body {
+    padding: 0px;
+    text-align: left;
+}
+
+#search_body_top h2 {
+    margin: 0px;
+    padding: 20px 10px 2px 15px;
+    font-size: 120%;
+    color: #666;
+}
+
+#search_body_top span {
+    margin: 0px;
+    padding: 0px;
+    font-size: 90%;
+    color: #b1a199;
+}
+
+#content span.found {
+    margin: 0px;
+    padding: 0px;
+    font-size: 90%;
+    color: #b1a199;
+}
+#left {
+    float: left;
+    width: 248px;
+    height: auto;
+    margin: 0 0 5px 0;
+    border: 5px solid #ccc;
+    padding: 0;
+    background-color: #fff;
+}
+#right {
+    width: 248px;
+    height: auto;
+    margin: 0px 0px 0px 270px;
+    border: 5px solid #ccc;
+    padding: 0;
+    background-color: #fff;
+}
+#left form, #right form {
+    margin: 0 0 0 0;
+    padding: 20px 0 0 0;
+    height:40px;
+    width: 235px;
+    font: normal 8px/8px Verdana, Arial, Helvetica, sans-serif;
+    background: transparent url(../images/form_dots.gif) top left no-repeat;
+}
+#left form input.submit, #right form input.submit {
+    background-color: #fff;
+    margin: 5px 0px 0px 10px;
+    width: 200px;
+    color: #ff6600;
+    font-weight: bold;
+    font-size: 200%;
+    border: 2px solid #ff6600;
+    text-transform: uppercase;
+}
+
+.summary {
+    width: auto;
+    border: 1px solid #f90;
+    padding: 0;
+    margin: 0 0 10px 0;
+    background-color: #fff;
+}
+.summary p {
+    font: normal 75%/130% Verdana, Arial, Helvetica, sans-serif;
+    padding: 5px 10px 10px 10px;
+    margin: 0;
+    color: #333;
+}
+
+/*content formatting ends*/ /*footer*/
+#footer {
+    clear: both; 
+    /* border: 1px #00f solid; */
+    font: 80% verdana, helvetica, sans-serif;
+    text-align: left;
+    /* background: #fff url(../images/line.gif) top left no-repeat; */
+    border-color: #005194; 
+    border-width: 0px 0px 10px 0px;
+    background: #f5f5f5 url(../images/line.gif) top left no-repeat; 
+    /* height: 20px; */
+    padding: 15px;
+}
+
+#footer a {
+    color: #666;
+    font-size: 80%;
+    font-family: verdana, helvetica, sans-serif;
+    font-weight: normal;
+    text-decoration: underline;
+}
+
+#footer a:hover {
+    color: #333;
+    font-size: 80%;
+    font-family: verdana, helvetica, sans-serif;
+    font-weight: normal;
+    text-decoration: underline;
+}
+
+#footer div.disclaimer {
+    padding-top: 5px;
+}
+
+*html #footer {
+    height:1%;
+}
+
+/*footer ends*/
+
+div#homeflash {
+    width: 519px;
+    margin: 10px auto;
+}
+
+div.smallprint {
+    background-color: #dfdfdf;
+    color: #666;
+    margin: 2px 15px;
+    padding: 2px;
+    font-size: 80%;
+    text-align: center;
+}
+
+div#searchnav {
+    background-color: #fdf8ee;
+}
+div#searchnav form {
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    border: 0px #000 solid;
+}
+
+div#search_body ul, div#search_body ul li {
+    margin: 0; padding: 0; /* MSIE and FFox treat padding differently; must initialize with 0 to get consistent behavior. */
+    list-style: none;
+}
+
+
+div#search_body ul li, div#search_body div {
+    font: 80% verdana, arial, helvetica, sans-serif;
+    padding: 2px 10px;
+    margin: 5px 0;
+}
+
+/* ====================================================================== */
+
+/* gallery view css */
+
+ul#issueGallery, ul#issueGallery li, ul#issueList, ul#issueList li {
+    margin: 0; padding: 0;
+    list-style: none;
+    display: inline;
+}
+
+ul#issueGallery, ul#issueList {
+    margin: 5px 15px;
+}
+
+ul#issueGallery li, ul#issueList li {
+    font: 12px verdana, arial, helvetica, sans-serif;
+    margin: 5px 0;
+}
+
+ul#issueGallery li img {
+    font: 10px verdana, arlial, helvetica, sans-serif;
+}
+
+/* ====================================================================== */
+
+/* report table */
+#box_right table {
+    margin: 0;
+    width: auto;
+    padding: 0;
+   }
+#box_right table.data {
+    background-color: #d7c9b0;
+    margin: 0 auto 0 10px;
+    padding: 0;
+    border-collapse: collapse;
+    width: 95%;
+}
+
+table.data th {
+    background-color: #fbf9ee;
+    font-size: 70%;
+    border: 1px solid #ccc;
+}
+
+table.data tr {
+    height: 30px;
+}
+
+table.data tr.lightGray {
+    background-color: #eee;
+}
+
+table.data tr.white {
+    background-color: #fff;
+}
+
+table.data td {
+    font: 70% verdana, helvetica, sans-serif;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+table.data td.label {
+    font-weight: bold;
+}
+
+/* search results */
+
+table.search_results td {
+    padding: 15px;
+    font-size: smaller;
+}
+#box_right table.marc-record {
+    width: auto;
+    padding: 0;
+    margin: 0 0 0 10px;
+}
+.marc-record {
+    font-family: courier;
+}
+
+.marc-field-indicators {
+    text-align: left;
+}
+
+.marc-subfield-code {
+    color: green;
+}
+
+.marc-record td {
+    vertical-align: top;
+    padding: 0;
+    margin: 0;
+    border-collapse: collapse;
+}
+.marc-record a {
+    font-family: courier;
+}
+div#imageViewer_nav {
+    width: 725px;
+    border: 5px solid #d7c9b0;
+    background-color: #f3fafd;
+    margin: 0;
+    padding: 0;
+}   
+#imageViewer_nav #head_nav h2 {
+    font: bold 130%/120% Georgia, "Times New Roman", Times, serif;
+    color: #900;
+    margin: 0 0 5px 0;
+    padding: 10px 10px 0px 10px;
+}
+#imageViewer_nav #head_nav h2 span {
+    font: normal 80%/120% Georgia, "Times New Roman", Times, serif;
+}
+#imageViewer_nav #head_nav p {
+    font: normal 75%/120% Verdana, Arial, Helvetica, sans-serif;
+    color: #666;
+    margin: 0;
+    padding: 2px 0 2px 10px;
+}
+#imageViewer_nav #head_nav p.pagenav {
+    font: normal 75%/120% Verdana, Arial, Helvetica, sans-serif;
+    color: #333;
+    margin: 0;
+    background: transparent url(../images/nav_dots.gif) top left no-repeat;
+    padding: 15px 0 10px 10px;
+    
+}
+#imageViewer_nav #head_nav ul li a:link, #imageViewer_nav #head_nav ul li a:visited {
+    font: normal 85%/100% arial, helvetica, sans-serif;
+    padding: 0px 0px 0px 10px; 
+}
+/* form styles*/
+#imageViewer_nav #head_nav form {
+    width: 170px;
+    height: 10px;
+    margin: 7px 0 7px 10px;
+    padding: 0;
+    font: bold 80%/120% Arial, Helvetica, sans-serif;
+}
+
+#imageViewer_nav #head_nav form label {
+    margin: 0;
+    padding: 0;
+    font: bold 100%/120% Arial, Helvetica, sans-serif;
+    
+}
+#imageViewer_nav #head_nav select {
+    margin: 0;
+    background-color: #fff;
+    width: auto;
+    font: normal 90%/120% Arial, Helvetica, sans-serif;
+    border: 1px solid #999;
+}
+
+#imageViewer_nav #head_nav input {
+    margin: 0;
+    background-color: #fff;
+    width:auto;
+    font: normal 90%/120% Verdana, Arial, Helvetica, sans-serif;
+    border: 1px solid #999;
+}
+#imageViewer_nav #head_nav form input.submit {
+    background-color: #fff;
+    margin: 0px 0px 0px 0px;
+    width: auto;
+    color: #ff6600;
+    font-weight: bold;
+    font: bold 90%/120% Arial, Helvetica, sans-serif;
+    border: 1px solid #ff6600;
+}
+#imageViewer_nav div.missing {
+    padding: 5px;
+    color: #c66;
+}
+.imageViewer {
+    position: relative;
+    width: auto;
+    height: 900px;
+}
+    
+.imageViewer .tilewell, .imageViewer .highlitewell, .imageViewer .surface {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+        
+.imageViewer .tilewell {
+    background-color: #333;
+    overflow: hidden;
+    border: 0;
+}
+
+.imageViewer .highlitewell {
+    background-color: transparent;
+    overflow: hidden;
+}
+        
+.imageViewer .surface {
+    background-color: transparent;
+    background-image: url("../images/center.gif");
+    background-repeat: no-repeat;
+    background-position: center center;
+    border: 0px solid black;
+    z-index: 1000;
+}
+       
+.imageViewer .tilewell .tile {
+    background-color: #666;
+    background-image: url("../images/indicator_large.gif");
+    background-repeat: no-repeat;
+    background-position: top center;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: block;
+}
+
+.imageViewer .highlitewell {
+    position: absolute;
+    filter:alpha(opacity=60);
+    opacity: 0.6;
+    -moz-opacity: 0.6;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;   
+}
+            
+div#search_body div.highlite {
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    text-align: left;
+}
+
+img.highlite {
+    position: absolute;
+    filter:alpha(opacity=60);      
+    opacity: 0.6;      
+    -moz-opacity: 0.6;          
+    z-index: 2;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.imageViewer .regionhighlite {
+    position: absolute;
+    border: 1px dotted black;
+}
+
+div.zoom {
+    margin: 0;
+    background-color: #38446d; 
+    padding: 3px 10px 3px 10px;
+    color: #fff;
+    font: normal 80%/120% Verdana, Arial, Helvetica, sans-serif;
+}
+div.zoom p {
+    padding: 5px 5px 10px 0px;
+    margin: 0;
+    color: #fff;
+    font: normal 90%/120% Verdana, Arial, Helvetica, sans-serif;
+}
+div.zoom p span {
+    color: #9c3;
+}
+div.zoom p a {
+    text-decoration:underline;
+    color: #fff;
+}
+div.zoom p a:link,
+div.zoom p a:hover,
+div.zoom p a:visited,
+div.zoom p a:focus {
+    text-decoration:underline;
+    color: #fff;
+}
+
+body#chronam_page #content {
+	width: 740px;
+	margin: 10px;
+	font:normal 90%/100% verdana, helvetica, sans-serif;
+	background-color: #fff;
+	text-align:left;
+	padding: 0px;
+	border: 0;
+}
+body#chronam_page .page_head {
+	width: auto;
+	height: auto;
+	margin: 0px 0px 10px 0px;
+	font:normal 90%/100% verdana, helvetica, sans-serif;
+	background: transparent url(../images/ph_top730.gif) top left no-repeat;
+	text-align:left;
+	padding: 2px 0px 2px 0px;
+}
+body#chronam_page .page_head h1 {
+	color: #343268;
+	padding: 5px 0px 5px 10px;
+	margin: 0;
+	font: bold 140%/105% Georgia, "Times New Roman", Times, serif;
+	display: block;
+	background: transparent url(../images/ph_bot730.gif) bottom left no-repeat;
+}
+body#chronam_page .page_head h1 span {
+	font: normal 100%/105% Georgia, "Times New Roman", Times, serif;
+	color: #343268;
+}
+body#chronam_page .page_head h1 span a {
+	color: #036;
+	font-size: 80%;
+	font-weight: 200;
+}
+
+body#chronam_page_print h1 {
+    font: bold 18px verdana, arial, helvetica, sans-serif;
+    margin: 2px 0;
+}
+
+body#chronam_page_print h2 {
+    font: normal 12px verdana, arial, helvetica, sans-serif;
+    margin: 2px 0;
+}
+
+body#chronam_page_print h3 {
+    font: normal 10px verdana, arial, helvetica, sans-serif;
+    margin: 2px 0;
+}
+
+body#chronam_home #box_right {
+    border-width: 0px;
+}
+
+body#chronam_about div#box_right ul li {
+    font-size: 10px;
+    color: #565656;
+}
+body#chronam_about div#box_right h3 {
+    margin: 10px 15px 2px 15px;
+    font-size: 85%;
+    font-style: italic;
+    color: #565656;
+}
+body#chronam_about div#box_right h3 {
+    text-decoration: none;
+    color: #cc6666;
+}
+body#chronam_ocr div#box_right h3 {
+    margin: 10px 15px 2px 15px;
+    font-size: 85%;
+    font-style: italic;
+    color: #565656;
+}
+
+body#chronam_search_pages#box_right form {
+    width: 472px;
+}
+
+/* -------- */
+
+div#indent_right {
+    margin-left: 5%;
+    height: auto;
+}
+
+div#indent_right select {
+    width: auto;
+}
+
+div#indent_right p label {
+    font-size: 100%;
+}
+
+div#indent_right input.submit {
+    font-size: 70%;
+}
+/* directory display */
+div#newspaper dl, div#newspaper dl div#newspaper dt, div#newspaper dl div#newspaper dd
+{
+  /* zero fields because browsers treat 
+     list padding, margins differently */
+  margin: 0;
+  padding: 0;
+}
+
+div#newspaper dl
+{
+  padding: 0 0 10px 15px; 
+  font: normal 80%/100% verdana, arial, helvetica, sans-serif;
+}
+
+div#newspaper dl dt
+{
+  margin: 10px 0 2px;
+  font-weight: bold;
+}
+
+div#newspaper dl dd
+{
+  font: normal 95%/100% verdana, arial, helvetica, sans-serif;
+  margin-left: 0px;
+  padding: 2px 0;
+}
+
+div#newspaper dl dd a
+{
+  font-weight: normal;
+}
+
+div#newspaper dl dd.foreign-title
+{
+  font: 110% "Arial Unicode MS", Georgia, "Times New Roman", Times, serif;
+}
+div#newspaper div#box_right h3
+{
+   font-size: 12px;
+   margin: 10px 15px 2px 15px;
+}
+div#newspaper div#box_right h4
+{
+   margin: 10px 15px 2px 15px;
+   font-size: 10px;
+   color: #666;
+}
+div#newspaper div#box_right p.marc, div#newspaper div#box_right p.foreign-title {
+    padding: 0;
+    margin-left: 14px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 60%;
+}
+hr, body#chronam_help hr {
+    border: 0px;
+    width: 100%;
+    height: 2px; 
+    color: #ccc;
+    background-color: #ccc;
+}
+body#chronam_help div#box_right h4 {
+    font-style: italic;
+}
+body#chronam_help div#box_right h4 a {
+    text-decoration: none;
+    color: #cc6666;
+}
+
+div#gallery {
+    /* border: 1px #000 solid; */
+    xwidth: 480px;
+    xmargin: 0 auto;
+}
+        
+div#gallery div {
+    width: 220px;
+    height: 340px;
+    font-size: 10px;
+    margin-left: 10px;
+    padding: 0px 10px 10px 10px;
+    float: left;
+}
+      
+div#gallery div a {
+    width: auto;
+    font-size: 10px;
+}
+        
+div#gallery div a img {
+    width: 200px;
+    height: 270px;
+    border: 1px #666 solid;
+}
+        
+div#gallery div a:hover img {
+    border-color: #00f;
+}        
+
+div#gallery br {
+    clear: both;
+}
+
+body#chronam_issues tr, body#chronam_issues td {
+    /* zero fields because browsers treat 
+       list padding, margins differently */
+    margin: 0;
+    padding: 0;
+}
+
+body#chronam_issues td {
+    font-size: 80%;
+    height: 15px;
+    width: 10px;
+}
+
+body#chronam_issues th {
+    font: bold 95% georgia, times, serif;
+    text-align: left;
+    margin-left: 10px;
+    padding-left: 10px;
+    height: 21px;
+    width: auto;
+}
+
+body#chronam_issues td.calendar_month table {
+    background: #d7c9b0;
+    width: 155px;
+}
+
+body#chronam_issues td.calendar_month {
+    text-align: center;
+    width: auto;
+    margin: 0;
+    padding: 0px 4px 5px 4px;
+}
+
+body#chronam_issues td.calendar_month a.multiple {
+    text-align: center;
+    font-size: 100%;
+    font-style: italic;
+    font-weight: bold;
+    color: #036;
+    background: #fff;
+    padding: 0;
+}
+
+body#chronam_issues tr.calendar_row {
+    height: 11em;
+    padding: 0; 
+}
+
+body#chronam_issues #legendTable {
+    margin: 0;
+    padding: 0;
+    width: 500px;
+    height: 28px;
+    font-size: 125%;
+    background: #fff;
+}
+
+body#chronam_issues table.legend {
+    width: 20em;
+    height: auto;
+    border: 1px solid #d7c9b0;
+    background: #fbf9ee;
+    float: right;
+    margin-right: 1em;
+    margin-top: 1em;
+    font-size: 125%;
+}
+body#chronam_issues table.legend td {
+    width: auto;
+}
+body#chronam_issues .combo {
+    display: none;
+}
+body#chronam_issues .headrow {
+    display: none;
+}
+body#chronam_issues .footrow {
+    display: none;
+}
+body#chronam_issues .dayname {
+    font: 95% verdana, georgia, times, serif;
+    background: #fff;
+    border: .4mm solid #d7c9b0;
+}
+body#chronam_issues .noday {
+    font: 95% verdana, georgia, times, serif;
+    background: #fff;
+    border: .4mm solid #d7c9b0;
+}
+body#chronam_issues .noissues {
+    font: 95% verdana, georgia, times, serif;
+    background: #fff;
+    border: .4mm solid #d7c9b0;
+}
+body#chronam_issues .single {
+    font: bold 95% verdana, georgia, times, serif;
+    background: #fff;
+    border: .4mm solid #d7c9b0;
+}
+body#chronam_issues .single a {
+    font: bold 95% verdana, georgia, times, serif;
+}
+body#chronam_issues .multiple {
+    font: bold italic 95% verdana, georgia, times, serif;
+    background: #fff;
+    border: .4mm solid #d7c9b0;
+    text-decoration: underline;
+    color: #036;
+}
+body#chronam_issues td.multiple a {
+    white-space: nowrap;
+}
+body#chronam_issues .title {
+    font: bold 95% georgia, times, serif;
+    background: #fbf9ee;
+    border: 1px solid #999;
+    width: 275px;
+    colSpan: 7;
+    text-align: center;
+    margin-left: 0px;
+    padding-left: 0px;
+    height: 21px;
+}
+
+body#chronam_issues #id_year { 
+    width: 5em;
+    text-align: left;
+}
+
+/* external link  */
+a.external {
+background: transparent url(../images/external-link-icon.png) 100% 100% no-repeat;
+padding: 0 15px 0 0;
+}
+*html a.external {
+display:inline-block;
+}
+a.external span {
+display:none;
+}
+
+#rss {
+    text-align: center;
+}
+
+img.feed_icon {
+    width: 10px;
+    height: 10px;
+}
+
+.linkbutton {
+    background: url("../images/form_dots.gif") no-repeat left top;
+    padding: 2em 20px 1em;
+    margin: 0 auto;
+    width: 200px;
+    text-align: center;
+}
+
+.linkbutton a {
+    color: #ff6600;
+    border: 2px solid #ff6600;
+    padding: 2px;
+    font-weight: bold;
+    font-size: 12px;
+    font-family: lucida grande, helvetica, sans-serif;
+    text-decoration: none;
+    text-transform: uppercase;
+    display: block;
+}
+
+.linkbutton a:hover, .linkbutton a:visited {
+    color: #ff6600;
+    text-decoration: none;
+    font-weight: bold;
+}

@@ -1,0 +1,141 @@
+#######################################################################
+#                                                                     #
+# The first thing you will need to do is edit the "homedir" variable  #
+# in the second line of the script. This variable needs to contain    #
+# the name of the directory in which you are writing the verification #
+# or validation log file. Here is an example of a verify command      #
+# (line breaks inserted for readability):                             #
+#                                                                     #
+# ./bin/validationprocessor.sh batch                                  #
+# /lcbp/ndnp/utah/batch_ut_20060929_eight/batch_1.xml verify >>       #
+# /export/home/cuha/verifylogs/batch_ut_20060929_eight.log 2<&1 &     #
+#                                                                     #
+# Of note in that command is my home directory plus "verifylogs".     #
+# In my copy of the script, the "homedir" variable is set to:         #
+#                                                                     #
+# homedir="/export/home/cuha/verifylogs"                              #
+#                                                                     #
+# Once the verify process is running, change to the directory in      #
+# which the batch xml file is stored and launch the script.           #
+#                                                                     #
+# In the sample output the batch being verified resides in:           #
+#                                                                     #
+# /lcbp/ndnp/utah/batch_ut_20060929_eight                             #
+#                                                                     #
+# on sun29. Assuming that the script is stored in my home directory   #
+# with the name "look", this is an example command sequence:          #
+#                                                                     #
+# bash-3.00$ cd /lcbp/ndnp/utah/batch_ut_20060929_eight               #
+# bash-3.00$ ~/look batch_ut_20060929_eight                           #
+#                                                                     #
+# The script will exit automatically when the batch verification      # 
+# process has completed with an indication of verification success or #
+# failure.                                                            #
+#                                                                     #
+#######################################################################
+beenthere="false"
+homedir="/home/curt/verifylogs"
+while [ true ]
+  do
+    totalfiles=`find sn* -type f -print | wc -l`
+    if [ $beenthere == false ]
+    then
+      beenthere=true
+      oldtotal=0
+    else
+      sleep 60
+      oldtotal=$total
+    fi
+    total=0
+    lccns=(`ls -d sn*`)
+    numlccns=${#lccns[@]}
+    echo "By LCCN/Reel Number:"
+    echo " "
+    for ((i=0;i<$numlccns;i++))
+    do
+      cd ${lccns[${i}]}
+      subdirs=(`ls -1`)
+      numsubdirs=${#subdirs[@]}
+      for ((j=0;j<$numsubdirs;j++))
+      do
+        lccnfilecounts[j]=`find ${subdirs[${j}]} -type f -print | wc -l`
+        absdir=`pwd`
+        count=`cat $homedir/$1.log | grep "$absdir/${subdirs[${j}]}" | wc -l`
+        echo "${lccns[${i}]}.${subdirs[${j}]} - $count "/" ${lccnfilecounts[${j}]}"
+      done
+      cd ..
+    done
+    echo " "
+    echo "By LCCN:"
+    echo " "
+    for dir in `ls -d sn*`
+    do
+      count=`cat $homedir/$1.log | grep $dir | wc -l`
+      echo $dir $count "/" ` find $dir -type f -print | wc -l `
+      total=$(( $total + $count ))
+    done
+    if [ $oldtotal -gt 0 ]
+    then
+      completed=`cat $homedir/$1.log | grep "Completed in" | wc -l`
+      if [ $completed -eq 1 ]
+      then
+        success=`cat $homedir/$1.log | grep "true" | wc -l`
+        if [ $success -eq 1 ]
+        then
+          echo "verification successful"
+          exit 1
+        else
+          echo "verification failed"
+          exit 0
+        fi
+      fi
+      echo " "
+      echo "Summary:"
+      echo " "
+      filesperminute=$(($total - $oldtotal))
+      echo "$filesperminute files / minute"
+      filesleft=$(($totalfiles - $total))
+      if [ $filesleft -eq 0 ]
+      then
+        exit 1
+      fi
+      if [ $filesperminute -gt 0 ] && [ $filesleft -gt 0 ]
+      then
+        minutesleft=$(($filesleft / $filesperminute))
+        if [ $minutesleft -ge 60 ]
+        then
+          hoursleft=$(($minutesleft / 60))
+          minutesleft=$(($minutesleft - ($hoursleft * 60)))
+          hourtext="hours"
+          if [ $hoursleft -eq 1 ]
+          then
+            hourtext="hour"
+          fi
+          minutetext="minutes"
+          if [ $minutesleft -eq 1 ]
+          then
+            minutetext="minute"
+          fi
+          echo "$hoursleft $hourtext, $minutesleft $minutetext to go"
+        else
+          if [ $minutesleft -gt 1 ]
+          then
+            echo "$minutesleft minutes to go"
+          fi
+          if [ $minutesleft -eq 1 ]
+          then
+            echo "$minutesleft minute to go"
+          fi
+          if [ $minutesleft -eq 0 ]
+          then
+            echo "less than a minute to go"
+          fi
+        fi
+        echo "$filesleft files to go"
+      fi
+    fi
+    echo ""
+    echo "$total out of $totalfiles files processed"
+    echo ""
+done
+

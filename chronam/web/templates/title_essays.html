@@ -1,0 +1,19 @@
+{% extends "newspaper.html" %}
+
+{% block newspaper_content %}
+
+<p>
+This title is mentioned in several essays created on:
+</p>
+
+<ul>
+    {% for essay in title.essays.all %}
+    <li> <a href="{{ essay.url }}">{{ essay.created|date }}</a></li>
+    {% endfor %}
+
+
+{% endblock %}
+
+
+
+
