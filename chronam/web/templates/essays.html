@@ -1,0 +1,34 @@
+{% extends "site.html" %}
+
+{% block box_right %}
+
+<p>
+Below is a list of newspaper title essays that are available. Each newspaper
+title can be mentioned in multiple essays.
+</p>
+
+<table class="data">
+    <tr>
+        <th>Newspaper Title</th>
+        <th>Essay Creation Time</th>
+    </tr>
+    {% for title in titles %}
+    <tr class="{% cycle 'lightGray' 'white' %}">
+        <td>
+            <a href="{% url chronam_title title.lccn %}">{{ title }}</a>
+    </td>
+        <td>
+            {% for essay in title.essays.all %}
+            <a href="{{ essay.url }}">{{ essay.created|date }}</a>
+            {% endfor %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+{% endblock %}
+
+
+
+

@@ -1,0 +1,55 @@
+/* Stylesheet stolen lovingly from http://dublincore.org/css/default.css */
+
+/* Note: Todd Fahrner's keyword hack for IE. */
+/* http://alistapart.com/stories/sizematters/ */
+body, body div, body p, body th, body td, body li, body dd {
+    /* More specific to override rule in importing sheet. */
+    font-size: x-small;
+    /* False value for WinIE4/5. */
+    voice-family: "\"}\"";
+    /* Trick WinIE4/5 into thinking the rule is over. */
+    voice-family: inherit;
+    /* Recover from trick. */
+    font-size: small;
+    /* Intended value for better browsers. */
+}
+html>body, html>body div, html>body p, html>body th, html>body td, html>body li, html>body dd {
+    font-size: small;
+    /* Be nice to Opera. */
+}
+/* END Todd Fahrner's keyword hack for IE. */
+
+
+body {
+    background: #FFF;
+    color: #000;
+    font-family: Verdana, Arial, "Arial Unicode MS", Helvetica, sans-serif;
+    font-size: small;
+    margin: 10px;
+    padding: 10px;
+    text-align: left;
+}
+
+a:link { color: #333; text-decoration: underline; }
+a:visited { color: #666; text-decoration: underline; }
+a:hover, a:visited:hover, a:active { color: #F60; text-decoration: underline; }
+
+th, td { 
+    vertical-align: top; 
+    text-align: left; 
+}
+
+h1 { color: #333; font: bold 135% Verdana, Arial, "Arial Unicode MS", Helvetica, sans-serif; }
+h2 { color: #F30; font: bold 120% Verdana, Arial, "Arial Unicode MS", Helvetica, sans-serif; }
+h3 { color: #000; font: bold 105% Verdana, Arial, "Arial Unicode MS", Helvetica, sans-serif; }
+h4 { color: #666; font: bold 100% Verdana, Arial, "Arial Unicode MS", Helvetica, sans-serif; font-style: italic; }
+h5 { color: #777; font: bold 80% Tahoma, Geneva, "Arial Unicode MS", Arial, Helvetica, sans-serif; }
+
+
+table.border { border-top: 1px solid #CCC; border-left: 1px solid #CCC; margin-bottom: 10px; width: 100%;}
+table.border th { background: #EEE; font-family: Verdana, Arial, "Arial Unicode MS", Helvetica, sans-serif; }
+table.border td, table.border th { border-right: 1px solid #CCC; border-bottom: 1px solid #CCC; padding: .5em; }
+
+td.name {
+    width: 20%;
+}

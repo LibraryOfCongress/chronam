@@ -1,0 +1,98 @@
+# this record is used for testing purposes, and is serialized
+# here in a more readable form to aid in understanding what 
+# various tests are doing
+
+LDR 02425cas  22005057a 4500
+001     ocm09688987 
+003     OCoLC
+005     20041011133654.0
+008     830711d18731887nyuwr ne      0    0eng d
+010    _asn 83030846 
+040    _aNPU
+       _cNPU
+       _dNPX
+       _dNYS
+       _dRHN
+       _dNYS
+       _dCNW
+       _dOCLCQ
+042    _amsc
+130 0  _aLiving issue (Albany, N.Y.)
+245 04 _aThe living issue.
+246 30 _aLiving issue. Prohibition
+260    _aAlbany, N.Y. :
+       _bThe Living Issue Co.
+300    _av. :
+       _bill. ;
+       _c70 cm.
+310    _aWeekly
+362 1  _aBegan in 1873.
+362 1  _aCeased in Mar. 1887.
+       _zCf. Gregory, W. Amer. newspapers.
+500    _aPublished as: Living issue. Prohibition, <Dec. 17, 1874>.
+500    _aPublished at New York, N.Y., <1874>-1879; at Portland, Me., 1879-<1880>; at Cooperstown, N.Y., <1881-1882>; at Utica, N.Y., <1883>-Jan. 27, 1887; at Lincoln, Neb., <Feb. 1887>-
+500    _aPublishers: Living Issue Co., 1873-1877; National Prohibition Alliance, 1877-1879; Maine Temperance Alliance, <1879>; Sawyer & Scrambling, <1881>; Scrambling & Jones, <1882>; G.D. Scrambling, <1884-1887>.
+500    _aSupported National Prohibition Ticket, 1876; Green Clay Smith for president.
+500    _aDescription based on: Vol. 1, no. 8 (Apr. 12, 1873).
+650  0 _aTemperance
+       _zNew York (State)
+       _zNew York
+       _vNewspapers.
+650  0 _aTemperance
+       _zConnecticut
+       _vNewspapers.
+651  0 _aUtica (N.Y.)
+       _vNewspapers.
+651  0 _aCooperstown (N.Y.)
+       _vNewspapers.
+651  0 _aNew York (N.Y.)
+       _vNewspapers.
+651  0 _aAlbany (N.Y.)
+       _vNewspapers.
+651  0 _aNew Haven (Conn.)
+       _vNewspapers.
+651  0 _aHartford (Conn.)
+       _vNewspapers.
+700 1  _aSmith, Green Clay,
+       _d1826-1895.
+752    _aUnited States
+       _bNebraska
+       _cLancaster
+       _dLincoln.
+752    _aUnited States
+       _bNew York
+       _cOneida
+       _dUtica.
+752    _aUnited States
+       _bNew York
+       _cOtsego
+       _dCooperstown.
+752    _aUnited States
+       _bMaine
+       _cCumberland
+       _dPortland.
+752    _aUnited States
+       _bNew York
+       _cNew York
+       _dNew York.
+752    _aUnited States
+       _bNew York
+       _cAlbany
+       _dAlbany.
+780 05 _tTown and country (Providence, R.I.)
+       _w(DLC)sn 83021237
+780 05 _tCommonwealth (New Haven, Conn.)
+       _gDec. 1876
+       _w(DLC)sn 84020072
+       _w(OCoLC)10316704
+785 01 _tState temperance journal (Middletown, Conn.)
+       _g1879
+       _w(DLC)sn 92051309
+       _w(OCoLC)26109972
+785 07 _tNew republic (Lincoln, Neb. : 1885)
+785 07 _tLiving issue and the new republic
+       _w(DLC)sn 89071335
+
+ Recs  Errs Filename
+----- ----- --------
+    1     0 chronam/test-data/bib.dat

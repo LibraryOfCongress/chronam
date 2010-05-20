@@ -1,0 +1,106 @@
+{% extends "site.html" %}
+{% load humanize %}
+
+{% block extra_link_types %}
+    <link rel="primaryTopic" href="{{ batch.abstract_url }}" />
+    <link rel="resourcemap" type="application/rdf+xml" href="{% url chronam_batch_dot_rdf batch.name %}" />
+    <link rel="resourcemap" type="application/json" href="{% url chronam_batch_dot_json batch.name %}" />
+{% endblock %}
+
+
+{% block box_right %}
+
+<br />
+
+<h4>Summary Information</h4>
+<br />
+
+<table class="data">
+    <tr class="lightGray">
+        <td>Awardee:</td>
+        <td>
+            <a href="{% url chronam_awardee batch.awardee.org_code %}">
+                {{ batch.awardee.name }}
+            </a>
+        </td>
+    </tr>
+    <tr class="white">
+        <td>Ingested:</td>
+        <td>{{ batch.created }}</td>
+    </tr>
+    <tr class="lightGray">
+        <td>Number of Issues:</td>
+        <td>{{ batch.issues.all.count }}</td>
+    </tr>
+    <tr class="white">
+        <td>Number of Pages:</td>
+        <td>{{ batch.page_count|intcomma }}</td>
+    </tr>
+    <tr class="lightGray">
+        <td>Bag Location:</td>
+        <td><a href="{% url chronam_batch_files batch.bag_relative_path %}">{{ batch.bag_relative_path }}</a>
+    </tr>
+    <tr class="white">
+        <td>Validated Batch File:</td>
+        <td><a href="{% url chronam_batch_files batch.validated_batch_file_relative_path %}">{{ batch.validated_batch_file_relative_path }}</td>
+    </tr>
+    <tr class="lightGray">
+        <td>LCCNs In Batch:</td>
+        <td>
+            {% for lccn in batch.lccns %}
+            <a href="{% url chronam_title lccn %}">{{ lccn }}</a> 
+            {% endfor %}
+        </td>
+    </tr>
+</table>
+
+<p>
+<h4>Issues in Batch</h4>
+<br />
+<table class="data">
+<tr>
+    <th>Title</th>
+    <th>Issue Date</th>
+    <th>Number of Pages</th>
+</tr>
+{% for issue in batch.issues.all %}
+<tr class="{% cycle 'lightGray' 'white' %}">
+    <td><a href="{% url chronam_title issue.title.lccn %}">{{ issue.title }}</a></td>
+    <td><a href="{% url chronam_issue_pages issue.title.lccn, issue.date_issued, issue.edition %}">{{issue.date_issued}}</a></td>
+    <td>{{ issue.pages.all.count }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</p>
+
+<p>
+  <h4>Reels in Batch</h4>
+  <br />
+  <table class="data">
+    <tr>
+      <th>Reel Number</th>
+      <th>titles in reel</th>
+      <th>Number of Pages</th>
+    </tr>
+    {% for reel in batch.reels.all %}
+    {% if reel.number %}
+    <tr class="{% cycle 'lightGray' 'white' %}">
+      <td><a href="{% url chronam_reel reel.number %}">{{ reel.number }}</a></td>
+        <td>
+            {% for title in reel.titles %}
+            <a href="{% url chronam_title title.lccn %}">{{ title.name }} ({{title.lccn}})</a> 
+            {% endfor %}
+        </td>
+      <td>{{ reel.pages.all.count }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+  </table>
+</p>
+
+{% endblock %}
+
+
+
+

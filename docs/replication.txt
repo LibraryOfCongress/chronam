@@ -1,0 +1,223 @@
+Install second (slave) mysql5 from source (as root).  As a point of reference, the master source build was done in:
+
+	/var/mysql5
+
+and all references to that directory pertain to the master.  The master is not running.  solr is not running.  One batch has been loaded on the master.
+
+The mysql5 source has been unloaded into:
+
+	/home/curt/downloads/mysql5/mysql-5.1.32
+
+	n.b. - The --without-row-based-replication parameter mentioned as a configuration option gives the message:
+
+		configure: WARNING: unrecognized options: --without-row-based-replication
+
+	so it will not be used in this install.
+
+------------------------------ Install slave instance
+
+As root, from:
+
+	/home/curt/downloads/mysql5/mysql-5.1.32
+
+issued commands:
+
+	./configure --prefix=/var/mysql5_replicator --enable-thread-safe-client --with-low-memory
+	make install
+	chown -R mysql:mysql /var/mysql5_replicator
+-O	groupadd mysqlrep
+-O	useradd -s /bin/false -g mysqlrep mysqlrep
+	cp /opt/local/chronam/conf/my.cnf /var/mysql5_replicator/my.cnf
+
+------------------------------ Set up replication user in master
+
+Started the master.  From:
+
+	/var/mysql5
+
+issued command:
+
+	./bin/mysqld_safe &	
+
+Logged in to mysql (master) as root and issued:
+
+	use mysql;
+-O	grant replication slave on *.* to 'repl_user'@'%' identified by 'repl_user_pass';
+	grant replication slave on *.* to 'repl_user'@'marine9' identified by 'repl_user_pass';
+
+
+Note that the password cannot be longer than 16 characters.  You won't get an error message if it is, but the login will not work because mysql truncates it to 16 characters.  Also note that the hostname of this system is marine9.  Specifying the wildcard for hostname was not sufficient and the actual hostname had to be granted.
+
+------------------------------ Initial migration of data
+
+From within same mysql (master) session as above, issued command:
+
+	flush tables with read lock;
+
+Do not exit mysql at this point or you will release the read lock.
+
+From within mysql (master, different shell), issued command:
+
+	show master status;
+
+This returned an empty set (nothing has been logged).
+
+The slave's log file and position will be specified later (in CHANGE MASTER TO) as and empty string ('') and 4.
+
+Shutdown the master with:
+
+	mysqladmin -u root -p shutdown
+
+As root, from:
+
+	/var/mysql5/var
+
+Issued commands:
+
+	mkdir -p /var/mysql_replicator/var
+	cp -r mysql/ /var/mysql5_replicator/var/
+	cp -r chronam/ /var/mysql5_replicator/var/
+	chown -R mysql:mysql /var/mysql5_replicator/var
+	chmod -R 770 /var/mysql5_replicator/var
+
+------------------------------ Configure master my.cnf
+
+The my.cnf file can be in any number of places.  To ensure that the proper instance of MySQL is started, put my.cnf in the install directory.
+
+	/var/mysql5/my.cnf (master)
+	/var/mysql5_replicator/my.cnf (slave)
+
+Additionally, each instance must be started from the install directory or the wrong instance may be started.
+
+The section in which a parameter resides is important.  For example, if the server-id is not in the [mysqld] section in the slave my.cnf, the server will not be recognized as a slave.
+
+In the [mysqld] section of the master my.cnf, added:
+
+	log-bin       = chronam-bin
+	binlog-format = 'STATEMENT'
+
+From the [safe_mysqld] section of the master my.cnf, moved:
+
+	server-id	  = 1
+
+to the [mysqld] section.
+
+------------------------------ Configure slave my.cnf
+
+In the [client] section of the slave my.cnf, changed:
+
+	port		= 3307
+	socket		= /tmp/mysql_repl.sock
+
+In the [mysqld] section of the slave my.cnf, changed:
+
+	port		= 3307
+	socket		= /tmp/mysql_repl.sock
+
+From the [safe_mysqld] section of the slave my.cnf, changed:
+
+	server-id	  = 2
+
+and moved it to the [mysqld] section.
+
+In the [mysqld] section of the slave my.cnf, added:
+
+	relay-log   = mysql-relay-bin
+
+In the [safe_mysqld] section of the slave my.cnf, changed:
+
+	pid-file = /var/mysql5_replicator/mysql.pid
+	
+also commented out log-bin=mysql-bin.  No need to log slave.
+
+------------------------------ Configure slave as such
+
+Start master.  From:
+
+	/var/mysql5
+
+issued command:
+
+	./bin/mysqld_safe &
+
+From the retained mysql session, issued command:
+
+	unlock tables;
+
+It complained about mysql being gone, but reconnected and said the query was OK.
+
+Started slave.  From
+
+	/var/mysql5_replicator
+
+issued command:
+
+	./bin/mysqld_safe --skip-slave &
+
+Start a mysql session with the master:
+
+	mysql -u root -p
+
+From within that session, issue:
+
+	show master status;
+
++--------------------+----------+--------------+------------------+
+| File               | Position | Binlog_Do_DB | Binlog_Ignore_DB |
++--------------------+----------+--------------+------------------+
+| chronam-bin.000002 |      106 |              |                  |
++--------------------+----------+--------------+------------------+
+1 row in set (0.02 sec)
+
+These values will be used with the CHANGE MASTER TO command below.  The values on your system will be different.
+
+Issue Change Master To from within mysql on the slave:
+
+Start mysql session with slave:
+
+	mysql -u root -p --socket=/tmp/mysql_repl.sock --port=3307
+
+From within that slave session issued command:
+
+	CHANGE MASTER TO MASTER_HOST='192.168.9.99', MASTER_USER='repl_user', MASTER_PASSWORD='repl_user_pass', MASTER_LOG_FILE='chronam-bin.000002', MASTER_LOG_POS=106;
+
+It may be possible to use the hostname here as well.
+
+Start slave:
+
+mysql> START SLAVE;
+
+------------------------------ Start ChronAm 2.0
+
+Started solr.  From:
+
+	/opt/local/chronam
+
+issued command:
+
+	supervisord -n -c conf/supervisord.conf
+
+------------------------------ Load a batch
+
+I loaded a batch into chronam using:
+
+From:
+
+	/opt/local/chronam/chronam
+
+issued command:
+
+	python manage.py load_batch virginia/batch_va_20070208_jamestown
+
+Replication should be happening.
+
+------------------------------ Miscellaneous commands
+
+To stop the slave:
+
+	/var/mysql5_replicator/bin/mysqladmin --port=3307 --socket=/tmp/mysql_repl.sock shutdown -u root -p
+
+To start a mysql session on the slave:
+
+	mysql -u root -p --socket=/tmp/mysql_repl.sock --port=3307
+

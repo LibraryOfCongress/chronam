@@ -1,0 +1,23 @@
+{% extends "site.html" %}
+
+{% block more_style %}
+<link rel="alternate" type="application/json" href="cities.json" />
+{% endblock %}
+
+{% block box_right %}
+
+<div id="search_results_box">
+  <div id="search_results_content">
+    <div id="search_body">
+      <table class="data" width="100%">
+    {% for city in cities %}
+        <tr class="{% cycle 'lightGray' 'white' %}">
+          <td>{{city}}</td>
+        </tr>
+    {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

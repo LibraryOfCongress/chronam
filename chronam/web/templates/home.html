@@ -1,0 +1,73 @@
+{% extends "site.html" %}
+
+{% block body_id %}chronam_home{% endblock %}
+
+{% block html_page_head %}
+<div class="page_head">
+  <h1 id="page_head"><em>Chronicling America:</em> Historic American Newspapers</h1>
+</div>
+{% endblock %}
+
+
+{% block box_right %}
+
+            <div class="summary">
+    
+                <p>Welcome to Chronicling America, enhancing access to America's historic newspapers. This site allows you to search and view newspaper pages from 1880-1922 and find information about American newspapers published between 1690-present. Chronicling America is sponsored jointly by the National Endowment for the Humanities and the Library of Congress as part of the National Digital Newspaper Program (NDNP). </p>
+  
+            </div>     
+            <div id="left">
+                <a href="{% url chronam_search_pages %}" shape="rect">
+                    <img src="images/read.gif" alt="Read newspaper pages from 1880 to 1922" width="248" height="45" />
+                </a>
+
+                <p>
+                    <a href="{% url chronam_search_pages %}" shape="rect">View
+                        newspaper pages</a> from 1880 to 1922 from the following
+                    states: Arizona, California, District of Columbia, Florida,
+                    Hawaii, Kentucky, Minnesota, Missouri, Nebraska, New York,
+                    Ohio, Pennsylvania, Texas, Utah, Virginia and Washington. <a href="http://www.neh.gov/projects/ndnp.html" shape="rect">Why only these states and years?</a>
+                </p>
+                <div class="linkbutton">
+                  <a href="{% url chronam_search_pages %}">SEARCH PAGES</a>
+                </div>
+            </div>
+            <div id="right">
+                <a href="{% url chronam_search_titles %}" shape="rect">
+                    <img src="images/find.gif" alt="Find information about newspaper from 1690 to today" width="248" height="45" />
+                </a>
+
+                <p>
+                    <a href="{% url chronam_search_titles %}" shape="rect">Find information about newspapers</a> published in the United States from 1690 to the present in the Chronicling America Directory.
+                </p>
+  
+                <p><strong>Browse the Directory by newspaper title:</strong><br/>
+                {% for letter in letters %}
+                <a href="{% url chronam_titles_start letter %}">{{letter}}</a>
+                    {% ifequal letter 'N' %}
+                    <br />
+                    {% endifequal %}
+                {% endfor %}
+                </p>
+                <div class="linkbutton">
+                  <a href="{% url chronam_search_titles %}">SEARCH DIRECTORY</a>
+                </div>
+            </div>
+            <br />
+            <div class="summary">
+                <p>
+                <span style="font-weight: bold; font-size: larger">Working With Chronicling America</span>
+                <ul style="margin: 0;">
+                    <li style="font-weight: normal;"><a style="font-weight: normal;" href="http://www.loc.gov/rr/news/topics/topics.html">Topics in Chronicling America</a> (provided by the LC Newspaper and Current Periodicals Reading Room)</li> </li>
+                    <li style="font-weight: normal;"><a style="font-weight: normal;" href="http://www.flickr.com/photos/library_of_congress/collections/72157619370519453/">Historic Newspapers on Flickr</a> (part of the LC Flickr Commons photostream) </li>
+                    <li style="font-weight: normal;"><a style="font-weight: normal;" href="/about/api">About the Chronicling America API</a></li>
+                </ul>
+                <br />
+                </p>
+            </div>
+ 
+{% endblock %}
+
+
+
+

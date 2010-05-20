@@ -1,0 +1,103 @@
+{% extends "site.html" %}
+
+{% block extra_link_types %}
+    {% if page.has_previous %}
+        {% if start %}
+        <link rel="prev" href="{% url chronam_titles_start_page start, page.previous_page_number %}" />
+        {% else %}
+        <link rel="prev" href="{% url chronam_titles_page page.previous_page_number %}" />
+        {% endif %}
+    {% endif %}
+    {% if page.has_next %}
+        {% if start %}
+        <link rel="next" href="{% url chronam_titles_start_page start, page.next_page_number %}" />
+        {% else %}
+        <link rel="next" href="{% url chronam_titles_page page.next_page_number %}" />
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div id="box_right">
+
+  {% ifnotequal paginator.num_pages 1 %}
+  <div id="searchnav">
+    <div class="pageNavigator">
+      <img src="{{script_name}}/images/arrow_bl.gif" width="9" height="9" alt=""/> 
+      {% if page.has_previous %}
+          {% if start %}
+          <a rel="prev" href="{% url chronam_titles_start_page start, page.previous_page_number %}">Previous</a>
+          {% else %}
+          <a rel="prev" href="{% url chronam_titles_page page.previous_page_number %}">Previous</a>
+          {% endif %}
+          {% else %}
+      Previous
+      {% endif %}
+      | 
+      {% for page_number in page_range_short %}
+      {% ifequal page_number "..." %}
+      ...
+      {% else %}
+
+      {% ifequal page_number page.number %}
+      <span class="off">{{page_number}}</span> 
+      {% else %}
+          {% if start %}
+          <a href="{% url chronam_titles_start_page start, page_number %}">
+              {{page_number}}
+          </a>
+          {% else %}
+          <a href="{% url chronam_titles_page page_number%}">{{page_number}}</a>
+          {% endif %}
+      {% endifequal %}
+      {% endifequal %}
+      {% endfor %}
+      | 
+      {% if page.has_next %}
+          {% if start %}
+          <a rel="next" href="{% url chronam_titles_start_page start, page.next_page_number %}">
+              Next
+          </a>
+          {% else %}
+          <a rel="next" href="{% url chronam_titles_page page.next_page_number %}">
+               Next
+           </a>
+          {% endif %}
+      {% else %}
+          <span class="off">Next</span> 
+      {% endif %}
+      <img src="{{script_name}}/images/arrow.gif" width="9" height="9" alt=""/> 
+      <br/>
+      </div>
+
+  </div>
+
+{% endifnotequal %}
+
+   <div id="search_results_box">
+    
+        <p>
+        Jump To:
+        {% for letter in letters %}
+            {% ifequal letter start %}
+            <span class="off">{{letter}}</span> 
+            {% else %}
+            <a href="{% url chronam_titles_start letter %}">{{letter}}</a>
+            {% endifequal %}
+        {% endfor %}
+        </p>
+
+      
+        <table class="data" width="100%">
+        {% for title in page.object_list %}
+        <tr class="{% cycle 'lightGray' 'white' %}">
+            <td><a href="{% url chronam_title title.lccn %}">{{title}}</a></td>
+        </tr>
+        {% endfor %}
+        </table>
+      
+    </div>
+</div>
+
+{% endblock %}

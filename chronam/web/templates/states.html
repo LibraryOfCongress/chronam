@@ -1,0 +1,34 @@
+{% extends "site.html" %}
+
+{% block more_style %}
+    <link rel="alternate" type="application/json" href="states.json" />
+{% endblock %}
+
+{% block content %}
+
+<div id="box_right">
+
+<div id="search_results_box">
+  <div id="search_results_content">
+    <div id="search_body">
+    <table class="data" width="100%">
+    {% for state in states %}
+    <tr class="{% cycle 'lightGray' 'white' %}">
+        <td>
+            {{state.0}} 
+        </td>
+        <td>
+            <a href="{% url chronam_counties_in_state state.1 %}">counties</a>
+        </td>
+        <td>
+            <a href="{% url chronam_cities_in_state state.1 %}">cities</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}

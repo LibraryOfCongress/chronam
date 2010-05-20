@@ -1,0 +1,34 @@
+{% extends "site.html" %}
+{% load humanize %}
+
+{% block box_right %}
+
+<br />
+
+<h4>Summary Information</h4>
+<br />
+
+<table class="data">
+    <tr class="lightGray">
+        <td>Batch:</td>
+        <td>
+            <a href="{% url chronam_batch reel.batch.name %}">
+                {{ reel.batch.name }}
+            </a>
+        </td>
+    </tr>
+    <tr class="lightGray">
+        <td>LCCNs In Reel:</td>
+        <td>
+            {% for title in reel.titles %}
+            <a href="{% url chronam_title title.lccn %}">{{ title.name }} ({{title.lccn}})</a> 
+            {% endfor %}
+        </td>
+    </tr>
+</table>
+
+{% endblock %}
+
+
+
+

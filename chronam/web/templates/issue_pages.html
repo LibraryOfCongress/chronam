@@ -1,0 +1,110 @@
+{% extends "site.html" %}
+
+{% block extra_link_types %}
+      <link rel="primaryTopic" href="{{ issue.abstract_url }}" />
+      {% if page.has_previous %}
+      <link rel="prev" href="{% url chronam_issue_pages_page_number title.lccn,issue.date_issued,issue.edition,page.previous_page_number %}" />
+      {% endif %}
+      {% if page.has_next %}
+      <link rel="next" href="{% url chronam_issue_pages_page_number title.lccn,issue.date_issued,issue.edition,page.next_page_number %}" />
+      {% endif %}
+{% endblock %}
+
+{% block more_style %}
+    <link rel="resourcemap" type="application/rdf+xml" href="{% url chronam_issue_pages_dot_rdf issue.title.lccn, issue.date_issued, issue.edition %}" />
+{% endblock %}
+
+{% block box_right %}
+
+<!-- 
+  TODO: it'd be nice to have a link back to the title -eik
+     <p><a href="{% url chronam_title title.lccn %}">{{title.name}}</a></p> 
+-->
+
+  <div id="searchnav">
+    <div class="pageNavigator">
+                    <!--Previous issue-->
+                    <img src="{{script_name}}/images/arrow_bl.gif" alt="" width="9" height="9" />&nbsp;
+
+{% if issue.previous %}
+<a href="{% url chronam_issue_pages issue.previous.title.lccn,issue.previous.date_issued,issue.previous.edition %}" shape="rect"><strong>Previous Issue</strong></a>
+{% else %}
+<span class="off">Previous Issue</span>
+{% endif %}
+                     | 
+                    <!--Next issue-->
+{% if issue.next %}
+<a href="{% url chronam_issue_pages issue.next.title.lccn,issue.next.date_issued,issue.next.edition %}"><strong>Next Issue</strong></a>
+{% else %}
+<span class="off">Next Issue</span>
+{% endif %}
+
+                    &nbsp;<img src="{{script_name}}/images/arrow_gr.gif" alt="" width="9" height="9" />
+                    &nbsp;&nbsp;&nbsp;
+                    All pages | 
+                    <a href="{% url chronam_issues issue.title.lccn %}" shape="rect">Browse Issues</a> | 
+                    <a href="{% url chronam_title issue.title.lccn %}" shape="rect">This Newspaper</a>
+</div>
+{% ifnotequal paginator.num_pages 1 %}
+    <hr>
+    <div class="pageNavigator">
+      <img src="{{script_name}}/images/arrow_bl.gif" width="9" height="9" alt=""/> 
+      {% if page.has_previous %}
+      <a rel="prev" href="{% url chronam_issue_pages_page_number title.lccn,issue.date_issued,issue.edition,page.previous_page_number %}">Previous</a>
+      {% else %}
+      Previous
+      {% endif %}
+      | 
+      {% for page_number in paginator.page_range %}
+      {% ifequal page_number page.number %}
+      <span class="off">{{page_number}}</span> 
+      {% else %}
+      <a href="{% url chronam_issue_pages_page_number title.lccn,issue.date_issued,issue.edition,page_number %}">{{page_number}}</a> 
+      {% endifequal %}
+      {% endfor %}
+      | 
+      {% if page.has_next %}
+          <a rel="next" href="{% url chronam_issue_pages_page_number title.lccn,issue.date_issued,issue.edition,page.next_page_number %}">Next</a> 
+      {% else %}
+          <span class="off">Next</span> 
+      {% endif %}
+      <img src="{{script_name}}/images/arrow.gif" width="9" height="9" alt=""/> 
+      <br/>
+    </div>
+{% endifnotequal %}
+  </div>
+
+    <div id="search_results_box">
+      <div id="search_results_content">
+        <div id="search_body">
+          <div id="gallery">
+{% if page.object_list %}
+  {% for page in page.object_list %}
+    {% url chronam_page title.lccn,page.issue.date_issued,page.issue.edition,page.sequence as url %}
+<div>
+      <a href="{{url}}">
+        {% if page.jp2_filename %}
+          <img src="{% url chronam_page_thumbnail title.lccn,page.issue.date_issued,page.issue.edition,page.sequence %}" alt="Thumbnail for {{page.number}}"/>
+        {% else %}
+          <img src="{{script_name}}/images/no_thumbnail.gif" alt="No Thumbnail for {{page.number}}"></img>
+        {% endif %}
+      </a>
+      <br/>
+      <a href="{{url}}" shape="rect">{{ page }}</a>
+</div>
+
+{% if forloop.counter|divisibleby:2 %}<br/>{% endif %}
+
+  {% endfor %}
+
+{% else %}
+    <h3>This issue has no available digitized pages{% if explanation %}: {{explanation}}{% endif %}.</h3>
+{% endif %}
+    <br/>
+    </div>
+
+      </div>
+  </div>
+  </div>
+
+{% endblock %}

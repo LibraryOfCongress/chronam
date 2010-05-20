@@ -1,0 +1,187 @@
+{% extends "newspaper.html" %}
+
+{% block newspaper_content %}
+
+<dl>
+    <dt>Title: </dt>
+    <dd>
+    {{title.name}} : ({{title.place_of_publication}}) {{title.start_year}}-{{title.end_year}}
+        {% if title.essay %}
+        <br/>
+        <img src="{{script_name}}/images/arrow.gif" width="9" height="9" alt="" />
+        <a href="{% url chronam_title_essay title.lccn %}">More About this Newspaper</a>
+        {% endif %}
+    </dd>
+    
+    {% if title.alt_titles.all %}
+    <dt>Alternative Titles:</dt>
+    {% for alt in title.alt_titles.all %}
+    <dd>
+    {{ alt.name }}
+    {% if alt.date %}
+    {{ alt.date }}
+    {% endif %}
+    </dd>
+    {% endfor %}
+    {% endif %}
+                
+    {% if title.place_of_publication %}
+    <dt>Place of publication:</dt>
+    <dd>{{title.place_of_publication}}</dd>
+    {% endif %}
+
+    {% if title.places %}
+    <dt>Geographic coverage:</dt>
+    {% for place in title.places.all %}
+
+        <dd>
+        {{ place.city }}, 
+        {% ifnotequal place.county 'None' %}
+        {{ place.county }}, 
+        {% endifnotequal %}
+        {{ place.state }}
+        <br />
+        <img src="{{script_name}}/images/arrow.gif" width="9" height="9" alt="" />
+
+        View more titles from this: 
+        <a href="{% url chronam_city place.state_for_url place.county_for_url place.city_for_url %}">City</a>
+        {% ifnotequal place.county 'None' %}
+        <a href="{% url chronam_county place.state_for_url place.county_for_url %}">County</a>,
+        {% endifnotequal %}
+        <a href="{% url chronam_state place.state_for_url %}">State</a>
+        </dd>
+
+    {% endfor %}
+    {% endif %}
+
+    {% if title.publisher %}
+    <dt>Publisher:</dt>
+    <dd>{{title.publisher}}</dd>
+    {% endif %}
+
+    {% if title.start_year or title_end_year %}
+    <dt>Dates of publication:</dt>
+    <dd>{{title.start_year|default:"?"}}-{{title.end_year|default:"?"}}</dd>
+    {% endif %}
+
+    {% if title.publication_dates.all %}
+    <dt>Description:</dt>
+    {% for pd in title.publication_dates.all %}
+    <dd>
+    {{ pd.text }} <br />
+    </dd>
+    {% endfor %}
+    {% endif %}
+
+    {% if title.frequency %}
+    <dt>Frequency:</dt>
+    <dd>{{ title.frequency }} 
+    {% if title.frequency_date %}
+    {{ title.frequency_date }}</dd>
+    {% endif %}
+    {% endif %}
+
+    {% if title.languages.all %}
+    <dt>Language:</dt>
+    {% for lang in title.languages.all %}
+    <dd>{{lang.name}}</dd>
+    {% endfor %}
+    {% endif %}
+                
+    {% if title.subjects.all %}
+    <dt>Subjects:</dt>
+    {% for subject in title.subjects.all %}
+    <dd>{{subject.heading}}</dd>
+    {% endfor %}
+    {% endif %}
+
+    {% if title.notes.all %}
+    <dt>Notes:</dt>
+    {% for note in notes %}
+    <dd>
+    {{ note|safe }} <br />
+    </dd>
+    {% endfor %}
+    {% endif %}
+    
+    <dt>LCCN:</dt>
+    <dd>{{title.lccn_orig}}</dd>
+
+    {% if title.oclc %}
+    <dt>OCLC:</dt>
+    <dd>{{title.oclc}} </dd>
+    {% endif %}                
+
+    {% if title.issn %}
+    <dt>ISSN:</dt>
+    <dd>{{title.issn}}</dd>
+    {% endif %}                
+
+    {% if preceeding_titles %}
+    <dt>Preceding Titles:</dt>
+    {% for t in preceeding_titles %}
+    <dd>
+        <a href="{% url chronam_title t.lccn %}">{{t}}</a>
+    </dd>
+    {% endfor %}
+    {% endif %}
+
+    {% if succeeding_titles %}
+    <dt>Succeeding Titles:</dt>
+    {% for t in succeeding_titles %}
+    <dd>
+        <a href="{% url chronam_title t.lccn %}">{{t}}</a>
+    </dd>
+    {% endfor %}
+    {% endif %}
+
+    {% if related_titles %}
+    <dt>Related Titles:</dt>
+    {% for t in related_titles %}
+    <dd>
+        <a href="{% url chronam_title t.lccn %}">{{t}}</a>
+    </dd>
+    {% endfor %}
+    {% endif %}
+
+    {% if title.urls.all %}
+    <dt>Related Links:</dt>
+    {% for u in title.urls.all %}
+    <dd>
+        <a href="{{u.value}}">{{u.value}}</a>
+    </dd>
+    {% endfor %}
+    {% endif %}
+
+    <dt>Holdings:</dt>
+    <dd>
+        <img src="{{script_name}}/images/arrow.gif" width="9" height="9" alt="" />
+        <a href="{% url chronam_title_holdings title.lccn %}">
+            View complete holdings information
+        </a>
+    </dd>
+
+    {% if title.first_issue.first_page or title.last_issue.first_page %}
+    <dt>View</dt>   
+    <dd>
+        {% if title.first_issue.first_page %}
+        <img src="{{script_name}}/images/arrow.gif" width="9" height="9" alt=""/>
+        <a href="{% url chronam_page title.lccn,title.first_issue.date_issued,title.first_issue.edition,title.first_issue.first_page.sequence %}">First Issue</a>
+        {% endif %}
+
+        {% if title.last_issue.first_page %}
+        <img src="{{script_name}}/images/arrow.gif" width="9" height="9" alt=""/>
+        <a href="{% url chronam_page title.lccn,title.last_issue.date_issued,title.last_issue.edition,title.last_issue.first_page.sequence %}">Last Issue</a>
+        {% endif %}
+    </dd>
+    {% endif %}
+
+</dl>
+
+{% endblock %}
+
+{% block disclaimer %}
+    {% if has_external_link %}
+        {% include "disclaimer.html" %}
+    {% endif %}
+{% endblock %}

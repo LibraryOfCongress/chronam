@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
+                      "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:ndnp="http://chroniclingamerica.loc.gov/terms#">
+
+    <head>
+        <title>National Digital Newspaper Program Vocabulary</title>
+        <link rel="stylesheet" href="/css/terms.css" />
+    </head>
+
+    <body>
+
+        <h1>National Digital Newspaper Program Vocabulary</h1>
+
+        <p>
+        To support RDF views for resources in 
+        <a href="http://chroniclingamerica.loc.gov">Chronicling America</a>
+        a few vocabulary elements needed to be created when suitable terms 
+        couldn't be found elsewhere. This page is not an exhaustive list of 
+        vocabulary terms in use in Chronicling America linked data views, but 
+        is simply a list of those classes and properties that have been 
+        created by the Library of Congress to support Chronicling America and
+        the <a href="http://www.loc.gov/ndnp/">National Digital Newspaper Project</a> more generally.
+        </p>
+
+        <table cellspacing="0" class="border" about="[ndnp:Awardee]">
+            <tr>
+                <th colspan="2">Term Name: Awardee</th>
+            </tr>
+            <tr>
+                <td class="name">URI:</td>
+                <td>http://chroniclingamerica.loc.gov/terms#Awardee</td>
+            </tr>
+            <tr>
+                <td class="name">Label:</td>
+                <td property="rdfs:label">Awardee</td>
+            </tr>
+            <tr>
+                <td class="name">Definition:</td>
+                <td property="dcterms:description">An institution that has produced digital newspaper content as part of the National Digital Newspaper Program.</td>
+            </tr>
+            <tr>
+                <td class="name">Type of Term:</td>
+                <td><a rel="rdf:type" href="http://www.w3.org/2000/01/rdf-schema#Class">Class</a></td>
+            </tr>
+            <tr>
+                <td class="name">Refines:</td>
+                <td><a rel="rdfs:subClassOf" href="http://xmlns.com/foaf/0.1/Agent">http://xmlns.com/foaf/0.1/Agent</a></td>
+            </tr>
+        </table>
+
+        <table cellspacing="0" class="border" about="[ndnp:Batch]">
+            <tr>
+                <th colspan="2">Term Name: Batch</th>
+            </tr>
+            <tr>
+                <td class="name">URI:</td>
+                <td>http://chroniclingamerica.loc.gov/terms#Batch</td>
+            </tr>
+            <tr>
+                <td class="name">Label:</td>
+                <td property="rdfs:label">Batch</td>
+            </tr>
+            <tr>
+                <td class="name">Definition:</td>
+                <td property="dcterms:description">A set of files that represent number of newspaper pages and their metadata.</td>
+            </tr>
+            <tr>
+                <td class="name">Type of Term:</td>
+                <td><a rel="rdf:type" href="http://www.w3.org/2000/01/rdf-schema#Class">Class</a></td>
+            </tr>
+        </table>
+
+        <table cellspacing="0" class="border" about="[ndnp:Page]">
+            <tr>
+                <th colspan="2">Term Name: Page</th>
+            </tr>
+            <tr>
+                <td class="name">URI:</td>
+                <td>http://chroniclingamerica.loc.gov/terms#Page</td>
+            </tr>
+            <tr>
+                <td class="name">Label:</td>
+                <td property="rdfs:label">Page</td>
+            </tr>
+            <tr>
+                <td class="name">Definition:</td>
+                <td property="dcterms:description">A page that forms a part of an Issue.</td>
+            </tr>
+            <tr>
+                <td class="name">Type of Term:</td>
+                <td><a rel="rdf:type" href="http://www.w3.org/2000/01/rdf-schema#Class">Class</a></td>
+            </tr>
+        </table>
+
+        <table cellspacing="0" class="border" about="[ndnp:bag]">
+            <tr>
+                <th colspan="2">Term Name: bag</th>
+            </tr>
+            <tr>
+                <td class="name">URI:</td>
+                <td>http://chroniclingamerica.loc.gov/terms#bag</td>
+            </tr>
+            <tr>
+                <td class="name">Label:</td>
+                <td property="rdfs:label">has Bag</td>
+            </tr>
+            <tr>
+                <td class="name">Definition:</td>
+                <td property="dcterms:description">Indicates when a batch is associated with a BagIt bag that is mounted on the web.</td>
+            </tr>
+            <tr>
+                <td class="name">Type of Term:</td>
+                <td><a rel="rdf:type" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">Property</a></td>
+            </tr>
+
+        </table>
+
+        <table cellspacing="0" class="border" about="[ndnp:sequence]">
+            <tr>
+                <th colspan="2">Term Name: sequence</th>
+            </tr>
+            <tr>
+                <td class="name">URI:</td>
+                <td>http://chroniclingamerica.loc.gov/terms#sequence</td>
+            </tr>
+            <tr>
+                <td class="name">Label:</td>
+                <td property="rdfs:label">Page Sequence</td>
+            </tr>
+            <tr>
+                <td class="name">Definition:</td>
+                <td property="dcterms:description">A sequence number uniquely identifying a newspaper page on a microfilm reel.</td>
+            </tr>
+            <tr>
+                <td class="name">Type of Term:</td>
+                <td><a rel="rdf:type" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">Property</a></td>
+            </tr>
+
+        </table>
+
+        <table cellspacing="0" class="border" about="[ndnp:pageNumber]">
+            <tr>
+                <th colspan="2">Term Name: number</th>
+            </tr>
+            <tr>
+                <td class="name">URI:</td>
+                <td>http://chroniclingamerica.loc.gov/terms#number</td>
+            </tr>
+            <tr>
+                <td class="name">Label:</td>
+                <td property="rdfs:label">Page Number</td>
+            </tr>
+            <tr>
+                <td class="name">Definition:</td>
+                <td property="dcterms:description">A printed page number
+                    associated with a newspaper page.</td>
+            </tr>
+            <tr>
+                <td class="name">Type of Term:</td>
+                <td><a rel="rdf:type" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">Property</a></td>
+            </tr>
+        </table>
+
+        <table cellspacing="0" class="border" about="[ndnp:section]">
+            <tr>
+                <th colspan="2">Term Name: section</th>
+            </tr>
+            <tr>
+                <td class="name">URI:</td>
+                <td>http://chroniclingamerica.loc.gov/terms#section</td>
+            </tr>
+            <tr>
+                <td class="name">Label:</td>
+                <td property="rdfs:label">Page Section</td>
+            </tr>
+            <tr>
+                <td class="name">Definition:</td>
+                <td property="dcterms:description">A label associated with the section of a newspaper issue that a newspaper page is in.</td>
+            </tr>
+            <tr>
+                <td class="name">Type of Term:</td>
+                <td><a rel="rdf:type" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">Property</a></td>
+            </tr>
+        </table>
+
+    <p about="" resource="http://www.w3.org/TR/rdfa-syntax" rel="dct:conformsTo" xmlns:dc="http://purl.org/dc/terms/" style="text-align:center;">
+    <a href="http://validator.w3.org/check?uri=referer">
+        <img src="http://www.w3.org/Icons/valid-xhtml-rdfa" alt="Valid XHTML + RDFa" /></a>
+    </p>
+
+    </body>
+</html>
