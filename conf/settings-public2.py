@@ -87,8 +87,6 @@ STORAGE = '/batches'
 BIB_STORAGE = '/ndnp/public2/data/bib/data'
 ESSAY_STORAGE = '/ndnp/public2/data/essays'
 
-USE_AWARE = True
-
 _ROOT = os.path.abspath(os.path.dirname(__file__))
 STATIC = os.path.join(_ROOT, 'static') # TODO: MEDIA_ROOT?
 THUMBNAIL_WIDTH = 200

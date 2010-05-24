@@ -1,4 +1,3 @@
-import os
 # Django settings for chronam project.
 
 DEBUG = True 
@@ -86,8 +85,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 STORAGE = '/ndnp/staging/data/batches'
 BIB_STORAGE = '/ndnp/staging/data/bib/data'
 ESSAY_STORAGE = '/ndnp/staging/data/essays'
-
-USE_AWARE = True
 
 _ROOT = os.path.abspath(os.path.dirname(__file__))
 STATIC = os.path.join(_ROOT, 'static') # TODO: MEDIA_ROOT?
