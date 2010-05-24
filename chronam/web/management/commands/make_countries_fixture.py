@@ -1,7 +1,10 @@
 from xml.etree import ElementTree
 
 import urllib
-import simplejson
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 from django.core.management.base import BaseCommand
 
@@ -21,5 +24,5 @@ class Command(BaseCommand):
             countries.append({'pk': code, 'model': 'web.countries', 
                               'fields': {'name': name, 'region': region}})
 
-        print simplejson.dumps(countries, indent=2)
+        print json.dumps(countries, indent=2)
 

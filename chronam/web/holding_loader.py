@@ -10,7 +10,7 @@ from chronam.web import models
 _logger = logging.getLogger(__name__)
 
 
-class HoldingLoader():
+class HoldingLoader:
     """
     A loader for holdings data. Intended to be run after titles have been
     loaded with TitleLoader. This is necessary so that holdings records
@@ -46,7 +46,7 @@ class HoldingLoader():
             times.append(seconds)
 
             if self.records_processed % 1000 == 0:
-            	_logger.info("processed %sk records in %.2f seconds" % 
+                _logger.info("processed %sk records in %.2f seconds" % 
                              (self.records_processed/1000, seconds))
 
         map_xml(load_record, file(filename, "rb"))

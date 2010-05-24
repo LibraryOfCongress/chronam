@@ -5,7 +5,10 @@ from django.core import serializers
 from django.core.management.base import BaseCommand
 from django.db import reset_queries
 from rdflib import Namespace, ConjunctiveGraph, URIRef, RDF
-import simplejson
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 from chronam.web import models
 from chronam.utils import configure_logging
@@ -68,16 +71,16 @@ class Command(BaseCommand):
         # been harvested from dbpedia, so they can overlay over
         # the places that have been extracted during title load
 
-        json = []
+        json_src = []
         places_qs = models.Place.objects.filter(dbpedia__isnull=False)
         for p in places_qs.order_by('name'):
-            json.append({'name': p.name,
+            json_src.append({'name': p.name,
                          'dbpedia': p.dbpedia, 
                          'geonames': p.geonames,
                          'longitude': p.longitude,
                          'latitude': p.latitude})
             reset_queries()
-        simplejson.dump(json, file('web/fixtures/place_links.json', 'w'), indent=2)
+        json.dump(json_src, file('web/fixtures/place_links.json', 'w'), indent=2)
         _logger.info("finished dumping place_links.json fixture")
 
 def _clean(u):

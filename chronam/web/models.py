@@ -3,7 +3,10 @@ import re
 import datetime
 import textwrap
 
-import simplejson as json
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 from lxml import etree
 

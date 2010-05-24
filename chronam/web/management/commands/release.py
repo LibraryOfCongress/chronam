@@ -6,7 +6,6 @@ from time import mktime
 from datetime import datetime
 
 from django.core.management.base import BaseCommand
-import simplejson
 
 from chronam.utils import configure_logging, feedparser
 from chronam.web import models as m
