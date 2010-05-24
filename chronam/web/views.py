@@ -15,9 +15,9 @@ import Image
 from chronam import settings
 from chronam.utils.rfc3339 import rfc3339
 
-if hasattr(settings, 'USE_AWARE') and settings.USE_AWARE:
+try:
     import j2k
-else:
+except ImportError:
     j2k = None
 
 
