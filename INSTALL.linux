@@ -1,0 +1,136 @@
+Instructions for building the chonam software stack on CentOS. 
+
+These instructions are tailored to setting up the staging environment.
+If you are building the stack for a public instance you'll need to 
+s/staging/public/g in this file.
+
+These instructions also assume that batch data shares are available on the 
+filesystem.  For example you'll want to make sure that the following locations 
+have relevant data from the rdc in them:
+
+  /ndnp/staging/data/batches   # scattered all over rdc :-(
+  /ndnp/staging/data/bib       # rdc:/vol/ndnp/chronam/bib
+  /ndnp/staging/data/essays    # rdc:/vol/ndnp_staging/batches/essays
+
+- mkdir -p /ndnp/staging /indexes/mysql/staging /indexes/solr/staging
+  chown ndnp:ndnp /ndnp/staging # avoid having to install as root
+
+- get chronam source code (for dev replace 'tags/{release_tag}' with 'trunk')
+  cd /ndnp/staging
+  svn export https://rdc.lctl.gov/svn/ndnp/projects/chronam/tags/{release_tag}
+  ln -s chronam_{release_tag} chronam
+
+- install java
+  yum install java
+
+- build and install mysql5 
+  yum install mysql mysql-server
+  chkconfig mysqld on
+  service mysqld start
+
+  PLEASE REMEMBER TO SET A PASSWORD FOR THE MySQL root USER !
+  To do so, start the server, then issue the following commands:
+  /usr/bin/mysqladmin -u root password 'new-password'
+  /usr/bin/mysqladmin -u root -h `hostname` password 'new-password'
+
+  echo "CREATE DATABASE chronam CHARACTER SET utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root -p 
+
+- install python2.6.5 (CentOS provides 2.4)
+    Get IUS http://iuscommunity.org/getting-started/
+    wget http://dl.iuscommunity.org/pub/ius/stable/Redhat/5/x86_64/epel-release-1-1.ius.el5.noarch.rpm
+    wget http://dl.iuscommunity.org/pub/ius/stable/Redhat/5/x86_64/ius-release-1-4.ius.el5.noarch.rpm
+    rpm -Uvh epel*rpm ius*rpm
+    yum install python26 mod_wsgi-python26
+
+- install easy_install
+  yum install python26-setuptools
+
+- install lxml 
+  #This installs an unuesable 32 bit version on x86_64 :(
+  #yum install python26-lxml
+  yum install libxml2-devel libxslt-devel
+  easy_install-2.6 lxml
+
+- install rdflib
+  yum install liblrdf-devel
+  easy_install-2.6 rdflib
+
+- install simplejson
+  #Python 2.6 has built in json support... Look into this
+  #the json module in 2.6 is slow, it will be fast in 2.7
+  #continue to use simplejson for now
+
+  #Also, this version is slow
+  #yum install python26-simplejson
+  #this is better
+  easy_install-2.6 simplejson
+
+- install MySQL-python
+  yum imstall python26-mysqldb
+
+- pymarc
+  easy_install-2.6 pymarc
+
+- solrpy
+  easy_install-2.6 solrpy
+
+- PIL
+  yum install libjpeg-devel zlib-devel freetype-devel
+  easy_install-2.6 PIL
+
+- wsgiref
+  yum install wsgiref
+
+- django
+  wget http://www.djangoproject.com/download/1.1/tarball/
+  gunzip Django-1.1.1.tar.gz
+  tar xvf Django-1.1.1.tar
+  cd Django-1.1.1
+  python setup.py install
+
+- aware -- No Aware in Linux release
+
+- build, configure and test chronam application
+  cp /ndnp/staging/chronam/conf/settings-staging.py /ndnp/staging/chronam/chronam/settings.py
+  update DATABASE_HOST to match the socket setting from /etc/my.cnf
+  cd /ndnp/staging/chronam/chronam
+  python manage.py syncdb --noinput
+  python manage.py test
+
+- solr
+  wget http://www.apache.org/dist/lucene/solr/1.4.0/apache-solr-1.4.0.tgz
+  gunzip apache-solr-1.4.0.tgz
+  tar xvf apache-solr-1.4.0.tar
+  mv apache-solr-1.4.0/example/ /ndnp/staging/solr-1.4.0
+  cp /ndnp/staging/chronam/conf/schema.xml /ndnp/staging/solr-1.4.0/solr/conf/schema.xml
+  cp /ndnp/staging/chronam/conf/solrconfig-staging.xml /ndnp/staging/solr-1.4.0/solr/conf/solrconfig.xml
+  # verify that /ndnp/staging/solr-1.4.0/solr/conf/solrconfig.xml contains:
+      "<dataDir>/indexes/solr/staging</dataDir>"
+
+- apache
+  yum install httpd
+  cp /ndnp/staging/chronam/conf/httpd-staging.conf /ndnp/staging/apache2/conf/httpd.conf
+  mkdir /indexes/cache/
+
+- mod_wsgi
+  yum install mod_wsgi-python26
+
+- start services
+  service mysqld start
+  /ndnp/staging/chronam/scripts/solr-staging start
+  service httpd start
+
+- load the data
+  cd /ndnp/staging/chronam/chronam
+
+  # load titles and holdings
+  python manage.py chronam_sync
+
+  # start up one or more batch load processes to load all the batches
+  python manage.py load_batches ../conf/batch_list &
+
+  # or load a specific batch
+  python manage.py load_batch batch_dlc_jamaica_ver01
+
+  # To generate filename_of_batch_list from a batches directory:
+  find /ndnp/staging/data/batches/* -name batch_* -print -prune | sed 's/\(.*\)\///g'
