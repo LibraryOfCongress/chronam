@@ -10,7 +10,10 @@ from solr import SolrConnection
 
 from django.db import reset_queries
 
-import j2k
+try:
+    import j2k
+except ImportError:
+    j2k = None
 
 from chronam import utils
 from chronam.web import models
@@ -147,7 +150,7 @@ class BatchLoader(object):
             event.save()
 
             _chart(times)
-        except BaseException, e:
+        except Exception, e:
             msg = "unable to load batch: %s" % e
             _logger.error(msg)
             _logger.exception(e)
@@ -230,14 +233,11 @@ class BatchLoader(object):
         # attach pages: lots of logging because it's expensive
         for page_div in div.xpath('.//mets:div[@TYPE="np:page"]', 
                                   namespaces=ns):
-
             try:
                 page = self._load_page(doc, page_div, issue)
+                self.pages_processed += 1
             except BatchLoaderException, e:
                 _logger.exception(e)
-                continue
-            finally:
-                self.pages_processed += 1
 
         return issue
 
@@ -339,9 +339,10 @@ class BatchLoader(object):
                             break
                 except KeyError, e:
                     _logger.info("Could not determine dimensions of jp2 for issue: %s page: %s... trying harder..." % (page.issue, page))
-                    width, length = j2k.dimensions(page.jp2_abs_filename)
-                    page.jp2_width = width
-                    page.jp2_length = length
+                    if j2k:
+                        width, length = j2k.dimensions(page.jp2_abs_filename)
+                        page.jp2_width = width
+                        page.jp2_length = length
                     #raise BatchLoaderException("Could not determine dimensions of jp2 for issue: %s page: %s" % (page.issue, page))
                 if not page.jp2_width:
                     raise BatchLoaderException("No jp2 width for issue: %s page: %s" % (page.issue, page))

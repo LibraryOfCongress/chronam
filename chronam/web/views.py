@@ -5,7 +5,11 @@ import urlparse
 import wsgiref.util
 import calendar
 
-import simplejson as json
+try:
+    import simplejson as json
+except ImportError:
+    import json
+
 import Image
 
 from chronam import settings
@@ -39,7 +43,7 @@ from chronam import utils
 from chronam.settings import THUMBNAIL_WIDTH
 from chronam.web.rdf import title_to_graph, issue_to_graph, page_to_graph, \
                             titles_to_graph, batch_to_graph, awardee_to_graph
-from chronam.web.json import batch_to_json
+from chronam.web.json_helper import batch_to_json
 
 def _page_range_short(paginator, page):
     middle = 3
@@ -784,12 +788,17 @@ def newspapers_rdf(request):
     graph = titles_to_graph(titles)
     return HttpResponse(graph.serialize(base=_rdf_base(request), include_base=True), mimetype='application/rdf+xml')
 
-if j2k is None:
+if not j2k:
     def _thumbnail(issue, page, out):
         filename = page.tiff_abs_filename
-        if not filename: raise Http404
+        if not filename:
+            raise Http404
 
-        im = Image.open(filename)
+        try:
+            im = Image.open(filename)
+        except IOError:
+            raise Http404
+
         width, height = im.size
         thumb_width = THUMBNAIL_WIDTH
         thumb_height = int(float(thumb_width)/width*height)
@@ -798,15 +807,19 @@ if j2k is None:
 else:
     def _thumbnail(issue, page, out):
         filename = page.jp2_abs_filename
-        if not filename: raise Http404
+        if not filename:
+            raise Http404
 
         width, height = page.jp2_width, page.jp2_length
         thumb_width = THUMBNAIL_WIDTH
         thumb_height = int(float(thumb_width)/width*height) 
 
-        rows, cols, nChannels, bpp, data = j2k.raw_image(filename, 
+        try:
+            rows, cols, nChannels, bpp, data = j2k.raw_image(filename, 
                                                          int(2*thumb_width), 
                                                          int(2*thumb_height))
+        except IOError:
+            raise Http404
 
         im = Image.frombuffer("L", (cols, rows), data, "raw", "L", 0, 1)
         im = im.resize((thumb_width, thumb_height), Image.ANTIALIAS) 
@@ -837,9 +850,12 @@ def page_image_tile(request, lccn, date, edition, sequence,
     width, height = int(width), int(height)
     x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
 
-    if j2k is None:
-        filename = page.tiff.abs_filename
-        im = Image.open(filename)
+    if not j2k:
+        filename = page.tiff_abs_filename
+        try:
+            im = Image.open(filename)
+        except IOError:
+            raise Http404
         c = im.crop(x1, y1, x2, y2)
         f = c.resize((width, height))
         f.save(response, "JPEG")

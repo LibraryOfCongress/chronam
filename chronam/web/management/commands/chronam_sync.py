@@ -5,7 +5,11 @@ from optparse import make_option
 
 from django.core import management
 from django.core.management.base import BaseCommand
-import simplejson
+
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 from chronam.web import models
 from chronam.web.title_loader import TitleLoader
@@ -66,7 +70,7 @@ class Command(BaseCommand):
 
     def load_place_links(self):
         _logger.info('loading place links')
-        for p in simplejson.load(file('web/fixtures/place_links.json')):
+        for p in json.load(file('web/fixtures/place_links.json')):
             place = models.Place.objects.get(name=p['name'])
             place.longitude = p['longitude']
             place.latitude = p['latitude']
