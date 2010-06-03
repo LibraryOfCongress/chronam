@@ -56,13 +56,13 @@ have relevant data from the rdc in them:
   easy_install-2.6 rdflib
 
 - install simplejson
-  #Python 2.6 has built in json support... Look into this
-  #the json module in 2.6 is slow, it will be fast in 2.7
-  #continue to use simplejson for now
+  # Python 2.6 has built in json support... Look into this
+  # the json module in 2.6 is slow, it will be fast in 2.7
+  # continue to use simplejson for now
 
-  #Also, this version is slow
-  #yum install python26-simplejson
-  #this is better
+  # Also, this version is slow
+  # yum install python26-simplejson
+  # this is better
   easy_install-2.6 simplejson
 
 - install MySQL-python
