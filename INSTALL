@@ -157,4 +157,3 @@ export LD_CONFIG_32
   # To generate filename_of_batch_list from a batches directory:
   find /ndnp/staging/data/batches/* -name batch_* -print -prune | sed 's/\(.*\)\///g'
 
-
