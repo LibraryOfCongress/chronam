@@ -327,4 +327,7 @@ urlpatterns += patterns(
 
     url(r'^(?P<path>javascript/.*)$', 'django.views.static.serve', 
         {'document_root': STATIC}, name="chronam_javascript"),
+
+    url(r'^(?P<path>sitemap.*)$', 'django.views.static.serve',
+        {'document_root': STATIC + '/sitemaps'}, name="chronam_sitemaps"),
 )
