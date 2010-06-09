@@ -84,7 +84,7 @@ def write_sitemaps():
     sitemaps for all the batches, issues, pages and titles that have been
     loaded.
     """
-    sitemap_index = open('static/sitemaps/index.xml', 'w')
+    sitemap_index = open('static/sitemaps/sitemap.xml', 'w')
     sitemap_index.write('<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
 
     max_urls = 50000
@@ -106,7 +106,7 @@ def write_sitemaps():
             _logger.info("writing %s" % sitemap_path)
             sitemap = open(sitemap_path, 'w')
             sitemap.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
-            sitemap_index.write('<sitemap><loc>http://chroniclingamerica.loc.gov/sitemaps/%s</loc></sitemap>\n' % sitemap_file)
+            sitemap_index.write('<sitemap><loc>http://chroniclingamerica.loc.gov/%s</loc></sitemap>\n' % sitemap_file)
     
         # add a url to the sitemap
         sitemap.write("<url><loc>http://chroniclingamerica.loc.gov%s</loc><lastmod>%s</lastmod></url>\n" % (loc, rfc3339(last_mod)))
