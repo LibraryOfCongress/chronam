@@ -2,3 +2,5 @@
 
 User-agent: *
 Disallow: /nothing---please-crawl-us--
+
+Sitemap: http://chroniclingamerica.loc.gov/sitemaps/index.xml
