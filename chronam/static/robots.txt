@@ -3,4 +3,4 @@
 User-agent: *
 Disallow: /nothing---please-crawl-us--
 
-Sitemap: http://chroniclingamerica.loc.gov/sitemaps/index.xml
+Sitemap: http://chroniclingamerica.loc.gov/sitemap.xml
