@@ -134,7 +134,7 @@ class SolrPaginator(Paginator):
         if d.get('andtext', None):
             parts.append(' AND '.join(d['andtext'].split(' ')))
         if d.get('phrasetext', None):
-            parts.append('the exact phrase "%s"' % d['phrasetext'])
+            parts.append('the phrase "%s"' % d['phrasetext'])
         if d.get('proxtext', None):
             proxdistance = d.get('proxdistance', PROX_DISTANCE_DEFAULT)
             parts.append('%s within %s words proximity' % (d['proxtext'], 
