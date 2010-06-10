@@ -39,19 +39,21 @@ class SearchPagesForm(forms.Form):
         years = [("", "All")]
 
         dates = list(models.Issue.objects.dates('date_issued', 'year'))
+        MIN_YEAR = 1860
+        MAX_YEAR = 1922
         if len(dates)==0:
-            fulltextStartYear = 1880
-            fulltextEndYear = 1922
+            fulltextStartYear = MIN_YEAR
+            fulltextEndYear = MAX_YEAR
         else:
             fulltextStartYear = dates[0].year
             fulltextEndYear = dates[-1].year
 
             # See: https://rdc.lctl.gov/trac/ndnp/ticket/446
-            fulltextStartYear = max(fulltextStartYear, 1880) 
+            fulltextStartYear = max(fulltextStartYear, MIN_YEAR) 
 
             # I don't understand why... just doing what's asked. See:
             # https://rdc.lctl.gov/trac/ndnp/ticket/241
-            fulltextEndYear = min(fulltextEndYear, 1922) 
+            fulltextEndYear = min(fulltextEndYear, MAX_YEAR) 
             years.extend((year, year) for year in range(fulltextStartYear, fulltextEndYear+1))
         self.fulltextStartYear = fulltextStartYear
         self.fulltextEndYear = fulltextEndYear
