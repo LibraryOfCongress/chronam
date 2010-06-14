@@ -4,13 +4,13 @@ tag=$1
 instance=$2
 
 echo "tagging release $tag"
-svn copy -m "tagging release $tag for $instance on sun11" -q https://rdc.lctl.gov/svn/ndnp/projects/chronam/trunk/ https://rdc.lctl.gov/svn/ndnp/projects/chronam/tags/$tag
+hg tag -m "tagging release $tag for $instance on sun11" $tag
 
 echo "exporting release $tag"
-svn export -q "https://rdc.lctl.gov/svn/ndnp/projects/chronam/tags/$tag"
+hg archive -q chronam_$tag
 
 # so that logs written by transfer user on sun11 are group ndnp
-chmod g+sw $tag/chronam
+chmod g+sw chronam_$tag/chronam
 
 echo "pushing release to sun11.loc.gov:/ndnp/$instance/$tag"
 tar cfp - $tag | ssh ndnp@sun11.loc.gov "cd /ndnp/$instance/; tar xfp -" >/dev/null
