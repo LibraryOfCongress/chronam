@@ -42,8 +42,8 @@ text-align:center;
     $(document).ready(function(){
 
         // init datepickers
-            $('#date1').datepicker({defaultDate: new Date(1880, 1-1, 1), showOn: "focus", yearRange: "1880:1922", currentText: '', changeMonth: true, changeYear: true, closeText: 'Done'});
-            $('#date2').datepicker({defaultDate: new Date(1922, 12-1, 31), showOn: "focus", yearRange: "1880:1922", currentText: '', changeMonth: true, changeYear: true});
+            $('#date1').datepicker({defaultDate: new Date({{search_form.fulltextStartYear}}, 1-1, 1), showOn: "focus", yearRange: "{{search_form.fulltextStartYear}}:{{search_form.fulltextEndYear}}", currentText: '', changeMonth: true, changeYear: true, closeText: 'Done'});
+            $('#date2').datepicker({defaultDate: new Date({{search_form.fulltextEndYear}}, 12-1, 31), showOn: "focus", yearRange: "{{search_form.fulltextStartYear}}:{{search_form.fulltextEndYear}}", currentText: '', changeMonth: true, changeYear: true});
 
         // bind form field .click's
             $('#date1, #date2').click( function() {
@@ -53,8 +53,8 @@ text-align:center;
                 $('#date1, #date2').val(''); 
             });
             $('#range').click( function() {
-                $('#date1').val('01/01/1880'); 
-                $('#date2').val('12/31/1922'); 
+                $('#date1').val('01/01/{{search_form.fulltextStartYear}}'); 
+                $('#date2').val('12/31/{{search_form.fulltextEndYear}}'); 
             });
 
     });
@@ -98,10 +98,10 @@ text-align:center;
             <label for="range">&nbsp;</label>
             <input class="radio" type="radio" id="range" name="dateFilterType" value="range" />
             <label for="date1">Select a date range</label>
-            <input type="text" name="date1" id="date1" maxlength="10" value="01/01/1880" style="width: 80px"></input>
+            <input type="text" name="date1" id="date1" maxlength="10" value="01/01/{{search_form.fulltextStartYear}}" style="width: 80px"></input>
             &nbsp;to
             <label for="date2">&nbsp;</label>
-            <input type="text" name="date2" id="date2" maxlength="10" value="12/31/1922" style="width: 80px"></input>
+            <input type="text" name="date2" id="date2" maxlength="10" value="12/31/{{search_form.fulltextEndYear}}" style="width: 80px"></input>
         </fieldset>
 
         <h2>Enter search</h2>
