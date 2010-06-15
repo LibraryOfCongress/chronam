@@ -13,7 +13,7 @@ hg archive -q chronam_$tag
 chmod g+sw chronam_$tag/chronam
 
 echo "pushing release to sun11.loc.gov:/ndnp/$instance/$tag"
-tar cfp - $tag | ssh ndnp@sun11.loc.gov "cd /ndnp/$instance/; tar xfp -" >/dev/null
+tar cfp - chronam_$tag | ssh ndnp@sun11.loc.gov "cd /ndnp/$instance/; tar xfp -" >/dev/null
 
 echo "release $tag pushed to sun11:/ndnp/$instance/"
 
