@@ -229,7 +229,7 @@ urlpatterns = patterns(
     url(r'^cities/(?P<state>[^/;]+)/$', 'cities_in_state', name='chronam_cities_in_state'),
 
     # example: /cities/pennsylvania.json
-    url(r'^cities/(?P<state>[^/;]+)\.(?P<format>json)$', 'cities_in_state', name='chronam_cities_in_county_json'),
+    url(r'^cities/(?P<state>[^/;]+)\.(?P<format>json)$', 'cities_in_state', name='chronam_cities_in_state_json'),
 
     # example: /institutions
     url(r'^institutions/$', 'institutions', name='chronam_institutions'),

@@ -1,7 +1,7 @@
 {% extends "site.html" %}
 
 {% block more_style %}
-    <link rel="alternate" type="application/json" href="counties.json" />
+<link rel="alternate" type="application/json" href="{% url chronam_counties_in_state_json state_abbr 'json' %}" />
 {% endblock %}
 
 {% block box_right %}
