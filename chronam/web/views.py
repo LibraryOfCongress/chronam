@@ -1050,6 +1050,8 @@ def states_counties(request, format='html'):
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def cities_in_county(request, state, county, format='html'):
     state, county = map(utils.unpack_url_path, (state, county))
+    state_abbr = utils.pack_url_path(state)
+    county_abbr = utils.pack_url_path(county)
     page_title = 'Cities in %s, %s' % (state, county)
     places = models.Place.objects.filter(state=state, county=county).all()
     cities = [p.city for p in places]
@@ -1066,6 +1068,7 @@ def cities_in_county(request, state, county, format='html'):
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def cities_in_state(request, state, format='html'):
     state = utils.unpack_url_path(state)
+    state_abbr = utils.pack_url_path(state)
     page_title = 'Cities in %s' % state
 
     places = models.Place.objects.filter(state=state, 

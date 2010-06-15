@@ -1,7 +1,7 @@
 {% extends "site.html" %}
 
 {% block more_style %}
-    <link rel="alternate" type="application/json" href="states.json" />
+<link rel="alternate" type="application/json" href="{% url chronam_states_json 'json' %}" />
 {% endblock %}
 
 {% block content %}

@@ -1,7 +1,11 @@
 {% extends "site.html" %}
 
 {% block more_style %}
-<link rel="alternate" type="application/json" href="cities.json" />
+{% if county %}
+<link rel="alternate" type="application/json" href="{% url chronam_cities_in_county_json state_abbr county_abbr 'json' %}" />
+{% else %}
+<link rel="alternate" type="application/json" href="{% url chronam_cities_in_state_json state_abbr 'json' %}" />
+{% endif %}
 {% endblock %}
 
 {% block box_right %}
