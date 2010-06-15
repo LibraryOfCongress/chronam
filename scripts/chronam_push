@@ -5,6 +5,7 @@ instance=$2
 
 echo "tagging release $tag"
 hg tag -m "tagging release $tag for $instance on sun11" $tag
+hg push
 
 echo "exporting release $tag"
 hg archive -q chronam_$tag
