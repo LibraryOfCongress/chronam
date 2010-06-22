@@ -139,7 +139,7 @@ class SolrPaginator(Paginator):
             proxdistance = d.get('proxdistance', PROX_DISTANCE_DEFAULT)
             parts.append('%s within %s words proximity' % (d['proxtext'], 
                          proxdistance))
-        return ' <em>and</em> '.join(parts)
+        return parts
 
 
 
