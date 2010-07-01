@@ -14,6 +14,8 @@
     <link rel="alternate" type="text/plain" href="{% url chronam_page_ocr_txt title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
     <link rel="canonical" href="http://{{host}}{% url chronam_page title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
     {% if page.on_flickr %}{% for flickr_url in page.flickr_urls.all %}<link rel="alternate" type="text/html" href="{{ flickr_url.value }}" />{% endfor %}{% endif %}
+    <meta property="og:image" content="http://{{ host }}{% url chronam_page_thumbnail title.lccn,page.issue.date_issued,page.issue.edition,page.sequence %}" />
+    <meta property="og:title" content="{{ page_title }}" />
 
 <style type="text/css">
 .zoom .up,
