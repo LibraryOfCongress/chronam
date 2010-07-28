@@ -11,9 +11,10 @@
 
     <div id="searchnav">
         Your fulltext search
-        {% if english_search %}
-        for: {{ english_search|safe }}
-        {% endif %}
+        {% for part in english_search %}
+        {{ part }}
+        {% if not forloop.last %}<em>and</em>{% endif %}
+        {% endfor %}
         returned {{ paginator.count }} results
         <div>
         </div>

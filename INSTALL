@@ -80,10 +80,10 @@ have relevant data from the rdc in them:
   python setup.py install
 
 - django
-  wget http://www.djangoproject.com/download/1.1/tarball/
-  gunzip Django-1.1.1.tar.gz
-  tar xvf Django-1.1.1.tar
-  cd Django-1.1.1
+  wget http://www.djangoproject.com/download/1.2.1/tarball/
+  gunzip Django-1.2.1.tar.gz
+  tar xvf Django-1.2.1.tar
+  cd Django-1.2.1
   python setup.py install
 
 - aware
