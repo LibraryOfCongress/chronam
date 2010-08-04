@@ -29,9 +29,11 @@ class SearchPagesForm(forms.Form):
         super(forms.Form, self).__init__(*args, **kwargs)
         
         titles = [("", "All newspapers")]
+        countries = set()
         for title in models.Title.objects.distinct().filter(issues__isnull=False):
             title_name = "%s (%s)" % (title.name, title.place_of_publication)
             titles.append((title.lccn, title_name))
+            countries.add(title.country)
 
         states = [("", "All states")]
 
@@ -58,28 +60,9 @@ class SearchPagesForm(forms.Form):
         self.fulltextStartYear = fulltextStartYear
         self.fulltextEndYear = fulltextEndYear
 
-        # TODO: remove hard-coded list
-        states.extend([
-                ("Arizona", "AZ"),
-                ("California", "CA"),
-                ("District of Columbia", "DC"),
-                ("Florida", "FL"),
-                ("Hawaii", "HI"),
-                ("Illinois", "IL"),
-                ("Kansas", "KS"),
-                ("Kentucky", "KY"),
-                ("Minnesota", "MN"),
-                ("Missouri", "MO"),
-                ("Nebraska", "NE"),
-                ("New York", "NY"),
-                ("Ohio", "OH"),
-                ("Oklahoma", "OK"),
-                ("Oregon", "OR"),
-                ("Pennsylvania", "PA"),
-                ("Texas", "TX"),
-                ("Utah", "UT"),
-                ("Virginia", "VA"),
-                ("Washington", "WA")])
+        for country in countries:
+            states.append((country.name, country.name))
+        states = sorted(states)
 
         self.fields["lccn"].choices = titles
         self.fields["state"].choices = states
