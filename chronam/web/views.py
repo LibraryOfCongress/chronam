@@ -1,3 +1,4 @@
+
 import os
 import re
 import datetime
@@ -45,6 +46,7 @@ from chronam.web.rdf import title_to_graph, issue_to_graph, page_to_graph, \
                             titles_to_graph, batch_to_graph, awardee_to_graph
 from chronam.web.json_helper import batch_to_json
 
+
 def _page_range_short(paginator, page):
     middle = 3
     for p in paginator.page_range:
@@ -76,31 +78,35 @@ class HTMLCalendar(calendar.Calendar):
         Return a day as a table cell.
         """
         if day == 0:
-            return '<td class="noday">&nbsp;</td>' # day outside month
+            return '<td class="noday">&nbsp;</td>'  # day outside month
         else:
             r = self.issues.filter(date_issued=datetime.date(year, month, day))
             issues = set()
             for issue in r:
-                issues.add((issue.title.lccn, issue.date_issued, issue.edition))
-            issues = sorted(list(issues))            
+                issues.add((issue.title.lccn,
+                            issue.date_issued, issue.edition))
+            issues = sorted(list(issues))
             count = len(issues)
-            if count==1:
+            if count == 1:
                 _class = "single"
                 lccn, date_issued, edition = issues[0]
                 kw = dict(lccn=lccn, date=date_issued, edition=edition)
                 url = urlresolvers.reverse('chronam_issue_pages', kwargs=kw)
                 _day = """<a href="%s">%s</a>""" % (url, day)
-            elif count>1:
+            elif count > 1:
                 _class = "multiple"
                 _day = "%s " % day
                 for lccn, date_issued, edition in issues:
                     kw = dict(lccn=lccn, date=date_issued, edition=edition)
-                    url = urlresolvers.reverse('chronam_issue_pages', kwargs=kw)
+                    url = urlresolvers.reverse('chronam_issue_pages',
+                                               kwargs=kw)
                     _day += """<a href="%s">ed-%d</a>""" % (url, edition)
             else:
                 _class = "noissues"
                 _day = day
-            return '<td class="%s %s">%s</td>' % (_class, self.cssclasses[weekday], _day)
+            return '<td class="%s %s">%s</td>' % (_class,
+                                                  self.cssclasses[weekday],
+                                                  _day)
 
     def formatweek(self, year, month, theweek):
         """
@@ -113,7 +119,8 @@ class HTMLCalendar(calendar.Calendar):
         """
         Return a weekday name as a table header.
         """
-        return '<td class="dayname %s">%s</td>' % (self.cssclasses[day], calendar.day_abbr[day][0])
+        return '<td class="dayname %s">%s</td>' % (self.cssclasses[day],
+                                                   calendar.day_abbr[day][0])
 
     def formatweekheader(self):
         """
@@ -130,7 +137,8 @@ class HTMLCalendar(calendar.Calendar):
             s = '%s %s' % (calendar.month_name[themonth], theyear)
         else:
             s = '%s' % calendar.month_name[themonth]
-        return '<tr><td colspan="7" class="title">%s, %s</td></tr>' % (s, theyear)
+        return '<tr><td colspan="7" class="title">%s, %s</td></tr>' % (s,
+                                                                       theyear)
 
     def formatmonth(self, theyear, themonth, withyear=True):
         """
@@ -145,9 +153,9 @@ class HTMLCalendar(calendar.Calendar):
         a(self.formatweekheader())
         a('\n')
         weeks = self.monthdays2calendar(theyear, themonth)
-        if len(weeks)<6:
+        if len(weeks) < 6:
             # add blank week so all calendars are 6 weeks long.
-            weeks.append([(0, 0)]*7)
+            weeks.append([(0, 0)] * 7)
         for week in weeks:
             a(self.formatweek(theyear, themonth, week))
             a('\n')
@@ -165,9 +173,9 @@ class HTMLCalendar(calendar.Calendar):
         a('<div id="calendar"><table>')
         a('\n')
         #a('<tr class="calendar_row">' % (width, theyear))
-        for i in range(calendar.January, calendar.January+12, width):
+        for i in range(calendar.January, calendar.January + 12, width):
             # months in this row
-            months = range(i, min(i+width, 13))
+            months = range(i, min(i + width, 13))
             a('<tr class="calendar_row">')
             for m in months:
                 a('<td class="calendar_month">')
@@ -176,6 +184,7 @@ class HTMLCalendar(calendar.Calendar):
             a('</tr>')
         a('</table></div>')
         return ''.join(v)
+
 
 def cache_page(ttl):
     def decorator(function):
@@ -187,18 +196,21 @@ def cache_page(ttl):
         return decorated_function
     return decorator
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def home(request):
     page_title = ""
-    letters = [chr(n) for n in range(65,91)]
+    letters = [chr(n) for n in range(65, 91)]
     return render_to_response('home.html', dictionary=locals(),
                               context_instance=RequestContext(request))
- 
+
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def about(request):
     page_title = "About Chronicling America"
     return render_to_response('about.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def help(request):
@@ -206,11 +218,13 @@ def help(request):
     return render_to_response('help.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def ocr(request):
     page_title = "OCR in Chronicling America"
     return render_to_response('ocr.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def about_api(request):
@@ -218,12 +232,13 @@ def about_api(request):
     return render_to_response('about_api.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def title(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
     page_title = "About this Newspaper: %s" % unicode(title.name)
-    # we call these here, because the query the db, they are not 
-    # cached by django's ORM, and we have some conditional logic 
+    # we call these here, because the query the db, they are not
+    # cached by django's ORM, and we have some conditional logic
     # in the template that would result in them getting called more
     # than once. Short story: minimize database hits...
     related_titles = title.related_titles()
@@ -234,13 +249,15 @@ def title(request, lccn):
     has_external_link = False
     for note in title.notes.all():
 
-        text = re.sub('(http(s)?://[^\s]+[^\.])', r'<a class="external" href="\1">\1</a>', note.text)
-        if text!=note.text:
+        text = re.sub('(http(s)?://[^\s]+[^\.])',
+                      r'<a class="external" href="\1">\1</a>', note.text)
+        if text != note.text:
             has_external_link = True
         notes.append(text)
     response = render_to_response('title.html', dictionary=locals(),
                                   context_instance=RequestContext(request))
     return response
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def title_atom(request, lccn, page_number=1):
@@ -254,7 +271,7 @@ def title_atom(request, lccn, page_number=1):
 
     # figure out the time the title was most recently updated
     # typically the release date of the batch, otherwise
-    # when the batch was ingested 
+    # when the batch was ingested
     issues = page.object_list
     num_issues = issues.count()
     if num_issues > 0:
@@ -268,20 +285,25 @@ def title_atom(request, lccn, page_number=1):
     host = request.get_host()
     return render_to_response('title.xml', dictionary=locals(),
                               mimetype='application/atom+xml',
-                              context_instance=RequestContext(request)) 
+                              context_instance=RequestContext(request))
+
 
 def _rdf_base(request):
     host = request.get_host()
     path = request.get_full_path().rstrip(".rdf")
     return "http://%s%s" % (host, path)
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @rdf_view
 def title_rdf(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
     graph = title_to_graph(title)
-    response = HttpResponse(graph.serialize(base=_rdf_base(request), include_base=True), mimetype='application/rdf+xml')
+    response = HttpResponse(graph.serialize(base=_rdf_base(request),
+                                            include_base=True),
+                            mimetype='application/rdf+xml')
     return response
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def title_marc(request, lccn):
@@ -290,10 +312,12 @@ def title_marc(request, lccn):
     return render_to_response('marc.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def title_marcxml(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
     return HttpResponse(title.marc.xml, mimetype='application/marc+xml')
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def title_holdings(request, lccn):
@@ -304,6 +328,7 @@ def title_holdings(request, lccn):
     return render_to_response('holdings.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def essays(request):
     page_title = 'Newspaper Title Essays'
@@ -311,6 +336,7 @@ def essays(request):
     titles = titles.order_by('name')
     return render_to_response('essays.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def title_essays(request, lccn):
@@ -325,7 +351,8 @@ def title_essays(request, lccn):
     return render_to_response('title_essays.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)    
+
+@cache_page(settings.DEFAULT_TTL_SECONDS)
 def title_essay(request, lccn, created):
     #fh = open('/home/esummers/foo.log', 'a')
     #fh.write("lccn=%s created=%s\n" % (lccn, created))
@@ -341,29 +368,33 @@ def title_essay(request, lccn, created):
     return render_to_response('essay.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def issues(request, lccn, year=None):
     title = get_object_or_404(models.Title, lccn=lccn)
     issues = title.issues.all()
 
-    if issues.count()>0:
+    if issues.count() > 0:
         if year is None:
             _year = issues[0].date_issued.year
         else:
             _year = int(year)
     else:
-        _year = 1900 # no issues available
+        _year = 1900  # no issues available
     year_view = HTMLCalendar(firstweekday=6, issues=issues).formatyear(_year)
 
     dates = issues.dates('date_issued', 'year')
+
     class SelectYearForm(django_forms.Form):
-        year = fields.ChoiceField(choices=((d.year, d.year) for d in dates), initial=_year)
+        year = fields.ChoiceField(choices=((d.year, d.year) for d in dates),
+                                  initial=_year)
     select_year_form = SelectYearForm()
 
     page_title = "Browse Issues: %s" % unicode(title)
 
     return render_to_response('issues.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def issues_first_pages(request, lccn, page_number=1):
@@ -382,16 +413,19 @@ def issues_first_pages(request, lccn, page_number=1):
         raise Http404("No such page %s" % page_number)
 
     page_title = "Browse Issues: %s" % unicode(title)
-    
+
     return render_to_response('issues_first_pages.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @rdf_view
 def issue_pages_rdf(request, lccn, date, edition):
     title, issue, page = _get_tip(lccn, date, edition)
     graph = issue_to_graph(issue)
-    response = HttpResponse(graph.serialize(base=_rdf_base(request), include_base=True), mimetype='application/rdf+xml')
+    response = HttpResponse(graph.serialize(base=_rdf_base(request),
+                                            include_base=True),
+                            mimetype='application/rdf+xml')
     return response
 
 
@@ -404,7 +438,8 @@ def issue_pages(request, lccn, date, edition, page_number=1):
     except ValueError, e:
         raise Http404
     try:
-        issue = title.issues.filter(date_issued=_date, edition=edition).order_by("-created")[0]
+        issue = title.issues.filter(date_issued=_date,
+                                    edition=edition).order_by("-created")[0]
     except IndexError, e:
         raise Http404
     paginator = Paginator(issue.pages.all(), 10)
@@ -412,17 +447,18 @@ def issue_pages(request, lccn, date, edition, page_number=1):
     if not page.object_list:
         notes = issue.notes.filter(type="noteAboutReproduction")
         num_notes = notes.count()
-        if num_notes>=1:
+        if num_notes >= 1:
             explanation = notes[0].text
         else:
             explanation = ""
-    page_title = 'All pages for this Issue: %s - %s - edition %s' % (issue.title, issue.date_issued, issue.edition)
+    page_title = 'All pages for this Issue: %s - %s - edition %s' % \
+        (issue.title, issue.date_issued, issue.edition)
     profile_uri = 'http://www.openarchives.org/ore/html/'
     response = render_to_response('issue_pages.html', dictionary=locals(),
                                   context_instance=RequestContext(request))
     return response
 
-   
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @vary_on_headers('User-Agent', 'Referer')
 def page(request, lccn, date, edition, sequence, words=None):
@@ -430,22 +466,23 @@ def page(request, lccn, date, edition, sequence, words=None):
     if not page.jp2_filename:
         notes = page.notes.filter(type="noteAboutReproduction")
         num_notes = notes.count()
-        if num_notes>=1:
+        if num_notes >= 1:
             explanation = notes[0].text
         else:
             explanation = ""
 
-    # if no word highlights were requests, see if the user came 
-    # from search engine results and attempt to highlight words from their 
-    # query by redirecting to a url that has the highlighted words in it  
+    # if no word highlights were requests, see if the user came
+    # from search engine results and attempt to highlight words from their
+    # query by redirecting to a url that has the highlighted words in it
     if not words:
         try:
             words = _search_engine_words(request)
             if len(words) > 0:
                 words = '+'.join(words)
-                path_parts = dict(lccn=lccn, date=date, edition=edition, 
+                path_parts = dict(lccn=lccn, date=date, edition=edition,
                                   sequence=sequence, words=words)
-                url = urlresolvers.reverse('chronam_page_words', kwargs=path_parts)
+                url = urlresolvers.reverse('chronam_page_words',
+                                           kwargs=path_parts)
                 return HttpResponseRedirect(url)
         except Exception, e:
             if settings.DEBUG:
@@ -487,29 +524,37 @@ def page(request, lccn, date, edition, sequence, words=None):
                                   context_instance=RequestContext(request))
     return response
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @rdf_view
 def page_rdf(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     graph = page_to_graph(page)
-    response = HttpResponse(graph.serialize(base=_rdf_base(request), include_base=True), mimetype='application/rdf+xml')
+    response = HttpResponse(graph.serialize(base=_rdf_base(request),
+                                            include_base=True),
+                            mimetype='application/rdf+xml')
     return response
+
 
 def page_pdf(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     return _stream_file(page.pdf_abs_filename, 'application/pdf')
 
+
 def page_jp2(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     return _stream_file(page.jp2_abs_filename, 'image/jp2')
+
 
 def page_ocr_xml(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     return _stream_file(page.ocr_abs_filename, 'application/xml')
 
+
 def page_ocr_txt(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     return HttpResponse(page.ocr.text, mimetype='text/plain')
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def coordinates(request, lccn, date, edition, sequence, words=None):
@@ -535,14 +580,17 @@ def coordinates(request, lccn, date, edition, sequence, words=None):
         r.write(str(ocr.word_coordinates_json))
         return r
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
-def page_print(request, lccn, date, edition, sequence, width, height, x1, y1, x2, y2):
+def page_print(request, lccn, date, edition, sequence,
+               width, height, x1, y1, x2, y2):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     page_title = str(title)
     host = request.get_host()
     image_credit = issue.batch.awardee.name
     return render_to_response('page_print.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def page_ocr(request, lccn, date, edition, sequence):
@@ -552,12 +600,14 @@ def page_ocr(request, lccn, date, edition, sequence):
     return render_to_response('page_text.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def search_pages_opensearch(request):
     host = request.get_host()
     return render_to_response('search_pages_opensearch.xml',
             mimetype='application/opensearchdescription+xml',
             dictionary=locals(), context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def search_pages(request):
@@ -566,12 +616,13 @@ def search_pages(request):
     return render_to_response('search_pages.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @opensearch_clean
 def search_pages_results(request, view_type=None):
     crumbs = [
-        {'label':'Search Newspaper Pages', 
-         'href': urlresolvers.reverse('chronam_search_pages') }, 
+        {'label':'Search Newspaper Pages',
+         'href': urlresolvers.reverse('chronam_search_pages')},
         ]
     try:
         curr_page = int(request.REQUEST.get('page', 1))
@@ -585,10 +636,10 @@ def search_pages_results(request, view_type=None):
         page = paginator.page(curr_page)
     except EmptyPage:
         url = urlresolvers.reverse('chronam_search_pages_results')
-        query = request.GET.copy() 
+        query = request.GET.copy()
         # Set the page to the last page
         query['page'] = paginator.num_pages
-        return HttpResponseRedirect('%s?%s' % (url, query.urlencode()) )
+        return HttpResponseRedirect('%s?%s' % (url, query.urlencode()))
 
     # figure out the next page number
     query = request.GET.copy()
@@ -601,20 +652,19 @@ def search_pages_results(request, view_type=None):
         query['page'] = curr_page - 1
         previous_url = '?' + query.urlencode()
 
-
     host = request.get_host()
     format = request.GET.get('format', None)
     if format == 'atom':
         feed_url = 'http://' + host + request.get_full_path()
         updated = rfc3339(datetime.datetime.now())
         return render_to_response('search_pages_results.xml',
-                                  dictionary=locals(), 
+                                  dictionary=locals(),
                                   context_instance=RequestContext(request),
                                   mimetype='application/atom+xml')
 
     elif format == 'json':
         results = [p.solr_doc for p in page.object_list]
-        return HttpResponse(json.dumps(results, indent=2), 
+        return HttpResponse(json.dumps(results, indent=2),
                             mimetype='application/json')
 
     page_range_short = list(_page_range_short(paginator, page))
@@ -622,9 +672,9 @@ def search_pages_results(request, view_type=None):
     # copy the current request query without the page and sort
     # query params so we can construct links with it in the template
     q = request.GET.copy()
-    if q.has_key('page'):
+    if 'page' in q:
         del q['page']
-    if q.has_key('sort'):
+    if 'sort' in q:
         del q['sort']
     q = q.urlencode()
 
@@ -637,16 +687,18 @@ def search_pages_results(request, view_type=None):
 
     # c'mon humor me, ok
     if request.GET.get('phrasetext', '').lower() == 'rick astley rickroll':
-        return HttpResponseRedirect('http://www.youtube.com/watch?v=oHg5SJYRHA0')
+        return HttpResponseRedirect(
+            'http://www.youtube.com/watch?v=oHg5SJYRHA0')
 
     # figure out the sort that's in use
     sort = query.get('sort', 'relevance')
-    if view_type=="list":
+    if view_type == "list":
         template = "search_pages_results_list.html"
     else:
         template = "search_pages_results_thumbnail.html"
     return render_to_response(template, dictionary=locals(),
-                              context_instance=RequestContext(request))  
+                              context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def search_titles_opensearch(request):
@@ -654,6 +706,7 @@ def search_titles_opensearch(request):
     return render_to_response('search_titles_opensearch.xml',
             mimetype='application/opensearchdescription+xml',
             dictionary=locals(), context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def search_titles(request):
@@ -665,12 +718,13 @@ def search_titles(request):
     return render_to_response('search_titles.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @opensearch_clean
 def search_titles_results(request):
     crumbs = [
-        {'label':'Search Newspaper Directory', 
-         'href': urlresolvers.reverse('chronam_search_titles') }, 
+        {'label':'Search Newspaper Directory',
+         'href': urlresolvers.reverse('chronam_search_titles')},
         ]
     page_title = 'Title Search Results'
 
@@ -702,7 +756,7 @@ def search_titles_results(request):
         feed_url = 'http://' + host + request.get_full_path()
         updated = rfc3339(datetime.datetime.now())
         return render_to_response('search_titles_results.xml',
-                                  dictionary=locals(), 
+                                  dictionary=locals(),
                                   context_instance=RequestContext(request),
                                   mimetype='application/atom+xml')
 
@@ -713,13 +767,15 @@ def search_titles_results(request):
     sort = request.GET.get('sort', 'relevance')
 
     q = request.GET.copy()
-    if q.has_key('page'):
+    if 'page' in q:
         del q['page']
-    if q.has_key('sort'):
+    if 'sort' in q:
         del q['sort']
     q = q.urlencode()
-    return render_to_response('search_titles_results.html', dictionary=locals(),
-                               context_instance=RequestContext(request))
+    return render_to_response('search_titles_results.html',
+                              dictionary=locals(),
+                              context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def newspapers(request, state=None, format='html'):
@@ -728,12 +784,12 @@ def newspapers(request, state=None, format='html'):
         template = 'newspapers_state'
         state = utils.unpack_url_path(state)
         titles = titles.filter(country__name=state)
-        if titles.count()==0:
+        if titles.count() == 0:
             raise Http404
         page_title = '%s Newspapers' % state
         crumbs = [
-            {'label':'See All Available Newspapers', 
-             'href': urlresolvers.reverse('chronam_newspapers') }, 
+            {'label':'See All Available Newspapers',
+             'href': urlresolvers.reverse('chronam_newspapers')},
             ]
         q = models.Issue.objects.filter(title__in=titles)
         q = q.aggregate(Count('pages'))
@@ -746,30 +802,32 @@ def newspapers(request, state=None, format='html'):
             states.add(title.country.name)
         states = sorted(states)
         page_title = 'See All Available Newspapers'
-        number_of_pages=index.page_count()
-    if format=="txt":
+        number_of_pages = index.page_count()
+    if format == "txt":
         host = request.get_host()
-        return render_to_response("%s.%s" % (template, format), 
+        return render_to_response("%s.%s" % (template, format),
                                   dictionary=locals(),
-                                  context_instance=RequestContext(request), 
+                                  context_instance=RequestContext(request),
                                   mimetype="text/plain")
     else:
-        return render_to_response("%s.%s" % (template, format), 
+        return render_to_response("%s.%s" % (template, format),
                                   dictionary=locals(),
                                   context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def newspapers_atom(request):
-    # get a list of titles with issues that are in order by when they 
+    # get a list of titles with issues that are in order by when they
     # were last updated
-    titles = models.Title.objects.filter(issues__isnull=False).annotate(last_release=Max('issues__batch__released'))
+    titles = models.Title.objects.filter(issues__isnull=False)
+    titles = titles.annotate(last_release=Max('issues__batch__released'))
     titles = titles.distinct().order_by('-last_release')
 
-    # get the last update time for all the titles to use as the 
+    # get the last update time for all the titles to use as the
     # updated time for the feed
     if titles.count() > 0:
         last_issue = titles[0].last_issue_released
-        if last_issue.batch.released: 
+        if last_issue.batch.released:
             feed_updated = last_issue.batch.released
         else:
             feed_updated = last_issue.batch.created
@@ -781,14 +839,18 @@ def newspapers_atom(request):
                               mimetype="application/atom+xml",
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @rdf_view
 def newspapers_rdf(request):
     titles = models.Title.objects.distinct().filter(issues__isnull=False)
     graph = titles_to_graph(titles)
-    return HttpResponse(graph.serialize(base=_rdf_base(request), include_base=True), mimetype='application/rdf+xml')
+    return HttpResponse(graph.serialize(base=_rdf_base(request),
+                                        include_base=True),
+                        mimetype='application/rdf+xml')
 
 if not j2k:
+
     def _thumbnail(issue, page, out):
         filename = page.tiff_abs_filename
         if not filename:
@@ -801,10 +863,11 @@ if not j2k:
 
         width, height = im.size
         thumb_width = THUMBNAIL_WIDTH
-        thumb_height = int(float(thumb_width)/width*height)
+        thumb_height = int(float(thumb_width) / width * height)
         f = im.resize((thumb_width, thumb_height), Image.ANTIALIAS)
         f.save(out, "JPEG")
 else:
+
     def _thumbnail(issue, page, out):
         filename = page.jp2_abs_filename
         if not filename:
@@ -812,34 +875,35 @@ else:
 
         width, height = page.jp2_width, page.jp2_length
         thumb_width = THUMBNAIL_WIDTH
-        thumb_height = int(float(thumb_width)/width*height) 
+        thumb_height = int(float(thumb_width) / width * height)
 
         try:
-            rows, cols, nChannels, bpp, data = j2k.raw_image(filename, 
-                                                         int(2*thumb_width), 
-                                                         int(2*thumb_height))
+            rows, cols, nChannels, bpp, data = j2k.raw_image(filename,
+                                                         int(2 * thumb_width),
+                                                         int(2 * thumb_height))
         except IOError:
             raise Http404
 
         im = Image.frombuffer("L", (cols, rows), data, "raw", "L", 0, 1)
-        im = im.resize((thumb_width, thumb_height), Image.ANTIALIAS) 
+        im = im.resize((thumb_width, thumb_height), Image.ANTIALIAS)
         im.save(out, "JPEG")
+
 
 @cache_page(settings.PAGE_IMAGE_TTL_SECONDS)
 def thumbnail(request, lccn, date, edition, sequence):
-    """
-    
-    """
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     response = HttpResponse(mimetype="image/jpeg")
     _thumbnail(issue, page, response)
     return response
 
+
 @cache_page(settings.PAGE_IMAGE_TTL_SECONDS)
 def page_image(request, lccn, date, edition, sequence, width, height):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     return page_image_tile(request, lccn, date, edition, sequence,
-                           width, height, 0, 0, page.jp2_width, page.jp2_length)
+                           width, height, 0, 0,
+                           page.jp2_width, page.jp2_length)
+
 
 @cache_page(settings.PAGE_IMAGE_TTL_SECONDS)
 def page_image_tile(request, lccn, date, edition, sequence,
@@ -865,12 +929,14 @@ def page_image_tile(request, lccn, date, edition, sequence,
         response.write(r)
     return response
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def batches(request):
     page_title = 'Batches'
     batches = models.Batch.objects.all().order_by('-created')
     return render_to_response('batches.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def batches_atom(request):
@@ -880,11 +946,13 @@ def batches_atom(request):
                               context_instance=RequestContext(request),
                               mimetype='application/atom+xml')
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def batches_json(request):
     batches = models.Batch.objects.all().order_by('-created')
     j = [batch_to_json(b, serialize=False) for b in batches]
     return HttpResponse(json.dumps(j, indent=2), mimetype='application/json')
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def batch(request, batch_name):
@@ -894,18 +962,23 @@ def batch(request, batch_name):
     return render_to_response('batch.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @rdf_view
 def batch_rdf(request, batch_name):
     batch = get_object_or_404(models.Batch, name=batch_name)
     graph = batch_to_graph(batch)
-    response = HttpResponse(graph.serialize(base=_rdf_base(request), include_base=True), mimetype='application/rdf+xml')
+    response = HttpResponse(graph.serialize(base=_rdf_base(request),
+                                            include_base=True),
+                            mimetype='application/rdf+xml')
     return response
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def batch_json(request, batch_name):
     batch = get_object_or_404(models.Batch, name=batch_name)
     return HttpResponse(batch_to_json(batch), mimetype='application/json')
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def event(request, event_id):
@@ -914,12 +987,14 @@ def event(request, event_id):
     return render_to_response('event.html', dictionary=locals(),
                              context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def events(request):
     page_title = 'Events'
     events = models.LoadBatchEvent.objects.all().order_by('-created')
     return render_to_response('events.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def events_atom(request):
@@ -928,30 +1003,34 @@ def events_atom(request):
                               context_instance=RequestContext(request),
                               mimetype='application/atom+xml')
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def titles(request, start=None, page_number=1):
     page_title = 'Newspaper Titles'
     if start:
         page_title += ' Starting With %s' % start
-        titles = models.Title.objects.order_by('name_normal').filter(name_normal__istartswith=start.upper())
+        titles = models.Title.objects.order_by('name_normal')
+        titles = titles.filter(name_normal__istartswith=start.upper())
     else:
         titles = models.Title.objects.all().order_by('name_normal')
     paginator = Paginator(titles, 50)
     page = paginator.page(int(page_number))
     page_range_short = list(_page_range_short(paginator, page))
-    letters = [chr(n) for n in range(65,91)]
+    letters = [chr(n) for n in range(65, 91)]
 
     return render_to_response('titles.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
-def titles_in_city(request, state, county, city, page_number=1, order='name_normal'):
+def titles_in_city(request, state, county, city,
+                   page_number=1, order='name_normal'):
     state, county, city = map(utils.unpack_url_path, (state, county, city))
     page_title = "Titles in City: %s, %s" % (city, state)
     titles = models.Title.objects.filter(places__city=city,
-                                         places__county=county, 
+                                         places__county=county,
                                          places__state=state).order_by(order)
-    if titles.count()==0:
+    if titles.count() == 0:
         raise Http404
 
     paginator = Paginator(titles, 50)
@@ -962,13 +1041,15 @@ def titles_in_city(request, state, county, city, page_number=1, order='name_norm
     return render_to_response('city.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
-def titles_in_county(request, state, county, page_number=1, order='name_normal'):
+def titles_in_county(request, state, county,
+                     page_number=1, order='name_normal'):
     state, county = map(utils.unpack_url_path, (state, county))
     page_title = "Titles in County: %s, %s" % (county, state)
     titles = models.Title.objects.filter(places__county=county,
                                          places__state=state).distinct()
-    if titles.count()==0:
+    if titles.count() == 0:
         raise Http404
 
     paginator = Paginator(titles, 50)
@@ -979,13 +1060,15 @@ def titles_in_county(request, state, county, page_number=1, order='name_normal')
     return render_to_response('county.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def titles_in_state(request, state, page_number=1, order='name_normal'):
     state = utils.unpack_url_path(state)
     page_title = "Titles in State: %s" % state
-    titles = models.Title.objects.order_by(order).filter(places__state=state).distinct()
+    titles = models.Title.objects.order_by(order)
+    titles = titles.filter(places__state=state).distinct()
 
-    if titles.count()==0:
+    if titles.count() == 0:
         raise Http404
 
     paginator = Paginator(titles, 50)
@@ -1003,10 +1086,12 @@ def states(request, format='html'):
     # custom SQL to eliminate spelling errors and the like in cataloging data
     # TODO: maybe use Django ORM once the data is cleaned more on import
     cursor = connection.cursor()
-    cursor.execute("SELECT state, COUNT(*) AS count FROM places WHERE state IS NOT NULL GROUP BY state HAVING count > 10 ORDER BY state")
+    cursor.execute(\
+"SELECT state, COUNT(*) AS count FROM places \
+WHERE state IS NOT NULL GROUP BY state HAVING count > 10 ORDER BY state")
     if format == 'json' or request.META['HTTP_ACCEPT'] == 'application/json':
         states = [n[0] for n in cursor.fetchall()]
-        states.extend(["----------------", "American Samoa", 
+        states.extend(["----------------", "American Samoa",
                        "Mariana Islands", "Puerto Rico", "Virgin Islands"])
         return HttpResponse(json.dumps(states),
                             mimetype='application/json')
@@ -1014,25 +1099,27 @@ def states(request, format='html'):
     return render_to_response('states.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def counties_in_state(request, state, format='html'):
     state = utils.unpack_url_path(state)
     page_title = 'Counties in %s' % state
 
-    places = models.Place.objects.filter(state=state, 
+    places = models.Place.objects.filter(state=state,
                                          county__isnull=False).all()
     county_names = sorted(set(p.county for p in places))
 
     if format == 'json':
         return HttpResponse(json.dumps(county_names),
                             mimetype='application/json')
-    counties = [{'name': name, 'abbr': utils.pack_url_path(name)} 
+    counties = [{'name': name, 'abbr': utils.pack_url_path(name)}
                 for name in county_names]
-    if len(counties)==0:
+    if len(counties) == 0:
         raise Http404
     state_abbr = utils.pack_url_path(state)
     return render_to_response('counties.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def states_counties(request, format='html'):
@@ -1040,12 +1127,16 @@ def states_counties(request, format='html'):
 
     cursor = connection.cursor()
 
-    cursor.execute("SELECT state, county, COUNT(*) AS total FROM places WHERE state IS NOT NULL AND county IS NOT NULL GROUP BY state, county HAVING total >= 1 ORDER BY state, county")
+    cursor.execute("\
+SELECT state, county, COUNT(*) AS total FROM places \
+WHERE state IS NOT NULL AND county IS NOT NULL \
+GROUP BY state, county HAVING total >= 1 ORDER BY state, county")
 
     states_counties = [(n[0], n[1], n[2]) for n in cursor.fetchall()]
 
     return render_to_response('states_counties.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def cities_in_county(request, state, county, format='html'):
@@ -1055,15 +1146,16 @@ def cities_in_county(request, state, county, format='html'):
     page_title = 'Cities in %s, %s' % (state, county)
     places = models.Place.objects.filter(state=state, county=county).all()
     cities = [p.city for p in places]
-    if None in cities: 
+    if None in cities:
         cities.remove(None)
-    if len(cities)==0:
+    if len(cities) == 0:
         raise Http404
     if format == 'json':
         return HttpResponse(json.dumps(cities),
                             mimetype='application/json')
     return render_to_response('cities.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def cities_in_state(request, state, format='html'):
@@ -1071,17 +1163,18 @@ def cities_in_state(request, state, format='html'):
     state_abbr = utils.pack_url_path(state)
     page_title = 'Cities in %s' % state
 
-    places = models.Place.objects.filter(state=state, 
+    places = models.Place.objects.filter(state=state,
                                          city__isnull=False).all()
     cities = sorted(set(p.city for p in places))
 
-    if len(cities)==0:
+    if len(cities) == 0:
         raise Http404
     if format == 'json':
         return HttpResponse(json.dumps(cities),
                             mimetype='application/json')
     return render_to_response('cities.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def institutions(request, page_number=1):
@@ -1093,25 +1186,31 @@ def institutions(request, page_number=1):
     return render_to_response('institutions.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def institution(request, code):
     institution = get_object_or_404(models.Institution, code=code)
     page_title = institution
-    titles_count = models.Title.objects.filter(holdings__institution=institution).distinct().count()
-    holdings_count = models.Holding.objects.filter(institution=institution).count()
+    titles_count = models.Title.objects.filter(
+        holdings__institution=institution).distinct().count()
+    holdings_count = models.Holding.objects.filter(
+        institution=institution).count()
     return render_to_response('institution.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def institution_titles(request, code, page_number=1):
     institution = get_object_or_404(models.Institution, code=code)
     page_title = 'Titles held by %s' % institution
-    titles = models.Title.objects.filter(holdings__institution=institution).distinct()
+    titles = models.Title.objects.filter(
+        holdings__institution=institution).distinct()
     paginator = Paginator(titles, 50)
     page = paginator.page(int(page_number))
     page_range_short = list(_page_range_short(paginator, page))
     return render_to_response('institution_titles.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(10)
 def status(request):
@@ -1128,12 +1227,14 @@ def status(request):
     return render_to_response('status.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def awardees(request):
     page_title = 'Awardees'
     awardees = models.Awardee.objects.all().order_by('name')
     return render_to_response('awardees.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def awardee(request, institution_code):
@@ -1143,22 +1244,28 @@ def awardee(request, institution_code):
     return render_to_response('awardee.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @rdf_view
 def awardee_rdf(request, institution_code):
     awardee = get_object_or_404(models.Awardee, org_code=institution_code)
     graph = awardee_to_graph(awardee)
-    response = HttpResponse(graph.serialize(base=_rdf_base(request), include_base=True), mimetype='application/rdf+xml')
+    response = HttpResponse(graph.serialize(base=_rdf_base(request),
+                                            include_base=True),
+                            mimetype='application/rdf+xml')
     return response
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def terms(request):
     return render_to_response('terms.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def omniture(request):
     return static.serve(request, request.path, document_root=settings.STATIC)
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def pages_on_flickr(request):
@@ -1171,20 +1278,27 @@ def pages_on_flickr(request):
     return render_to_response('pages_on_flickr.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def batch_summary(request, format='html'):
     page_title = "Batch Summary"
     cursor = connection.cursor()
-    cursor.execute("select batches.name, issues.title_id, min(date_issued), max(date_issued), count(pages.id) from batches, issues, pages where batches.name=issues.batch_id and issues.id=pages.issue_id group by batches.name, issues.title_id order by batches.name;")
+    cursor.execute("\
+select batches.name, issues.title_id, min(date_issued), \
+max(date_issued), count(pages.id) \
+from batches, issues, pages \
+where batches.name=issues.batch_id and issues.id=pages.issue_id \
+group by batches.name, issues.title_id order by batches.name;")
     batch_details = cursor.fetchall()
     if format == 'txt':
         return render_to_response('batch_summary.txt', dictionary=locals(),
                                   context_instance=RequestContext(request),
                                   mimetype="text/plain")
-    return render_to_response('batch_summary.html', 
+    return render_to_response('batch_summary.html',
                               dictionary=locals(),
                               context_instance=RequestContext(request))
- 
+
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def reels(request):
     page_title = 'Reels'
@@ -1192,16 +1306,18 @@ def reels(request):
     return render_to_response('reels.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def reel(request, reel_number):
     crumbs = [
-        {'label':'Reels', 
-         'href': urlresolvers.reverse('chronam_reels') }, 
+        {'label':'Reels',
+         'href': urlresolvers.reverse('chronam_reels')},
         ]
     page_title = 'Reel %s' % reel_number
     reel = models.Reel.objects.get(number=reel_number)
     return render_to_response('reel.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 def _get_tip(lccn, date, edition, sequence=1):
     """a helper function to lookup a particular page based on metadata cooked
@@ -1215,20 +1331,22 @@ def _get_tip(lccn, date, edition, sequence=1):
     except ValueError, e:
         raise Http404
     try:
-        issue = title.issues.filter(date_issued=_date, edition=edition).order_by("-created")[0]
+        issue = title.issues.filter(
+            date_issued=_date, edition=edition).order_by("-created")[0]
     except IndexError, e:
         raise Http404
     try:
-        page = issue.pages.filter(sequence=int(sequence)).order_by("-created")[0]
+        page = issue.pages.filter(
+            sequence=int(sequence)).order_by("-created")[0]
     except IndexError, e:
         raise Http404
     return title, issue, page
 
-       
+
 def _stream_file(path, mimetype):
     """helper function for streaming back the contents of a file"""
-    # must calculate Content-length else django ConditionalGetMiddleware 
-    # tries to and fails, since it is streaming back, and it attempts to 
+    # must calculate Content-length else django ConditionalGetMiddleware
+    # tries to and fails, since it is streaming back, and it attempts to
     # calculate len() on the response content!
     if path:
         stat = os.stat(path)
@@ -1239,6 +1357,7 @@ def _stream_file(path, mimetype):
         return r
     else:
         raise Http404
+
 
 def _is_search_bot(ua):
     if not ua:
@@ -1252,6 +1371,7 @@ def _is_search_bot(ua):
     elif 'msnbot' in ua:
         return True
     return False
+
 
 def _search_engine_words(request):
     """
@@ -1268,14 +1388,14 @@ def _search_engine_words(request):
     qs = urlparse.parse_qs(uri.query)
 
     # extract a potential search query from refering url
-    if qs.has_key('q'): # google and microsoft
+    if 'q' in qs:  # google and microsoft
         words = qs['q'][0]
-    elif qs.has_key('p'): # yahoo
+    elif 'p' in qs:  # yahoo
         words = qs['p'][0]
     else:
         return []
 
-    # ask solr for the pre-analysis words that could potentially 
+    # ask solr for the pre-analysis words that could potentially
     # match on the page. For example if we feed in 'buildings' we could get
     # ['building', 'buildings', 'BUILDING', 'Buildings'] depending
     # on the actual OCR for the page id that is passed in
@@ -1283,5 +1403,3 @@ def _search_engine_words(request):
     words = index.word_matches_for_page(request.path, words)
 
     return words
-
-
