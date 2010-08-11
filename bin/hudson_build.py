@@ -57,10 +57,10 @@ def setup_virtual_env():
 
             postactivate = file(
                 os.path.join(VIRTUAL_ENV, "bin", "postactivate"), "w")
-            print >> postactivate,
-            "export DJANGO_SETTINGS_MODULE=%s" % DJANGO_SETTINGS_MODULE
-            print >> postactivate,
-            "export PROJECT_ROOT=%s" % DJANGO_PROJECT_ROOT
+            cmd = "export DJANGO_SETTINGS_MODULE=%s" % DJANGO_SETTINGS_MODULE
+            print >> postactivate, cmd
+            cmd = "export PROJECT_ROOT=%s" % DJANGO_PROJECT_ROOT
+            print >> postactivate, cmd
             postactivate.close()
 
         except Exception, e:
