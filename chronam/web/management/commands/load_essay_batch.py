@@ -1,10 +1,11 @@
 import os
 
 from django.core.management.base import BaseCommand, CommandError
+from django.conf import settings
 
 from chronam.web.essay_loader import EssayLoader
 from chronam.utils import configure_logging
-from chronam.settings import ESSAY_STORAGE
+
 
 configure_logging("load_essay_batch_logging.config", 'load_essay.log')
 
@@ -16,7 +17,7 @@ class Command(BaseCommand):
         if len(args) != 0:
             raise CommandError("Usage is load_essay_batch %s" % self.args)
 
-        batch_dir = os.path.join(ESSAY_STORAGE, batch_dir)
+        batch_dir = os.path.join(settings.ESSAY_STORAGE, batch_dir)
         if not os.path.isdir(batch_dir):
             raise CommandError("not finding batch at %s" % batch_dir)
 

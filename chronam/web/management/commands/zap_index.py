@@ -1,9 +1,10 @@
 import optparse
 
 from django.core.management.base import BaseCommand
+from django.conf import settings
+
 from solr import SolrConnection
 
-from chronam.settings import SOLR
 
 class Command(BaseCommand):
     batch_option = optparse.make_option('--batch', 
@@ -15,7 +16,7 @@ class Command(BaseCommand):
     args = 'an optional batch'
 
     def handle(self, **options):
-        solr = SolrConnection(SOLR)
+        solr = SolrConnection(settings.SOLR)
         if options['batch']:
             solr.delete_query('batch: %s' % options['batch'])
         else:

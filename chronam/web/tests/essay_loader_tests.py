@@ -2,11 +2,11 @@ import os
 import datetime
 
 from django.test import TestCase
+from django.conf import settings
 
 import chronam.web
 from chronam.web.essay_loader import EssayLoader
 from chronam.web.models import Essay, Title
-from chronam import settings
 
 class EssayLoaderTests(TestCase):
     fixtures = ['essay_titles.json']

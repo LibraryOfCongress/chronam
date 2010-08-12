@@ -13,7 +13,8 @@ except ImportError:
 
 import Image
 
-from chronam import settings
+from django.conf import settings
+
 from chronam.utils.rfc3339 import rfc3339
 
 try:
@@ -41,7 +42,6 @@ from django.db.models import Count, Max
 from chronam.web import models, forms, index
 from chronam.web.decorators import rdf_view, opensearch_clean
 from chronam import utils
-from chronam.settings import THUMBNAIL_WIDTH
 from chronam.web.rdf import title_to_graph, issue_to_graph, page_to_graph, \
                             titles_to_graph, batch_to_graph, awardee_to_graph
 from chronam.web.json_helper import batch_to_json
@@ -862,7 +862,7 @@ if not j2k:
             raise Http404
 
         width, height = im.size
-        thumb_width = THUMBNAIL_WIDTH
+        thumb_width = settings.THUMBNAIL_WIDTH
         thumb_height = int(float(thumb_width) / width * height)
         f = im.resize((thumb_width, thumb_height), Image.ANTIALIAS)
         f.save(out, "JPEG")
@@ -874,7 +874,7 @@ else:
             raise Http404
 
         width, height = page.jp2_width, page.jp2_length
-        thumb_width = THUMBNAIL_WIDTH
+        thumb_width = settings.THUMBNAIL_WIDTH
         thumb_height = int(float(thumb_width) / width * height)
 
         try:

@@ -10,8 +10,8 @@ import Image
 from StringIO import StringIO
 
 from django.test import TestCase
+from django.conf import settings
 
-from chronam.settings import STORAGE
 
 JP2_PATH = "dlc/batch_dlc_jamaica_ver01/data/sn83030214/00175039259/0001.jp2"
 
@@ -21,7 +21,7 @@ class JP2Test(TestCase):
     def test_raw_image(self):
         if not j2k:
             self.assertTrue( False )
-        filename = os.path.join(STORAGE, JP2_PATH)
+        filename = os.path.join(settings.STORAGE, JP2_PATH)
 
         rows, cols, nChannels, bpp, data = j2k.raw_image(filename, 300, 300)
 
@@ -35,7 +35,7 @@ class JP2Test(TestCase):
     def test_image_tile_raw(self):
         if not j2k:
             self.assertTrue( False )
-        filename = os.path.join(STORAGE, JP2_PATH)
+        filename = os.path.join(settings.STORAGE, JP2_PATH)
 
         width, height = 640, 480
         rows, cols, nChannels, bpp, data = j2k.image_tile_raw(filename, width, height, 0, 0, 2*width, 2*height)
@@ -51,7 +51,7 @@ class JP2Test(TestCase):
     def test_dimensions(self):
         if not j2k:
             self.assertTrue( False )
-        filename = os.path.join(STORAGE, JP2_PATH)
+        filename = os.path.join(settings.STORAGE, JP2_PATH)
 
         width, height = j2k.dimensions(filename)
         self.assertEqual((width, height), (6378, 8724))

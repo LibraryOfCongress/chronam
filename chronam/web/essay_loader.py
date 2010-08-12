@@ -3,6 +3,7 @@ import logging
 import datetime
 
 from lxml import etree
+from django.conf import settings
 
 from chronam.web.batch_loader import ns
 from chronam.web.index import index_title
@@ -84,7 +85,7 @@ class EssayLoader:
             _logger.info("parsing essay xml file: %s" % entry_file)
 
             doc = etree.parse(entry_file)
-            mets_file = entry_file.replace(ESSAY_STORAGE+'/', '')
+            mets_file = entry_file.replace(settings.ESSAY_STORAGE + '/', '')
 
             # grab the create time which is important for creating 
             # unique URIs when there are multiple essays for a title

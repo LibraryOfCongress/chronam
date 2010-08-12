@@ -5,9 +5,9 @@ import logging
 from urlparse import urlparse
 
 from django.core.management.base import BaseCommand
+from django.conf import settings
 
 from chronam.utils import configure_logging
-from chronam.settings import FLICKR_KEY
 from chronam.web.models import Page, FlickrUrl
 
 configure_logging("chronam_flickr.config", "chronam_flickr.log")
@@ -39,7 +39,7 @@ class Command(BaseCommand):
                 _log.error("Page for %s not found" % chronam_url)
                 
 def newspaper_photo_ids():
-    u = 'http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=72157619452486566&format=json&nojsoncallback=1' % FLICKR_KEY
+    u = 'http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=72157619452486566&format=json&nojsoncallback=1' % settings.FLICKR_KEY
     photos = json.loads(urllib.urlopen(u).read())
     for photo in photos['photoset']['photo']:
         yield photo
@@ -48,7 +48,7 @@ def flickr_url(photo_id):
     return 'http://www.flickr.com/photos/library_of_congress/%s' % photo_id
 
 def chronam_url(photo_id):
-    u = 'http://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=%s&photo_id=%s&format=json&nojsoncallback=1' % (FLICKR_KEY, photo_id)
+    u = 'http://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=%s&photo_id=%s&format=json&nojsoncallback=1' % (settings.FLICKR_KEY, photo_id)
     j = json.loads(urllib.urlopen(u).read())
     for tag in j['photo']['tags']['tag']:
         if 'chroniclingamerica.loc.gov' in tag['raw']:
