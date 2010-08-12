@@ -8,7 +8,6 @@ from django.conf import settings
 from chronam.web.batch_loader import ns
 from chronam.web.index import index_title
 from chronam.web.models import Essay, Title
-from chronam.settings import ESSAY_STORAGE
 
 
 _logger = logging.getLogger(__name__)
