@@ -13,8 +13,8 @@ from lxml import etree
 from django.db import models 
 from django.db.models import permalink
 from django.utils import datetime_safe
+from django.conf import settings
 
-from chronam.settings import STORAGE
 from chronam.utils import pack_url_path
 
 
@@ -56,7 +56,7 @@ class Batch(models.Model):
     @property
     def path(self):
         """Absolute path of batch directory"""
-        return os.path.join(STORAGE, self.awardee.org_code, 
+        return os.path.join(settings.STORAGE, self.awardee.org_code, 
                             self.name, "data")
 
     @property
