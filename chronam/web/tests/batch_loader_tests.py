@@ -2,12 +2,13 @@ from datetime import date
 import os
 
 from django.test import TestCase
+from django.conf import settings
 
 import chronam.web
 from chronam.web.batch_loader import BatchLoader
 from chronam.web.models import Title
 from chronam.web.models import Batch
-from chronam.settings import STORAGE
+
 
 class BatchLoaderTest(TestCase):
     fixtures = ['countries.json', 'titles.json']
@@ -17,7 +18,7 @@ class BatchLoaderTest(TestCase):
         self.assertEqual(title.name, 'New-York tribune.')
 
     def test_load_batch(self):
-        loader = BatchLoader(storage=STORAGE, process_ocr=False)
+        loader = BatchLoader(storage=settings.STORAGE, process_ocr=False)
         batch = loader.load_batch('batch_dlc_jamaica_ver01')
         self.assertTrue(isinstance(batch, Batch))
         self.assertEqual(batch.name, 'batch_dlc_jamaica_ver01')

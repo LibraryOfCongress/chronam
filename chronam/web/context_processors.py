@@ -1,4 +1,4 @@
-from chronam import settings
+from django.conf import settings
 
 def extra_request_info (request):
     """

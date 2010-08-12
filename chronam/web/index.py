@@ -6,9 +6,9 @@ from solr import SolrConnection
 from django.core.paginator import Paginator, Page
 from django.db import connection, reset_queries
 from django.http import QueryDict
+from django.conf import settings
 
 from chronam.web import models
-from chronam.settings import SOLR
 from chronam.web.title_loader import _normal_lccn
 from chronam import utils
 
@@ -19,11 +19,11 @@ PROX_DISTANCE_DEFAULT = 5
 # TODO: prefix functions that are intended for local use only with _
 
 def page_count():
-    solr = SolrConnection(SOLR)
+    solr = SolrConnection(settings.SOLR)
     return solr.query('type:page', fields=['id']).numFound
 
 def title_count():
-    solr = SolrConnection(SOLR)
+    solr = SolrConnection(settings.SOLR)
     return solr.query('type:title', fields=['id']).numFound
 
 # TODO: use solr.SolrPaginator and update or remove SolrPaginator
@@ -39,7 +39,7 @@ class SolrPaginator(Paginator):
         self.query = query.copy()
 
         # figure out the solr query and execute it
-        solr = SolrConnection(SOLR) # TODO: maybe keep connection around?
+        solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
         q = page_search(self.query)
         try:
             page_num = int(self.query.get('page', 1))
@@ -194,7 +194,7 @@ class SolrTitlesPaginator(Paginator):
         sort_field, sort_order = _get_sort(self.query.get('sort'))
 
         # execute query
-        solr = SolrConnection(SOLR) # TODO: maybe keep connection around?
+        solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
         solr_response = solr.query(q, 
                                    fields=['lccn', 'title',
                                            'edition', 
@@ -346,7 +346,7 @@ def index_titles(since=None):
     records that have been created since that time will be indexed.
     """
     cursor = connection.cursor()
-    solr = SolrConnection(SOLR)
+    solr = SolrConnection(settings.SOLR)
     if since:
         cursor.execute("SELECT lccn FROM titles WHERE created >= '%s'" % since)
     else:
@@ -369,7 +369,7 @@ def index_titles(since=None):
 
 def index_title(title, solr=None):
     if solr==None:
-        solr = SolrConnection(SOLR)
+        solr = SolrConnection(settings.SOLR)
     _log.info("indexing title: lccn=%s" % title.lccn)
     try:
         solr.add(**title.solr_doc)
@@ -377,7 +377,7 @@ def index_title(title, solr=None):
         _log.exception(e)        
 
 def delete_title(title):
-    solr = SolrConnection(SOLR)
+    solr = SolrConnection(settings.SOLR)
     q = '+type:title +id:%s' % title.solr_doc['id']
     r = solr.delete_query(q)
     _log.info("deleted title %s from the index" % title)
@@ -386,7 +386,7 @@ def index_pages():
     """index all the pages that are modeled in the database
     """
     _log = logging.getLogger(__name__)
-    solr = SolrConnection(SOLR)
+    solr = SolrConnection(settings.SOLR)
     solr.delete_query('type:page')
     cursor = connection.cursor()
     cursor.execute("SELECT id FROM pages")
@@ -409,7 +409,7 @@ def word_matches_for_page(page_id, words):
     page. So if you pass in 'manufacturer' you can get back a list like
     ['Manufacturer', 'manufacturers', 'MANUFACTURER'] etc ...
     """
-    solr = SolrConnection(SOLR)
+    solr = SolrConnection(settings.SOLR)
 
     # Make sure page_id is of type str, else the following string
     # operation may result in a UnicodeDecodeError. For example, see
@@ -431,7 +431,7 @@ def word_matches_for_page(page_id, words):
     return list(words)
 
 def commit():
-    solr = SolrConnection(SOLR)
+    solr = SolrConnection(settings.SOLR)
     solr.commit()
 
 def _get_sort(sort, in_pages=False):

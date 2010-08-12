@@ -9,6 +9,7 @@ from lxml import etree
 from solr import SolrConnection
 
 from django.db import reset_queries
+from django.conf import settings
 
 try:
     import j2k
@@ -19,9 +20,6 @@ from chronam import utils
 from chronam.web import models
 from chronam.web.models import Batch, Issue, Title, Awardee, Page, OCR
 from chronam.web.models import LoadBatchEvent
-
-from chronam.settings import STORAGE
-from chronam.settings import SOLR
 
 # some xml namespaces used in batch metadata
 ns = {
@@ -41,7 +39,7 @@ class BatchLoader(object):
     object serves as a context for a particular batch loading job.
     """
 
-    def __init__(self, storage=STORAGE, process_ocr=True):
+    def __init__(self, storage=settings.STORAGE, process_ocr=True):
         """Create a loader for a given storage area on the filesystem 
         The storage area is where batch files are located. By default
         the loader will use the STORAGE location in the site-wide settings
@@ -55,7 +53,7 @@ class BatchLoader(object):
         self.pages_processed = 0
         self.PROCESS_OCR = process_ocr
         if self.PROCESS_OCR: 
-            self.solr = SolrConnection(SOLR)
+            self.solr = SolrConnection(settings.SOLR)
 
     def _find_batch_file(self, batch):
         """
