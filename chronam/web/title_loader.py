@@ -107,13 +107,6 @@ class TitleLoader(object):
         title.end_year = _normal_year(f008[11:15])
         title.country = self._extract_country(record)
 
-        marc = models.MARC()
-        marc.xml = record_to_xml(record)
-        marc.save()
-
-        title.marc = marc
-        title.save()
-
         self._extract_languages(record, title)
         self._extract_places(record, title)
         self._extract_publication_dates(record, title)
@@ -125,6 +118,11 @@ class TitleLoader(object):
         self._extract_alt_titles(record, title)
         self._extract_urls(record, title)
         title.save()
+
+        marc = models.MARC()
+        marc.xml = record_to_xml(record)
+        marc.title = title
+        marc.save()
 
         # for context see: https://rdc.lctl.gov/trac/ndnp/ticket/375
         if _is_chronam_electronic_resource(title, record):

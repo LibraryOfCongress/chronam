@@ -12,7 +12,6 @@
       "oclc"                  : "ocm09405688",
       "start_year"            : "1866",
       "end_year"              : "1924",
-      "marc"                  : 1,
       "created"               : "2009-02-09 06:44:45",
       "version"               : "2004-10-11 13:00:00",
       "country"               : "nyu"
@@ -78,7 +77,8 @@
     "pk": 1,
     "model": "web.marc",
     "fields": {
-      "xml": "<record></record>"
+      "xml": "<record></record>",
+      "title": "sn83030214"
     }
   },
   {

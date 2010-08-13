@@ -75,7 +75,8 @@ def run_tests():
 
     try:
         subprocess.check_call(
-            [os.path.join(VIRTUAL_ENV, "bin", "django-admin.py"), "test"])
+            [os.path.join(VIRTUAL_ENV, "bin", "django-admin.py"),
+             "test", "--noinput"])
     except Exception, e:
         print >> sys.stderr, "Tests failed: %s" % e
         sys.exit(2)
