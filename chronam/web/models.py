@@ -152,7 +152,6 @@ class Title(models.Model):
     start_year = models.CharField(max_length=10)
     end_year = models.CharField(max_length=10)
     country = models.ForeignKey('Country')
-    marc = models.OneToOneField('MARC')
     version = models.DateTimeField() # http://www.loc.gov/marc/bibliographic/bd005.html
     created = models.DateTimeField(auto_now_add=True)
 
@@ -317,6 +316,7 @@ class AltTitle(models.Model):
 
 class MARC(models.Model):
     xml = models.TextField()
+    title = models.OneToOneField('Title', related_name='marc')
 
     @property
     def html(self):
