@@ -8,15 +8,22 @@ from chronam.web.models import Title
 from chronam.web.title_loader import TitleLoader
 
 
+def abs_filename(rel_filename):
+    abs_filename = os.path.join(
+        os.path.dirname(chronam.web.__file__),
+        rel_filename)
+    return abs_filename
+
+
 class TitleLoaderTests(TestCase):
     fixtures = ['languages.json', 'countries.json']
 
     def setUp(self):
         # wipe the slate clean
         Title.objects.all().delete()
-        # load a title 
+        # load a title
         loader = TitleLoader()
-        marcxml = os.path.join(os.path.dirname(chronam.web.__file__), 
+        marcxml = os.path.join(os.path.dirname(chronam.web.__file__),
             'test-data', 'bib.xml')
         loader.load_file(marcxml)
 
@@ -37,7 +44,8 @@ class TitleLoaderTests(TestCase):
         # so lets just check that we can parse the xml and get the leader
         rec = etree.fromstring(t.marc.xml)
         self.assertTrue(rec != None)
-        self.assertEqual(rec.find('.//leader').text, '02425cas a22005057a 4500')
+        self.assertEqual(rec.find('.//leader').text,
+                         '02425cas a22005057a 4500')
         self.assertEqual(t.country.code, 'nyu')
         self.assertEqual(t.country.name, 'New York')
         self.assertEqual(t.country.region, 'North America')
@@ -70,7 +78,7 @@ class TitleLoaderTests(TestCase):
         subjects = list(t.subjects.all())
         self.assertEqual(len(subjects), 8)
         self.assertEqual(subjects[0].heading, 'Albany (N.Y.)--Newspapers.')
-        self.assertEqual(subjects[0].type, 'g') # for topic
+        self.assertEqual(subjects[0].type, 'g')  # for topic
         self.assertEqual(subjects[2].heading, 'Hartford (Conn.)--Newspapers.')
         self.assertEqual(subjects[2].type, 'g')
         self.assertEqual(subjects[7].heading, 'Utica (N.Y.)--Newspapers.')
@@ -80,8 +88,8 @@ class TitleLoaderTests(TestCase):
         t = Title.objects.get(lccn='sn83030846')
         notes = list(t.notes.all())
         self.assertEqual(len(notes), 5)
-        self.assertEqual(notes[0].text, 
-            'Description based on: Vol. 1, no. 8 (Apr. 12, 1873).') 
+        self.assertEqual(notes[0].text,
+            'Description based on: Vol. 1, no. 8 (Apr. 12, 1873).')
 
     def test_preceeding_title_links(self):
         t = Title.objects.get(lccn='sn83030846')
@@ -98,7 +106,8 @@ class TitleLoaderTests(TestCase):
         t = Title.objects.get(lccn='sn83030846')
         alt_titles = list(t.alt_titles.all())
         self.assertEqual(len(alt_titles), 2)
-        self.assertEqual(alt_titles[0].name, 'Fake uncontrolled non-analytic title')
+        self.assertEqual(alt_titles[0].name,
+                         'Fake uncontrolled non-analytic title')
         self.assertEqual(alt_titles[1].name, 'Living issue.  Prohibition')
         self.assertEqual(alt_titles[1].date, '1873')
 
@@ -106,11 +115,11 @@ class TitleLoaderTests(TestCase):
         t = Title.objects.get(lccn='sn83030846')
         links = list(t.succeeding_title_links.all())
         self.assertEqual(len(links), 3)
-        self.assertEqual(links[0].name, 
+        self.assertEqual(links[0].name,
             'Living issue and the new republic')
         self.assertEqual(links[0].lccn, 'sn89071335')
         self.assertEqual(links[0].oclc, None)
-        self.assertEqual(links[2].name, 
+        self.assertEqual(links[2].name,
             'State temperance journal (Middletown, Conn.)')
         self.assertEqual(links[2].lccn, 'sn92051309')
         self.assertEqual(links[2].oclc, '26109972')
@@ -165,13 +174,14 @@ class TitleLoaderTests(TestCase):
 
     def test_oclc_num(self):
         t = TitleLoader()
-        t.load_file('web/test-data/sn86069873.xml')
+        t.load_file(abs_filename('./test-data/sn86069873.xml'))
         t = Title.objects.get(lccn='sn86069873')
         self.assertEqual(t.oclc, '13528482')
 
     def test_vague_dates(self):
         loader = TitleLoader()
-        loader.load_file('web/test-data/bib-with-vague-dates.xml')
+        filename = abs_filename('./test-data/bib-with-vague-dates.xml')
+        loader.load_file(filename)
         t = Title.objects.get(lccn='00062183')
         self.assertEqual(t.start_year_int, 1900)
         self.assertEqual(t.end_year_int, 1999)
@@ -181,13 +191,13 @@ class TitleLoaderTests(TestCase):
         # chronicling america titles, since they muddle up search results
         # https://rdc.lctl.gov/trac/ndnp/ticket/375
         loader = TitleLoader()
-        loader.load_file('web/test-data/etitle.xml')
+        loader.load_file(abs_filename('./test-data/etitle.xml'))
         self.assertRaises(Title.DoesNotExist, Title.objects.get,
                           lccn='2008264012')
 
     def test_delete(self):
         loader = TitleLoader()
-        loader.load_file('web/test-data/title-delete.xml')
+        loader.load_file(abs_filename('./test-data/title-delete.xml'))
         self.assertEqual(loader.records_deleted, 1)
         self.assertEqual(loader.records_processed, 2)
         self.assertRaises(Title.DoesNotExist, Title.objects.get,
