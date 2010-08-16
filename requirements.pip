@@ -5,3 +5,4 @@ rdflib==3.0.0
 pymarc
 solrpy
 PIL==1.1.7
+simplejson
