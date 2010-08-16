@@ -420,35 +420,11 @@
     "fields": {}
   },
   {
-    "pk": 0, 
-    "model": "web.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Sorbian Americans", 
-      "ethnicity": "Slavic, German"
-    }
-  }, 
-  {
-    "pk": 1, 
-    "model": "web.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Sorbs", 
-      "ethnicity": "Slavic, German"
-    }
-  }, 
-  {
     "pk": 2, 
     "model": "web.EthnicitySynonym", 
     "fields": {
       "synonym": "Estonians", 
       "ethnicity": "Estonian"
-    }
-  }, 
-  {
-    "pk": 3, 
-    "model": "web.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Gujaratis", 
-      "ethnicity": "East Indian, Pakistani"
     }
   }, 
   {
@@ -649,22 +625,6 @@
     "fields": {
       "synonym": "Ruthenians", 
       "ethnicity": "Carpatho-Rusyn"
-    }
-  }, 
-  {
-    "pk": 29, 
-    "model": "web.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Jews", 
-      "ethnicity": "Jewish, Russian"
-    }
-  }, 
-  {
-    "pk": 30, 
-    "model": "web.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Russian", 
-      "ethnicity": "Jewish, Russian"
     }
   }, 
   {
@@ -1788,14 +1748,6 @@
     }
   }, 
   {
-    "pk": 171, 
-    "model": "web.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Russian Germans", 
-      "ethnicity": "Russian, German"
-    }
-  }, 
-  {
     "pk": 172, 
     "model": "web.EthnicitySynonym", 
     "fields": {
@@ -2018,7 +1970,7 @@
       "synonym": "African Americans", 
       "ethnicity": "African American"
     }
-  }, 
+  },
   {
     "pk": 200, 
     "model": "web.EthnicitySynonym", 
@@ -2065,14 +2017,6 @@
     "fields": {
       "synonym": "Blacks", 
       "ethnicity": "African American"
-    }
-  }, 
-  {
-    "pk": 206, 
-    "model": "web.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Russian jews", 
-      "ethnicity": "Russian, Jewish"
     }
   }, 
   {
@@ -2388,22 +2332,6 @@
     }
   }, 
   {
-    "pk": 246, 
-    "model": "web.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Jews", 
-      "ethnicity": "Jewish, Bukharan"
-    }
-  }, 
-  {
-    "pk": 247, 
-    "model": "web.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Bokharan", 
-      "ethnicity": "Jewish, Bukharan"
-    }
-  }, 
-  {
     "pk": 248, 
     "model": "web.EthnicitySynonym", 
     "fields": {
@@ -2417,14 +2345,6 @@
     "fields": {
       "synonym": "Slavs", 
       "ethnicity": "Slavic"
-    }
-  }, 
-  {
-    "pk": 250, 
-    "model": "web.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Palestinian Arabs", 
-      "ethnicity": "Palestinian, Arab"
     }
   }, 
   {
@@ -2497,14 +2417,6 @@
     "fields": {
       "synonym": "Ryukyuans", 
       "ethnicity": "Japanese"
-    }
-  }, 
-  {
-    "pk": 260, 
-    "model": "web.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Panjabis (South Asian Peoples)", 
-      "ethnicity": "Pakistani, East Indian"
     }
   }, 
   {
