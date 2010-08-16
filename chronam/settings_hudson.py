@@ -77,9 +77,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'chronam.web.context_processors.extra_request_info',
 )
 
-STORAGE = '/batches'
-BIB_STORAGE = '/ndnp/data/bib/data'
-ESSAY_STORAGE = '/ndnp/data/essays'
+STORAGE = '/vol/ndnp/chronam/batches'
+BIB_STORAGE = '/vol/ndnp/chronam/bib'
+ESSAY_STORAGE = '/vol/ndnp_staging/batches/essays'
 
 _ROOT = os.path.abspath(os.path.dirname(__file__))
 STATIC = os.path.join(_ROOT, 'static')  # TODO: MEDIA_ROOT?

@@ -1,7 +1,5 @@
 from django.conf.urls.defaults import patterns, url
-
-from chronam import settings
-from chronam.settings import STORAGE, STATIC
+from django.conf import settings
 
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
@@ -317,17 +315,17 @@ urlpatterns += patterns(
     '',
 
     url(r'^data/(?P<path>.*)$', 'django.views.static.serve', 
-        {'document_root': STORAGE}, name="chronam_batch_files"),
+        {'document_root': settings.STORAGE}, name="chronam_batch_files"),
 
     url(r'^(?P<path>images/.*)$', 'django.views.static.serve', 
-        {'document_root': STATIC}, name="chronam_images"),
+        {'document_root': settings.STATIC}, name="chronam_images"),
 
     url(r'^(?P<path>css/.*)$', 'django.views.static.serve', 
-        {'document_root': STATIC}, name="chronam_css"),
+        {'document_root': settings.STATIC}, name="chronam_css"),
 
     url(r'^(?P<path>javascript/.*)$', 'django.views.static.serve', 
-        {'document_root': STATIC}, name="chronam_javascript"),
+        {'document_root': settings.STATIC}, name="chronam_javascript"),
 
     url(r'^(?P<path>sitemap.*)$', 'django.views.static.serve',
-        {'document_root': STATIC + '/sitemaps'}, name="chronam_sitemaps"),
+        {'document_root': settings.STATIC + '/sitemaps'}, name="chronam_sitemaps"),
 )
