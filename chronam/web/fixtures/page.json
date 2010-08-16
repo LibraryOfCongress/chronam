@@ -1,5 +1,14 @@
 [
   {
+    "pk": 5551212,
+    "model": "web.reel",
+    "fields": {
+      "number": 5551212,
+      "batch": "batch_curiv_ahwahnee_ver01",
+      "created": "2009-03-26 20:59:28"
+    }
+  },
+  {
     "pk": 1, 
     "model": "web.page", 
     "fields": {
@@ -15,7 +24,7 @@
       "ocr_filename": "sn83030214/00175037652/1898010101/0005.xml", 
       "issue": 1, 
       "section_label": "",
-      "reel": 5551212
+     "reel": 5551212
     }
   }
 ]
