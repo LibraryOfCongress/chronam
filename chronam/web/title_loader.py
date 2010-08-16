@@ -106,6 +106,7 @@ class TitleLoader(object):
         title.start_year = _normal_year(f008[7:11])
         title.end_year = _normal_year(f008[11:15])
         title.country = self._extract_country(record)
+        title.save()
 
         self._extract_languages(record, title)
         self._extract_places(record, title)
