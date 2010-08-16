@@ -16,42 +16,44 @@ from django.conf import settings
 JP2_PATH = "dlc/batch_dlc_jamaica_ver01/data/sn83030214/00175039259/0001.jp2"
 
 
-class JP2Test(TestCase):
+if j2k:
 
-    def test_raw_image(self):
-        if not j2k:
-            self.assertTrue( False )
-        filename = os.path.join(settings.STORAGE, JP2_PATH)
+    class JP2Test(TestCase):
 
-        rows, cols, nChannels, bpp, data = j2k.raw_image(filename, 300, 300)
+        def test_raw_image(self):
+            filename = os.path.join(settings.STORAGE, JP2_PATH)
 
-        im = Image.frombuffer("L", (cols, rows), data, "raw", "L", 0, 1)
+            rows, cols, nChannels, bpp, data = j2k.raw_image(filename,
+                                                             300, 300)
 
-        sio = StringIO()
-        im.thumbnail((200, 265), Image.ANTIALIAS)
-        im.save(sio, "JPEG")
-        self.assertTrue(sio.getvalue())
+            im = Image.frombuffer("L", (cols, rows), data, "raw", "L", 0, 1)
 
-    def test_image_tile_raw(self):
-        if not j2k:
-            self.assertTrue( False )
-        filename = os.path.join(settings.STORAGE, JP2_PATH)
+            sio = StringIO()
+            im.thumbnail((200, 265), Image.ANTIALIAS)
+            im.save(sio, "JPEG")
+            self.assertTrue(sio.getvalue())
 
-        width, height = 640, 480
-        rows, cols, nChannels, bpp, data = j2k.image_tile_raw(filename, width, height, 0, 0, 2*width, 2*height)
+        def test_image_tile_raw(self):
+            filename = os.path.join(settings.STORAGE, JP2_PATH)
 
-        im = Image.frombuffer("L", (cols, rows), data, "raw", "L", 0, 1)
+            width, height = 640, 480
+            rows, cols, nChannels, bpp, data = j2k.image_tile_raw(filename,
+                                                                 width,
+                                                                 height,
+                                                                 0, 0,
+                                                                 2 * width,
+                                                                 2 * height)
 
-        sio = StringIO()
-        im = im.resize((width, height), Image.ANTIALIAS) 
-        im.save(sio, "JPEG")
+            im = Image.frombuffer("L", (cols, rows), data, "raw", "L", 0, 1)
 
-        self.assertTrue(sio.getvalue())
-        
-    def test_dimensions(self):
-        if not j2k:
-            self.assertTrue( False )
-        filename = os.path.join(settings.STORAGE, JP2_PATH)
+            sio = StringIO()
+            im = im.resize((width, height), Image.ANTIALIAS)
+            im.save(sio, "JPEG")
 
-        width, height = j2k.dimensions(filename)
-        self.assertEqual((width, height), (6378, 8724))
+            self.assertTrue(sio.getvalue())
+
+        def test_dimensions(self):
+            filename = os.path.join(settings.STORAGE, JP2_PATH)
+
+            width, height = j2k.dimensions(filename)
+            self.assertEqual((width, height), (6378, 8724))
