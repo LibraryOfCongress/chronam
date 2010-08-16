@@ -9,7 +9,7 @@ from chronam.web.essay_loader import EssayLoader
 from chronam.web.models import Essay, Title
 
 class EssayLoaderTests(TestCase):
-    fixtures = ['essay_titles.json']
+    fixtures = ['countries.json', 'essay_titles.json']
 
     def test_essay_storage(self):
         self.assertTrue(os.path.isdir(settings.ESSAY_STORAGE))
