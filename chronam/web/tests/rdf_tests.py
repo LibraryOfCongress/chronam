@@ -6,26 +6,30 @@ from chronam.web.rdf import DCTERMS, ORE, NDNP
 
 from rdflib import Literal, URIRef, RDFS, RDF
 
+
 class RdfTests(TestCase):
-    fixtures = ['titles.json', 'awardee.json', 'batch.json', 'issue.json',
-    'page.json']
+    fixtures = ['countries.json', 'titles.json',
+                'awardee.json', 'batch.json', 'issue.json',
+                'page.json']
 
     def test_title(self):
         t = Title.objects.get(lccn='sn83030214')
         g = rdf.title_to_graph(t)
         u = URIRef('/lccn/sn83030214#title')
-        self.assertEqual(g.value(u, DCTERMS['title']), 
-                                 Literal('New-York tribune.'))
-        self.assertEqual(g.value(u, ORE.isDescribedBy), 
+        self.assertEqual(g.value(u, DCTERMS['title']),
+                         Literal('New-York tribune.'))
+        self.assertEqual(g.value(u, ORE.isDescribedBy),
                          URIRef('/lccn/sn83030214.rdf'))
 
     def test_issue(self):
         i = Issue.objects.get(id=1)
         g = rdf.issue_to_graph(i)
         u = URIRef('/lccn/sn83030214/1898-01-01/ed-1#issue')
-        self.assertEqual(g.value(u, DCTERMS['issued']), Literal('1898-01-01', datatype=URIRef('http://www.w3.org/2001/XMLSchema#date')))
+        _xsd_date = URIRef('http://www.w3.org/2001/XMLSchema#date')
+        _issued = Literal('1898-01-01', datatype=_xsd_date)
+        self.assertEqual(g.value(u, DCTERMS['issued']), _issued)
         self.assertEqual(g.value(u, ORE.isDescribedBy),
-                URIRef('/lccn/sn83030214/1898-01-01/ed-1.rdf'))
+                         URIRef('/lccn/sn83030214/1898-01-01/ed-1.rdf'))
 
     def test_page(self):
         p = Page.objects.get(id=1)
@@ -33,9 +37,9 @@ class RdfTests(TestCase):
         u = URIRef('/lccn/sn83030214/1898-01-01/ed-1/seq-1#page')
         parts = list(g.objects(u, ORE['aggregates']))
         self.assertEqual(len(parts), 5)
-        self.assertTrue(URIRef('/lccn/sn83030214/1898-01-01/ed-1/seq-1.pdf') 
+        self.assertTrue(URIRef('/lccn/sn83030214/1898-01-01/ed-1/seq-1.pdf')
                         in parts)
-        self.assertEqual(g.value(u, ORE.isDescribedBy), 
+        self.assertEqual(g.value(u, ORE.isDescribedBy),
                          URIRef('/lccn/sn83030214/1898-01-01/ed-1/seq-1.rdf'))
 
     def test_batch(self):
