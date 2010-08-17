@@ -38,6 +38,7 @@ from django.core import urlresolvers
 from django import forms as django_forms
 from django.forms import fields
 from django.db.models import Count, Max
+from django.utils import html
 
 from chronam.web import models, forms, index
 from chronam.web.decorators import rdf_view, opensearch_clean
@@ -248,10 +249,10 @@ def title(request, lccn):
     notes = []
     has_external_link = False
     for note in title.notes.all():
-
+        org_text = html.escape(note.text)
         text = re.sub('(http(s)?://[^\s]+[^\.])',
-                      r'<a class="external" href="\1">\1</a>', note.text)
-        if text != note.text:
+                      r'<a class="external" href="\1">\1</a>', org_text)
+        if text != org_text:
             has_external_link = True
         notes.append(text)
     response = render_to_response('title.html', dictionary=locals(),
