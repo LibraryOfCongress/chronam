@@ -1263,11 +1263,6 @@ def terms(request):
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
-def omniture(request):
-    return static.serve(request, request.path, document_root=settings.STATIC)
-
-
-@cache_page(settings.DEFAULT_TTL_SECONDS)
 def pages_on_flickr(request):
     page_title = "Flickr Report"
     flickr_urls = models.FlickrUrl.objects.all().order_by('-created')

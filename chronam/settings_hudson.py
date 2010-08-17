@@ -82,7 +82,7 @@ BIB_STORAGE = '/vol/ndnp/chronam/bib'
 ESSAY_STORAGE = '/vol/ndnp_staging/batches/essays'
 
 _ROOT = os.path.abspath(os.path.dirname(__file__))
-STATIC = os.path.join(_ROOT, 'static')  # TODO: MEDIA_ROOT?
+MEDIA_ROOT = os.path.join(_ROOT, 'static')
 THUMBNAIL_WIDTH = 200
 
 SOLR = 'http://localhost:8086/solr'

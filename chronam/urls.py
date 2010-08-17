@@ -318,14 +318,15 @@ urlpatterns += patterns(
         {'document_root': settings.STORAGE}, name="chronam_batch_files"),
 
     url(r'^(?P<path>images/.*)$', 'django.views.static.serve', 
-        {'document_root': settings.STATIC}, name="chronam_images"),
+        {'document_root': settings.MEDIA_ROOT}, name="chronam_images"),
 
     url(r'^(?P<path>css/.*)$', 'django.views.static.serve', 
-        {'document_root': settings.STATIC}, name="chronam_css"),
+        {'document_root': settings.MEDIA_ROOT}, name="chronam_css"),
 
     url(r'^(?P<path>javascript/.*)$', 'django.views.static.serve', 
-        {'document_root': settings.STATIC}, name="chronam_javascript"),
+        {'document_root': settings.MEDIA_ROOT}, name="chronam_javascript"),
 
     url(r'^(?P<path>sitemap.*)$', 'django.views.static.serve',
-        {'document_root': settings.STATIC + '/sitemaps'}, name="chronam_sitemaps"),
+        {'document_root': settings.MEDIA_ROOT + '/sitemaps'},
+        name="chronam_sitemaps"),
 )
