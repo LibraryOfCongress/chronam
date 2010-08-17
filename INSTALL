@@ -103,13 +103,13 @@ have relevant data from the rdc in them:
   python manage.py test
 
 - solr
-  wget http://www.apache.org/dist/lucene/solr/1.4.0/apache-solr-1.4.0.tgz
-  gunzip apache-solr-1.4.0.tgz
-  tar xvf apache-solr-1.4.0.tar
-  mv apache-solr-1.4.0/example/ /ndnp/staging/solr-1.4.0
-  cp /ndnp/staging/chronam/conf/schema.xml /ndnp/staging/solr-1.4.0/solr/conf/schema.xml
-  cp /ndnp/staging/chronam/conf/solrconfig-staging.xml /ndnp/staging/solr-1.4.0/solr/conf/solrconfig.xml
-  # verify that /ndnp/staging/solr-1.4.0/solr/conf/solrconfig.xml contains:
+  wget http://www.apache.org/dist/lucene/solr/1.4.1/apache-solr-1.4.1.tgz
+  gunzip apache-solr-1.4.1.tgz
+  tar xvf apache-solr-1.4.1.tar
+  mv apache-solr-1.4.1/example/ /ndnp/staging/solr-1.4.1
+  cp /ndnp/staging/chronam/conf/schema.xml /ndnp/staging/solr-1.4.1/solr/conf/schema.xml
+  cp /ndnp/staging/chronam/conf/solrconfig-staging.xml /ndnp/staging/solr-1.4.1/solr/conf/solrconfig.xml
+  # verify that /ndnp/staging/solr-1.4.1/solr/conf/solrconfig.xml contains:
       "<dataDir>/indexes/solr/staging</dataDir>"
 
 - apache

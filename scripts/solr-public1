@@ -3,7 +3,7 @@
 # Starts, stops, and restarts solr
 
 USER=ndnp
-SOLR_DIR="/ndnp/public1/solr-1.4.0"
+SOLR_DIR="/ndnp/public1/solr-1.4.1"
 JAVA_OPTIONS="-Xmx3g -Djetty.port=8083 -DSTOP.PORT=8076 -DSTOP.KEY=stopkey -jar start.jar"
 LOG_FILE="$SOLR_DIR/logs/solr.log"
 JAVA="/usr/bin/java"
