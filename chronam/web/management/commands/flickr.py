@@ -14,14 +14,12 @@ configure_logging("chronam_flickr.config", "chronam_flickr.log")
 _log = logging.getLogger(__name__)
 
 class Command(BaseCommand):
-    """
-    Management command for associating newspaper pages that have been uploaded 
-    to Flickr by Dave Woodward.
-    """
+    args = '<flickr_key>'
+    help = 'load links for content that has been pushed to flickr.'
 
-    def handle(self, **options):
+    def handle(self, flickr_key, **options):
         _log.debug("looking for chronam page content on flickr")
-        for flickr_url, chronam_url in flickr_chronam_links():
+        for flickr_url, chronam_url in flickr_chronam_links(flickr_key):
             _log.info("found flickr/chronam link: %s, %s" % 
                          (flickr_url, chronam_url))
             path = urlparse(chronam_url).path
@@ -38,7 +36,7 @@ class Command(BaseCommand):
             else:
                 _log.error("Page for %s not found" % chronam_url)
                 
-def newspaper_photo_ids():
+def newspaper_photo_ids(flickr_key):
     u = 'http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=72157619452486566&format=json&nojsoncallback=1' % settings.FLICKR_KEY
     photos = json.loads(urllib.urlopen(u).read())
     for photo in photos['photoset']['photo']:
@@ -55,8 +53,7 @@ def chronam_url(photo_id):
             return tag['raw'].replace('dc:identifier=', '')
     return None
 
-def flickr_chronam_links():
-    for photo in newspaper_photo_ids():
+def flickr_chronam_links(flickr_key):
+    for photo in newspaper_photo_ids(flickr_key):
         yield flickr_url(photo['id']), chronam_url(photo['id'])
-
 

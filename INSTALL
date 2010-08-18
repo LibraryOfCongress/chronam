@@ -127,7 +127,6 @@ have relevant data from the rdc in them:
 LD_CONFIG_32=/ndnp/staging/ld.config
 export LD_CONFIG_32
 
-
 - mod_wsgi
   wget http://modwsgi.googlecode.com/files/mod_wsgi-3.2.tar.gz
   gunzip mod_wsgi-3.2.tar.gz
@@ -156,4 +155,7 @@ export LD_CONFIG_32
 
   # To generate filename_of_batch_list from a batches directory:
   find /ndnp/staging/data/batches/* -name batch_* -print -prune | sed 's/\(.*\)\///g'
+
+  # load up links to flickr using your flickr key
+  python manage.py flickr YOUR_FLICKR_KEY
 
