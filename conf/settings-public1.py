@@ -92,7 +92,6 @@ MEDIA_ROOT = os.path.join(_ROOT, 'static')
 THUMBNAIL_WIDTH = 200
 
 SOLR = 'http://localhost:8083/solr'
-FLICKR_KEY = 'e774382198876427bbab7ffd7fc0e97d'
 
 if MASTER:
     OMNITURE_SCRIPT = "http://www.loc.gov:8081/global/s_code.js"
