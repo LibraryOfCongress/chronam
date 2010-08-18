@@ -9,6 +9,8 @@ urlpatterns = patterns(
 
     url(r'^$', 'home', name="chronam_home"),
 
+    # TODO: url(r'^.*[A-Z]+.*$', 'lowercase', name="chronam_lowercase"),
+
     url(r'^about/$', 'about', name="chronam_about"),
 
     url(r'^help/$', 'help', name="chronam_help"),
