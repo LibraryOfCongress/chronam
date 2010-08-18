@@ -24,10 +24,21 @@
                 <p>
                     <a href="{% url chronam_search_pages %}" shape="rect">View
                         newspaper pages</a> from 1860 to 1922 from the following
-                    states: Arizona, California, District of Columbia, Florida,
-                    Hawaii, Illinois, Kansas, Kentucky, Minnesota, Missouri, 
-                    Nebraska, New York, Ohio, Oklahoma, Oregon, Pennsylvania, 
-                    Texas, Utah, Virginia and Washington. <a href="http://www.neh.gov/projects/ndnp.html" shape="rect">Why only these states and years?</a>
+                    states: 
+		    {% for state in states %}
+		    {% if forloop.first and forloop.last %}
+		      {{state}}
+		    {% else %}
+                      {% if forloop.last %}
+                        and {{state}}.
+                      {% else %}
+		        {{state}},
+                      {% endif %}
+		    {% endif %}
+		    {% empty %}
+		       no states with new newspaper pages.
+		    {% endfor %}
+		    <a href="http://www.neh.gov/projects/ndnp.html" shape="rect">Why only these states and years?</a>
                 </p>
                 <div class="linkbutton">
                   <a href="{% url chronam_search_pages %}">SEARCH PAGES</a>
