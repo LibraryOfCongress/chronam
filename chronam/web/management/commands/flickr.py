@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
     def handle(self, flickr_key, **options):
         _log.debug("looking for chronam page content on flickr")
-        for flickr_url, chronam_url in flickr_chronam_links():
+        for flickr_url, chronam_url in flickr_chronam_links(flickr_key):
             _log.info("found flickr/chronam link: %s, %s" % 
                          (flickr_url, chronam_url))
             path = urlparse(chronam_url).path
@@ -53,7 +53,7 @@ def chronam_url(photo_id):
             return tag['raw'].replace('dc:identifier=', '')
     return None
 
-def flickr_chronam_links():
+def flickr_chronam_links(flickr_key):
     for photo in newspaper_photo_ids(flickr_key):
         yield flickr_url(photo['id']), chronam_url(photo['id'])
 
