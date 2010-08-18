@@ -202,6 +202,12 @@ def cache_page(ttl):
 def home(request):
     page_title = ""
     letters = [chr(n) for n in range(65, 91)]
+
+    states = set()
+    for title in models.Title.objects.distinct().filter(issues__isnull=False):
+        states.add(title.country.name)
+    states = sorted(states)
+
     return render_to_response('home.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
