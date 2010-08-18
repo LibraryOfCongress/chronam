@@ -90,7 +90,6 @@ MEDIA_ROOT = os.path.join(_ROOT, 'static')
 THUMBNAIL_WIDTH = 200
 
 SOLR = 'http://localhost:6061/solr'
-FLICKR_KEY = 'e774382198876427bbab7ffd7fc0e97d'
 
 if MASTER:
     DEFAULT_TTL_SECONDS = 1
