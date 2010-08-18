@@ -199,6 +199,13 @@ def cache_page(ttl):
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
+def lowercase(request):
+    fp = request.get_full_path()
+    path = fp.replace(request.path, request.path.lower(), 1)
+    return HttpResponseRedirect(path)
+
+
+@cache_page(settings.DEFAULT_TTL_SECONDS)
 def home(request):
     page_title = ""
     letters = [chr(n) for n in range(65, 91)]
@@ -790,10 +797,10 @@ def newspapers(request, state=None, format='html'):
     if state:
         template = 'newspapers_state'
         state = utils.unpack_url_path(state)
-        titles = titles.filter(country__name=state)
+        titles = titles.filter(country__name__iexact=state)
         if titles.count() == 0:
             raise Http404
-        page_title = '%s Newspapers' % state
+        page_title = '%s Newspapers' % titles[0].country.name
         crumbs = [
             {'label':'See All Available Newspapers',
              'href': urlresolvers.reverse('chronam_newspapers')},
@@ -1034,9 +1041,9 @@ def titles_in_city(request, state, county, city,
                    page_number=1, order='name_normal'):
     state, county, city = map(utils.unpack_url_path, (state, county, city))
     page_title = "Titles in City: %s, %s" % (city, state)
-    titles = models.Title.objects.filter(places__city=city,
-                                         places__county=county,
-                                         places__state=state).order_by(order)
+    titles = models.Title.objects.filter(places__city__iexact=city,
+                                         places__county__iexact=county,
+                                         places__state__iexact=state).order_by(order)
     if titles.count() == 0:
         raise Http404
 
@@ -1054,8 +1061,8 @@ def titles_in_county(request, state, county,
                      page_number=1, order='name_normal'):
     state, county = map(utils.unpack_url_path, (state, county))
     page_title = "Titles in County: %s, %s" % (county, state)
-    titles = models.Title.objects.filter(places__county=county,
-                                         places__state=state).distinct()
+    titles = models.Title.objects.filter(places__county__iexact=county,
+                                         places__state__iexact=state).distinct()
     if titles.count() == 0:
         raise Http404
 
@@ -1073,7 +1080,7 @@ def titles_in_state(request, state, page_number=1, order='name_normal'):
     state = utils.unpack_url_path(state)
     page_title = "Titles in State: %s" % state
     titles = models.Title.objects.order_by(order)
-    titles = titles.filter(places__state=state).distinct()
+    titles = titles.filter(places__state__iexact=state).distinct()
 
     if titles.count() == 0:
         raise Http404
@@ -1112,7 +1119,7 @@ def counties_in_state(request, state, format='html'):
     state = utils.unpack_url_path(state)
     page_title = 'Counties in %s' % state
 
-    places = models.Place.objects.filter(state=state,
+    places = models.Place.objects.filter(state__iexact=state,
                                          county__isnull=False).all()
     county_names = sorted(set(p.county for p in places))
 
@@ -1151,7 +1158,8 @@ def cities_in_county(request, state, county, format='html'):
     state_abbr = utils.pack_url_path(state)
     county_abbr = utils.pack_url_path(county)
     page_title = 'Cities in %s, %s' % (state, county)
-    places = models.Place.objects.filter(state=state, county=county).all()
+    places = models.Place.objects.filter(state__iexact=state,
+                                         county=county).all()
     cities = [p.city for p in places]
     if None in cities:
         cities.remove(None)
@@ -1170,7 +1178,7 @@ def cities_in_state(request, state, format='html'):
     state_abbr = utils.pack_url_path(state)
     page_title = 'Cities in %s' % state
 
-    places = models.Place.objects.filter(state=state,
+    places = models.Place.objects.filter(state__iexact=state,
                                          city__isnull=False).all()
     cities = sorted(set(p.city for p in places))
 
