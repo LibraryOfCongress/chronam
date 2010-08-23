@@ -1,3 +1,5 @@
+import os
+
 from django.conf.urls.defaults import patterns, url
 from django.conf import settings
 
@@ -309,6 +311,9 @@ urlpatterns += patterns(
     url(r'^reel/(?P<reel_number>\w+)/$', 'reel', name='chronam_reel'),
 )
 
+_ROOT = os.path.abspath(os.path.dirname(__file__))
+_MEDIA_ROOT = os.path.join(_ROOT, 'media')
+
 # these are static files that will normally be served up by apache
 # in production deployments before django ever sees the request
 # but are useful when running in development environments
@@ -317,18 +322,21 @@ urlpatterns += patterns(
     '',
 
     url(r'^data/(?P<path>.*)$', 'django.views.static.serve', 
-        {'document_root': settings.STORAGE}, name="chronam_batch_files"),
+        {'document_root': _MEDIA_ROOT}, name="chronam_batch_files"),
+
+    url(r'^2010/media/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': _MEDIA_ROOT}, name="chronam_media"),
 
     url(r'^(?P<path>images/.*)$', 'django.views.static.serve', 
-        {'document_root': settings.MEDIA_ROOT}, name="chronam_images"),
+        {'document_root': _MEDIA_ROOT}, name="chronam_images"),
 
     url(r'^(?P<path>css/.*)$', 'django.views.static.serve', 
-        {'document_root': settings.MEDIA_ROOT}, name="chronam_css"),
+        {'document_root': _MEDIA_ROOT}, name="chronam_css"),
 
     url(r'^(?P<path>javascript/.*)$', 'django.views.static.serve', 
-        {'document_root': settings.MEDIA_ROOT}, name="chronam_javascript"),
+        {'document_root': _MEDIA_ROOT}, name="chronam_javascript"),
 
     url(r'^(?P<path>sitemap.*)$', 'django.views.static.serve',
-        {'document_root': settings.MEDIA_ROOT + '/sitemaps'},
+        {'document_root': _MEDIA_ROOT + '/sitemaps'},
         name="chronam_sitemaps"),
 )
