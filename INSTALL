@@ -158,4 +158,3 @@ export LD_CONFIG_32
 
   # load up links to flickr using your flickr key
   python manage.py flickr YOUR_FLICKR_KEY
-
