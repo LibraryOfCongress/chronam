@@ -6,7 +6,7 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
 
-from chronam.web.batch_loader import BatchLoader, BatchLoaderException
+from chronam.core.batch_loader import BatchLoader, BatchLoaderException
 from chronam.utils import configure_logging
     
 configure_logging('load_batch_logging.config', 

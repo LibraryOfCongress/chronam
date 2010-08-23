@@ -10,7 +10,7 @@ try:
 except ImportError:
     import json
 
-from chronam.web import models
+from chronam.core import models
 from chronam.utils import configure_logging
 
 configure_logging("chronam_link_places.config", "chronam_link_places.log")
@@ -80,7 +80,7 @@ class Command(BaseCommand):
                          'longitude': p.longitude,
                          'latitude': p.latitude})
             reset_queries()
-        json.dump(json_src, file('web/fixtures/place_links.json', 'w'), indent=2)
+        json.dump(json_src, file('core/fixtures/place_links.json', 'w'), indent=2)
         _logger.info("finished dumping place_links.json fixture")
 
 def _clean(u):

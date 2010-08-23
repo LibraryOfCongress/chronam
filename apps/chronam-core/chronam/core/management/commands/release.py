@@ -17,7 +17,7 @@ from django.db import reset_queries
 
 from chronam.utils import configure_logging, feedparser
 from chronam.utils.rfc3339 import rfc3339
-from chronam.web import models as m
+from chronam.core import models as m
 from chronam.web.rdf import rdf_uri
 
 configure_logging("release.config", "release.log")

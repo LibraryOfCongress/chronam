@@ -4,8 +4,8 @@ from datetime import datetime
 
 from django.core.management.base import BaseCommand
 
-from chronam.web.title_loader import TitleLoader
-from chronam.web.index import index_titles
+from chronam.core.title_loader import TitleLoader
+from chronam.core.index import index_titles
 from chronam.utils import configure_logging
     
 configure_logging('load_titles_logging.config', 'load_titles.log')

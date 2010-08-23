@@ -3,7 +3,7 @@ import os
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
-from chronam.web.essay_loader import EssayLoader
+from chronam.core.essay_loader import EssayLoader
 from chronam.utils import configure_logging
 
 
