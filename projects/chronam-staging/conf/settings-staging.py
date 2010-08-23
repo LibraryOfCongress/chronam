@@ -1,4 +1,5 @@
 # Django settings for chronam project.
+import os
 
 DEBUG = True 
 TEMPLATE_DEBUG = DEBUG
@@ -75,6 +76,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'django.contrib.humanize',
+    'chronam.core',
     'chronam.web',
 )
 
@@ -87,7 +89,7 @@ BIB_STORAGE = '/ndnp/staging/data/bib/data'
 ESSAY_STORAGE = '/ndnp/staging/data/essays'
 
 _ROOT = os.path.abspath(os.path.dirname(__file__))
-MEDIA_ROOT = os.path.join(_ROOT, 'static')?
+MEDIA_ROOT = os.path.join(_ROOT, 'static')
 THUMBNAIL_WIDTH = 200
 
 SOLR = 'http://localhost:8084/solr'

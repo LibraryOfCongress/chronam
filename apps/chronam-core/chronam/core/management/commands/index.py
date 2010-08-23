@@ -3,7 +3,7 @@ import logging
 from django.core.management.base import BaseCommand
     
 from chronam.utils import configure_logging
-from chronam.web.index import index_titles
+from chronam.core.index import index_titles
 
 configure_logging("index_logging.config", "index.log")
 

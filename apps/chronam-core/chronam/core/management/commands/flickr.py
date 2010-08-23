@@ -8,7 +8,7 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 
 from chronam.utils import configure_logging
-from chronam.web.models import Page, FlickrUrl
+from chronam.core.models import Page, FlickrUrl
 
 configure_logging("chronam_flickr.config", "chronam_flickr.log")
 _log = logging.getLogger(__name__)

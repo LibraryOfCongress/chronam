@@ -12,11 +12,11 @@ try:
 except ImportError:
     import json
 
-from chronam.web import models
-from chronam.web.title_loader import TitleLoader
-from chronam.web.essay_loader import EssayLoader
-from chronam.web.holding_loader import HoldingLoader
-from chronam.web.index import index_titles
+from chronam.core import models
+from chronam.core.title_loader import TitleLoader
+from chronam.core.essay_loader import EssayLoader
+from chronam.core.holding_loader import HoldingLoader
+from chronam.core.index import index_titles
 from chronam.utils import configure_logging
 
 configure_logging("chronam_sync_logging.config", "chronam_sync.log")
@@ -71,7 +71,7 @@ class Command(BaseCommand):
 
     def load_place_links(self):
         _logger.info('loading place links')
-        for p in json.load(file('web/fixtures/place_links.json')):
+        for p in json.load(file('core/fixtures/place_links.json')):
             place = models.Place.objects.get(name=p['name'])
             place.longitude = p['longitude']
             place.latitude = p['latitude']

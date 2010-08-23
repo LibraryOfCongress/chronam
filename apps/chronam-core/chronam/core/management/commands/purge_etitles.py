@@ -8,8 +8,8 @@ from django.core.management.base import BaseCommand
 import pymarc
 
 from chronam.utils import configure_logging
-from chronam.web import index
-from chronam.web.models import Title
+from chronam.core import index
+from chronam.core.models import Title
 
 configure_logging("chronam_purge_titles.config", "chronam_purge_etitles.log")
 _log = logging.getLogger(__name__)
