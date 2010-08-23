@@ -1,7 +1,7 @@
 [
   {
     "pk": "sn83030214",
-    "model": "web.Title",
+    "model": "core.Title",
     "fields": {
       "lccn_orig"             : "sn 83030214",
       "name"                  : "New-York tribune.",
@@ -19,7 +19,7 @@
   },
   {
     "pk": 1, 
-    "model": "web.subject", 
+    "model": "core.subject", 
     "fields": {
       "titles": ["sn83030214"],
       "type": "t", 
@@ -28,7 +28,7 @@
   },
   {
     "pk": 2, 
-    "model": "web.subject", 
+    "model": "core.subject", 
     "fields": {
       "titles": ["sn83030214"], 
       "type": "g", 
@@ -37,7 +37,7 @@
   },
   {
     "pk": 1,
-    "model": "web.place",
+    "model": "core.place",
     "fields": {
       "titles": ["sn83030214"],
       "name": "New York--Queens--New York City",
@@ -48,7 +48,7 @@
   },
   {
     "pk": 2,
-    "model": "web.place",
+    "model": "core.place",
     "fields": {
       "titles": ["sn83030214"],
       "name": "New York--Brooklyn--New York City",
@@ -59,7 +59,7 @@
   },
   {
     "pk": 1,
-    "model": "web.note",
+    "model": "core.note",
     "fields": {
       "text": "The Big Apple",
       "title": "sn83030214"
@@ -67,7 +67,7 @@
   },
   {
     "pk": 2,
-    "model": "web.note",
+    "model": "core.note",
     "fields": {
       "text": "I'll take Manhattan",
       "title": "sn83030214"
@@ -75,7 +75,7 @@
   },
   {
     "pk": 1,
-    "model": "web.marc",
+    "model": "core.marc",
     "fields": {
       "xml": "<record></record>",
       "title": "sn83030214"
@@ -83,7 +83,7 @@
   },
   {
     "pk": "eng",
-    "model": "web.Language",
+    "model": "core.Language",
     "fields": {
       "titles": ["sn83030214"],
       "name": "English"

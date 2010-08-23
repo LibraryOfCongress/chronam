@@ -3,14 +3,14 @@ import os
 
 from lxml import etree
 
-import chronam.web
-from chronam.web.models import Title
-from chronam.web.title_loader import TitleLoader
+import chronam.core
+from chronam.core.models import Title
+from chronam.core.title_loader import TitleLoader
 
 
 def abs_filename(rel_filename):
     abs_filename = os.path.join(
-        os.path.dirname(chronam.web.__file__),
+        os.path.dirname(chronam.core.__file__),
         rel_filename)
     return abs_filename
 
@@ -23,7 +23,7 @@ class TitleLoaderTests(TestCase):
         Title.objects.all().delete()
         # load a title
         loader = TitleLoader()
-        marcxml = os.path.join(os.path.dirname(chronam.web.__file__),
+        marcxml = os.path.join(os.path.dirname(chronam.core.__file__),
             'test-data', 'bib.xml')
         loader.load_file(marcxml)
 

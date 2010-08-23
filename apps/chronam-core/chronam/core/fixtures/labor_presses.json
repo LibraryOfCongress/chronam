@@ -1,597 +1,597 @@
 [
   {
     "pk": "Agricultural industries", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Agriculture, Cooperative", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Agriculturists", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Anarchism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Anti-communist movements", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Anti-fascist movements", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Banks and banking", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Building-service employees", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Businesswomen", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Cannery workers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Capitalism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Catholic labor unions", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Chemical workers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Church and labor", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Clerks (Retail trade)", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Clothing trade", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Clothing workers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Coal miners", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Commerce", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Communism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Communism and Christianity", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Conservationism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Conservatism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Construction industry", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Consumers' leagues.", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Copper Miners' Strike, Mich., 1913-1914.", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Dairy farming", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Dairying", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Electric industry workers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Electric utilities", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Farm and agricultural newspapers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Farm life", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Farm produce", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Farmers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Fascism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Food industry and trade", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Forests and forestry", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Free State Party", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Furniture workers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Glassworkers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Gold mines and mining", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Grape industry", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Highway transport workers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Hospitality industry", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Hotel management", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Icarian movement", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Industrial relations", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Industrialists", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Industries", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Insurance companies", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Insurance companies, American", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Iron industry and trade", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Labor", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Labor and laboring classes", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Labor movement", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Labor unions", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Labor Zionism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Leather industry and trade", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Liberalism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Liberalism (Religion)", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Libertarianism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Liquor industry", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Lumber trade", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Lumbermen", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Manufactures", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Meat industry and trade", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Mechanics (Persons)", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Merchant mariners", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Merchants", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Metal trade", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Migrant agricultural laborers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Mineral industries", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Miners", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Mines and mineral industries", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Mines and mineral resources", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Nationalism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Nativism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "New Left", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Oil industries", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Paper industry", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Petroleum industry and trade", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Petroleum workers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Poor", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Populism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Poultry industry", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Press, Labor", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Printing industry", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Progressivism (United States politics)", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Radicalism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Railroad companies", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Ranching", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Retail trade", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Sheep industry", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Shipping", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Silver mines and mining", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Social action", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Social change", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Social justice", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Social movements", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Socialism", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Socialism (Okla.)", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Socialism and education", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Socialism and youth", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Socialism, Christian", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Socialist parties", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Socialists", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Stevedores", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Stockyards", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Strikes and lockouts", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Taxicab drivers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Textile industry", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Tin mines and mining", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Tobacco workers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Transport workers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Truck driving", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Undertakers and undertaking", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Women's rights", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Woodworkers", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }, 
   {
     "pk": "Working class", 
-    "model": "web.LaborPress", 
+    "model": "core.LaborPress", 
     "fields": {}
   }
 ]

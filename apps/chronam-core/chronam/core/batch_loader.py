@@ -17,9 +17,9 @@ except ImportError:
     j2k = None
 
 from chronam import utils
-from chronam.web import models
-from chronam.web.models import Batch, Issue, Title, Awardee, Page, OCR
-from chronam.web.models import LoadBatchEvent
+from chronam.core import models
+from chronam.core.models import Batch, Issue, Title, Awardee, Page, OCR
+from chronam.core.models import LoadBatchEvent
 
 # some xml namespaces used in batch metadata
 ns = {

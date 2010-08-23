@@ -6,7 +6,7 @@ from time import time, strptime
 from pymarc import map_xml, record_to_xml
 from django.db import transaction, reset_queries
 
-from chronam.web import models
+from chronam.core import models
 
 _logger = logging.getLogger(__name__)
 

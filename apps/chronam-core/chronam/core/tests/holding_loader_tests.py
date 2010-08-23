@@ -2,18 +2,18 @@ import os.path
 
 from django.test import TestCase
 
-from chronam.web.models import Title
-from chronam.web.title_loader import TitleLoader
-from chronam.web.holding_loader import HoldingLoader
+from chronam.core.models import Title
+from chronam.core.title_loader import TitleLoader
+from chronam.core.holding_loader import HoldingLoader
 
-import chronam.web
+import chronam.core
 
 class HoldingLoaderTests(TestCase):
     fixtures = ['countries.json', 'languages.json', 'institutions.json']
 
     def test_holdings(self):
         # the combined title/holdings data
-        marcxml = os.path.join(os.path.dirname(chronam.web.__file__), 
+        marcxml = os.path.join(os.path.dirname(chronam.core.__file__), 
             'test-data', 'bib.xml')
 
         # first need to load the titles so we can link against them

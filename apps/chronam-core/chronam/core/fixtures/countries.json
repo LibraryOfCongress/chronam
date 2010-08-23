@@ -1,7 +1,7 @@
 [
   {
     "pk": "af", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Afghanistan"
@@ -9,7 +9,7 @@
   }, 
   {
     "pk": "alu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Alabama"
@@ -17,7 +17,7 @@
   }, 
   {
     "pk": "aku", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Alaska"
@@ -25,7 +25,7 @@
   }, 
   {
     "pk": "aa", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Albania"
@@ -33,7 +33,7 @@
   }, 
   {
     "pk": "abc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Alberta"
@@ -41,7 +41,7 @@
   }, 
   {
     "pk": "ae", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Algeria"
@@ -49,7 +49,7 @@
   }, 
   {
     "pk": "as", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "American Samoa"
@@ -57,7 +57,7 @@
   }, 
   {
     "pk": "an", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Andorra"
@@ -65,7 +65,7 @@
   }, 
   {
     "pk": "ao", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Angola"
@@ -73,7 +73,7 @@
   }, 
   {
     "pk": "am", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Anguilla"
@@ -81,7 +81,7 @@
   }, 
   {
     "pk": "ay", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Other", 
       "name": "Antarctica"
@@ -89,7 +89,7 @@
   }, 
   {
     "pk": "aq", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Antigua and Barbuda"
@@ -97,7 +97,7 @@
   }, 
   {
     "pk": "ag", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "South America", 
       "name": "Argentina"
@@ -105,7 +105,7 @@
   }, 
   {
     "pk": "azu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Arizona"
@@ -113,7 +113,7 @@
   }, 
   {
     "pk": "aru", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Arkansas"
@@ -121,7 +121,7 @@
   }, 
   {
     "pk": "ai", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Armenia (Republic)"
@@ -129,7 +129,7 @@
   }, 
   {
     "pk": "aw", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Aruba"
@@ -137,7 +137,7 @@
   }, 
   {
     "pk": "at", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Australasia", 
       "name": "Australia"
@@ -145,7 +145,7 @@
   }, 
   {
     "pk": "aca", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Australasia", 
       "name": "Australian Capital Territory"
@@ -153,7 +153,7 @@
   }, 
   {
     "pk": "au", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Austria"
@@ -161,7 +161,7 @@
   }, 
   {
     "pk": "aj", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Azerbaijan"
@@ -169,7 +169,7 @@
   }, 
   {
     "pk": "bf", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Bahamas"
@@ -177,7 +177,7 @@
   }, 
   {
     "pk": "ba", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Bahrain"
@@ -185,7 +185,7 @@
   }, 
   {
     "pk": "bg", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Bangladesh"
@@ -193,7 +193,7 @@
   }, 
   {
     "pk": "bb", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Barbados"
@@ -201,7 +201,7 @@
   }, 
   {
     "pk": "bw", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Belarus"
@@ -209,7 +209,7 @@
   }, 
   {
     "pk": "be", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Belgium"
@@ -217,7 +217,7 @@
   }, 
   {
     "pk": "bh", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Central America", 
       "name": "Belize"
@@ -225,7 +225,7 @@
   }, 
   {
     "pk": "dm", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Benin"
@@ -233,7 +233,7 @@
   }, 
   {
     "pk": "bm", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Atlantic Ocean", 
       "name": "Bermuda Islands"
@@ -241,7 +241,7 @@
   }, 
   {
     "pk": "bt", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Bhutan"
@@ -249,7 +249,7 @@
   }, 
   {
     "pk": "bo", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "South America", 
       "name": "Bolivia"
@@ -257,7 +257,7 @@
   }, 
   {
     "pk": "bn", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Bosnia and Hercegovina"
@@ -265,7 +265,7 @@
   }, 
   {
     "pk": "bs", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Botswana"
@@ -273,7 +273,7 @@
   }, 
   {
     "pk": "bv", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Atlantic Ocean", 
       "name": "Bouvet Island"
@@ -281,7 +281,7 @@
   }, 
   {
     "pk": "bl", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "South America", 
       "name": "Brazil"
@@ -289,7 +289,7 @@
   }, 
   {
     "pk": "bcc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "British Columbia"
@@ -297,7 +297,7 @@
   }, 
   {
     "pk": "bi", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Indian Ocean", 
       "name": "British Indian Ocean Territory"
@@ -305,7 +305,7 @@
   }, 
   {
     "pk": "vb", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "British Virgin Islands"
@@ -313,7 +313,7 @@
   }, 
   {
     "pk": "bx", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Brunei"
@@ -321,7 +321,7 @@
   }, 
   {
     "pk": "bu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Bulgaria"
@@ -329,7 +329,7 @@
   }, 
   {
     "pk": "uv", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Burkina Faso"
@@ -337,7 +337,7 @@
   }, 
   {
     "pk": "br", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Burma"
@@ -345,7 +345,7 @@
   }, 
   {
     "pk": "bd", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Burundi"
@@ -353,7 +353,7 @@
   }, 
   {
     "pk": "cau", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "California"
@@ -361,7 +361,7 @@
   }, 
   {
     "pk": "cb", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Cambodia"
@@ -369,7 +369,7 @@
   }, 
   {
     "pk": "cm", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Cameroon"
@@ -377,7 +377,7 @@
   }, 
   {
     "pk": "xxc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Canada"
@@ -385,7 +385,7 @@
   }, 
   {
     "pk": "cv", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Atlantic Ocean", 
       "name": "Cape Verde"
@@ -393,7 +393,7 @@
   }, 
   {
     "pk": "cj", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Cayman Islands"
@@ -401,7 +401,7 @@
   }, 
   {
     "pk": "cx", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Central African Republic"
@@ -409,7 +409,7 @@
   }, 
   {
     "pk": "cd", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Chad"
@@ -417,7 +417,7 @@
   }, 
   {
     "pk": "cl", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "South America", 
       "name": "Chile"
@@ -425,7 +425,7 @@
   }, 
   {
     "pk": "cc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "China"
@@ -433,7 +433,7 @@
   }, 
   {
     "pk": "ch", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "China (Republic : 1949- )"
@@ -441,7 +441,7 @@
   }, 
   {
     "pk": "xa", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Indian Ocean", 
       "name": "Christmas Island (Indian Ocean)"
@@ -449,7 +449,7 @@
   }, 
   {
     "pk": "xb", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Indian Ocean", 
       "name": "Cocos (Keeling) Islands"
@@ -457,7 +457,7 @@
   }, 
   {
     "pk": "ck", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "South America", 
       "name": "Colombia"
@@ -465,7 +465,7 @@
   }, 
   {
     "pk": "cou", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Colorado"
@@ -473,7 +473,7 @@
   }, 
   {
     "pk": "cq", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Indian Ocean", 
       "name": "Comoros"
@@ -481,7 +481,7 @@
   }, 
   {
     "pk": "cf", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Congo (Brazzaville)"
@@ -489,7 +489,7 @@
   }, 
   {
     "pk": "cg", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Congo (Democratic Republic)"
@@ -497,7 +497,7 @@
   }, 
   {
     "pk": "ctu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Connecticut "
@@ -505,7 +505,7 @@
   }, 
   {
     "pk": "cw", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Cook Islands"
@@ -513,7 +513,7 @@
   }, 
   {
     "pk": "xga", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Australasia", 
       "name": "Coral Sea Islands Territory"
@@ -521,7 +521,7 @@
   }, 
   {
     "pk": "cr", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Central America", 
       "name": "Costa Rica"
@@ -529,7 +529,7 @@
   }, 
   {
     "pk": "iv", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "C\u00f4te d'Ivoire"
@@ -537,7 +537,7 @@
   }, 
   {
     "pk": "ci", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Croatia"
@@ -545,7 +545,7 @@
   }, 
   {
     "pk": "cu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Cuba"
@@ -553,7 +553,7 @@
   }, 
   {
     "pk": "cy", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Cyprus"
@@ -561,7 +561,7 @@
   }, 
   {
     "pk": "xr", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Czech Republic"
@@ -569,7 +569,7 @@
   }, 
   {
     "pk": "deu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Delaware"
@@ -577,7 +577,7 @@
   }, 
   {
     "pk": "dk", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Denmark"
@@ -585,7 +585,7 @@
   }, 
   {
     "pk": "dcu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "District of Columbia"
@@ -593,7 +593,7 @@
   }, 
   {
     "pk": "ft", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Djibouti"
@@ -601,7 +601,7 @@
   }, 
   {
     "pk": "dq", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Dominica"
@@ -609,7 +609,7 @@
   }, 
   {
     "pk": "dr", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Dominican Republic"
@@ -617,7 +617,7 @@
   }, 
   {
     "pk": "em", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "East Timor"
@@ -625,7 +625,7 @@
   }, 
   {
     "pk": "ec", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "South America", 
       "name": "Ecuador"
@@ -633,7 +633,7 @@
   }, 
   {
     "pk": "ua", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Egypt"
@@ -641,7 +641,7 @@
   }, 
   {
     "pk": "es", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Central America", 
       "name": "El Salvador"
@@ -649,7 +649,7 @@
   }, 
   {
     "pk": "enk", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "England"
@@ -657,7 +657,7 @@
   }, 
   {
     "pk": "eg", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Equatorial Guinea"
@@ -665,7 +665,7 @@
   }, 
   {
     "pk": "ea", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Eritrea"
@@ -673,7 +673,7 @@
   }, 
   {
     "pk": "er", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Estonia"
@@ -681,7 +681,7 @@
   }, 
   {
     "pk": "et", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Ethiopia"
@@ -689,7 +689,7 @@
   }, 
   {
     "pk": "fk", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Atlantic Ocean", 
       "name": "Falkland Islands"
@@ -697,7 +697,7 @@
   }, 
   {
     "pk": "fa", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Atlantic Ocean", 
       "name": "Faroe Islands"
@@ -705,7 +705,7 @@
   }, 
   {
     "pk": "fj", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Fiji"
@@ -713,7 +713,7 @@
   }, 
   {
     "pk": "fi", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Finland"
@@ -721,7 +721,7 @@
   }, 
   {
     "pk": "flu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Florida"
@@ -729,7 +729,7 @@
   }, 
   {
     "pk": "fr", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "France"
@@ -737,7 +737,7 @@
   }, 
   {
     "pk": "fg", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "South America", 
       "name": "French Guiana"
@@ -745,7 +745,7 @@
   }, 
   {
     "pk": "fp", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "French Polynesia"
@@ -753,7 +753,7 @@
   }, 
   {
     "pk": "go", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Gabon"
@@ -761,7 +761,7 @@
   }, 
   {
     "pk": "gm", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Gambia"
@@ -769,7 +769,7 @@
   }, 
   {
     "pk": "gz", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Gaza Strip"
@@ -777,7 +777,7 @@
   }, 
   {
     "pk": "gau", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Georgia"
@@ -785,7 +785,7 @@
   }, 
   {
     "pk": "gs", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Georgia (Republic)"
@@ -793,7 +793,7 @@
   }, 
   {
     "pk": "gw", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Germany"
@@ -801,7 +801,7 @@
   }, 
   {
     "pk": "gh", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Ghana"
@@ -809,7 +809,7 @@
   }, 
   {
     "pk": "gi", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Gibraltar"
@@ -817,7 +817,7 @@
   }, 
   {
     "pk": "gr", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Greece"
@@ -825,7 +825,7 @@
   }, 
   {
     "pk": "gl", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Greenland"
@@ -833,7 +833,7 @@
   }, 
   {
     "pk": "gd", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Grenada"
@@ -841,7 +841,7 @@
   }, 
   {
     "pk": "gp", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Guadeloupe"
@@ -849,7 +849,7 @@
   }, 
   {
     "pk": "gu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Guam"
@@ -857,7 +857,7 @@
   }, 
   {
     "pk": "gt", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Central America", 
       "name": "Guatemala"
@@ -865,7 +865,7 @@
   }, 
   {
     "pk": "gv", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Guinea"
@@ -873,7 +873,7 @@
   }, 
   {
     "pk": "pg", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Guinea-Bissau"
@@ -881,7 +881,7 @@
   }, 
   {
     "pk": "gy", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "South America", 
       "name": "Guyana"
@@ -889,7 +889,7 @@
   }, 
   {
     "pk": "ht", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Haiti"
@@ -897,7 +897,7 @@
   }, 
   {
     "pk": "hiu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Hawaii"
@@ -905,7 +905,7 @@
   }, 
   {
     "pk": "hm", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Indian Ocean", 
       "name": "Heard and McDonald Islands"
@@ -913,7 +913,7 @@
   }, 
   {
     "pk": "ho", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Central America", 
       "name": "Honduras"
@@ -921,7 +921,7 @@
   }, 
   {
     "pk": "hu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Hungary"
@@ -929,7 +929,7 @@
   }, 
   {
     "pk": "ic", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Iceland"
@@ -937,7 +937,7 @@
   }, 
   {
     "pk": "idu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Idaho"
@@ -945,7 +945,7 @@
   }, 
   {
     "pk": "ilu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Illinois"
@@ -953,7 +953,7 @@
   }, 
   {
     "pk": "ii", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "India"
@@ -961,7 +961,7 @@
   }, 
   {
     "pk": "inu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Indiana"
@@ -969,7 +969,7 @@
   }, 
   {
     "pk": "io", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Indonesia"
@@ -977,7 +977,7 @@
   }, 
   {
     "pk": "iau", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Iowa"
@@ -985,7 +985,7 @@
   }, 
   {
     "pk": "ir", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Iran"
@@ -993,7 +993,7 @@
   }, 
   {
     "pk": "iq", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Iraq"
@@ -1001,7 +1001,7 @@
   }, 
   {
     "pk": "iy", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Iraq-Saudi Arabia Neutral Zone"
@@ -1009,7 +1009,7 @@
   }, 
   {
     "pk": "ie", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Ireland"
@@ -1017,7 +1017,7 @@
   }, 
   {
     "pk": "is", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Israel"
@@ -1025,7 +1025,7 @@
   }, 
   {
     "pk": "it", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Italy"
@@ -1033,7 +1033,7 @@
   }, 
   {
     "pk": "jm", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Jamaica"
@@ -1041,7 +1041,7 @@
   }, 
   {
     "pk": "ja", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Japan"
@@ -1049,7 +1049,7 @@
   }, 
   {
     "pk": "ji", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Johnston Atoll"
@@ -1057,7 +1057,7 @@
   }, 
   {
     "pk": "jo", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Jordan"
@@ -1065,7 +1065,7 @@
   }, 
   {
     "pk": "ksu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Kansas"
@@ -1073,7 +1073,7 @@
   }, 
   {
     "pk": "kz", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Kazakhstan"
@@ -1081,7 +1081,7 @@
   }, 
   {
     "pk": "kyu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Kentucky"
@@ -1089,7 +1089,7 @@
   }, 
   {
     "pk": "ke", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Kenya"
@@ -1097,7 +1097,7 @@
   }, 
   {
     "pk": "gb", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Kiribati"
@@ -1105,7 +1105,7 @@
   }, 
   {
     "pk": "kn", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Korea (North)"
@@ -1113,7 +1113,7 @@
   }, 
   {
     "pk": "ko", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Korea (South)"
@@ -1121,7 +1121,7 @@
   }, 
   {
     "pk": "kv", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Kosovo"
@@ -1129,7 +1129,7 @@
   }, 
   {
     "pk": "ku", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Kuwait"
@@ -1137,7 +1137,7 @@
   }, 
   {
     "pk": "kg", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Kyrgyzstan"
@@ -1145,7 +1145,7 @@
   }, 
   {
     "pk": "ls", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Laos"
@@ -1153,7 +1153,7 @@
   }, 
   {
     "pk": "lv", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Latvia"
@@ -1161,7 +1161,7 @@
   }, 
   {
     "pk": "le", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Lebanon"
@@ -1169,7 +1169,7 @@
   }, 
   {
     "pk": "lo", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Lesotho"
@@ -1177,7 +1177,7 @@
   }, 
   {
     "pk": "lb", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Liberia"
@@ -1185,7 +1185,7 @@
   }, 
   {
     "pk": "ly", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Libya"
@@ -1193,7 +1193,7 @@
   }, 
   {
     "pk": "lh", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Liechtenstein"
@@ -1201,7 +1201,7 @@
   }, 
   {
     "pk": "li", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Lithuania"
@@ -1209,7 +1209,7 @@
   }, 
   {
     "pk": "lau", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Louisiana"
@@ -1217,7 +1217,7 @@
   }, 
   {
     "pk": "lu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Luxembourg"
@@ -1225,7 +1225,7 @@
   }, 
   {
     "pk": "xn", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Macedonia"
@@ -1233,7 +1233,7 @@
   }, 
   {
     "pk": "mg", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Madagascar"
@@ -1241,7 +1241,7 @@
   }, 
   {
     "pk": "meu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Maine"
@@ -1249,7 +1249,7 @@
   }, 
   {
     "pk": "mw", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Malawi"
@@ -1257,7 +1257,7 @@
   }, 
   {
     "pk": "my", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Malaysia"
@@ -1265,7 +1265,7 @@
   }, 
   {
     "pk": "xc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Indian Ocean", 
       "name": "Maldives"
@@ -1273,7 +1273,7 @@
   }, 
   {
     "pk": "ml", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Mali"
@@ -1281,7 +1281,7 @@
   }, 
   {
     "pk": "mm", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Malta"
@@ -1289,7 +1289,7 @@
   }, 
   {
     "pk": "mbc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Manitoba"
@@ -1297,7 +1297,7 @@
   }, 
   {
     "pk": "xe", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Marshall Islands"
@@ -1305,7 +1305,7 @@
   }, 
   {
     "pk": "mq", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Martinique"
@@ -1313,7 +1313,7 @@
   }, 
   {
     "pk": "mdu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Maryland"
@@ -1321,7 +1321,7 @@
   }, 
   {
     "pk": "mau", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Massachusetts"
@@ -1329,7 +1329,7 @@
   }, 
   {
     "pk": "mu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Mauritania"
@@ -1337,7 +1337,7 @@
   }, 
   {
     "pk": "mf", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Indian Ocean", 
       "name": "Mauritius"
@@ -1345,7 +1345,7 @@
   }, 
   {
     "pk": "ot", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Indian Ocean", 
       "name": "Mayotte"
@@ -1353,7 +1353,7 @@
   }, 
   {
     "pk": "mx", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Mexico"
@@ -1361,7 +1361,7 @@
   }, 
   {
     "pk": "miu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Michigan"
@@ -1369,7 +1369,7 @@
   }, 
   {
     "pk": "fm", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Micronesia (Federated States)"
@@ -1377,7 +1377,7 @@
   }, 
   {
     "pk": "xf", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Midway Islands"
@@ -1385,7 +1385,7 @@
   }, 
   {
     "pk": "mnu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Minnesota"
@@ -1393,7 +1393,7 @@
   }, 
   {
     "pk": "msu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Mississippi"
@@ -1401,7 +1401,7 @@
   }, 
   {
     "pk": "mou", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Missouri"
@@ -1409,7 +1409,7 @@
   }, 
   {
     "pk": "mv", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Moldova"
@@ -1417,7 +1417,7 @@
   }, 
   {
     "pk": "mc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Monaco"
@@ -1425,7 +1425,7 @@
   }, 
   {
     "pk": "mp", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Mongolia"
@@ -1433,7 +1433,7 @@
   }, 
   {
     "pk": "mtu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Montana"
@@ -1441,7 +1441,7 @@
   }, 
   {
     "pk": "mo", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Montenegro"
@@ -1449,7 +1449,7 @@
   }, 
   {
     "pk": "mj", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Montserrat"
@@ -1457,7 +1457,7 @@
   }, 
   {
     "pk": "mr", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Morocco"
@@ -1465,7 +1465,7 @@
   }, 
   {
     "pk": "mz", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Mozambique"
@@ -1473,7 +1473,7 @@
   }, 
   {
     "pk": "sx", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Namibia"
@@ -1481,7 +1481,7 @@
   }, 
   {
     "pk": "nu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Nauru"
@@ -1489,7 +1489,7 @@
   }, 
   {
     "pk": "nbu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Nebraska"
@@ -1497,7 +1497,7 @@
   }, 
   {
     "pk": "np", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Nepal"
@@ -1505,7 +1505,7 @@
   }, 
   {
     "pk": "ne", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Netherlands"
@@ -1513,7 +1513,7 @@
   }, 
   {
     "pk": "na", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Netherlands Antilles"
@@ -1521,7 +1521,7 @@
   }, 
   {
     "pk": "nvu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Nevada"
@@ -1529,7 +1529,7 @@
   }, 
   {
     "pk": "nkc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "New Brunswick"
@@ -1537,7 +1537,7 @@
   }, 
   {
     "pk": "nl", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "New Caledonia"
@@ -1545,7 +1545,7 @@
   }, 
   {
     "pk": "nhu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "New Hampshire"
@@ -1553,7 +1553,7 @@
   }, 
   {
     "pk": "nju", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "New Jersey"
@@ -1561,7 +1561,7 @@
   }, 
   {
     "pk": "nmu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "New Mexico"
@@ -1569,7 +1569,7 @@
   }, 
   {
     "pk": "xna", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Australasia", 
       "name": "New South Wales"
@@ -1577,7 +1577,7 @@
   }, 
   {
     "pk": "nyu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "New York"
@@ -1585,7 +1585,7 @@
   }, 
   {
     "pk": "nz", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Australasia", 
       "name": "New Zealand"
@@ -1593,7 +1593,7 @@
   }, 
   {
     "pk": "nfc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Newfoundland and Labrador"
@@ -1601,7 +1601,7 @@
   }, 
   {
     "pk": "nq", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Central America", 
       "name": "Nicaragua"
@@ -1609,7 +1609,7 @@
   }, 
   {
     "pk": "ng", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Niger"
@@ -1617,7 +1617,7 @@
   }, 
   {
     "pk": "nr", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Nigeria"
@@ -1625,7 +1625,7 @@
   }, 
   {
     "pk": "xh", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Niue"
@@ -1633,7 +1633,7 @@
   }, 
   {
     "pk": "xx", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Other", 
       "name": "No place, unknown, or undetermined"
@@ -1641,7 +1641,7 @@
   }, 
   {
     "pk": "nx", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Australasia", 
       "name": "Norfolk Island "
@@ -1649,7 +1649,7 @@
   }, 
   {
     "pk": "ncu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "North Carolina"
@@ -1657,7 +1657,7 @@
   }, 
   {
     "pk": "ndu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "North Dakota"
@@ -1665,7 +1665,7 @@
   }, 
   {
     "pk": "nik", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Northern Ireland"
@@ -1673,7 +1673,7 @@
   }, 
   {
     "pk": "nw", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Northern Mariana Islands"
@@ -1681,7 +1681,7 @@
   }, 
   {
     "pk": "xoa", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Australasia", 
       "name": "Northern Territory"
@@ -1689,7 +1689,7 @@
   }, 
   {
     "pk": "ntc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Northwest Territories"
@@ -1697,7 +1697,7 @@
   }, 
   {
     "pk": "no", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Norway"
@@ -1705,7 +1705,7 @@
   }, 
   {
     "pk": "nsc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Nova Scotia"
@@ -1713,7 +1713,7 @@
   }, 
   {
     "pk": "nuc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Nunavut"
@@ -1721,7 +1721,7 @@
   }, 
   {
     "pk": "ohu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Ohio"
@@ -1729,7 +1729,7 @@
   }, 
   {
     "pk": "oku", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Oklahoma"
@@ -1737,7 +1737,7 @@
   }, 
   {
     "pk": "mk", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Oman"
@@ -1745,7 +1745,7 @@
   }, 
   {
     "pk": "onc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Ontario"
@@ -1753,7 +1753,7 @@
   }, 
   {
     "pk": "oru", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Oregon"
@@ -1761,7 +1761,7 @@
   }, 
   {
     "pk": "pk", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Pakistan"
@@ -1769,7 +1769,7 @@
   }, 
   {
     "pk": "pw", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Palau"
@@ -1777,7 +1777,7 @@
   }, 
   {
     "pk": "pn", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Central America", 
       "name": "Panama"
@@ -1785,7 +1785,7 @@
   }, 
   {
     "pk": "pp", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Papua New Guinea"
@@ -1793,7 +1793,7 @@
   }, 
   {
     "pk": "pf", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Paracel Islands]"
@@ -1801,7 +1801,7 @@
   }, 
   {
     "pk": "py", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "South America", 
       "name": "Paraguay"
@@ -1809,7 +1809,7 @@
   }, 
   {
     "pk": "pau", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Pennsylvania"
@@ -1817,7 +1817,7 @@
   }, 
   {
     "pk": "pe", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "South America", 
       "name": "Peru"
@@ -1825,7 +1825,7 @@
   }, 
   {
     "pk": "ph", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Philippines"
@@ -1833,7 +1833,7 @@
   }, 
   {
     "pk": "pc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Pitcairn Island"
@@ -1841,7 +1841,7 @@
   }, 
   {
     "pk": "pl", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Poland"
@@ -1849,7 +1849,7 @@
   }, 
   {
     "pk": "po", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Portugal"
@@ -1857,7 +1857,7 @@
   }, 
   {
     "pk": "pic", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Prince Edward Island"
@@ -1865,7 +1865,7 @@
   }, 
   {
     "pk": "pr", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Puerto Rico"
@@ -1873,7 +1873,7 @@
   }, 
   {
     "pk": "qa", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Qatar"
@@ -1881,7 +1881,7 @@
   }, 
   {
     "pk": "quc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Qu\u00e9bec (Province)"
@@ -1889,7 +1889,7 @@
   }, 
   {
     "pk": "qea", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Australasia", 
       "name": "Queensland"
@@ -1897,7 +1897,7 @@
   }, 
   {
     "pk": "re", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Indian Ocean", 
       "name": "R\u00e9union"
@@ -1905,7 +1905,7 @@
   }, 
   {
     "pk": "riu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Rhode Island"
@@ -1913,7 +1913,7 @@
   }, 
   {
     "pk": "rm", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Romania"
@@ -1921,7 +1921,7 @@
   }, 
   {
     "pk": "ru", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Russia (Federation)"
@@ -1929,7 +1929,7 @@
   }, 
   {
     "pk": "rw", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Rwanda"
@@ -1937,7 +1937,7 @@
   }, 
   {
     "pk": "xj", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Atlantic Ocean", 
       "name": "Saint Helena"
@@ -1945,7 +1945,7 @@
   }, 
   {
     "pk": "xd", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Saint Kitts-Nevis"
@@ -1953,7 +1953,7 @@
   }, 
   {
     "pk": "xk", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Saint Lucia"
@@ -1961,7 +1961,7 @@
   }, 
   {
     "pk": "xl", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Saint Pierre and Miquelon"
@@ -1969,7 +1969,7 @@
   }, 
   {
     "pk": "xm", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Saint Vincent and the Grenadines"
@@ -1977,7 +1977,7 @@
   }, 
   {
     "pk": "ws", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Samoa"
@@ -1985,7 +1985,7 @@
   }, 
   {
     "pk": "sm", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "San Marino"
@@ -1993,7 +1993,7 @@
   }, 
   {
     "pk": "sf", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Sao Tome and Principe"
@@ -2001,7 +2001,7 @@
   }, 
   {
     "pk": "snc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Saskatchewan"
@@ -2009,7 +2009,7 @@
   }, 
   {
     "pk": "su", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Saudi Arabia"
@@ -2017,7 +2017,7 @@
   }, 
   {
     "pk": "stk", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Scotland"
@@ -2025,7 +2025,7 @@
   }, 
   {
     "pk": "sg", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Senegal"
@@ -2033,7 +2033,7 @@
   }, 
   {
     "pk": "rb", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Serbia"
@@ -2041,7 +2041,7 @@
   }, 
   {
     "pk": "se", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Indian Ocean", 
       "name": "Seychelles"
@@ -2049,7 +2049,7 @@
   }, 
   {
     "pk": "sl", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Sierra Leone"
@@ -2057,7 +2057,7 @@
   }, 
   {
     "pk": "si", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Singapore"
@@ -2065,7 +2065,7 @@
   }, 
   {
     "pk": "xo", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Slovakia"
@@ -2073,7 +2073,7 @@
   }, 
   {
     "pk": "xv", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Slovenia"
@@ -2081,7 +2081,7 @@
   }, 
   {
     "pk": "bp", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Solomon Islands"
@@ -2089,7 +2089,7 @@
   }, 
   {
     "pk": "so", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Somalia"
@@ -2097,7 +2097,7 @@
   }, 
   {
     "pk": "sa", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "South Africa"
@@ -2105,7 +2105,7 @@
   }, 
   {
     "pk": "xra", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Australasia", 
       "name": "South Australia"
@@ -2113,7 +2113,7 @@
   }, 
   {
     "pk": "scu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "South Carolina"
@@ -2121,7 +2121,7 @@
   }, 
   {
     "pk": "sdu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "South Dakota"
@@ -2129,7 +2129,7 @@
   }, 
   {
     "pk": "xs", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Atlantic Ocean", 
       "name": "South Georgia and the South Sandwich Islands"
@@ -2137,7 +2137,7 @@
   }, 
   {
     "pk": "sp", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Spain"
@@ -2145,7 +2145,7 @@
   }, 
   {
     "pk": "sh", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Spanish North Africa"
@@ -2153,7 +2153,7 @@
   }, 
   {
     "pk": "xp", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Spratly Island"
@@ -2161,7 +2161,7 @@
   }, 
   {
     "pk": "ce", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Sri Lanka"
@@ -2169,7 +2169,7 @@
   }, 
   {
     "pk": "sj", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Sudan"
@@ -2177,7 +2177,7 @@
   }, 
   {
     "pk": "sr", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "South America", 
       "name": "Surinam"
@@ -2185,7 +2185,7 @@
   }, 
   {
     "pk": "sq", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Swaziland"
@@ -2193,7 +2193,7 @@
   }, 
   {
     "pk": "sw", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Sweden"
@@ -2201,7 +2201,7 @@
   }, 
   {
     "pk": "sz", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Switzerland"
@@ -2209,7 +2209,7 @@
   }, 
   {
     "pk": "sy", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Syria"
@@ -2217,7 +2217,7 @@
   }, 
   {
     "pk": "ta", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Tajikistan"
@@ -2225,7 +2225,7 @@
   }, 
   {
     "pk": "tz", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Tanzania"
@@ -2233,7 +2233,7 @@
   }, 
   {
     "pk": "tma", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Australasia", 
       "name": "Tasmania"
@@ -2241,7 +2241,7 @@
   }, 
   {
     "pk": "tnu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Tennessee"
@@ -2249,7 +2249,7 @@
   }, 
   {
     "pk": "fs", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Indian Ocean", 
       "name": "Terres australes et antarctiques fran\u00e7aises"
@@ -2257,7 +2257,7 @@
   }, 
   {
     "pk": "txu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Texas"
@@ -2265,7 +2265,7 @@
   }, 
   {
     "pk": "th", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Thailand"
@@ -2273,7 +2273,7 @@
   }, 
   {
     "pk": "tg", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Togo"
@@ -2281,7 +2281,7 @@
   }, 
   {
     "pk": "tl", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Tokelau"
@@ -2289,7 +2289,7 @@
   }, 
   {
     "pk": "to", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Tonga"
@@ -2297,7 +2297,7 @@
   }, 
   {
     "pk": "tr", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Trinidad and Tobago"
@@ -2305,7 +2305,7 @@
   }, 
   {
     "pk": "ti", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Tunisia"
@@ -2313,7 +2313,7 @@
   }, 
   {
     "pk": "tu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Turkey"
@@ -2321,7 +2321,7 @@
   }, 
   {
     "pk": "tk", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Turkmenistan"
@@ -2329,7 +2329,7 @@
   }, 
   {
     "pk": "tc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Turks and Caicos Islands"
@@ -2337,7 +2337,7 @@
   }, 
   {
     "pk": "tv", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Tuvalu"
@@ -2345,7 +2345,7 @@
   }, 
   {
     "pk": "ug", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Uganda"
@@ -2353,7 +2353,7 @@
   }, 
   {
     "pk": "un", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Ukraine"
@@ -2361,7 +2361,7 @@
   }, 
   {
     "pk": "ts", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "United Arab Emirates"
@@ -2369,7 +2369,7 @@
   }, 
   {
     "pk": "xxk", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "United Kingdom"
@@ -2377,7 +2377,7 @@
   }, 
   {
     "pk": "uik", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "United Kingdom Misc. Islands"
@@ -2385,7 +2385,7 @@
   }, 
   {
     "pk": "xxu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "United States"
@@ -2393,7 +2393,7 @@
   }, 
   {
     "pk": "uc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "United States Misc. Caribbean Islands"
@@ -2401,7 +2401,7 @@
   }, 
   {
     "pk": "up", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "United States Misc. Pacific Islands"
@@ -2409,7 +2409,7 @@
   }, 
   {
     "pk": "uy", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "South America", 
       "name": "Uruguay"
@@ -2417,7 +2417,7 @@
   }, 
   {
     "pk": "utu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Utah"
@@ -2425,7 +2425,7 @@
   }, 
   {
     "pk": "uz", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Uzbekistan"
@@ -2433,7 +2433,7 @@
   }, 
   {
     "pk": "nn", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Vanuatu"
@@ -2441,7 +2441,7 @@
   }, 
   {
     "pk": "vp", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Other", 
       "name": "Various places"
@@ -2449,7 +2449,7 @@
   }, 
   {
     "pk": "vc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Vatican City"
@@ -2457,7 +2457,7 @@
   }, 
   {
     "pk": "ve", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "South America", 
       "name": "Venezuela"
@@ -2465,7 +2465,7 @@
   }, 
   {
     "pk": "vtu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Vermont"
@@ -2473,7 +2473,7 @@
   }, 
   {
     "pk": "vra", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Australasia", 
       "name": "Victoria"
@@ -2481,7 +2481,7 @@
   }, 
   {
     "pk": "vm", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Vietnam"
@@ -2489,7 +2489,7 @@
   }, 
   {
     "pk": "vi", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "West Indies", 
       "name": "Virgin Islands of the United States"
@@ -2497,7 +2497,7 @@
   }, 
   {
     "pk": "vau", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Virginia"
@@ -2505,7 +2505,7 @@
   }, 
   {
     "pk": "wk", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Wake Island"
@@ -2513,7 +2513,7 @@
   }, 
   {
     "pk": "wlk", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Europe", 
       "name": "Wales"
@@ -2521,7 +2521,7 @@
   }, 
   {
     "pk": "wf", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Pacific Ocean", 
       "name": "Wallis and Futuna"
@@ -2529,7 +2529,7 @@
   }, 
   {
     "pk": "wau", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Washington (State)"
@@ -2537,7 +2537,7 @@
   }, 
   {
     "pk": "wj", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "West Bank of the Jordan River"
@@ -2545,7 +2545,7 @@
   }, 
   {
     "pk": "wvu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "West Virginia"
@@ -2553,7 +2553,7 @@
   }, 
   {
     "pk": "wea", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Australasia", 
       "name": "Western Australia"
@@ -2561,7 +2561,7 @@
   }, 
   {
     "pk": "ss", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Western Sahara "
@@ -2569,7 +2569,7 @@
   }, 
   {
     "pk": "wiu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Wisconsin"
@@ -2577,7 +2577,7 @@
   }, 
   {
     "pk": "wyu", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Wyoming"
@@ -2585,7 +2585,7 @@
   }, 
   {
     "pk": "ye", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Asia", 
       "name": "Yemen"
@@ -2593,7 +2593,7 @@
   }, 
   {
     "pk": "ykc", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "North America", 
       "name": "Yukon Territory"
@@ -2601,7 +2601,7 @@
   }, 
   {
     "pk": "za", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Zambia"
@@ -2609,7 +2609,7 @@
   }, 
   {
     "pk": "rh", 
-    "model": "web.country", 
+    "model": "core.country", 
     "fields": {
       "region": "Africa", 
       "name": "Zimbabwe"

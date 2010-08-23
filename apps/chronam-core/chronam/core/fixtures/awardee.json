@@ -1,7 +1,7 @@
 [
   {
     "pk": "curiv", 
-    "model": "web.awardee", 
+    "model": "core.awardee", 
     "fields": {
       "name": "University of California, Riverside", 
       "created": "2009-02-09 06:44:45"

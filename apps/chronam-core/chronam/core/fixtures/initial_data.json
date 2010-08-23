@@ -1,7 +1,7 @@
 [
   {
     "pk": "dlc", 
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "Library of Congress, Washington, DC", 
       "created": "2009-02-09 06:44:45"
@@ -9,7 +9,7 @@
   }, 
   {
     "pk": "fu", 
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "University of Florida", 
       "created": "2009-02-09 06:44:45"
@@ -17,7 +17,7 @@
   }, 
   {
     "pk": "curiv", 
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "University of California, Riverside; Riverside, CA", 
       "created": "2009-02-09 06:44:45"
@@ -25,7 +25,7 @@
   }, 
   {
     "pk": "kyu",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "University of Kentucky, Lexington, KY", 
       "created": "2009-02-09 06:44:45"
@@ -33,7 +33,7 @@
   }, 
   {
     "pk": "nn",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "The New York Public Library, Astor, Lenox and Tilden Foundation", 
       "created": "2009-02-09 06:44:45"
@@ -41,7 +41,7 @@
   }, 
   {
     "pk": "uuml",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "University of Utah, Marriott Library", 
       "created": "2009-02-09 06:44:45"
@@ -49,7 +49,7 @@
   }, 
   {
     "pk": "vi",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "Library of Virginia; Richmond, VA", 
       "created": "2009-02-09 06:44:45"
@@ -57,7 +57,7 @@
   }, 
   {
     "pk": "az",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "Arizona State Library, Archives and Public Records; Phoenix, AZ", 
       "created": "2009-02-09 06:44:45"
@@ -65,7 +65,7 @@
   }, 
   {
     "pk": "hihouml",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "University of Hawaii at Manoa; Honolulu, HI", 
       "created": "2009-02-09 06:44:45"
@@ -73,7 +73,7 @@
   }, 
   {
     "pk": "mohi",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "State Historical Society of Missouri; Columbia, MO", 
       "created": "2009-02-09 06:44:45"
@@ -81,7 +81,7 @@
   }, 
   {
     "pk": "ohi",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "Ohio Historical Society, Columbus, OH", 
       "created": "2009-02-09 06:44:45"
@@ -89,7 +89,7 @@
   }, 
   {
     "pk": "pst",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "Penn State University Libraries; University Park, PA", 
       "created": "2009-02-09 06:44:45"
@@ -97,7 +97,7 @@
   }, 
   {
     "pk": "mnhi",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "Minnesota Historical Society; Saint Paul, MN", 
       "created": "2009-02-09 06:44:45"
@@ -105,7 +105,7 @@
   }, 
   {
     "pk": "nbu",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "University of Nebraska-Lincoln Libraries, Lincoln, NE", 
       "created": "2009-02-09 06:44:45"
@@ -113,7 +113,7 @@
   }, 
   {
     "pk": "txdn",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "University of North Texas; Denton, TX", 
       "created": "2009-02-09 06:44:45"
@@ -121,7 +121,7 @@
   }, 
   {
     "pk": "wa",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "Washington State Library; Olympia, WA", 
       "created": "2009-02-09 06:44:45"
@@ -129,7 +129,7 @@
   },
   {
     "pk": "iune",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "University of Illinois, Urbana-Champaign", 
       "created": "2010-01-12 21:33:21"
@@ -137,7 +137,7 @@
   },
   {
     "pk": "khi",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "Kansas State Historical Society", 
       "created": "2010-01-12 21:33:21"
@@ -145,7 +145,7 @@
   },
   {
     "pk": "lu",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "Louisiana State University", 
       "created": "2010-01-12 21:33:21"
@@ -153,7 +153,7 @@
   },
   {
     "pk": "mthi",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "Montana Historical Society", 
       "created": "2010-01-12 21:33:21"
@@ -161,7 +161,7 @@
   },
   {
     "pk": "oru",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "University of Oregon", 
       "created": "2010-01-12 21:33:21"
@@ -169,7 +169,7 @@
   },
   {
     "pk": "scu",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "University of South Carolina", 
       "created": "2010-01-12 21:33:21"
@@ -177,7 +177,7 @@
   },
   {
     "pk": "okhi",
-    "model": "web.Awardee", 
+    "model": "core.Awardee", 
     "fields": {
       "name": "Oklahoma Historical Society", 
       "created": "2010-01-12 21:33:21"
@@ -185,37 +185,37 @@
   },
   {
     "pk": "Microfilm Service Copy", 
-    "model": "web.MaterialType", 
+    "model": "core.MaterialType", 
     "fields": {}
   }, 
   {
     "pk": "Original", 
-    "model": "web.MaterialType", 
+    "model": "core.MaterialType", 
     "fields": {}
   }, 
   {
     "pk": "Microfilm Master", 
-    "model": "web.MaterialType", 
+    "model": "core.MaterialType", 
     "fields": {}
   }, 
   {
     "pk": "Eye-Readable Reprint", 
-    "model": "web.MaterialType", 
+    "model": "core.MaterialType", 
     "fields": {}
   }, 
   {
     "pk": "Microopaque Service Copy", 
-    "model": "web.MaterialType", 
+    "model": "core.MaterialType", 
     "fields": {}
   }, 
   {
     "pk": "Microfiche Service Copy", 
-    "model": "web.MaterialType", 
+    "model": "core.MaterialType", 
     "fields": {}
   }, 
   {
     "pk": "Microfiche Master", 
-    "model": "web.MaterialType", 
+    "model": "core.MaterialType", 
     "fields": {}
   }
 ]

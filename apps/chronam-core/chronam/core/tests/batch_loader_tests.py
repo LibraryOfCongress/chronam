@@ -4,10 +4,10 @@ import os
 from django.test import TestCase
 from django.conf import settings
 
-import chronam.web
-from chronam.web.batch_loader import BatchLoader
-from chronam.web.models import Title
-from chronam.web.models import Batch
+import chronam.core
+from chronam.core.batch_loader import BatchLoader
+from chronam.core.models import Title
+from chronam.core.models import Batch
 
 
 class BatchLoaderTest(TestCase):
@@ -81,7 +81,7 @@ class BatchLoaderTest(TestCase):
             u'The Big Apple'])
         self.assertTrue(not solr_doc.has_key('essay'))
 
-        f = os.path.join(os.path.dirname(chronam.web.__file__), 'test-data', 
+        f = os.path.join(os.path.dirname(chronam.core.__file__), 'test-data', 
             'ocr.txt')
         self.assertEqual(solr_doc['ocr'], file(f).read().decode('utf-8'))
 
