@@ -4,9 +4,9 @@ import datetime
 from django.test import TestCase
 from django.conf import settings
 
-import chronam.web
-from chronam.web.essay_loader import EssayLoader
-from chronam.web.models import Essay, Title
+import chronam.core
+from chronam.core.essay_loader import EssayLoader
+from chronam.core.models import Essay, Title
 
 class EssayLoaderTests(TestCase):
     fixtures = ['countries.json', 'essay_titles.json']
@@ -42,7 +42,7 @@ class EssayLoaderTests(TestCase):
         self.assertEqual(essay.mets_file, 'batch_encyclopedia_20071031_arcturus/encyclopedia/sn83027091_1.xml')
 
         # compare the html
-        essay_file = os.path.join(os.path.dirname(chronam.web.__file__), 
+        essay_file = os.path.join(os.path.dirname(chronam.core.__file__), 
             'test-data', 'essay.html')
         expected_essay_html = file(essay_file).read().decode('utf-8')
         self.assertEqual(essay.html, expected_essay_html)

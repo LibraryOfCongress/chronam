@@ -1,7 +1,7 @@
 [
   {
     "pk": 1, 
-    "model": "web.issue", 
+    "model": "core.issue", 
     "fields": {
       "title": "sn83030214", 
       "date_issued": "1898-01-01", 

@@ -1,7 +1,7 @@
 [
   {
     "pk": "batch_curiv_ahwahnee_ver01", 
-    "model": "web.batch", 
+    "model": "core.batch", 
     "fields": {
       "validated_batch_file": "BATCH_1.xml", 
       "awardee": "curiv", 

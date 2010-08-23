@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import fields
 
-from chronam.web import models
+from chronam.core import models
 
 
 class SearchPagesForm(forms.Form):

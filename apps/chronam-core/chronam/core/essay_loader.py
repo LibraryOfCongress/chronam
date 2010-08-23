@@ -5,9 +5,9 @@ import datetime
 from lxml import etree
 from django.conf import settings
 
-from chronam.web.batch_loader import ns
+from chronam.core.batch_loader import ns
 from chronam.web.index import index_title
-from chronam.web.models import Essay, Title
+from chronam.core.models import Essay, Title
 
 
 _logger = logging.getLogger(__name__)

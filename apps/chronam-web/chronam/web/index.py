@@ -8,8 +8,8 @@ from django.db import connection, reset_queries
 from django.http import QueryDict
 from django.conf import settings
 
-from chronam.web import models
-from chronam.web.title_loader import _normal_lccn
+from chronam.core import models
+from chronam.core.title_loader import _normal_lccn
 from chronam import utils
 
 _log = logging.getLogger(__name__)

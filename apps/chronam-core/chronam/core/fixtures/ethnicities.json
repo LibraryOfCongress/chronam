@@ -1,427 +1,427 @@
 [  
   {
     "pk": "African", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "African American", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Albanian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Anabaptist", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Arab", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Argentine", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Armenian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Asian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Austrian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Bangladeshi", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Basque", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Belarusian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Belgian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Bosnian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Brazilian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "British", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Bulgarian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Cajun", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Cambodian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Canadian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Cape Verdean", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Caribbean", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Carpatho-Rusyn", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Chilean", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Chinese", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Croatian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Cuban", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Czech", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Danish", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Dutch", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "East Indian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Ecuadorian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Estonian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Ethiopian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Filipino", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Finnish", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "French", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "German", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Greek", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Haitian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Hungarian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Icelandic", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Indians of North America", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Irish", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Italian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Japanese", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Jewish", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Korean", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Latin American", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Latvian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Lebanese", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Lithuanian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Luxembourger", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Macedonian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Malaysian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Maltese", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Mexican", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Middle Eastern", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Iranian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Norwegian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Pacific Islander", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Pakistani", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Palestinian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Polish", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Portuguese", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Romanian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Russian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Scandinavian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Scottish", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Serbian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Slavic", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Slovak", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Slovenian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Spanish", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Swedish", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Swiss", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Syrian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Thai", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Turkish", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Ukranian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Vietnamese", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Welsh", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "West Indian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   }, 
   {
     "pk": "Yugoslavian", 
-    "model": "web.Ethnicity", 
+    "model": "core.Ethnicity", 
     "fields": {}
   },
   {
     "pk": 2, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Estonians", 
       "ethnicity": "Estonian"
@@ -429,7 +429,7 @@
   }, 
   {
     "pk": 4, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Argentines", 
       "ethnicity": "Argentine"
@@ -437,7 +437,7 @@
   }, 
   {
     "pk": 5, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Belgian Americans", 
       "ethnicity": "Belgian"
@@ -445,7 +445,7 @@
   }, 
   {
     "pk": 6, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Belgians", 
       "ethnicity": "Belgian"
@@ -453,7 +453,7 @@
   }, 
   {
     "pk": 7, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Bulgarian Americans", 
       "ethnicity": "Bulgarian"
@@ -461,7 +461,7 @@
   }, 
   {
     "pk": 8, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Bulgarians", 
       "ethnicity": "Bulgarian"
@@ -469,7 +469,7 @@
   }, 
   {
     "pk": 9, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Poles", 
       "ethnicity": "Polish"
@@ -477,7 +477,7 @@
   }, 
   {
     "pk": 10, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Polish Americans", 
       "ethnicity": "Polish"
@@ -485,7 +485,7 @@
   }, 
   {
     "pk": 11, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "French Americans", 
       "ethnicity": "French"
@@ -493,7 +493,7 @@
   }, 
   {
     "pk": 12, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "French in South Carolina", 
       "ethnicity": "French"
@@ -501,7 +501,7 @@
   }, 
   {
     "pk": 13, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "French-American newspapers.", 
       "ethnicity": "French"
@@ -509,7 +509,7 @@
   }, 
   {
     "pk": 14, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "French-Canadians", 
       "ethnicity": "French"
@@ -517,7 +517,7 @@
   }, 
   {
     "pk": 15, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Armenian Americans", 
       "ethnicity": "Armenian"
@@ -525,7 +525,7 @@
   }, 
   {
     "pk": 16, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Armenians", 
       "ethnicity": "Armenian"
@@ -533,7 +533,7 @@
   }, 
   {
     "pk": 17, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Haitians", 
       "ethnicity": "Haitian"
@@ -541,7 +541,7 @@
   }, 
   {
     "pk": 18, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Finnish Americans", 
       "ethnicity": "Finnish"
@@ -549,7 +549,7 @@
   }, 
   {
     "pk": 19, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Finnish-American newspapers.", 
       "ethnicity": "Finnish"
@@ -557,7 +557,7 @@
   }, 
   {
     "pk": 20, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Finns", 
       "ethnicity": "Finnish"
@@ -565,7 +565,7 @@
   }, 
   {
     "pk": 21, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Iranians", 
       "ethnicity": "Iranian"
@@ -573,7 +573,7 @@
   }, 
   {
     "pk": 22, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Albanian Americans", 
       "ethnicity": "Albanian"
@@ -581,7 +581,7 @@
   }, 
   {
     "pk": 23, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Albanians", 
       "ethnicity": "Albanian"
@@ -589,7 +589,7 @@
   }, 
   {
     "pk": 24, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Serbian Americans", 
       "ethnicity": "Serbian"
@@ -597,7 +597,7 @@
   }, 
   {
     "pk": 25, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Serbian Americans.", 
       "ethnicity": "Serbian"
@@ -605,7 +605,7 @@
   }, 
   {
     "pk": 26, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Serbs", 
       "ethnicity": "Serbian"
@@ -613,7 +613,7 @@
   }, 
   {
     "pk": 27, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Ruthenian Americans", 
       "ethnicity": "Carpatho-Rusyn"
@@ -621,7 +621,7 @@
   }, 
   {
     "pk": 28, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Ruthenians", 
       "ethnicity": "Carpatho-Rusyn"
@@ -629,7 +629,7 @@
   }, 
   {
     "pk": 31, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Italian Americans", 
       "ethnicity": "Italian"
@@ -637,7 +637,7 @@
   }, 
   {
     "pk": 32, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Italians", 
       "ethnicity": "Italian"
@@ -645,7 +645,7 @@
   }, 
   {
     "pk": 33, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Czech American newspapers.", 
       "ethnicity": "Czech"
@@ -653,7 +653,7 @@
   }, 
   {
     "pk": 34, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Czech Americans", 
       "ethnicity": "Czech"
@@ -661,7 +661,7 @@
   }, 
   {
     "pk": 35, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Czechs", 
       "ethnicity": "Czech"
@@ -669,7 +669,7 @@
   }, 
   {
     "pk": 36, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Slovak Americans", 
       "ethnicity": "Slovak"
@@ -677,7 +677,7 @@
   }, 
   {
     "pk": 37, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Slovaks", 
       "ethnicity": "Slovak"
@@ -685,7 +685,7 @@
   }, 
   {
     "pk": 38, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Scots", 
       "ethnicity": "Scottish"
@@ -693,7 +693,7 @@
   }, 
   {
     "pk": 39, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Scottish Americans", 
       "ethnicity": "Scottish"
@@ -701,7 +701,7 @@
   }, 
   {
     "pk": 40, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Austrians", 
       "ethnicity": "Austrian"
@@ -709,7 +709,7 @@
   }, 
   {
     "pk": 41, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Austrian Americans", 
       "ethnicity": "Austrian"
@@ -717,7 +717,7 @@
   }, 
   {
     "pk": 42, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Methodists", 
       "ethnicity": "Swedish"
@@ -725,7 +725,7 @@
   }, 
   {
     "pk": 43, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Swedes", 
       "ethnicity": "Swedish"
@@ -733,7 +733,7 @@
   }, 
   {
     "pk": 44, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Swedish Americans", 
       "ethnicity": "Swedish"
@@ -741,7 +741,7 @@
   }, 
   {
     "pk": 45, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Swedish Americas", 
       "ethnicity": "Swedish"
@@ -749,7 +749,7 @@
   }, 
   {
     "pk": 46, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Swedish-American newspapers.", 
       "ethnicity": "Swedish"
@@ -757,7 +757,7 @@
   }, 
   {
     "pk": 47, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Caribbean Americans", 
       "ethnicity": "Caribbean"
@@ -765,7 +765,7 @@
   }, 
   {
     "pk": 48, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "West Indian Americans", 
       "ethnicity": "Caribbean"
@@ -773,7 +773,7 @@
   }, 
   {
     "pk": 49, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "West Indians", 
       "ethnicity": "Caribbean"
@@ -781,7 +781,7 @@
   }, 
   {
     "pk": 50, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Slovenes", 
       "ethnicity": "Slovenian"
@@ -789,7 +789,7 @@
   }, 
   {
     "pk": 51, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Slovenian Americans", 
       "ethnicity": "Slovenian"
@@ -797,7 +797,7 @@
   }, 
   {
     "pk": 52, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Danes", 
       "ethnicity": "Danish"
@@ -805,7 +805,7 @@
   }, 
   {
     "pk": 53, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Danish Americans", 
       "ethnicity": "Danish"
@@ -813,7 +813,7 @@
   }, 
   {
     "pk": 54, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Lutherans", 
       "ethnicity": "Danish"
@@ -821,7 +821,7 @@
   }, 
   {
     "pk": 55, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Norwegian American newspapers.", 
       "ethnicity": "Norwegian"
@@ -829,7 +829,7 @@
   }, 
   {
     "pk": 56, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Norwegian Americans", 
       "ethnicity": "Norwegian"
@@ -837,7 +837,7 @@
   }, 
   {
     "pk": 57, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Norwegians", 
       "ethnicity": "Norwegian"
@@ -845,7 +845,7 @@
   }, 
   {
     "pk": 58, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Thai Americans", 
       "ethnicity": "Thai"
@@ -853,7 +853,7 @@
   }, 
   {
     "pk": 59, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Chileans", 
       "ethnicity": "Chilean"
@@ -861,7 +861,7 @@
   }, 
   {
     "pk": 60, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Cuban Americans", 
       "ethnicity": "Cuban"
@@ -869,7 +869,7 @@
   }, 
   {
     "pk": 61, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Cuban newspapers", 
       "ethnicity": "Cuban"
@@ -877,7 +877,7 @@
   }, 
   {
     "pk": 62, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Cubans", 
       "ethnicity": "Cuban"
@@ -885,7 +885,7 @@
   }, 
   {
     "pk": 63, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Hawaiians", 
       "ethnicity": "Pacific Islander"
@@ -893,7 +893,7 @@
   }, 
   {
     "pk": 64, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Samoans", 
       "ethnicity": "Pacific Islander"
@@ -901,7 +901,7 @@
   }, 
   {
     "pk": 65, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Scandinavian Americans", 
       "ethnicity": "Scandinavian"
@@ -909,7 +909,7 @@
   }, 
   {
     "pk": 66, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Scandinavians", 
       "ethnicity": "Scandinavian"
@@ -917,7 +917,7 @@
   }, 
   {
     "pk": 67, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Greek Americans", 
       "ethnicity": "Greek"
@@ -925,7 +925,7 @@
   }, 
   {
     "pk": 68, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Greek newspapers.", 
       "ethnicity": "Greek"
@@ -933,7 +933,7 @@
   }, 
   {
     "pk": 69, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Greeks", 
       "ethnicity": "Greek"
@@ -941,7 +941,7 @@
   }, 
   {
     "pk": 70, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Latvian Americans", 
       "ethnicity": "Latvian"
@@ -949,7 +949,7 @@
   }, 
   {
     "pk": 71, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Latvians", 
       "ethnicity": "Latvian"
@@ -957,7 +957,7 @@
   }, 
   {
     "pk": 72, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Africans", 
       "ethnicity": "African"
@@ -965,7 +965,7 @@
   }, 
   {
     "pk": 73, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Croat Americans", 
       "ethnicity": "Croatian"
@@ -973,7 +973,7 @@
   }, 
   {
     "pk": 74, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Croatian Americans", 
       "ethnicity": "Croatian"
@@ -981,7 +981,7 @@
   }, 
   {
     "pk": 75, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Croats", 
       "ethnicity": "Croatian"
@@ -989,7 +989,7 @@
   }, 
   {
     "pk": 76, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Aleuts", 
       "ethnicity": "Indians of North America"
@@ -997,7 +997,7 @@
   }, 
   {
     "pk": 77, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Apache Indians", 
       "ethnicity": "Indians of North America"
@@ -1005,7 +1005,7 @@
   }, 
   {
     "pk": 78, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Arapaho Indians", 
       "ethnicity": "Indians of North America"
@@ -1013,7 +1013,7 @@
   }, 
   {
     "pk": 79, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Assiniboine Indians", 
       "ethnicity": "Indians of North America"
@@ -1021,7 +1021,7 @@
   }, 
   {
     "pk": 80, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Caddo Indians", 
       "ethnicity": "Indians of North America"
@@ -1029,7 +1029,7 @@
   }, 
   {
     "pk": 81, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Chautauquas", 
       "ethnicity": "Indians of North America"
@@ -1037,7 +1037,7 @@
   }, 
   {
     "pk": 82, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Cherokee Indians", 
       "ethnicity": "Indians of North America"
@@ -1045,7 +1045,7 @@
   }, 
   {
     "pk": 83, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Cherokee Indians.", 
       "ethnicity": "Indians of North America"
@@ -1053,7 +1053,7 @@
   }, 
   {
     "pk": 84, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Cheyenne Indians", 
       "ethnicity": "Indians of North America"
@@ -1061,7 +1061,7 @@
   }, 
   {
     "pk": 85, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Chickasaw Indians", 
       "ethnicity": "Indians of North America"
@@ -1069,7 +1069,7 @@
   }, 
   {
     "pk": 86, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Choctaw Indians", 
       "ethnicity": "Indians of North America"
@@ -1077,7 +1077,7 @@
   }, 
   {
     "pk": 87, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Comanche Indians", 
       "ethnicity": "Indians of North America"
@@ -1085,7 +1085,7 @@
   }, 
   {
     "pk": 88, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Creek Indians", 
       "ethnicity": "Indians of North America"
@@ -1093,7 +1093,7 @@
   }, 
   {
     "pk": 89, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Dakota Indians", 
       "ethnicity": "Indians of North America"
@@ -1101,7 +1101,7 @@
   }, 
   {
     "pk": 90, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Eskimos", 
       "ethnicity": "Indians of North America"
@@ -1109,7 +1109,7 @@
   }, 
   {
     "pk": 91, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Fox Indians", 
       "ethnicity": "Indians of North America"
@@ -1117,7 +1117,7 @@
   }, 
   {
     "pk": 92, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Havasupai Indians", 
       "ethnicity": "Indians of North America"
@@ -1125,7 +1125,7 @@
   }, 
   {
     "pk": 93, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Hopi Indians", 
       "ethnicity": "Indians of North America"
@@ -1133,7 +1133,7 @@
   }, 
   {
     "pk": 94, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Hualapai Indians", 
       "ethnicity": "Indians of North America"
@@ -1141,7 +1141,7 @@
   }, 
   {
     "pk": 95, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Hupa Indians", 
       "ethnicity": "Indians of North America"
@@ -1149,7 +1149,7 @@
   }, 
   {
     "pk": 96, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Indian reservations", 
       "ethnicity": "Indians of North America"
@@ -1157,7 +1157,7 @@
   }, 
   {
     "pk": 97, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Iowa Indians", 
       "ethnicity": "Indians of North America"
@@ -1165,7 +1165,7 @@
   }, 
   {
     "pk": 98, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Iroquois Indians", 
       "ethnicity": "Indians of North America"
@@ -1173,7 +1173,7 @@
   }, 
   {
     "pk": 99, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Kamia Indians", 
       "ethnicity": "Indians of North America"
@@ -1181,7 +1181,7 @@
   }, 
   {
     "pk": 100, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Klamath Indians", 
       "ethnicity": "Indians of North America"
@@ -1189,7 +1189,7 @@
   }, 
   {
     "pk": 101, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Lumbee Indians", 
       "ethnicity": "Indians of North America"
@@ -1197,7 +1197,7 @@
   }, 
   {
     "pk": 102, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Lummi Indians", 
       "ethnicity": "Indians of North America"
@@ -1205,7 +1205,7 @@
   }, 
   {
     "pk": 103, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Maricopa Indians", 
       "ethnicity": "Indians of North America"
@@ -1213,7 +1213,7 @@
   }, 
   {
     "pk": 104, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Mikasuki Indians", 
       "ethnicity": "Indians of North America"
@@ -1221,7 +1221,7 @@
   }, 
   {
     "pk": 105, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Mohave Indians", 
       "ethnicity": "Indians of North America"
@@ -1229,7 +1229,7 @@
   }, 
   {
     "pk": 106, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Mohegan Indians", 
       "ethnicity": "Indians of North America"
@@ -1237,7 +1237,7 @@
   }, 
   {
     "pk": 107, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Navajo Indians", 
       "ethnicity": "Indians of North America"
@@ -1245,7 +1245,7 @@
   }, 
   {
     "pk": 108, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Navajo Tribe", 
       "ethnicity": "Indians of North America"
@@ -1253,7 +1253,7 @@
   }, 
   {
     "pk": 109, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Nez Perce? Indians", 
       "ethnicity": "Indians of North America"
@@ -1261,7 +1261,7 @@
   }, 
   {
     "pk": 110, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Nisqually Tribe", 
       "ethnicity": "Indians of North America"
@@ -1269,7 +1269,7 @@
   }, 
   {
     "pk": 111, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Oglala Sioux Tribe", 
       "ethnicity": "Indians of North America"
@@ -1277,7 +1277,7 @@
   }, 
   {
     "pk": 112, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Ojibwa Indians", 
       "ethnicity": "Indians of North America"
@@ -1285,7 +1285,7 @@
   }, 
   {
     "pk": 113, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Oneida Indians", 
       "ethnicity": "Indians of North America"
@@ -1293,7 +1293,7 @@
   }, 
   {
     "pk": 114, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Osage Indians", 
       "ethnicity": "Indians of North America"
@@ -1301,7 +1301,7 @@
   }, 
   {
     "pk": 115, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Oto Indians", 
       "ethnicity": "Indians of North America"
@@ -1309,7 +1309,7 @@
   }, 
   {
     "pk": 116, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Paiute Indians", 
       "ethnicity": "Indians of North America"
@@ -1317,7 +1317,7 @@
   }, 
   {
     "pk": 117, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Passamaquaddy Indians", 
       "ethnicity": "Indians of North America"
@@ -1325,7 +1325,7 @@
   }, 
   {
     "pk": 118, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Pawnee Indians", 
       "ethnicity": "Indians of North America"
@@ -1333,7 +1333,7 @@
   }, 
   {
     "pk": 119, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Penobscot Indians", 
       "ethnicity": "Indians of North America"
@@ -1341,7 +1341,7 @@
   }, 
   {
     "pk": 120, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Pima Indians", 
       "ethnicity": "Indians of North America"
@@ -1349,7 +1349,7 @@
   }, 
   {
     "pk": 121, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Potawatomi Indians", 
       "ethnicity": "Indians of North America"
@@ -1357,7 +1357,7 @@
   }, 
   {
     "pk": 122, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Powhatan Indians", 
       "ethnicity": "Indians of North America"
@@ -1365,7 +1365,7 @@
   }, 
   {
     "pk": 123, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Puyallup Indians", 
       "ethnicity": "Indians of North America"
@@ -1373,7 +1373,7 @@
   }, 
   {
     "pk": 124, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Quapaw Agency", 
       "ethnicity": "Indians of North America"
@@ -1381,7 +1381,7 @@
   }, 
   {
     "pk": 125, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Quileute Indians", 
       "ethnicity": "Indians of North America"
@@ -1389,7 +1389,7 @@
   }, 
   {
     "pk": 126, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Salish Indians", 
       "ethnicity": "Indians of North America"
@@ -1397,7 +1397,7 @@
   }, 
   {
     "pk": 127, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Seminole Indians", 
       "ethnicity": "Indians of North America"
@@ -1405,7 +1405,7 @@
   }, 
   {
     "pk": 128, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Seneca Indians", 
       "ethnicity": "Indians of North America"
@@ -1413,7 +1413,7 @@
   }, 
   {
     "pk": 129, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Shawnee Indians", 
       "ethnicity": "Indians of North America"
@@ -1421,7 +1421,7 @@
   }, 
   {
     "pk": 130, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Shoshoni Indians", 
       "ethnicity": "Indians of North America"
@@ -1429,7 +1429,7 @@
   }, 
   {
     "pk": 131, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Siksika Indians", 
       "ethnicity": "Indians of North America"
@@ -1437,7 +1437,7 @@
   }, 
   {
     "pk": 132, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Siletz Indians", 
       "ethnicity": "Indians of North America"
@@ -1445,7 +1445,7 @@
   }, 
   {
     "pk": 133, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Siouan Indians", 
       "ethnicity": "Indians of North America"
@@ -1453,7 +1453,7 @@
   }, 
   {
     "pk": 134, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Sisseton Indians", 
       "ethnicity": "Indians of North America"
@@ -1461,7 +1461,7 @@
   }, 
   {
     "pk": 135, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Skitswish Indians", 
       "ethnicity": "Indians of North America"
@@ -1469,7 +1469,7 @@
   }, 
   {
     "pk": 136, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Skokomish Indians", 
       "ethnicity": "Indians of North America"
@@ -1477,7 +1477,7 @@
   }, 
   {
     "pk": 137, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Suquamish Indians", 
       "ethnicity": "Indians of North America"
@@ -1485,7 +1485,7 @@
   }, 
   {
     "pk": 138, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Swinomish Indians", 
       "ethnicity": "Indians of North America"
@@ -1493,7 +1493,7 @@
   }, 
   {
     "pk": 139, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Tlingit Indians", 
       "ethnicity": "Indians of North America"
@@ -1501,7 +1501,7 @@
   }, 
   {
     "pk": 140, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Tohono O'Odham Indians", 
       "ethnicity": "Indians of North America"
@@ -1509,7 +1509,7 @@
   }, 
   {
     "pk": 141, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Tsimshian Indians", 
       "ethnicity": "Indians of North America"
@@ -1517,7 +1517,7 @@
   }, 
   {
     "pk": 142, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Ute Indians", 
       "ethnicity": "Indians of North America"
@@ -1525,7 +1525,7 @@
   }, 
   {
     "pk": 143, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Washo Indians", 
       "ethnicity": "Indians of North America"
@@ -1533,7 +1533,7 @@
   }, 
   {
     "pk": 144, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Winnebago Indians", 
       "ethnicity": "Indians of North America"
@@ -1541,7 +1541,7 @@
   }, 
   {
     "pk": 145, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Yakama Indians", 
       "ethnicity": "Indians of North America"
@@ -1549,7 +1549,7 @@
   }, 
   {
     "pk": 146, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Yurok Indians", 
       "ethnicity": "Indians of North America"
@@ -1557,7 +1557,7 @@
   }, 
   {
     "pk": 147, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Zuni Indians", 
       "ethnicity": "Indians of North America"
@@ -1565,7 +1565,7 @@
   }, 
   {
     "pk": 148, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Ethiopians", 
       "ethnicity": "Ethiopian"
@@ -1573,7 +1573,7 @@
   }, 
   {
     "pk": 149, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Ecuadorians", 
       "ethnicity": "Ecuadorian"
@@ -1581,7 +1581,7 @@
   }, 
   {
     "pk": 150, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Syrians", 
       "ethnicity": "Syrian"
@@ -1589,7 +1589,7 @@
   }, 
   {
     "pk": 151, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Icelanders", 
       "ethnicity": "Icelandic"
@@ -1597,7 +1597,7 @@
   }, 
   {
     "pk": 152, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Luxembourgers", 
       "ethnicity": "Luxembourger"
@@ -1605,7 +1605,7 @@
   }, 
   {
     "pk": 153, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Turks", 
       "ethnicity": "Turkish"
@@ -1613,7 +1613,7 @@
   }, 
   {
     "pk": 154, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Assyrians", 
       "ethnicity": "Middle Eastern"
@@ -1621,7 +1621,7 @@
   }, 
   {
     "pk": 155, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Bangladeshi Americans", 
       "ethnicity": "Bangladeshi"
@@ -1629,7 +1629,7 @@
   }, 
   {
     "pk": 156, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Bangladeshis", 
       "ethnicity": "Bangladeshi"
@@ -1637,7 +1637,7 @@
   }, 
   {
     "pk": 157, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Hispanic American Catholics", 
       "ethnicity": "Latin American"
@@ -1645,7 +1645,7 @@
   }, 
   {
     "pk": 158, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Hispanic American newspapers", 
       "ethnicity": "Latin American"
@@ -1653,7 +1653,7 @@
   }, 
   {
     "pk": 159, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Hispanic Americans", 
       "ethnicity": "Latin American"
@@ -1661,7 +1661,7 @@
   }, 
   {
     "pk": 160, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Hispanics", 
       "ethnicity": "Latin American"
@@ -1669,7 +1669,7 @@
   }, 
   {
     "pk": 161, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Latin Americans", 
       "ethnicity": "Latin American"
@@ -1677,7 +1677,7 @@
   }, 
   {
     "pk": 162, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Nicaraguans", 
       "ethnicity": "Latin American"
@@ -1685,7 +1685,7 @@
   }, 
   {
     "pk": 163, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Puerto Ricans", 
       "ethnicity": "Latin American"
@@ -1693,7 +1693,7 @@
   }, 
   {
     "pk": 164, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Brazilians", 
       "ethnicity": "Brazilian"
@@ -1701,7 +1701,7 @@
   }, 
   {
     "pk": 165, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Korean Americans", 
       "ethnicity": "Korean"
@@ -1709,7 +1709,7 @@
   }, 
   {
     "pk": 166, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Korean newspapers", 
       "ethnicity": "Korean"
@@ -1717,7 +1717,7 @@
   }, 
   {
     "pk": 167, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Koreans", 
       "ethnicity": "Korean"
@@ -1725,7 +1725,7 @@
   }, 
   {
     "pk": 168, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Pakistani Americans", 
       "ethnicity": "Pakistani"
@@ -1733,7 +1733,7 @@
   }, 
   {
     "pk": 169, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Pakistanis", 
       "ethnicity": "Pakistani"
@@ -1741,7 +1741,7 @@
   }, 
   {
     "pk": 170, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Yugoslavs", 
       "ethnicity": "Yugoslavian"
@@ -1749,7 +1749,7 @@
   }, 
   {
     "pk": 172, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "East Indian Americans", 
       "ethnicity": "East Indian"
@@ -1757,7 +1757,7 @@
   }, 
   {
     "pk": 173, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "East Indians", 
       "ethnicity": "East Indian"
@@ -1765,7 +1765,7 @@
   }, 
   {
     "pk": 174, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Hungarian Americans", 
       "ethnicity": "Hungarian"
@@ -1773,7 +1773,7 @@
   }, 
   {
     "pk": 175, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Hungarians", 
       "ethnicity": "Hungarian"
@@ -1781,7 +1781,7 @@
   }, 
   {
     "pk": 176, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Bosnians", 
       "ethnicity": "Bosnian"
@@ -1789,7 +1789,7 @@
   }, 
   {
     "pk": 177, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Lithuanian American Catholics", 
       "ethnicity": "Lithuanian"
@@ -1797,7 +1797,7 @@
   }, 
   {
     "pk": 178, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Lithuanian American communists", 
       "ethnicity": "Lithuanian"
@@ -1805,7 +1805,7 @@
   }, 
   {
     "pk": 179, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Lithuanian Americans", 
       "ethnicity": "Lithuanian"
@@ -1813,7 +1813,7 @@
   }, 
   {
     "pk": 180, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Lithuanians", 
       "ethnicity": "Lithuanian"
@@ -1821,7 +1821,7 @@
   }, 
   {
     "pk": 181, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Russian Americans", 
       "ethnicity": "Russian"
@@ -1829,7 +1829,7 @@
   }, 
   {
     "pk": 182, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Russian literature", 
       "ethnicity": "Russian"
@@ -1837,7 +1837,7 @@
   }, 
   {
     "pk": 183, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Russians", 
       "ethnicity": "Russian"
@@ -1845,7 +1845,7 @@
   }, 
   {
     "pk": 184, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Amish", 
       "ethnicity": "Anabaptist"
@@ -1853,7 +1853,7 @@
   }, 
   {
     "pk": 185, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Amish Mennonites", 
       "ethnicity": "Anabaptist"
@@ -1861,7 +1861,7 @@
   }, 
   {
     "pk": 186, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Mennonites", 
       "ethnicity": "Anabaptist"
@@ -1869,7 +1869,7 @@
   }, 
   {
     "pk": 187, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Pennsylvania Dutch", 
       "ethnicity": "Anabaptist"
@@ -1877,7 +1877,7 @@
   }, 
   {
     "pk": 188, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Pennsylvania Dutch.", 
       "ethnicity": "Anabaptist"
@@ -1885,7 +1885,7 @@
   }, 
   {
     "pk": 189, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Malayalis (Indic people)", 
       "ethnicity": "Malaysian"
@@ -1893,7 +1893,7 @@
   }, 
   {
     "pk": 190, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "African American banks", 
       "ethnicity": "African American"
@@ -1901,7 +1901,7 @@
   }, 
   {
     "pk": 191, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "African American Baptists", 
       "ethnicity": "African American"
@@ -1909,7 +1909,7 @@
   }, 
   {
     "pk": 192, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "African American business enterprises", 
       "ethnicity": "African American"
@@ -1917,7 +1917,7 @@
   }, 
   {
     "pk": 193, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "African American Catholics", 
       "ethnicity": "African American"
@@ -1925,7 +1925,7 @@
   }, 
   {
     "pk": 194, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "African American freemasons", 
       "ethnicity": "African American"
@@ -1933,7 +1933,7 @@
   }, 
   {
     "pk": 195, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "African American Methodists", 
       "ethnicity": "African American"
@@ -1941,7 +1941,7 @@
   }, 
   {
     "pk": 196, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "African American newspapers", 
       "ethnicity": "African American"
@@ -1949,7 +1949,7 @@
   }, 
   {
     "pk": 197, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "African American newspapers.", 
       "ethnicity": "African American"
@@ -1957,7 +1957,7 @@
   }, 
   {
     "pk": 198, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "African American students", 
       "ethnicity": "African American"
@@ -1965,7 +1965,7 @@
   }, 
   {
     "pk": 199, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "African Americans", 
       "ethnicity": "African American"
@@ -1973,7 +1973,7 @@
   },
   {
     "pk": 200, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "African-American", 
       "ethnicity": "African American"
@@ -1981,7 +1981,7 @@
   }, 
   {
     "pk": 201, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Back to Africa movement", 
       "ethnicity": "African American"
@@ -1989,7 +1989,7 @@
   }, 
   {
     "pk": 202, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Baptists", 
       "ethnicity": "African American"
@@ -1997,7 +1997,7 @@
   }, 
   {
     "pk": 203, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Black", 
       "ethnicity": "African American"
@@ -2005,7 +2005,7 @@
   }, 
   {
     "pk": 204, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Black Muslims", 
       "ethnicity": "African American"
@@ -2013,7 +2013,7 @@
   }, 
   {
     "pk": 205, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Blacks", 
       "ethnicity": "African American"
@@ -2021,7 +2021,7 @@
   }, 
   {
     "pk": 207, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Irish Americans", 
       "ethnicity": "Irish"
@@ -2029,7 +2029,7 @@
   }, 
   {
     "pk": 208, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Irish-American newspapers.", 
       "ethnicity": "Irish"
@@ -2037,7 +2037,7 @@
   }, 
   {
     "pk": 209, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Chinese Americans", 
       "ethnicity": "Chinese"
@@ -2045,7 +2045,7 @@
   }, 
   {
     "pk": 210, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Chinese newspapers", 
       "ethnicity": "Chinese"
@@ -2053,7 +2053,7 @@
   }, 
   {
     "pk": 211, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Chinese-American newspapers", 
       "ethnicity": "Chinese"
@@ -2061,7 +2061,7 @@
   }, 
   {
     "pk": 212, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Baptists", 
       "ethnicity": "German"
@@ -2069,7 +2069,7 @@
   }, 
   {
     "pk": 213, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "German American newspapers", 
       "ethnicity": "German"
@@ -2077,7 +2077,7 @@
   }, 
   {
     "pk": 214, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "German American newspapers.", 
       "ethnicity": "German"
@@ -2085,7 +2085,7 @@
   }, 
   {
     "pk": 215, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "German Americans", 
       "ethnicity": "German"
@@ -2093,7 +2093,7 @@
   }, 
   {
     "pk": 216, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "German-American newspapers", 
       "ethnicity": "German"
@@ -2101,7 +2101,7 @@
   }, 
   {
     "pk": 217, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Germans", 
       "ethnicity": "German"
@@ -2109,7 +2109,7 @@
   }, 
   {
     "pk": 218, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Lutherans", 
       "ethnicity": "German"
@@ -2117,7 +2117,7 @@
   }, 
   {
     "pk": 219, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Belarusian Americans", 
       "ethnicity": "Belarusian"
@@ -2125,7 +2125,7 @@
   }, 
   {
     "pk": 220, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Belarusians", 
       "ethnicity": "Belarusian"
@@ -2133,7 +2133,7 @@
   }, 
   {
     "pk": 221, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Macedonians", 
       "ethnicity": "Macedonian"
@@ -2141,7 +2141,7 @@
   }, 
   {
     "pk": 222, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Basque Americans", 
       "ethnicity": "Basque"
@@ -2149,7 +2149,7 @@
   }, 
   {
     "pk": 223, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Basques", 
       "ethnicity": "Basque"
@@ -2157,7 +2157,7 @@
   }, 
   {
     "pk": 224, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Vietnamese Americans", 
       "ethnicity": "Vietnamese"
@@ -2165,7 +2165,7 @@
   }, 
   {
     "pk": 225, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Romanian Americans", 
       "ethnicity": "Romanian"
@@ -2173,7 +2173,7 @@
   }, 
   {
     "pk": 226, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Romanians", 
       "ethnicity": "Romanian"
@@ -2181,7 +2181,7 @@
   }, 
   {
     "pk": 227, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Dutch Americans", 
       "ethnicity": "Dutch"
@@ -2189,7 +2189,7 @@
   }, 
   {
     "pk": 228, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Cape Verdean Americans", 
       "ethnicity": "Cape Verdean"
@@ -2197,7 +2197,7 @@
   }, 
   {
     "pk": 229, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Cape Verdeans", 
       "ethnicity": "Cape Verdean"
@@ -2205,7 +2205,7 @@
   }, 
   {
     "pk": 230, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Ukrainian Americans", 
       "ethnicity": "Ukranian"
@@ -2213,7 +2213,7 @@
   }, 
   {
     "pk": 231, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Ukrainians", 
       "ethnicity": "Ukranian"
@@ -2221,7 +2221,7 @@
   }, 
   {
     "pk": 232, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Cajuns", 
       "ethnicity": "Cajun"
@@ -2229,7 +2229,7 @@
   }, 
   {
     "pk": 233, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Filipino Americans", 
       "ethnicity": "Filipino"
@@ -2237,7 +2237,7 @@
   }, 
   {
     "pk": 234, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Filipinos", 
       "ethnicity": "Filipino"
@@ -2245,7 +2245,7 @@
   }, 
   {
     "pk": 235, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Filippino", 
       "ethnicity": "Filipino"
@@ -2253,7 +2253,7 @@
   }, 
   {
     "pk": 236, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Welsh Americans", 
       "ethnicity": "Welsh"
@@ -2261,7 +2261,7 @@
   }, 
   {
     "pk": 237, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Antillians", 
       "ethnicity": "West Indian"
@@ -2269,7 +2269,7 @@
   }, 
   {
     "pk": 238, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Canadians", 
       "ethnicity": "Canadian"
@@ -2277,7 +2277,7 @@
   }, 
   {
     "pk": 239, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Humour que?be?cois", 
       "ethnicity": "Canadian"
@@ -2285,7 +2285,7 @@
   }, 
   {
     "pk": 240, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Journaux canadiens-anglais", 
       "ethnicity": "Canadian"
@@ -2293,7 +2293,7 @@
   }, 
   {
     "pk": 241, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Arab Americans", 
       "ethnicity": "Arab"
@@ -2301,7 +2301,7 @@
   }, 
   {
     "pk": 242, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Arabs", 
       "ethnicity": "Arab"
@@ -2309,7 +2309,7 @@
   }, 
   {
     "pk": 243, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Hmong", 
       "ethnicity": "Cambodian"
@@ -2317,7 +2317,7 @@
   }, 
   {
     "pk": 244, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Hmong Americans", 
       "ethnicity": "Cambodian"
@@ -2325,7 +2325,7 @@
   }, 
   {
     "pk": 245, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "British Americans", 
       "ethnicity": "British"
@@ -2333,7 +2333,7 @@
   }, 
   {
     "pk": 248, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Slavic Americans", 
       "ethnicity": "Slavic"
@@ -2341,7 +2341,7 @@
   }, 
   {
     "pk": 249, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Slavs", 
       "ethnicity": "Slavic"
@@ -2349,7 +2349,7 @@
   }, 
   {
     "pk": 251, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Porguguese-Americans", 
       "ethnicity": "Portuguese"
@@ -2357,7 +2357,7 @@
   }, 
   {
     "pk": 252, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Portuguese Americans", 
       "ethnicity": "Portuguese"
@@ -2365,7 +2365,7 @@
   }, 
   {
     "pk": 253, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Mexican American students", 
       "ethnicity": "Mexican"
@@ -2373,7 +2373,7 @@
   }, 
   {
     "pk": 254, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Mexican American youth", 
       "ethnicity": "Mexican"
@@ -2381,7 +2381,7 @@
   }, 
   {
     "pk": 255, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Mexican Americans", 
       "ethnicity": "Mexican"
@@ -2389,7 +2389,7 @@
   }, 
   {
     "pk": 256, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Mexican Americans (Calif.)", 
       "ethnicity": "Mexican"
@@ -2397,7 +2397,7 @@
   }, 
   {
     "pk": 257, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Mexicans", 
       "ethnicity": "Mexican"
@@ -2405,7 +2405,7 @@
   }, 
   {
     "pk": 258, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Japanese Americans", 
       "ethnicity": "Japanese"
@@ -2413,7 +2413,7 @@
   }, 
   {
     "pk": 259, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Ryukyuans", 
       "ethnicity": "Japanese"
@@ -2421,7 +2421,7 @@
   }, 
   {
     "pk": 261, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Asian Americans", 
       "ethnicity": "Asian"
@@ -2429,7 +2429,7 @@
   }, 
   {
     "pk": 262, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Asians", 
       "ethnicity": "Asian"
@@ -2437,7 +2437,7 @@
   }, 
   {
     "pk": 263, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Spaniards", 
       "ethnicity": "Spanish"
@@ -2445,7 +2445,7 @@
   }, 
   {
     "pk": 264, 
-    "model": "web.EthnicitySynonym", 
+    "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Spanish Americans", 
       "ethnicity": "Spanish"
