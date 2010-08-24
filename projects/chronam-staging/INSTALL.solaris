@@ -113,10 +113,10 @@ LD_CONFIG_32=/ndnp/staging/ld.config
 export LD_CONFIG_32
 
 - mod_wsgi
-  wget http://modwsgi.googlecode.com/files/mod_wsgi-3.2.tar.gz
-  gunzip mod_wsgi-3.2.tar.gz
-  tar xvf mod_wsgi-3.2.tar
-  cd mod_wsgi-3.2
+  wget http://modwsgi.googlecode.com/files/mod_wsgi-3.3.tar.gz
+  gunzip mod_wsgi-3.3.tar.gz
+  tar xvf mod_wsgi-3.3.tar
+  cd mod_wsgi-3.3
   ./configure --with-apxs=/ndnp/staging/apache2/bin/apxs --with-python=/ndnp/staging/python2.7/bin/python
   make install
   mkdir /ndnp/staging/.python-eggs
