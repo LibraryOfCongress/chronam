@@ -40,8 +40,8 @@ from django.forms import fields
 from django.db.models import Count, Max
 from django.utils import html
 
-from chronam.core import models
-from chronam.web import forms, index
+from chronam.core import models, index
+from chronam.web import forms
 from chronam.web.decorators import rdf_view, opensearch_clean
 from chronam import utils
 from chronam.web.rdf import title_to_graph, issue_to_graph, page_to_graph, \
