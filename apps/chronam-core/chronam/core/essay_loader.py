@@ -6,7 +6,7 @@ from lxml import etree
 from django.conf import settings
 
 from chronam.core.batch_loader import ns
-from chronam.web.index import index_title
+from chronam.core.index import index_title
 from chronam.core.models import Essay, Title
 
 
