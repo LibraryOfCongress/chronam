@@ -66,10 +66,13 @@ have relevant data from the rdc in them:
   cd pip-0.8
   python setup.py install
 
-- install chronam requrements
+- install chronam requirements
   cd /ndnp/staging/chronam/projects/chronam-staging/
   export LDFLAGS="-L/ndnp/staging/python2.6/lib -L/ndnp/staging/mysql5/lib/mysql"
   pip install -r requirements.pip
+
+- install chronam-staging
+  pip install -e .
 
 - aware
   wget --no-check-certificate --http-user your-username --http-password your-password https://rdc.lctl.gov/svn/ndnp/third-party/j2k-3.18.2-solaris-x86-32.tar.gz
