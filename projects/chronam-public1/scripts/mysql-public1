@@ -25,7 +25,7 @@
 # Description: MySQL is a very fast and reliable SQL database engine.
 ### END INIT INFO
  
-# If you install MySQL on some other places than /ndnp/staging/mysql5, then you
+# If you install MySQL on some other places than /ndnp/public1/mysql5, then you
 # have to do one of the following things for this script to work:
 #
 # - Run this script from within the MySQL installation directory
@@ -43,8 +43,8 @@
 # If you change base dir, you must also change datadir. These may get
 # overwritten by settings in the MySQL configuration files.
 
-basedir=/ndnp/staging/mysql5
-datadir=/indexes/mysql/staging
+basedir=/ndnp/public1/mysql5
+datadir=/indexes/mysql/public1
 
 # Default value, in seconds, afterwhich the script should timeout waiting
 # for server start. 
@@ -62,14 +62,14 @@ use_mysqld_safe=1
 user=ndnp
 if test -z "$basedir"
 then
-  basedir=/ndnp/staging/mysql5
-  bindir=/ndnp/staging/mysql5/bin
+  basedir=/ndnp/public1/mysql5
+  bindir=/ndnp/public1/mysql5/bin
   if test -z "$datadir"
   then
-    datadir=/ndnp/staging/mysql5/var
+    datadir=/ndnp/public1/mysql5/var
   fi
-  sbindir=/ndnp/staging/mysql5/sbin
-  libexecdir=/ndnp/staging/mysql5/libexec
+  sbindir=/ndnp/public1/mysql5/sbin
+  libexecdir=/ndnp/public1/mysql5/libexec
 else
   bindir="$basedir/bin"
   if test -z "$datadir"

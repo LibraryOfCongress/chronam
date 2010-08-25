@@ -17,9 +17,9 @@ DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysq
 DATABASE_NAME = 'chronam'             # Or path to database file if using sqlite3.
 DATABASE_USER = 'chronam'             # Not used with sqlite3.
 DATABASE_PASSWORD = 'pick_one'         # Not used with sqlite3.
-DATABASE_HOST = '/tmp/mysql_staging.sock'             # Set to empty string for localhost. Not used with sqlite3.
+DATABASE_HOST = '/tmp/mysql_public1.sock'             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = '3307'             # Set to empty string for default. Not used with sqlite3.
-DATABASE_OPTIONS = { 'unix_socket': '/tmp/mysql_staging.sock' }
+DATABASE_OPTIONS = { 'unix_socket': '/tmp/mysql_public1.sock' }
 
 
 # Local time zone for this installation. Choices can be found here:
@@ -84,9 +84,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'chronam.web.context_processors.extra_request_info',
 )
 
-STORAGE = '/ndnp/staging/data/batches'
-BIB_STORAGE = '/ndnp/staging/data/bib/data'
-ESSAY_STORAGE = '/ndnp/staging/data/essays'
+STORAGE = '/ndnp/public1/data/batches'
+BIB_STORAGE = '/ndnp/public1/data/bib/data'
+ESSAY_STORAGE = '/ndnp/public1/data/essays'
 
 _ROOT = os.path.abspath(os.path.dirname(__file__))
 MEDIA_ROOT = os.path.join(_ROOT, 'static')
