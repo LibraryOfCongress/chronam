@@ -18,7 +18,7 @@ DATABASE_NAME = 'chronam'             # Or path to database file if using sqlite
 DATABASE_USER = 'chronam'             # Not used with sqlite3.
 DATABASE_PASSWORD = 'pick_one'         # Not used with sqlite3.
 DATABASE_HOST = '/tmp/mysql_public1.sock'             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = '3307'             # Set to empty string for default. Not used with sqlite3.
+DATABASE_PORT = '3306'             # Set to empty string for default. Not used with sqlite3.
 DATABASE_OPTIONS = { 'unix_socket': '/tmp/mysql_public1.sock' }
 
 
@@ -92,7 +92,7 @@ _ROOT = os.path.abspath(os.path.dirname(__file__))
 MEDIA_ROOT = os.path.join(_ROOT, 'static')
 THUMBNAIL_WIDTH = 200
 
-SOLR = 'http://localhost:8084/solr'
+SOLR = 'http://localhost:8083/solr'
 
 OMNITURE_SCRIPT = "http://www.loc.gov:8081/global/s_code.js"
 
