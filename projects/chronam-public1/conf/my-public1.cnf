@@ -5,14 +5,14 @@
 # The following options will be passed to all MySQL clients
 [client]
 #password	= your_password
-port		= 3307
+port		= 3306
 socket		= /tmp/mysql_public1.sock
 
 # Here follows entries for some specific programs
 
 # The MySQL server
 [mysqld]
-port		= 3307
+port		= 3306
 socket		= /tmp/mysql_public1.sock
 skip-locking
 key_buffer = 384M
