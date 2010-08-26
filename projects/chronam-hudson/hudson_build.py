@@ -6,9 +6,7 @@ import shutil
 import subprocess
 
 WORKSPACE = os.environ['WORKSPACE']
-PROJECT = os.environ["JOB_NAME"]  # TODO: use PROJECT from os.environ
-                                  # and fall back to using JOB_NAME
-
+PROJECT = os.environ["PROJECT"]  
 PROJECT_ROOT = os.environ["PROJECT_ROOT"]
 
 DJANGO_PROJECT_ROOT = os.path.join(PROJECT_ROOT, PROJECT)
