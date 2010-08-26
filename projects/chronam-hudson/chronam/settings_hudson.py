@@ -70,6 +70,8 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'django.contrib.humanize',
+    'chronam.core',
+    'chronam.loc',
     'chronam.web',
 )
 
