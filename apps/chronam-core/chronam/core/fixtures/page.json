@@ -1,0 +1,30 @@
+[
+  {
+    "pk": 5551212,
+    "model": "core.reel",
+    "fields": {
+      "number": 5551212,
+      "batch": "batch_curiv_ahwahnee_ver01",
+      "created": "2009-03-26 20:59:28"
+    }
+  },
+  {
+    "pk": 1, 
+    "model": "core.page", 
+    "fields": {
+      "created": "2009-03-26 20:59:28", 
+      "jp2_width": 6394, 
+      "sequence": 1, 
+      "jp2_length": 8677, 
+      "number": "", 
+      "tiff_filename": "sn83030214/00175037652/1898010101/0005.tif", 
+      "jp2_filename": "sn83030214/00175037652/1898010101/0005.jp2", 
+      "pdf_filename": "sn83030214/00175037652/1898010101/0005.pdf", 
+      "indexed": 1, 
+      "ocr_filename": "sn83030214/00175037652/1898010101/0005.xml", 
+      "issue": 1, 
+      "section_label": "",
+     "reel": 5551212
+    }
+  }
+]

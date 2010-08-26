@@ -1,0 +1,692 @@
+[
+  {
+    "pk": "alb", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Albanian", 
+      "lingvoj": "http://www.lingvoj.org/lang/sq"
+    }
+  }, 
+  {
+    "pk": "amh", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Amharic", 
+      "lingvoj": "http://www.lingvoj.org/lang/am"
+    }
+  }, 
+  {
+    "pk": "ara", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Arabic", 
+      "lingvoj": "http://www.lingvoj.org/lang/ar"
+    }
+  }, 
+  {
+    "pk": "arm", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Armenian", 
+      "lingvoj": "http://www.lingvoj.org/lang/hy"
+    }
+  }, 
+  {
+    "pk": "baq", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Basque", 
+      "lingvoj": "http://www.lingvoj.org/lang/eu"
+    }
+  }, 
+  {
+    "pk": "bel", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Belarussian", 
+      "lingvoj": "http://www.lingvoj.org/lang/be"
+    }
+  }, 
+  {
+    "pk": "ben", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Bengali", 
+      "lingvoj": "http://www.lingvoj.org/lang/bn"
+    }
+  }, 
+  {
+    "pk": "bos", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Bosnian", 
+      "lingvoj": "http://www.lingvoj.org/lang/bs"
+    }
+  }, 
+  {
+    "pk": "bul", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Bulgarian", 
+      "lingvoj": "http://www.lingvoj.org/lang/bg"
+    }
+  }, 
+  {
+    "pk": "bur", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Burmese", 
+      "lingvoj": "http://www.lingvoj.org/lang/my"
+    }
+  }, 
+  {
+    "pk": "ceb", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Cebuano", 
+      "lingvoj": "http://www.lingvoj.org/lang/ceb"
+    }
+  }, 
+  {
+    "pk": "che", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Chechen", 
+      "lingvoj": "http://www.lingvoj.org/lang/ce"
+    }
+  }, 
+  {
+    "pk": "chi", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Chinese", 
+      "lingvoj": "http://www.lingvoj.org/lang/gan"
+    }
+  }, 
+  {
+    "pk": "cho", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Choctaw", 
+      "lingvoj": "http://www.lingvoj.org/lang/cho"
+    }
+  }, 
+  {
+    "pk": "chr", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Cherokee", 
+      "lingvoj": "http://www.lingvoj.org/lang/chr"
+    }
+  }, 
+  {
+    "pk": "cpf", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Creoles and Pidgins, French-based (Other)", 
+      "lingvoj": "http://www.lingvoj.org/lang/cpf"
+    }
+  }, 
+  {
+    "pk": "cre", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Cree", 
+      "lingvoj": "http://www.lingvoj.org/lang/cr"
+    }
+  }, 
+  {
+    "pk": "crp", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Creoles and Pidgins"
+    }
+  }, 
+  {
+    "pk": "cze", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Czech", 
+      "lingvoj": "http://www.lingvoj.org/lang/cs"
+    }
+  }, 
+  {
+    "pk": "dak", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Dakota", 
+      "lingvoj": "http://www.lingvoj.org/lang/dak"
+    }
+  }, 
+  {
+    "pk": "dan", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Danish", 
+      "lingvoj": "http://www.lingvoj.org/lang/da"
+    }
+  }, 
+  {
+    "pk": "dut", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Dutch", 
+      "lingvoj": "http://www.lingvoj.org/lang/nl"
+    }
+  }, 
+  {
+    "pk": "eng", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "English", 
+      "lingvoj": "http://www.lingvoj.org/lang/en"
+    }
+  }, 
+  {
+    "pk": "epo", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Esperanto", 
+      "lingvoj": "http://www.lingvoj.org/lang/eo"
+    }
+  }, 
+  {
+    "pk": "est", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Estonian", 
+      "lingvoj": "http://www.lingvoj.org/lang/et"
+    }
+  }, 
+  {
+    "pk": "fin", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Finnish", 
+      "lingvoj": "http://www.lingvoj.org/lang/fi"
+    }
+  }, 
+  {
+    "pk": "fre", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "French", 
+      "lingvoj": "http://www.lingvoj.org/lang/fr"
+    }
+  }, 
+  {
+    "pk": "gem", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Germanic"
+    }
+  }, 
+  {
+    "pk": "ger", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "German", 
+      "lingvoj": "http://www.lingvoj.org/lang/de"
+    }
+  }, 
+  {
+    "pk": "gle", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Irish", 
+      "lingvoj": "http://www.lingvoj.org/lang/ga"
+    }
+  }, 
+  {
+    "pk": "gre", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Greek", 
+      "lingvoj": "http://www.lingvoj.org/lang/el"
+    }
+  }, 
+  {
+    "pk": "guj", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Gujarati", 
+      "lingvoj": "http://www.lingvoj.org/lang/gu"
+    }
+  }, 
+  {
+    "pk": "haw", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Hawaiian", 
+      "lingvoj": "http://www.lingvoj.org/lang/haw"
+    }
+  }, 
+  {
+    "pk": "heb", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Hebrew", 
+      "lingvoj": "http://www.lingvoj.org/lang/he"
+    }
+  }, 
+  {
+    "pk": "hin", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Hindi", 
+      "lingvoj": "http://www.lingvoj.org/lang/hi"
+    }
+  }, 
+  {
+    "pk": "hmn", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Hmong", 
+      "lingvoj": "http://www.lingvoj.org/lang/hmn"
+    }
+  }, 
+  {
+    "pk": "hun", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Hungarian", 
+      "lingvoj": "http://www.lingvoj.org/lang/hu"
+    }
+  }, 
+  {
+    "pk": "ilo", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Iloko", 
+      "lingvoj": "http://www.lingvoj.org/lang/ilo"
+    }
+  }, 
+  {
+    "pk": "ind", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Indonesian", 
+      "lingvoj": "http://www.lingvoj.org/lang/id"
+    }
+  }, 
+  {
+    "pk": "ipk", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Inupiaq", 
+      "lingvoj": "http://www.lingvoj.org/lang/ik"
+    }
+  }, 
+  {
+    "pk": "ira", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Iranian", 
+      "lingvoj": "http://www.lingvoj.org/lang/ira"
+    }
+  }, 
+  {
+    "pk": "ita", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Italian", 
+      "lingvoj": "http://www.lingvoj.org/lang/it"
+    }
+  }, 
+  {
+    "pk": "jpn", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Japanese", 
+      "lingvoj": "http://www.lingvoj.org/lang/ja"
+    }
+  }, 
+  {
+    "pk": "khm", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Khmer", 
+      "lingvoj": "http://www.lingvoj.org/lang/km"
+    }
+  }, 
+  {
+    "pk": "kor", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Korean", 
+      "lingvoj": "http://www.lingvoj.org/lang/ko"
+    }
+  }, 
+  {
+    "pk": "kur", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Kurdish",
+      "lingvoj": "http://www.lingvoj.org/lang/ku"
+    }
+  },
+  {
+    "pk": "lad", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Ladino", 
+      "lingvoj": "http://www.lingvoj.org/lang/lad"
+    }
+  }, 
+  {
+    "pk": "lav", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Latvian", 
+      "lingvoj": "http://www.lingvoj.org/lang/lv"
+    }
+  }, 
+  {
+    "pk": "lit", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Lithuanian", 
+      "lingvoj": "http://www.lingvoj.org/lang/lt"
+    }
+  }, 
+  {
+    "pk": "mac", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Macedonian", 
+      "lingvoj": "http://www.lingvoj.org/lang/mk"
+    }
+  }, 
+  {
+    "pk": "mal", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Malayalam", 
+      "lingvoj": "http://www.lingvoj.org/lang/ml"
+    }
+  }, 
+  {
+    "pk": "map", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Austronesian (Other)"
+    }
+  }, 
+  {
+    "pk": "mar", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Marathi", 
+      "lingvoj": "http://www.lingvoj.org/lang/mr"
+    }
+  }, 
+  {
+    "pk": "moh", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Mohawk", 
+      "lingvoj": "http://www.lingvoj.org/lang/moh"
+    }
+  }, 
+  {
+    "pk": "mul", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Multiple"
+    }
+  }, 
+  {
+    "pk": "mus", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Creek", 
+      "lingvoj": "http://www.lingvoj.org/lang/mus"
+    }
+  }, 
+  {
+    "pk": "nav", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Navajo", 
+      "lingvoj": "http://www.lingvoj.org/lang/nv"
+    }
+  }, 
+  {
+    "pk": "nor", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Norwegian", 
+      "lingvoj": "http://www.lingvoj.org/lang/no"
+    }
+  }, 
+  {
+    "pk": "pan", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Panjabi", 
+      "lingvoj": "http://www.lingvoj.org/lang/pa"
+    }
+  }, 
+  {
+    "pk": "per", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Persian", 
+      "lingvoj": "http://www.lingvoj.org/lang/fa"
+    }
+  }, 
+  {
+    "pk": "pol", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Polish", 
+      "lingvoj": "http://www.lingvoj.org/lang/pl"
+    }
+  }, 
+  {
+    "pk": "por", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Portuguese", 
+      "lingvoj": "http://www.lingvoj.org/lang/pt"
+    }
+  }, 
+  {
+    "pk": "rum", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Romanian", 
+      "lingvoj": "http://www.lingvoj.org/lang/ro"
+    }
+  }, 
+  {
+    "pk": "rus", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Russian", 
+      "lingvoj": "http://www.lingvoj.org/lang/ru"
+    }
+  }, 
+  {
+    "pk": "sam", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Samaritan Aramaic", 
+      "lingvoj": "http://www.lingvoj.org/lang/sam"
+    }
+  }, 
+  {
+    "pk": "scc", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Serbian", 
+      "lingvoj": "http://www.lingvoj.org/lang/sr"
+    }
+  }, 
+  {
+    "pk": "scr", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Croatian", 
+      "lingvoj": "http://www.lingvoj.org/lang/hr"
+    }
+  }, 
+  {
+    "pk": "slo", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Slovak", 
+      "lingvoj": "http://www.lingvoj.org/lang/sk"
+    }
+  }, 
+  {
+    "pk": "slv", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Slovenian", 
+      "lingvoj": "http://www.lingvoj.org/lang/sl"
+    }
+  }, 
+  {
+    "pk": "smo", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Samoan", 
+      "lingvoj": "http://www.lingvoj.org/lang/sm"
+    }
+  }, 
+  {
+    "pk": "spa", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Spanish", 
+      "lingvoj": "http://www.lingvoj.org/lang/es"
+    }
+  }, 
+  {
+    "pk": "swe", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Swedish", 
+      "lingvoj": "http://www.lingvoj.org/lang/sv"
+    }
+  }, 
+  {
+    "pk": "syr", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Syriac", 
+      "lingvoj": "http://www.lingvoj.org/lang/syr"
+    }
+  }, 
+  {
+    "pk": "tam", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Tamil", 
+      "lingvoj": "http://www.lingvoj.org/lang/ta"
+    }
+  }, 
+  {
+    "pk": "tgk", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Tajik", 
+      "lingvoj": "http://www.lingvoj.org/lang/tg"
+    }
+  }, 
+  {
+    "pk": "tgl", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Tagalog", 
+      "lingvoj": "http://www.lingvoj.org/lang/tl"
+    }
+  }, 
+  {
+    "pk": "tha", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Thai", 
+      "lingvoj": "http://www.lingvoj.org/lang/th"
+    }
+  }, 
+  {
+    "pk": "tur", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Turkish", 
+      "lingvoj": "http://www.lingvoj.org/lang/tr"
+    }
+  }, 
+  {
+    "pk": "ukr", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Ukrainian", 
+      "lingvoj": "http://www.lingvoj.org/lang/uk"
+    }
+  }, 
+  {
+    "pk": "urd", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Urdu", 
+      "lingvoj": "http://www.lingvoj.org/lang/ur"
+    }
+  }, 
+  {
+    "pk": "uzb", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Uzbek", 
+      "lingvoj": "http://www.lingvoj.org/lang/uz"
+    }
+  }, 
+  {
+    "pk": "vie", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Vietnamese", 
+      "lingvoj": "http://www.lingvoj.org/lang/vi"
+    }
+  }, 
+  {
+    "pk": "wel", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Welsh", 
+      "lingvoj": "http://www.lingvoj.org/lang/cy"
+    }
+  }, 
+  {
+    "pk": "wen", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Sorbian"
+    }
+  }, 
+  {
+    "pk": "yid", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Yiddish", 
+      "lingvoj": "http://www.lingvoj.org/lang/yi"
+    }
+  }, 
+  {
+    "pk": "ypk", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Yupik", 
+      "lingvoj": "http://www.lingvoj.org/lang/ypk"
+    }
+  },
+  {
+    "pk": "zxx", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "No Linguistic Content"
+    }
+  }
+]

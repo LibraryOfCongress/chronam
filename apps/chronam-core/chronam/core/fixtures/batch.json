@@ -1,0 +1,11 @@
+[
+  {
+    "pk": "batch_curiv_ahwahnee_ver01", 
+    "model": "core.batch", 
+    "fields": {
+      "validated_batch_file": "BATCH_1.xml", 
+      "awardee": "curiv", 
+      "created": "2009-03-26 20:59:28"
+    }
+  }
+]

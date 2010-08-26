@@ -1,0 +1,16 @@
+#!/bin/ksh
+
+export LD_CONFIG_32=/ndnp/public1/ld.config
+
+case "$1" in
+start )
+       /ndnp/public1/apache2/bin/apachectl start
+       ;;
+stop )
+       /ndnp/public1/apache2/bin/apachectl stop
+       ;;
+* )
+       echo "Usage: $0 (start | stop)"
+       exit 1
+esac
+

@@ -1,0 +1,16 @@
+[
+  {
+    "pk": 1, 
+    "model": "core.issue", 
+    "fields": {
+      "title": "sn83030214", 
+      "date_issued": "1898-01-01", 
+      "batch": "batch_curiv_ahwahnee_ver01", 
+      "number": "32", 
+      "volume": "83", 
+      "edition": 1, 
+      "created": "2009-03-26 20:59:28", 
+      "edition_label": ""
+    }
+  }
+]
