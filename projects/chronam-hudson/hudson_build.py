@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-REVISION_CONTROL = 'hg'  # hg, svn, git
-
 import os
 import sys
 import shutil
@@ -11,11 +9,7 @@ WORKSPACE = os.environ['WORKSPACE']
 PROJECT = os.environ["JOB_NAME"]  # TODO: use PROJECT from os.environ
                                   # and fall back to using JOB_NAME
 
-# hudson checks out svn into a subdirectory in the workspace directory
-if REVISION_CONTROL == 'svn':
-    PROJECT_ROOT = os.join.path(WORKSPACE, PROJECT)
-else:
-    PROJECT_ROOT = WORKSPACE
+PROJECT_ROOT = os.environ["PROJECT_ROOT"]
 
 DJANGO_PROJECT_ROOT = os.path.join(PROJECT_ROOT, PROJECT)
 VIRTUAL_ENV = os.path.realpath(
