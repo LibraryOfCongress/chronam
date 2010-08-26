@@ -1,6 +1,9 @@
 syntax: glob
 
 *.pyc
+*~
+\#*\#
+*.egg-info/*
 chronam/settings.py
 chronam/static/sitemaps/*
 chronam/*.log

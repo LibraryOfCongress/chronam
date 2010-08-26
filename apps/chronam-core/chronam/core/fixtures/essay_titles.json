@@ -1,0 +1,417 @@
+[
+  {
+    "pk": "sn86069325", 
+    "model": "core.title", 
+    "fields": {
+      "place_of_publication": "Owensboro, Ky.", 
+      "publisher": "[Kentucky Reporter Pub. Co.]", 
+      "start_year": "1???", 
+      "frequency_date": null, 
+      "name": "Kentucky reporter.", 
+      "end_year": "19??", 
+      "version": "2004-10-11 13:36:54", 
+      "issn": null, 
+      "created": "2009-11-18 17:19:49", 
+      "frequency": "Weekly", 
+      "oclc": "13922717", 
+      "name_normal": "kentucky reporter.", 
+      "country": "kyu", 
+      "lccn_orig": "sn 86069325"
+    }
+  },
+  {
+    "pk": "sn83027091", 
+    "model": "core.title", 
+    "fields": {
+      "lccn_orig": "sn 83027091",
+      "place_of_publication": "Washington, D.C.", 
+      "publisher": "Colored American Pub. Co.", 
+      "start_year": "1893", 
+      "name": "The colored American.", 
+      "end_year": "19uu", 
+      "issn": null, 
+      "frequency": "Weekly", 
+      "oclc": "ocm09948037", 
+      "name_normal": "colored American.", 
+      "created": "2009-02-09 06:44:45",
+      "version": "2004-10-11 13:00:00",
+      "country": "nyu"
+    }
+  }, 
+  {
+    "pk": "sn84024441", 
+    "model": "core.title", 
+    "fields": {
+      "lccn_orig": "sn 84024441",
+      "place_of_publication": "Washington, D.C.", 
+      "publisher": "Washington Times Co.", 
+      "start_year": "1895", 
+      "name": "The evening times.", 
+      "end_year": "1902", 
+      "issn": null, 
+      "frequency": "Daily (except Sunday)", 
+      "oclc": "ocm10954477", 
+      "name_normal": "evening times.",
+      "created": "2009-02-09 06:44:45",
+      "version"               : "2004-10-11 13:00:00",
+      "country": "nyu"
+    }
+  }, 
+  {
+    "pk": "sn83030193", 
+    "model": "core.title", 
+    "fields": {
+      "lccn_orig": "sn 83030193",
+      "place_of_publication": "New York, N.Y.", 
+      "publisher": "s.n.", 
+      "start_year": "1887", 
+      "name": "The evening world.", 
+      "end_year": "1931", 
+      "issn": null, 
+      "frequency": "Daily (except Sunday)", 
+      "oclc": "ocm09368601", 
+      "name_normal": "evening world.",
+      "created": "2009-02-09 06:44:45",
+      "version"               : "2004-10-11 13:00:00",
+      "country": "nyu"
+    }
+  }, 
+  {
+    "pk": "sn82015056", 
+    "model": "core.title", 
+    "fields": {
+      "lccn_orig": "sn 82015056",
+      "place_of_publication": "Washington, D.C.", 
+      "publisher": "R.W. White", 
+      "start_year": "1910", 
+      "name": "The National forum.", 
+      "end_year": "19uu", 
+      "issn": null, 
+      "frequency": "Weekly", 
+      "oclc": "ocm08797812", 
+      "name_normal": "National forum.",
+      "created": "2009-02-09 06:44:45",
+      "version"               : "2004-10-11 13:00:00",
+      "country": "nyu"
+    }
+  }, 
+  {
+    "pk": "sn85058130", 
+    "model": "core.title", 
+    "fields": {
+      "lccn_orig": "sn 85058130",
+      "place_of_publication": "Salt Lake City [Utah", 
+      "publisher": "W.C. Dunbar & E.L. Sloan]", 
+      "start_year": "1870", 
+      "name": "The Salt Lake herald.", 
+      "end_year": "1909", 
+      "issn": null, 
+      "frequency": "Daily", 
+      "oclc": "ocm11987624", 
+      "name_normal": "Salt Lake herald.",
+      "created": "2009-02-09 06:44:45",
+      "version"               : "2004-10-11 13:00:00",
+      "country": "nyu"
+    }
+  }, 
+  {
+    "pk": "sn85066387", 
+    "model": "core.title", 
+    "fields": {
+      "lccn_orig": "sn 85066387",
+      "place_of_publication": "San Francisco [Calif.]", 
+      "publisher": "Charles M. Shortridge", 
+      "start_year": "1895", 
+      "name": "The San Francisco call.", 
+      "end_year": "1913", 
+      "issn": null, 
+      "frequency": "Daily", 
+      "oclc": "ocm13146227", 
+      "name_normal": "San Francisco call.",
+      "created": "2009-02-09 06:44:45",
+      "version"               : "2004-10-11 13:00:00",
+      "country": "nyu"
+    }
+  }, 
+  {
+    "pk": "sn82016357", 
+    "model": "core.title", 
+    "fields": {
+      "lccn_orig": "sn 82016357",
+      "place_of_publication": "Washington, D.C.", 
+      "publisher": "Suburban Citizen Newspaper Co.", 
+      "start_year": "1891", 
+      "name": "The Suburban citizen.", 
+      "end_year": "1902", 
+      "issn": null, 
+      "frequency": "Weekly", 
+      "oclc": "ocm09298727", 
+      "name_normal": "Suburban citizen.",
+      "created": "2009-02-09 06:44:45",
+      "version"               : "2004-10-11 13:00:00",
+      "country": "nyu"
+    }
+  }, 
+  {
+    "pk": "sn83030272", 
+    "model": "core.title", 
+    "fields": {
+      "lccn_orig": "sn 83030272",
+      "place_of_publication": "New York [N.Y.]", 
+      "publisher": "Benj. H. Day", 
+      "start_year": "1833", 
+      "name": "The sun.", 
+      "end_year": "1916", 
+      "issn": null, 
+      "frequency": "Daily", 
+      "oclc": "ocm09406339", 
+      "name_normal": "sun.",
+      "created": "2009-02-09 06:44:45",
+      "version"               : "2004-10-11 13:00:00",
+      "country": "nyu"
+    }
+  }, 
+  {
+    "pk": "sn85038615", 
+    "model": "core.title", 
+    "fields": {
+      "lccn_orig": "sn 85038615",
+      "place_of_publication": "Richmond, Va.", 
+      "publisher": "Times-Dispatch Co.", 
+      "start_year": "1903", 
+      "name": "The times dispatch.", 
+      "end_year": "1914", 
+      "issn": null, 
+      "frequency": "Daily", 
+      "oclc": "ocm12872288", 
+      "name_normal": "times dispatch.",
+      "created": "2009-02-09 06:44:45",
+      "version"               : "2004-10-11 13:00:00",
+      "country": "nyu"
+    }
+  }, 
+  {
+    "pk": "sn84025891", 
+    "model": "core.title", 
+    "fields": {
+      "lccn_orig": "sn 84025891",
+      "place_of_publication": "Washington, D.C.", 
+      "publisher": "Bee Pub. Co.", 
+      "start_year": "1884", 
+      "name": "The Washington bee.", 
+      "end_year": "1922", 
+      "issn": null, 
+      "frequency": "Weekly", 
+      "oclc": "ocm10587828", 
+      "name_normal": "Washington bee.",
+      "created": "2009-02-09 06:44:45",
+      "version"               : "2004-10-11 13:00:00",
+      "country": "nyu"
+    }
+  }, 
+  {
+    "pk": "sn84026749", 
+    "model": "core.title", 
+    "fields": {
+      "lccn_orig": "sn 84026749",
+      "place_of_publication": "Washington [D.C.]", 
+      "publisher": "Times Pub. Co.", 
+      "start_year": "1902", 
+      "name": "The Washington times.", 
+      "end_year": "1939", 
+      "issn": null, 
+      "frequency": "Daily (except Sunday)", 
+      "oclc": "ocm10630160", 
+      "name_normal": "Washington times.",
+      "created": "2009-02-09 06:44:45",
+      "version"               : "2004-10-11 13:00:00",
+      "country": "nyu"
+    }
+  }, 
+  {
+    "pk": "sn82016441", 
+    "model": "core.title", 
+    "fields": {
+      "lccn_orig": "sn 82016441",
+      "place_of_publication": "Anacostia [i.e. Washington] D.C.", 
+      "publisher": "Weekly News Pub. Co.", 
+      "start_year": "1909", 
+      "name": "The Weekly news.", 
+      "end_year": "19uu", 
+      "issn": null, 
+      "frequency": "Weekly", 
+      "oclc": "ocm09334969", 
+      "name_normal": "Weekly news.",
+      "created": "2009-02-09 06:44:45",
+      "version"               : "2004-10-11 13:00:00",
+      "country": "nyu"
+    }
+  }, 
+  {
+    "pk": "sn82016351", 
+    "model": "core.title", 
+    "fields": {
+      "place_of_publication": "Washington, D.C.", 
+      "publisher": "[Sunday Globe Pub. Co.]", 
+      "start_year": "1901", 
+      "frequency_date": null, 
+      "name": "The Sunday globe.", 
+      "end_year": "1901", 
+      "version": "2008-01-17 09:08:24", 
+      "issn": "1940-7343", 
+      "created": "2009-09-21 19:48:28", 
+      "frequency": "Weekly", 
+      "oclc": "9297869", 
+      "name_normal": "sunday globe.", 
+      "country": "dcu", 
+      "lccn_orig": "sn 82016351"
+    }
+  }, 
+  {
+    "pk": "sn82016352", 
+    "model": "core.title", 
+    "fields": {
+      "place_of_publication": "Washington, D.C.", 
+      "publisher": "[s.n.]", 
+      "start_year": "1901", 
+      "frequency_date": null, 
+      "name": "Sunday morning globe.", 
+      "end_year": "1901", 
+      "version": "2008-01-17 09:08:25", 
+      "issn": "1940-7351", 
+      "created": "2009-09-21 19:48:28", 
+      "frequency": "Weekly", 
+      "oclc": "9297925", 
+      "name_normal": "sunday morning globe.", 
+      "country": "dcu", 
+      "lccn_orig": "sn 82016352"
+    }
+  }, 
+  {
+    "pk": "sn82016353", 
+    "model": "core.title", 
+    "fields": {
+      "place_of_publication": "Washington, D.C.", 
+      "publisher": "[s.n.]", 
+      "start_year": "1901", 
+      "frequency_date": null, 
+      "name": "Sunday Washington globe.", 
+      "end_year": "????", 
+      "version": "2008-01-17 09:08:25", 
+      "issn": "1940-736X", 
+      "created": "2009-09-21 19:48:28", 
+      "frequency": "Weekly", 
+      "oclc": "9298094", 
+      "name_normal": "sunday washington globe.", 
+      "country": "dcu", 
+      "lccn_orig": "sn 82016353"
+    }
+  },
+  {
+    "pk": 1, 
+    "model": "core.marc", 
+    "fields": {
+      "title": "sn83027091",
+      "xml": "<record><leader>01059cas a2200301 a 4500</leader><controlfield tag=\"001\">ocm09948037 </controlfield><controlfield tag=\"003\">OCoLC</controlfield><controlfield tag=\"005\">20041011133654.0</controlfield><controlfield tag=\"008\">830926d189319uudcuwr ne      0   a0eng d</controlfield><datafield ind1=\" \" ind2=\" \" tag=\"010\"><subfield code=\"a\">sn 83027091 </subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"040\"><subfield code=\"a\">NPV</subfield><subfield code=\"c\">NPV</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">NPY</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">NJW</subfield><subfield code=\"d\">YOX</subfield><subfield code=\"d\">MFN</subfield><subfield code=\"d\">KNP</subfield><subfield code=\"d\">CNK</subfield><subfield code=\"d\">SLU</subfield><subfield code=\"d\">NLG</subfield><subfield code=\"d\">TGN</subfield><subfield code=\"d\">NVK</subfield><subfield code=\"d\">DCN</subfield><subfield code=\"d\">CVF</subfield><subfield code=\"d\">DCN</subfield><subfield code=\"d\">OCL</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"042\"><subfield code=\"a\">lcd</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"043\"><subfield code=\"a\">n-us-dc</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"045\"><subfield code=\"a\">x9w0</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"050\"><subfield code=\"a\">Newspaper</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"052\"><subfield code=\"a\">3850</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"130\"><subfield code=\"a\">Colored American (Washington, D.C. : 1893)</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"245\"><subfield code=\"a\">The colored American.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"260\"><subfield code=\"a\">Washington, D.C. :</subfield><subfield code=\"b\">Colored American Pub. Co.,</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"300\"><subfield code=\"a\">v.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"310\"><subfield code=\"a\">Weekly</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"362\"><subfield code=\"a\">Began in 1893.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">Description based on:  No. 20 (Aug. 11, 1894).</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"530\"><subfield code=\"a\">Microfilmed by the Library of Congress for the Committee on Negro Studies of the American Council of Learned Societies.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"650\"><subfield code=\"a\">African Americans</subfield><subfield code=\"z\">Washington (D.C.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">Washington (D.C.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"752\"><subfield code=\"a\">United States</subfield><subfield code=\"b\">District of Columbia</subfield><subfield code=\"d\">Washington.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"936\"><subfield code=\"a\">Vol. 11, no. 23 (Nov. 12, 1904) LIC</subfield></datafield></record>"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "core.marc", 
+    "fields": {
+      "title": "sn84024441",
+      "xml": "<record><leader>00947cas a22002777a 4500</leader><controlfield tag=\"001\">ocm10954477 </controlfield><controlfield tag=\"003\">OCoLC</controlfield><controlfield tag=\"005\">20041011133654.0</controlfield><controlfield tag=\"008\">840716d18951902dcudn ne      0   a0eng d</controlfield><datafield ind1=\" \" ind2=\" \" tag=\"010\"><subfield code=\"a\">sn 84024441 </subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"040\"><subfield code=\"a\">NPV</subfield><subfield code=\"c\">NPV</subfield><subfield code=\"d\">NPY</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">DCN</subfield><subfield code=\"d\">DLC</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"042\"><subfield code=\"a\">lcd</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"043\"><subfield code=\"a\">n-us-dc</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"050\"><subfield code=\"a\">Newspaper</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"130\"><subfield code=\"a\">Evening times (Washington, D.C.)</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"245\"><subfield code=\"a\">The evening times.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"260\"><subfield code=\"a\">Washington, D.C. :</subfield><subfield code=\"b\">Washington Times Co.,</subfield><subfield code=\"c\">1895-1902.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"300\"><subfield code=\"a\">v.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"310\"><subfield code=\"a\">Daily (except Sunday)</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"362\"><subfield code=\"a\">Vol. 1, no. 1 (Aug. 5, 1895)-no. 2,289 (Nov. 29, 1902).</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"515\"><subfield code=\"a\">Irregular numbering.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"580\"><subfield code=\"a\">Issued also as a morning edition with title: Morning times.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">Washington (D.C.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"752\"><subfield code=\"a\">United States</subfield><subfield code=\"b\">District of Columbia</subfield><subfield code=\"d\">Washington.</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Morning times (Washington, D.C.)</subfield><subfield code=\"w\">(DLC)sn 84024442</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"785\"><subfield code=\"t\">Washington times (Washington, D.C. : 1902)</subfield><subfield code=\"w\">(DLC)sn 84026749</subfield></datafield></record>"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "core.marc", 
+    "fields": {
+      "title": "sn83030193",
+      "xml": "<record><leader>01474cas a2200349 a 4500</leader><controlfield tag=\"001\">ocm09368601 </controlfield><controlfield tag=\"003\">OCoLC</controlfield><controlfield tag=\"005\">20041011133654.0</controlfield><controlfield tag=\"008\">830401d18871931nyudn ne      0    0eng d</controlfield><datafield ind1=\" \" ind2=\" \" tag=\"010\"><subfield code=\"a\">sn 83030193 </subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"040\"><subfield code=\"a\">NPU</subfield><subfield code=\"c\">NPU</subfield><subfield code=\"d\">NPX</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">NYS</subfield><subfield code=\"d\">KNP</subfield><subfield code=\"d\">NYS</subfield><subfield code=\"d\">ANU</subfield><subfield code=\"d\">ONP</subfield><subfield code=\"d\">KNP</subfield><subfield code=\"d\">NYS</subfield><subfield code=\"d\">YOX</subfield><subfield code=\"d\">NYS</subfield><subfield code=\"d\">CRL</subfield><subfield code=\"d\">NYS</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"042\"><subfield code=\"a\">lcd</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"043\"><subfield code=\"a\">n-us-ny</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"050\"><subfield code=\"a\">Newspaper 8829-X</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"130\"><subfield code=\"a\">Evening world (New York, N.Y. : 1887)</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"245\"><subfield code=\"a\">The evening world.</subfield></datafield><datafield ind1=\"1\" ind2=\"0\" tag=\"246\"><subfield code=\"a\">World</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"260\"><subfield code=\"a\">New York, N.Y. :</subfield><subfield code=\"b\">s.n.,</subfield><subfield code=\"c\">1887-1931</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"300\"><subfield code=\"a\">v. :</subfield><subfield code=\"b\">ill. ;</subfield><subfield code=\"c\">55 cm.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"310\"><subfield code=\"a\">Daily (except Sunday)</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"362\"><subfield code=\"a\">Oct. 10, 1887-Feb. 26,1931.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">Has occasional extra editions.</subfield></datafield><datafield ind1=\"4\" ind2=\" \" tag=\"510\"><subfield code=\"a\">Gregory, W. Amer. Newspapers</subfield><subfield code=\"c\">482</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"525\"><subfield code=\"a\">Apr. 30, 1889 published as: Ye World. Ye centennial number of Ye evening world.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"580\"><subfield code=\"a\">Evening ed. of: World (New York, N.Y. : 1883 : Daily).</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"580\"><subfield code=\"a\">Merged with: World (New York, N.Y. : 1883 : Daily), and New York Telegram, to form: Evening world, the world, the New York telegram.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">New York (N.Y.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">New York County (N.Y.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"752\"><subfield code=\"a\">United States</subfield><subfield code=\"b\">New York</subfield><subfield code=\"c\">New York</subfield><subfield code=\"d\">New York.</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"775\"><subfield code=\"t\">World (New York, N.Y. : 1883 : Daily)</subfield><subfield code=\"w\">(DLC)sn 86071683</subfield><subfield code=\"w\">(OCoLC)13846132</subfield></datafield><datafield ind1=\"1\" ind2=\"7\" tag=\"785\"><subfield code=\"t\">World (New York, N.Y. : 1883 : Daily)</subfield><subfield code=\"w\">(DLC)sn 8671683</subfield><subfield code=\"w\">(OCoLC)13846132</subfield></datafield><datafield ind1=\"1\" ind2=\"7\" tag=\"785\"><subfield code=\"t\">Evening world, the world, the New York telegram</subfield><subfield code=\"w\">(DLC)sn86071844</subfield><subfield code=\"w\">(OCoLC)14116421</subfield></datafield></record>"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "core.marc", 
+    "fields": {
+      "title": "sn82015056",
+      "xml": "<record><leader>00730cas a2200253 a 4500</leader><controlfield tag=\"001\">ocm08797812 </controlfield><controlfield tag=\"003\">OCoLC</controlfield><controlfield tag=\"005\">20041011133654.0</controlfield><controlfield tag=\"008\">820922d191019uudcuwr ne      0   a0eng  </controlfield><datafield ind1=\" \" ind2=\" \" tag=\"010\"><subfield code=\"a\">sn 82015056 </subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"040\"><subfield code=\"a\">DLC</subfield><subfield code=\"c\">DLC</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"042\"><subfield code=\"a\">lcd</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"043\"><subfield code=\"a\">n-us-dc</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"050\"><subfield code=\"a\">Newspaper</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"245\"><subfield code=\"a\">The National forum.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"260\"><subfield code=\"a\">Washington, D.C. :</subfield><subfield code=\"b\">R.W. White,</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"300\"><subfield code=\"a\">v. ;</subfield><subfield code=\"c\">60 cm.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"310\"><subfield code=\"a\">Weekly</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"362\"><subfield code=\"a\">Began in Apr. 1910.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">Description based on: Vol. 1, no. 5 (May 28, 1910).</subfield></datafield><datafield ind1=\"8\" ind2=\" \" tag=\"521\"><subfield code=\"a\">\"Black publication.\"</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"650\"><subfield code=\"a\">African Americans</subfield><subfield code=\"z\">Washington (D.C.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">Washington (D.C.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"752\"><subfield code=\"a\">United States</subfield><subfield code=\"b\">District of Columbia</subfield><subfield code=\"d\">Washington.</subfield></datafield></record>"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "core.marc", 
+    "fields": {
+      "title": "sn85058130",
+      "xml": "<record><leader>01894cas a22003977a 4500</leader><controlfield tag=\"001\">ocm11987624 </controlfield><controlfield tag=\"003\">OCoLC</controlfield><controlfield tag=\"005\">20041011133654.0</controlfield><controlfield tag=\"008\">850501d18701909utudr ne      0    0eng d</controlfield><datafield ind1=\" \" ind2=\" \" tag=\"010\"><subfield code=\"a\">sn 85058130 </subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"040\"><subfield code=\"a\">UNP</subfield><subfield code=\"c\">UNP</subfield><subfield code=\"d\">OCL</subfield><subfield code=\"d\">UNP</subfield><subfield code=\"d\">YOX</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">MFN</subfield><subfield code=\"d\">CNW</subfield><subfield code=\"d\">OCLCQ</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"019\"><subfield code=\"a\">9574187</subfield><subfield code=\"a\">12009197</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"042\"><subfield code=\"a\">msc</subfield></datafield><datafield ind1=\" \" ind2=\"4\" tag=\"050\"><subfield code=\"a\">AN2.U8</subfield><subfield code=\"b\">S3578</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"130\"><subfield code=\"a\">Salt Lake herald (Salt Lake City, Utah : 1870)</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"245\"><subfield code=\"a\">The Salt Lake herald.</subfield></datafield><datafield ind1=\"3\" ind2=\"0\" tag=\"246\"><subfield code=\"a\">Salt Lake daily herald</subfield></datafield><datafield ind1=\"3\" ind2=\"0\" tag=\"246\"><subfield code=\"a\">Sunday herald</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"260\"><subfield code=\"a\">Salt Lake City [Utah :</subfield><subfield code=\"b\">W.C. Dunbar &amp; E.L. Sloan]</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"300\"><subfield code=\"a\">v.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"310\"><subfield code=\"a\">Daily,</subfield><subfield code=\"b\">Oct. 23, 1893-1909</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"321\"><subfield code=\"a\">Daily (except Mon.),</subfield><subfield code=\"b\">June 5, 1870-Oct. 22, 1893</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"362\"><subfield code=\"a\">Vol. 1, no. 1 (June 5, 1870)-[v. 156, no. 69] (Aug. 13, 1909).</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">Published as: Salt Lake daily herald, Aug. 13, 1870-Mar. 2, 1889.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">Published on Sunday as: Sunday herald, Mar. 3, 1889-Apr. 21, 1895.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"580\"><subfield code=\"a\">Semiweekly eds.: Salt Lake semi-weekly herald, 1870-1889; Semi-weekly herald (Salt Lake City, Utah), 1889-1895; and Salt Lake herald (Salt Lake City, Utah : Semiweekly), 1895-1909.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"580\"><subfield code=\"a\">Weekly eds.: Salt Lake weekly herald, 1880-188u; Salt Lake herald (Salt Lake City, Utah : Weekly), 1895-1896.</subfield></datafield><datafield ind1=\" \" ind2=\"4\" tag=\"651\"><subfield code=\"a\">Salt Lake City (Utah)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"752\"><subfield code=\"a\">United States</subfield><subfield code=\"b\">Utah</subfield><subfield code=\"c\">Salt Lake</subfield><subfield code=\"d\">Salt Lake City.</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Salt Lake semi-weekly herald</subfield><subfield code=\"w\">(DLC)sn 83021446</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Semi-weekly herald (Salt Lake City, Utah)</subfield><subfield code=\"w\">(DLC)sn 86091391</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Salt Lake herald (Salt Lake City, Utah : Semiweekly)</subfield><subfield code=\"w\">(DLC)sn 86091392</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Salt Lake weekly herald</subfield><subfield code=\"w\">(DLC)sn 84024458</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Salt Lake herald (Salt Lake City, Utah : Weekly)</subfield><subfield code=\"w\">(DLC)sn 86091387</subfield></datafield><datafield ind1=\"0\" ind2=\"7\" tag=\"785\"><subfield code=\"t\">Inter-mountain Republican</subfield><subfield code=\"w\">(DLC)sn 85058146</subfield><subfield code=\"w\">(OCoLC)12034087</subfield></datafield><datafield ind1=\"0\" ind2=\"7\" tag=\"785\"><subfield code=\"t\">Salt Lake herald-Republican</subfield><subfield code=\"w\">(DLC)sn 85058140</subfield><subfield code=\"w\">(OCoLC)12009284</subfield></datafield></record>"
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "core.marc", 
+    "fields": {
+      "title": "sn85066387",
+      "xml": "<record><leader>01384cas a2200325 a 4500</leader><controlfield tag=\"001\">ocm13146227 </controlfield><controlfield tag=\"003\">OCoLC</controlfield><controlfield tag=\"005\">20041011133654.0</controlfield><controlfield tag=\"008\">860213d18951913caudr ne      0    0eng d</controlfield><datafield ind1=\" \" ind2=\" \" tag=\"010\"><subfield code=\"a\">sn 85066387 </subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"040\"><subfield code=\"a\">KSH</subfield><subfield code=\"c\">KSH</subfield><subfield code=\"d\">NPT</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">YOX</subfield><subfield code=\"d\">NYS</subfield><subfield code=\"d\">MGN</subfield><subfield code=\"d\">YOX</subfield><subfield code=\"d\">CNK</subfield><subfield code=\"d\">NYS</subfield><subfield code=\"d\">CNK</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"042\"><subfield code=\"a\">lcd</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"245\"><subfield code=\"a\">The San Francisco call.</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"246\"><subfield code=\"i\">Sometimes published as:</subfield><subfield code=\"a\">Call</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"246\"><subfield code=\"i\">Sunday issues published as:</subfield><subfield code=\"a\">Sunday call</subfield><subfield code=\"f\">&lt;Dec. 5, 1901&gt;</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"246\"><subfield code=\"i\">Joint issue published as:</subfield><subfield code=\"a\">Call-chronicle-examiner</subfield><subfield code=\"f\">Apr. 19, 1906</subfield></datafield><datafield ind1=\"3\" ind2=\"0\" tag=\"246\"><subfield code=\"a\">Call chronicle examiner</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"260\"><subfield code=\"a\">San Francisco [Calif.] :</subfield><subfield code=\"b\">Charles M. Shortridge,</subfield><subfield code=\"c\">1895-1913.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"300\"><subfield code=\"a\">v. :</subfield><subfield code=\"b\">ill. ;</subfield><subfield code=\"c\">58 cm.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"310\"><subfield code=\"a\">Daily</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"362\"><subfield code=\"a\">Vol. 77, no. 85 (Mar. 5, 1895)-v. 115, no. 7 (Dec. 8, 1913).</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">\"San Francisco\" appears above, and later across, masthead ornament.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">Publishers: Charles M. Shortridge, &lt;1896&gt;; John D. Spreckles, &lt;1899&gt;.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">San Francisco (Calif.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">San Francisco Bay Area (Calif.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"752\"><subfield code=\"a\">United States</subfield><subfield code=\"b\">California</subfield><subfield code=\"c\">San Francisco</subfield><subfield code=\"d\">San Francisco.</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Weekly call (San Francisco, Calif.)</subfield><subfield code=\"w\">(DLC)sn 85066391</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"780\"><subfield code=\"t\">Morning call (San Francisco, Calif.)</subfield><subfield code=\"w\">(DLC)sn 94052989</subfield></datafield><datafield ind1=\"0\" ind2=\"7\" tag=\"785\"><subfield code=\"t\">San Francisco evening post</subfield><subfield code=\"w\">(DLC)sn 94052992</subfield></datafield><datafield ind1=\"0\" ind2=\"7\" tag=\"785\"><subfield code=\"t\">San Francisco call and post</subfield><subfield code=\"w\">(DLC)sn 86064451</subfield></datafield></record>"
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "core.marc", 
+    "fields": {
+      "title": "sn82016357",
+      "xml": "<record><leader>00796cas a22002417  4500</leader><controlfield tag=\"001\">ocm09298727 </controlfield><controlfield tag=\"003\">OCoLC</controlfield><controlfield tag=\"005\">20041011133654.0</controlfield><controlfield tag=\"008\">830310d18911902dcuwr ne      0    0eng  </controlfield><datafield ind1=\" \" ind2=\" \" tag=\"010\"><subfield code=\"a\">sn 82016357 </subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"040\"><subfield code=\"a\">DLC</subfield><subfield code=\"c\">DLC</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"042\"><subfield code=\"a\">lcd</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"043\"><subfield code=\"a\">n-us-dc</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"050\"><subfield code=\"a\">Newspaper</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"245\"><subfield code=\"a\">The Suburban citizen.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"260\"><subfield code=\"a\">Washington, D.C. :</subfield><subfield code=\"b\">Suburban Citizen Newspaper Co.,</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"300\"><subfield code=\"a\">v. :</subfield><subfield code=\"b\">ill. (chiefly advertisements) ;</subfield><subfield code=\"c\">57 cm.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"310\"><subfield code=\"a\">Weekly</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"362\"><subfield code=\"a\">Began in Jan. 1891; ceased in 1902?</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">Description based on: Vol. 3, no. 2 (Feb. 4, 1893).</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"530\"><subfield code=\"a\">Also available on microfilm from the Library of Congress Photodupliation Service.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">Washington (D.C.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"752\"><subfield code=\"a\">United States</subfield><subfield code=\"b\">District of Columbia</subfield><subfield code=\"d\">Washington.</subfield></datafield></record>"
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "core.marc", 
+    "fields": {
+      "title": "sn83030272",
+      "xml": "<record><leader>03675cas a2200625 a 4500</leader><controlfield tag=\"001\">ocm09406339 </controlfield><controlfield tag=\"003\">OCoLC</controlfield><controlfield tag=\"005\">20041011133654.0</controlfield><controlfield tag=\"008\">830413d18331916nyudr ne      0    0eng d</controlfield><datafield ind1=\" \" ind2=\" \" tag=\"010\"><subfield code=\"a\">sn 83030272 </subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"040\"><subfield code=\"a\">NPU</subfield><subfield code=\"c\">NPU</subfield><subfield code=\"d\">NPA</subfield><subfield code=\"d\">NPX</subfield><subfield code=\"d\">NPI</subfield><subfield code=\"d\">OCL</subfield><subfield code=\"d\">NPY</subfield><subfield code=\"d\">NPA</subfield><subfield code=\"d\">NPY</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">OCL</subfield><subfield code=\"d\">NPH</subfield><subfield code=\"d\">YOX</subfield><subfield code=\"d\">NJW</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">MFN</subfield><subfield code=\"d\">YOX</subfield><subfield code=\"d\">NYS</subfield><subfield code=\"d\">KNP</subfield><subfield code=\"d\">MGN</subfield><subfield code=\"d\">CRL</subfield><subfield code=\"d\">NYS</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">OCL</subfield><subfield code=\"d\">MGN</subfield><subfield code=\"d\">OCL</subfield><subfield code=\"d\">CNK</subfield><subfield code=\"d\">NYS</subfield><subfield code=\"d\">NVF</subfield><subfield code=\"d\">NVK</subfield><subfield code=\"d\">FUG</subfield><subfield code=\"d\">NVK</subfield><subfield code=\"d\">NVF</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">OCL</subfield><subfield code=\"d\">CVF</subfield><subfield code=\"d\">CRL</subfield><subfield code=\"d\">IUL</subfield><subfield code=\"d\">NVF</subfield><subfield code=\"d\">NYS</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">NYS</subfield><subfield code=\"d\">OCLCQ</subfield><subfield code=\"d\">NYS</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"019\"><subfield code=\"a\">2268251</subfield><subfield code=\"a\">4282534</subfield><subfield code=\"a\">9406167</subfield><subfield code=\"a\">9642113</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"042\"><subfield code=\"a\">lcd</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"043\"><subfield code=\"a\">n-us-ny</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"050\"><subfield code=\"a\">Newspaper</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"130\"><subfield code=\"a\">Sun (New York, N.Y. : 1833)</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"245\"><subfield code=\"a\">The sun.</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"246\"><subfield code=\"i\">Issues for Apr. 13-Sept. 28, 1840 published as:</subfield><subfield code=\"a\">New York sun</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"246\"><subfield code=\"i\">Extra editions issued as:</subfield><subfield code=\"a\">Extra sun</subfield></datafield><datafield ind1=\"1\" ind2=\"3\" tag=\"246\"><subfield code=\"a\">New York sun</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"260\"><subfield code=\"a\">New York [N.Y.] :</subfield><subfield code=\"b\">Benj. H. Day,</subfield><subfield code=\"c\">1833-1916.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"300\"><subfield code=\"a\">83 v. :</subfield><subfield code=\"b\">ill. ;</subfield><subfield code=\"c\">33-60 cm.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"310\"><subfield code=\"a\">Daily,</subfield><subfield code=\"b\">1875-1916</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"321\"><subfield code=\"a\">Daily (except Sunday),</subfield><subfield code=\"b\">1833-1875</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"362\"><subfield code=\"a\">Vol. 1, no. 1 (Sept. 3, 1833)-v. 83, no. 306 (July 2, 1916).</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">Publisher varies: Benjamin H. Day &amp; George W. Wisner, 1833-1835; Benjamin H. Day, 1835-1838; Moses Yale Beach, 1838-1845; M.Y. Beach &amp; Sons, 1848; Beach Bros., 1848-1852; Moses Sperry Beach, 1852-1868; Charles A. Dana, 1868-1897.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">The text of the editorial by F.P. Church titled: \"Is there a Santa Claus?\" appeared in the Sept. 21, 1897 issue.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">A facsimile of Vol. 1, no. 1 (Sept. 3, 1833) issued by The Sun (New York, N.Y. : 1920) on Sept. 2, 1933.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"530\"><subfield code=\"a\">Issued also on microfilm by New York Public Library.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"580\"><subfield code=\"a\">Evening eds.: Evening sun (New York, N.Y. : 1852), &lt;1852&gt;, and: Evening sun (New York, N.Y. : 1887), 1887-1916.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"580\"><subfield code=\"a\">Weekly eds.: Sun (New York, N.Y. : Ed. for the country), &lt;1836-1839&gt;, and: Sun weekly, &lt;1840-1850&gt;, and: Weekly sun (New York, N.Y. : 1851), &lt;1851&gt;-1869, and: Dollar weekly sun (New York, N.Y.), 1870-1872, and: Weekly sun (New York, N.Y. : 1872), 1872-&lt;1894&gt;.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"580\"><subfield code=\"a\">Steamer eds.: Sun for Europe, 1846, and: American sun, 1846-&lt;1848&gt;.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"580\"><subfield code=\"a\">Semiweekly ed.: Semi-weekly sun (New York, N.Y.), &lt;1869-1873&gt;.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">New York (N.Y.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">New York County (N.Y.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"700\"><subfield code=\"a\">Day, Benjamin H.,</subfield><subfield code=\"d\">1810-1889.</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"700\"><subfield code=\"a\">Beach, Moses Yale,</subfield><subfield code=\"d\">1800-1868.</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"700\"><subfield code=\"a\">Beach, Moses Sperry,</subfield><subfield code=\"d\">1822-1892.</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"700\"><subfield code=\"a\">Beach, Alfred E.</subfield><subfield code=\"q\">(Alfred Ely),</subfield><subfield code=\"d\">1826-1896.</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"700\"><subfield code=\"a\">Dana, Charles A.</subfield><subfield code=\"q\">(Charles Anderson),</subfield><subfield code=\"d\">1819-1897.</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"700\"><subfield code=\"a\">Church, Francis Pharcellus,</subfield><subfield code=\"d\">1839-1906.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"752\"><subfield code=\"a\">United States</subfield><subfield code=\"b\">New York</subfield><subfield code=\"c\">New York</subfield><subfield code=\"d\">New York.</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Evening sun (New York, N.Y. : 1852)</subfield><subfield code=\"w\">(DLC)sn 85038572</subfield><subfield code=\"w\">(OCoLC)12841119</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Evening sun (New York, N.Y. : 1887)</subfield><subfield code=\"w\">(DLC)sn 83030428</subfield><subfield code=\"w\">(OCoLC)9517696</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Sun (New York, N.Y. : Ed. for the country)</subfield><subfield code=\"w\">(DLC)sn 85038571</subfield><subfield code=\"w\">(OCoLC)12841104</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Sun weekly</subfield><subfield code=\"w\">(DLC)sn 85026222</subfield><subfield code=\"w\">(OCoLC)12094149</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Weekly sun (New York, N.Y. : 1851)</subfield><subfield code=\"w\">(DLC)sn 99066040</subfield><subfield code=\"w\">(OCoLC)42842812</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Dollar weekly sun (New York, N.Y.)</subfield><subfield code=\"w\">(DLC)sn 99066041</subfield><subfield code=\"w\">(OCoLC)42843110</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Weekly sun (New York, N.Y. : 1872)</subfield><subfield code=\"w\">(DLC)sn 85026223</subfield><subfield code=\"w\">(OCoLC)12094208</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Sun for Europe</subfield><subfield code=\"w\">(DLC)sn 83030281</subfield><subfield code=\"w\">(OCoLC)9434124</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">American sun</subfield><subfield code=\"w\">(DLC)sn 83030284</subfield><subfield code=\"w\">(OCoLC)9434202</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Semi-weekly sun (New York, N.Y.)</subfield><subfield code=\"w\">(DLC)sn 86082072</subfield><subfield code=\"w\">(OCoLC)14989958</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"776\"><subfield code=\"c\">Microfilm</subfield><subfield code=\"d\">New York Public Library</subfield><subfield code=\"w\">(OCoLC)37771743</subfield></datafield><datafield ind1=\"0\" ind2=\"7\" tag=\"785\"><subfield code=\"t\">New York press (New York, N.Y. : 1896)</subfield><subfield code=\"w\">(DLC)sn 83030429</subfield><subfield code=\"w\">(OCoLC)9510687</subfield></datafield><datafield ind1=\"0\" ind2=\"7\" tag=\"785\"><subfield code=\"t\">Sun and New York press</subfield><subfield code=\"w\">(DLC)sn 83030430</subfield><subfield code=\"w\">(OCoLC)9510701</subfield></datafield></record>"
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "core.marc", 
+    "fields": {
+      "title": "sn85038615",
+      "xml": "<record><leader>01099cas a2200301 a 4500</leader><controlfield tag=\"001\">ocm12872288 </controlfield><controlfield tag=\"003\">OCoLC</controlfield><controlfield tag=\"005\">20041011133654.0</controlfield><controlfield tag=\"008\">851205d19031914vaudr ne      0    0eng d</controlfield><datafield ind1=\" \" ind2=\" \" tag=\"010\"><subfield code=\"a\">sn 85038615 </subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"040\"><subfield code=\"a\">NPY</subfield><subfield code=\"c\">NPY</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">NLG</subfield><subfield code=\"d\">MFN</subfield><subfield code=\"d\">KNP</subfield><subfield code=\"d\">MGN</subfield><subfield code=\"d\">NVK</subfield><subfield code=\"d\">DLC</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"042\"><subfield code=\"a\">lcd</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"043\"><subfield code=\"a\">n-us-va</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"050\"><subfield code=\"a\">Newspaper</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"130\"><subfield code=\"a\">Times dispatch (Richmond, Va.)</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"245\"><subfield code=\"a\">The times dispatch.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"260\"><subfield code=\"a\">Richmond, Va. :</subfield><subfield code=\"b\">Times-Dispatch Co.,</subfield><subfield code=\"c\">1903-1914.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"300\"><subfield code=\"a\">v.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"310\"><subfield code=\"a\">Daily,</subfield><subfield code=\"b\">&lt;Sept. 4, 1905-Nov. 13, 1914&gt;</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"321\"><subfield code=\"a\">Daily (except Monday),</subfield><subfield code=\"b\">&lt;Jan. 25, 1903-Sept. 3, 1905&gt;</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"362\"><subfield code=\"a\">Whole no. 16,150 (Jan. 27, 1903)-v. 64, no. 19,898 (Nov. 13, 1914).</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"530\"><subfield code=\"a\">Also available on microfilm from Bell &amp; Howell, Micro Photo Div.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">Richmond (Va.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"752\"><subfield code=\"a\">United States</subfield><subfield code=\"b\">Virginia</subfield><subfield code=\"d\">Richmond.</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Times-dispatch weekly (Richmond, Va.)</subfield><subfield code=\"w\">(DLC)sn 94060119</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"780\"><subfield code=\"t\">Times (Richmond, Va.)</subfield><subfield code=\"w\">(DLC)sn 85034438</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"780\"><subfield code=\"t\">Richmond dispatch</subfield><subfield code=\"w\">(DLC)sn 85038614</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"785\"><subfield code=\"t\">Richmond times-dispatch</subfield><subfield code=\"w\">(DLC)sn 83045389</subfield></datafield></record>"
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "core.marc", 
+    "fields": {
+      "title": "sn84025891",
+      "xml": "<record><leader>01464cas a2200325 a 4500</leader><controlfield tag=\"001\">ocm10587828 </controlfield><controlfield tag=\"003\">OCoLC</controlfield><controlfield tag=\"005\">20041011133654.0</controlfield><controlfield tag=\"008\">840403d18841922dcuwr ne      0    0eng d</controlfield><datafield ind1=\" \" ind2=\" \" tag=\"010\"><subfield code=\"a\">sn 84025891 </subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"040\"><subfield code=\"a\">NPV</subfield><subfield code=\"c\">NPV</subfield><subfield code=\"d\">NPY</subfield><subfield code=\"d\">IUL</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">NJW</subfield><subfield code=\"d\">YOX</subfield><subfield code=\"d\">MFN</subfield><subfield code=\"d\">KNP</subfield><subfield code=\"d\">ANU</subfield><subfield code=\"d\">MGN</subfield><subfield code=\"d\">CNK</subfield><subfield code=\"d\">NVK</subfield><subfield code=\"d\">CVF</subfield><subfield code=\"d\">DCN</subfield><subfield code=\"d\">CRL</subfield><subfield code=\"d\">OCL</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"042\"><subfield code=\"a\">lcd</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"043\"><subfield code=\"a\">n-us-dc</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"050\"><subfield code=\"a\">Newspaper</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"130\"><subfield code=\"a\">Washington bee (Washington, D.C. : 1884)</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"245\"><subfield code=\"a\">The Washington bee.</subfield></datafield><datafield ind1=\"1\" ind2=\"6\" tag=\"246\"><subfield code=\"a\">Bee</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"260\"><subfield code=\"a\">Washington, D.C. :</subfield><subfield code=\"b\">Bee Pub. Co.,</subfield><subfield code=\"c\">1884-1922.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"300\"><subfield code=\"a\">v.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"310\"><subfield code=\"a\">Weekly</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"362\"><subfield code=\"a\">Vol. 3, no. 9 (Aug. 2, 1884)-v. 41, no. 34 (Jan. 21, 1922).</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">Publisher varies: The Chase Publishing Co., June 22, 1918-Sept. 3, 1919; The Bee Newspaper Co., Sept. 20, 1919-Dec. 17, 1921; The Bee Publishing Co., &lt;Jan. 14, 1922&gt;-Jan. 21, 1922.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"515\"><subfield code=\"a\">Suspended Jan. 21, 1893 and between Feb. 23 and Apr. 6, 1895; some issues published combined.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"525\"><subfield code=\"a\">Some issues accompanied by supplements.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"530\"><subfield code=\"a\">Microfilmed by the Library of Congress for the Committee on Negro Studies of the American Council of Learned Societies.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"650\"><subfield code=\"a\">African Americans</subfield><subfield code=\"z\">Washington (D.C.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"650\"><subfield code=\"a\">African American newspapers</subfield><subfield code=\"z\">Washington (D.C.)</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">Washington (D.C.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"752\"><subfield code=\"a\">United States</subfield><subfield code=\"b\">District of Columbia</subfield><subfield code=\"d\">Washington.</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"780\"><subfield code=\"t\">Bee (Washington, D.C. : 1882)</subfield><subfield code=\"w\">(DLC)sn 84025890</subfield><subfield code=\"w\">(OCoLC)10587821</subfield></datafield></record>"
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "core.marc", 
+    "fields": {
+      "title": "sn84026749",
+      "xml": "<record><leader>01346cas a22003377a 4500</leader><controlfield tag=\"001\">ocm10630160 </controlfield><controlfield tag=\"003\">OCoLC</controlfield><controlfield tag=\"005\">20041011133654.0</controlfield><controlfield tag=\"008\">840414d19021939dcudn ne      0    0eng d</controlfield><datafield ind1=\" \" ind2=\" \" tag=\"010\"><subfield code=\"a\">sn 84026749 </subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"040\"><subfield code=\"a\">NPU</subfield><subfield code=\"c\">NPU</subfield><subfield code=\"d\">NPY</subfield><subfield code=\"d\">DLC</subfield><subfield code=\"d\">MFN</subfield><subfield code=\"d\">CNK</subfield><subfield code=\"d\">DCN</subfield><subfield code=\"d\">DLC</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"042\"><subfield code=\"a\">lcd</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"043\"><subfield code=\"a\">n-us-dc</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"050\"><subfield code=\"a\">Newspaper</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"130\"><subfield code=\"a\">Washington times (Washington, D.C. : 1902)</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"245\"><subfield code=\"a\">The Washington times.</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"246\"><subfield code=\"a\">Washington times-herald</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"246\"><subfield code=\"a\">Washington times herald</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"260\"><subfield code=\"a\">Washington [D.C.] :</subfield><subfield code=\"b\">Times Pub. Co.,</subfield><subfield code=\"c\">1902-1939.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"300\"><subfield code=\"a\">v.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"310\"><subfield code=\"a\">Daily (except Sunday),</subfield><subfield code=\"b\">Dec. 1, 1902-Nov. 18, 1922; Apr. 16, 1923-Jan. 31, 1939</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"321\"><subfield code=\"a\">Daily,</subfield><subfield code=\"b\">Nov. 19, 1922-Apr. 15, 1923</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"362\"><subfield code=\"a\">No. 3094 (Dec. 1, 1902)-no. 17956 (Jan. 31, 1939).</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">Extra edition issued Nov. 7, 1918 for the end of World War I.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">On Sunday published as: Washington times-herald, Nov. 19, 1922-Apr. 15, 1923.</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">Washington (D.C.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"752\"><subfield code=\"a\">United States</subfield><subfield code=\"b\">District of Columbia</subfield><subfield code=\"d\">Washington.</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"775\"><subfield code=\"t\">Washington times (Washington, D.C. : 1869)</subfield><subfield code=\"w\">(DLC)sn 82016310</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"780\"><subfield code=\"t\">Evening times (Washington, D.C.)</subfield><subfield code=\"w\">(DLC)sn 84024441</subfield></datafield><datafield ind1=\"0\" ind2=\"7\" tag=\"785\"><subfield code=\"t\">Washington herald (Washington, D.C.)</subfield><subfield code=\"w\">(DLC)sn 83045433</subfield></datafield><datafield ind1=\"0\" ind2=\"7\" tag=\"785\"><subfield code=\"t\">Times herald (Washington, D.C.)</subfield><subfield code=\"w\">(DLC)sn 85040694</subfield></datafield></record>"
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "core.marc", 
+    "fields": {
+      "title": "sn82016441",
+      "xml": "<record><leader>00767cas a2200253 a 4500</leader><controlfield tag=\"001\">ocm09334969 </controlfield><controlfield tag=\"003\">OCoLC</controlfield><controlfield tag=\"005\">20041011133654.0</controlfield><controlfield tag=\"008\">830322d190919uudcuwr ne      0    0eng  </controlfield><datafield ind1=\" \" ind2=\" \" tag=\"010\"><subfield code=\"a\">sn 82016441 </subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"040\"><subfield code=\"a\">DLC</subfield><subfield code=\"c\">DLC</subfield><subfield code=\"d\">OCLCQ</subfield><subfield code=\"d\">DLC</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"042\"><subfield code=\"a\">lcd</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"043\"><subfield code=\"a\">n-us-dc</subfield></datafield><datafield ind1=\"0\" ind2=\"0\" tag=\"050\"><subfield code=\"a\">Newspaper</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"130\"><subfield code=\"a\">Weekly news (Anacostia D.C.)</subfield></datafield><datafield ind1=\"0\" ind2=\"4\" tag=\"245\"><subfield code=\"a\">The Weekly news.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"260\"><subfield code=\"a\">Anacostia [i.e. Washington] D.C. :</subfield><subfield code=\"b\">Weekly News Pub. Co.,</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"300\"><subfield code=\"a\">v. ;</subfield><subfield code=\"c\">57 cm.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"310\"><subfield code=\"a\">Weekly</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"362\"><subfield code=\"a\">Began in 1909.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">Description based on: Vol. 1, no. 10 (Aug. 7, 1909).</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"651\"><subfield code=\"a\">Washington (D.C.)</subfield><subfield code=\"v\">Newspapers.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"752\"><subfield code=\"a\">United States</subfield><subfield code=\"b\">District of Columbia</subfield><subfield code=\"d\">Washington.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"752\"><subfield code=\"a\">United States</subfield><subfield code=\"b\">District of Columbia</subfield><subfield code=\"d\">Anacostia.</subfield></datafield></record>"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "core.language",
+    "fields": {
+      "code": "eng",
+      "name": "English",
+      "titles": [ "sn83027091", "sn84024441", "sn83030193", "sn82015056", 
+                  "sn85058130", "sn85066387", "sn82016357", "sn83030272", 
+                  "sn85038615", "sn84025891", "sn84026749", "sn82016441" ]
+    }
+  }
+]

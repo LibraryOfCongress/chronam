@@ -1,0 +1,148 @@
+Instructions for building the chronam software stack on solaris10. 
+
+These instructions are tailored to setting up the staging environment.
+If you are building the stack for a public instance you'll need to 
+s/staging/public/g in this file.
+
+These instructions also assume that batch data shares are available on the 
+filesystem.  For example you'll want to make sure that the following locations 
+have relevant data from the rdc in them:
+
+  /ndnp/staging/data/batches   # rdc:/vol/ndnp/chronam/batches
+  /ndnp/staging/data/bib       # rdc:/vol/ndnp/chronam/bib
+  /ndnp/staging/data/essays    # rdc:/vol/ndnp_staging/batches/essays
+
+- install sun studio (compilers)
+  http://developers.sun.com/sunstudio/
+
+- mkdir -p /ndnp/staging /indexes/mysql/staging /indexes/solr/staging
+  chown `whoami`:ndnp /ndnp/staging # avoid having to install as root
+
+- set library path (not system wide)
+  crle -c /ndnp/staging/ld.config -l /lib:/usr/lib:/ndnp/staging/j2k-3.18.2-solaris-x86-32/lib:/ndnp/staging/python2.7/lib:/ndnp/staging/mysql5/lib/mysql:/usr/ucblib
+  export LD_CONFIG_32=/ndnp/staging/ld.config
+
+- configure PATH (if doing public stack you may want these in /etc/profile)
+  export PATH=/opt/SUNWspro/bin:/ndnp/staging/python2.7/bin:/usr/ccs/bin:/ndnp/staging/mysql5/bin:/usr/bin:/sbin:/usr/local/sbin:/usr/sbin:/opt/local/bin:/opt/csw/bin
+
+- get chronam source code (for dev replace 'tags/{release_tag}' with 'trunk')
+
+  cd /ndnp/staging
+  hg clone https://rdc.lctl.gov/hg/chronam
+  hg archive -q chronam_{release_tag}
+  ln -s chronam_{release_tag} chronam
+
+- build and install mysql5 
+  download mysl5.1 source from http://dev.mysql.com/downloads/mysql/5.1.html#source
+  tar xvf mysql-5.1.44.tar
+  cd mysql-5.1.44
+  ./configure --prefix=/ndnp/staging/mysql5 --enable-thread-safe-client --datadir=/indexes/mysql/staging # --with-low-memory (if needed)
+  make install
+  cp /ndnp/staging/chronam/projects/chronam-staging/conf/my-staging.cnf /ndnp/staging/mysql5/my.cnf
+  /ndnp/staging/mysql5/bin/mysql_install_db --datadir=/indexes/mysql/staging
+  /ndnp/staging/chronam/projects/chronam-staging/scripts/mysql-staging start
+  /ndnp/staging/mysql5/bin/mysqladmin --socket=/tmp/mysql_staging.sock -u root -p password "pick_one"
+  echo "CREATE DATABASE chronam CHARACTER SET utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one';" | mysql --socket=/tmp/mysql_staging.sock -u root -p
+
+- install python2.7
+  wget http://www.python.org/ftp/python/2.7/Python-2.7.tgz
+  gunzip Python-2.7.tgz
+  tar xvf Python-2.7.tar
+  cd Python-2.7
+  ./configure --prefix=/ndnp/staging/python2.7 --enable-shared --with-solaris
+  make install
+
+- install distribute
+  wget http://pypi.python.org/packages/source/d/distribute/distribute-0.6.14.tar.gz#md5=ac607e05682116c06383b27a15e2db90
+  gunzip distribute-0.6.14.tar.gz 
+  tar xvf distribute-0.6.14.tar
+  cd distribute-0.6.14/
+  python setup.py install
+
+- install pip
+  wget http://pypi.python.org/packages/source/p/pip/pip-0.8.tar.gz#md5=468d9adc309f33ad51cee38f0d455429
+  gunzip pip-0.8.tar.gz
+  tar xvf pip-0.8.tar
+  cd pip-0.8
+  python setup.py install
+
+- install chronam requirements
+  cd /ndnp/staging/chronam/projects/chronam-staging/
+  export LDFLAGS="-L/ndnp/staging/python2.6/lib -L/ndnp/staging/mysql5/lib/mysql"
+  pip install -r requirements.pip
+
+- install chronam-staging
+  pip install -e .
+
+- aware
+  wget --no-check-certificate --http-user your-username --http-password your-password https://rdc.lctl.gov/svn/ndnp/third-party/j2k-3.18.2-solaris-x86-32.tar.gz
+  gunzip j2k-3.18.2-solaris-x86-32.tar.gz 
+  tar xvf j2k-3.18.2-solaris-x86-32.tar
+  mv j2k-3.18.2-solaris-x86-32 /ndnp/staging/
+  ln -s /ndnp/staging/j2k-3.18.2-solaris-x86-32/lib/libawj2k.so.2.0.1 /ndnp/staging/j2k-3.18.2-solaris-x86-32/lib/libawj2k.so
+
+- build, configure and test chronam application
+  cd /ndnp/staging/chronam/j2kmodule
+  ln -s /ndnp/staging/j2k-3.18.2-solaris-x86-32/include include
+  LDFLAGS='-L/ndnp/staging/python2.7/lib -L/ndnp/staging/j2k-3.18.2-solaris-x86-32/lib/' python setup.py install
+  cp /ndnp/staging/chronam/projects/chronam-staging/conf/settings-staging.py /ndnp/staging/chronam/projects/chronam-staging/chronam/settings.py
+  cd /ndnp/staging/chronam/projects/chronam-staging/chronam
+  python manage.py syncdb --noinput
+  python manage.py test
+
+- solr
+  wget http://www.apache.org/dist/lucene/solr/1.4.1/apache-solr-1.4.1.tgz
+  gunzip apache-solr-1.4.1.tgz
+  tar xvf apache-solr-1.4.1.tar
+  mv apache-solr-1.4.1/example/ /ndnp/staging/solr-1.4.1
+  cp /ndnp/staging/chronam/projects/chronam-staging/conf/schema.xml /ndnp/staging/solr-1.4.1/solr/conf/schema.xml
+  cp /ndnp/staging/chronam/projects/chronam-staging/conf/solrconfig-staging.xml /ndnp/staging/solr-1.4.1/solr/conf/solrconfig.xml
+  # verify that /ndnp/staging/solr-1.4.1/solr/conf/solrconfig.xml contains:
+      "<dataDir>/indexes/solr/staging</dataDir>"
+
+- apache
+  wget http://apache.mirrors.tds.net/httpd/httpd-2.2.15.tar.gz
+  gunzip httpd-2.2.15.tar.gz 
+  tar xvf httpd-2.2.15.tar
+  cd httpd-2.2.15
+  ./configure --prefix=/ndnp/staging/apache2 --enable-mods-shared="cache disk_cache expires rewrite" --with-included-apr --with-mpm=worker
+  make install
+  cp /ndnp/staging/chronam/projects/chronam-staging/conf/httpd-staging.conf /ndnp/staging/apache2/conf/httpd.conf
+  mkdir /indexes/cache/
+
+  append the following two lines to the end of /ndnp/staging/apache2/bin/envvars
+
+LD_CONFIG_32=/ndnp/staging/ld.config
+export LD_CONFIG_32
+
+- mod_wsgi
+  wget http://modwsgi.googlecode.com/files/mod_wsgi-3.3.tar.gz
+  gunzip mod_wsgi-3.3.tar.gz
+  tar xvf mod_wsgi-3.3.tar
+  cd mod_wsgi-3.3
+  ./configure --with-apxs=/ndnp/staging/apache2/bin/apxs --with-python=/ndnp/staging/python2.7/bin/python
+  make install
+  mkdir /ndnp/staging/.python-eggs
+
+- start services
+  /ndnp/staging/chronam/projects/chronam-staging/scripts/mysql-staging start
+  /ndnp/staging/chronam/projects/chronam-staging/scripts/solr-staging start
+  /ndnp/staging/chronam/projects/chronam-staging/scripts/apache2-staging start
+
+- load the data
+  cd /ndnp/staging/chronam/projects/chronam-staging/chronam
+
+  # load titles and holdings
+  python manage.py chronam_sync
+
+  # start up one or more batch load processes to load all the batches
+  python manage.py load_batches ../conf/batch_list &
+
+  # or load a specific batch
+  python manage.py load_batch batch_dlc_jamaica_ver01
+
+  # To generate filename_of_batch_list from a batches directory:
+  find /ndnp/staging/data/batches/* -name batch_* -print -prune | sed 's/\(.*\)\///g'
+
+  # load up links to flickr using your flickr key
+  python manage.py flickr YOUR_FLICKR_KEY
