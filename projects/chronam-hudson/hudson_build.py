@@ -33,12 +33,14 @@ def setup_virtual_env():
                 os.path.join(VIRTUAL_ENV, 'bin', 'easy_install'),
                 '--quiet', 'pip'])
 
+            os.chdir(PROJECT_ROOT)
+
             subprocess.check_call([
                 os.path.join(VIRTUAL_ENV, 'bin', 'pip'),
                 '-E', VIRTUAL_ENV,
                 'install',
                 '--quiet',
-                '-r', os.path.join(PROJECT_ROOT, "requirements.pip")])
+                '-r', "requirements.pip"])
 
             # Add the containing directory to the virtualenv so imports work:
             venv_pth = file(
