@@ -11,7 +11,7 @@ except ImportError:
     import json
 
 from chronam.core import models
-from chronam.utils import configure_logging
+from chronam.core.management.commands import configure_logging
 
 configure_logging("chronam_link_places.config", "chronam_link_places.log")
 _logger = logging.getLogger(__name__)

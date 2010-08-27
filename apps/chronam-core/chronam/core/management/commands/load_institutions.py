@@ -4,7 +4,7 @@ import codecs
 
 from django.core.management.base import BaseCommand
 
-from chronam.utils import configure_logging
+from chronam.core.management.commands import configure_logging
 from chronam.core.models import Institution
 
 configure_logging("load_intitutions_logging.config", 

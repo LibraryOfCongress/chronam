@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
 from chronam.core.essay_loader import EssayLoader
-from chronam.utils import configure_logging
+from chronam.core.management.commands import configure_logging
 
 
 configure_logging("purge_essay_batch_logging.config", 'purge_essay_batch.log')

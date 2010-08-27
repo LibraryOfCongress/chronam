@@ -16,10 +16,10 @@ try:
 except ImportError:
     j2k = None
 
-from chronam import utils
 from chronam.core import models
 from chronam.core.models import Batch, Issue, Title, Awardee, Page, OCR
 from chronam.core.models import LoadBatchEvent
+from chronam.core.ocr_extractor import ocr_extractor
 
 # some xml namespaces used in batch metadata
 ns = {
@@ -367,7 +367,7 @@ class BatchLoader(object):
         _logger.debug("extracting ocr text and word coords for %s" %
             page.url)
 
-        text, coords = utils.ocr_extractor(page.ocr_abs_filename)
+        text, coords = ocr_extractor(page.ocr_abs_filename)
         ocr = OCR()
         ocr.text, ocr.word_coordinates, ocr.page = text, coords, page
         ocr.save()
