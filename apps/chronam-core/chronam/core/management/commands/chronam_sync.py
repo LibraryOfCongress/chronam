@@ -18,7 +18,7 @@ from chronam.core.title_loader import TitleLoader
 from chronam.core.essay_loader import EssayLoader
 from chronam.core.holding_loader import HoldingLoader
 from chronam.core.index import index_titles
-from chronam.utils import configure_logging
+from chronam.core.management.commands import configure_logging
 
 configure_logging("chronam_sync_logging.config", "chronam_sync.log")
 _logger = logging.getLogger(__name__)

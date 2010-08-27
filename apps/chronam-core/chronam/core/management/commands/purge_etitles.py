@@ -7,7 +7,7 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 import pymarc
 
-from chronam.utils import configure_logging
+from chronam.core.management.commands import configure_logging
 from chronam.core import index
 from chronam.core.models import Title
 

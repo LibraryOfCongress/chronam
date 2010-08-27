@@ -17,7 +17,7 @@ from django.core.management.base import BaseCommand
 from django.core.paginator import Paginator
 from django.db import reset_queries
 
-from chronam.utils import configure_logging
+from chronam.core.management.commands import configure_logging
 from chronam.utils.rfc3339 import rfc3339
 from chronam.core import models as m
 from chronam.web.rdf import rdf_uri
