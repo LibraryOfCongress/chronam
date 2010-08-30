@@ -1,0 +1,11 @@
+This application provides a way to render views of newspaper
+collections which conforms to standards and technical specifications
+defined on the NDNP loc.gov Web site. The code includes API's that
+allow for searching, linking and aggregating data as well as exposing
+different ways to view the collections. The code can be modified by
+awardees that wishes to explore and implement their own views for
+presenting their data.
+
+Look at the various projects in the projects directory and their
+corresponding INSTALL files for examples on how to build and run the
+software stack.
