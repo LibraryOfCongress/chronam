@@ -43,7 +43,7 @@ from django.utils import html
 from chronam.core import models, index
 from chronam.web import forms
 from chronam.web.decorators import rdf_view, opensearch_clean
-from chronam import utils
+from chronam.utils.url import unpack_url_path
 from chronam.web.rdf import title_to_graph, issue_to_graph, page_to_graph, \
                             titles_to_graph, batch_to_graph, awardee_to_graph
 from chronam.web.json_helper import batch_to_json
@@ -797,7 +797,9 @@ def newspapers(request, state=None, format='html'):
     titles = models.Title.objects.distinct().filter(issues__isnull=False)
     if state:
         template = 'newspapers_state'
-        state = utils.unpack_url_path(state)
+        state = unpack_url_path(state)
+        if state is None:
+            raiseHttp404
         titles = titles.filter(country__name__iexact=state)
         if titles.count() == 0:
             raise Http404
@@ -1040,11 +1042,18 @@ def titles(request, start=None, page_number=1):
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def titles_in_city(request, state, county, city,
                    page_number=1, order='name_normal'):
-    state, county, city = map(utils.unpack_url_path, (state, county, city))
+    state, county, city = map(unpack_url_path, (state, county, city))
     page_title = "Titles in City: %s, %s" % (city, state)
-    titles = models.Title.objects.filter(places__city__iexact=city,
-                                         places__county__iexact=county,
-                                         places__state__iexact=state).order_by(order)
+    titles = models.Title.objects.all()
+    if city:
+        titles = titles.filter(places__city__iexact=city)
+    if county:
+        titles = titles.filter(places__county__iexact=county)
+    if state:
+        titles = titles.filter(places__state__iexact=state)
+    titles = titles.order_by(order)
+    titles.distinct()
+
     if titles.count() == 0:
         raise Http404
 
@@ -1052,7 +1061,6 @@ def titles_in_city(request, state, county, city,
     page = paginator.page(int(page_number))
     page_range_short = list(_page_range_short(paginator, page))
 
-    state, county, city = map(utils.pack_url_path, (state, county, city))
     return render_to_response('city.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
@@ -1060,10 +1068,16 @@ def titles_in_city(request, state, county, city,
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def titles_in_county(request, state, county,
                      page_number=1, order='name_normal'):
-    state, county = map(utils.unpack_url_path, (state, county))
+    state, county = map(unpack_url_path, (state, county))
     page_title = "Titles in County: %s, %s" % (county, state)
-    titles = models.Title.objects.filter(places__county__iexact=county,
-                                         places__state__iexact=state).distinct()
+    titles = models.Title.objects.all()
+    if county:
+        titles = titles.filter(places__county__iexact=county)
+    if state:
+        titles = titles.filter(places__state__iexact=state)
+    titles = titles.order_by(order)
+    titles = titles.distinct()
+
     if titles.count() == 0:
         raise Http404
 
@@ -1071,17 +1085,19 @@ def titles_in_county(request, state, county,
     page = paginator.page(int(page_number))
     page_range_short = list(_page_range_short(paginator, page))
 
-    state, county = map(utils.pack_url_path, (state, county))
     return render_to_response('county.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def titles_in_state(request, state, page_number=1, order='name_normal'):
-    state = utils.unpack_url_path(state)
+    state = unpack_url_path(state)
     page_title = "Titles in State: %s" % state
-    titles = models.Title.objects.order_by(order)
-    titles = titles.filter(places__state__iexact=state).distinct()
+    titles = models.Title.objects.all()
+    if state:
+        titles = titles.filter(places__state__iexact=state)
+    titles = titles.order_by(order)
+    titles = titles.disticnt()
 
     if titles.count() == 0:
         raise Http404
@@ -1090,7 +1106,6 @@ def titles_in_state(request, state, page_number=1, order='name_normal'):
     page = paginator.page(int(page_number))
     page_range_short = list(_page_range_short(paginator, page))
 
-    state = utils.pack_url_path(state)
     return render_to_response('state.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
@@ -1110,14 +1125,16 @@ WHERE state IS NOT NULL GROUP BY state HAVING count > 10 ORDER BY state")
                        "Mariana Islands", "Puerto Rico", "Virgin Islands"])
         return HttpResponse(json.dumps(states),
                             mimetype='application/json')
-    states = [(n[0], utils.pack_url_path(n[0])) for n in cursor.fetchall()]
+    states = [n[0] for n in cursor.fetchall()]
     return render_to_response('states.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def counties_in_state(request, state, format='html'):
-    state = utils.unpack_url_path(state)
+    state = unpack_url_path(state)
+    if state is None:
+        raise Http404
     page_title = 'Counties in %s' % state
 
     places = models.Place.objects.filter(state__iexact=state,
@@ -1127,11 +1144,9 @@ def counties_in_state(request, state, format='html'):
     if format == 'json':
         return HttpResponse(json.dumps(county_names),
                             mimetype='application/json')
-    counties = [{'name': name, 'abbr': utils.pack_url_path(name)}
-                for name in county_names]
+    counties = [name for name in county_names]
     if len(counties) == 0:
         raise Http404
-    state_abbr = utils.pack_url_path(state)
     return render_to_response('counties.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
@@ -1155,12 +1170,12 @@ GROUP BY state, county HAVING total >= 1 ORDER BY state, county")
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def cities_in_county(request, state, county, format='html'):
-    state, county = map(utils.unpack_url_path, (state, county))
-    state_abbr = utils.pack_url_path(state)
-    county_abbr = utils.pack_url_path(county)
+    state, county = map(unpack_url_path, (state, county))
+    if state is None or county is None:
+        raise Http404
     page_title = 'Cities in %s, %s' % (state, county)
     places = models.Place.objects.filter(state__iexact=state,
-                                         county=county).all()
+                                         county__iexact=county).all()
     cities = [p.city for p in places]
     if None in cities:
         cities.remove(None)
@@ -1175,8 +1190,9 @@ def cities_in_county(request, state, county, format='html'):
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def cities_in_state(request, state, format='html'):
-    state = utils.unpack_url_path(state)
-    state_abbr = utils.pack_url_path(state)
+    state = unpack_url_path(state)
+    if state is None:
+        raise Http404
     page_title = 'Cities in %s' % state
 
     places = models.Place.objects.filter(state__iexact=state,

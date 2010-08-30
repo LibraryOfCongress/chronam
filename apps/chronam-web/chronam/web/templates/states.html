@@ -15,13 +15,13 @@
     {% for state in states %}
     <tr class="{% cycle 'lightGray' 'white' %}">
         <td>
-            {{state.0}} 
+            {{state}} 
         </td>
         <td>
-            <a href="{% url chronam_counties_in_state state.1 %}">counties</a>
+            <a href="{% url chronam_counties_in_state state|pack_url %}">counties</a>
         </td>
         <td>
-            <a href="{% url chronam_cities_in_state state.1 %}">cities</a>
+            <a href="{% url chronam_cities_in_state state|pack_url %}">cities</a>
         </td>
     </tr>
     {% endfor %}

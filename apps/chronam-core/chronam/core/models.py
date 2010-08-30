@@ -15,8 +15,6 @@ from django.db.models import permalink
 from django.utils import datetime_safe
 from django.conf import settings
 
-from chronam.utils import pack_url_path
-
 
 class Awardee(models.Model):
     org_code = models.CharField(max_length=50, primary_key=True)
@@ -678,18 +676,6 @@ class Place(models.Model):
     geonames = models.CharField(null=True, max_length=250)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
-
-    @property
-    def city_for_url(self):
-        return pack_url_path(self.city)
-
-    @property
-    def county_for_url(self):
-        return pack_url_path(self.county)
-
-    @property
-    def state_for_url(self):
-        return pack_url_path(self.state)
 
     def __unicode__(self):
         return u"%s, %s, %s" % (self.city, self.county, self.state)

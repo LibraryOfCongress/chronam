@@ -2,9 +2,9 @@
 
 {% block more_style %}
 {% if county %}
-<link rel="alternate" type="application/json" href="{% url chronam_cities_in_county_json state_abbr county_abbr 'json' %}" />
+<link rel="alternate" type="application/json" href="{% url chronam_cities_in_county_json state|pack_url county|pack_url 'json' %}" />
 {% else %}
-<link rel="alternate" type="application/json" href="{% url chronam_cities_in_state_json state_abbr 'json' %}" />
+<link rel="alternate" type="application/json" href="{% url chronam_cities_in_state_json state|pack_url 'json' %}" />
 {% endif %}
 {% endblock %}
 
