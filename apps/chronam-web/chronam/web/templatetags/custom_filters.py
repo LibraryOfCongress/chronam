@@ -1,8 +1,9 @@
 from django import template
 from django.template.defaultfilters import stringfilter
 
-import chronam.utils
+from chronam.utils import url
 from chronam.utils.rfc3339 import rfc3339
+
 
 register = template.Library()
 
@@ -10,9 +11,8 @@ register = template.Library()
 def rfc3339_filter(d):
     return rfc3339(d)
 
-@stringfilter
-def pack_url(value):
-    return chronam.utils.pack_url_path(value)
+def pack_url(value, default='-'):
+    return url.pack_url_path(value, default)
 
 register.filter('pack_url', pack_url)
 

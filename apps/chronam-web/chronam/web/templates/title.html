@@ -1,5 +1,7 @@
 {% extends "newspaper.html" %}
 
+{% load custom_filters %}
+
 {% block newspaper_content %}
 
 <dl>
@@ -36,7 +38,7 @@
 
         <dd>
         {{ place.city }}, 
-        {% ifnotequal place.county 'None' %}
+        {% ifnotequal place.county None %}
         {{ place.county }}, 
         {% endifnotequal %}
         {{ place.state }}
@@ -44,11 +46,11 @@
         <img src="{{script_name}}/images/arrow.gif" width="9" height="9" alt="" />
 
         View more titles from this: 
-        <a href="{% url chronam_city place.state_for_url place.county_for_url place.city_for_url %}">City</a>
-        {% ifnotequal place.county 'None' %}
-        <a href="{% url chronam_county place.state_for_url place.county_for_url %}">County</a>,
+        <a href="{% url chronam_city place.state|pack_url place.county|pack_url place.city|pack_url %}">City</a>
+        {% ifnotequal place.county None %}
+        <a href="{% url chronam_county place.state|pack_url place.county|pack_url %}">County</a>,
         {% endifnotequal %}
-        <a href="{% url chronam_state place.state_for_url %}">State</a>
+        <a href="{% url chronam_state place.state|pack_url %}">State</a>
         </dd>
 
     {% endfor %}

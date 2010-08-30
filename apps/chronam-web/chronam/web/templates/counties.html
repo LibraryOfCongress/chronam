@@ -1,7 +1,7 @@
 {% extends "site.html" %}
 
 {% block more_style %}
-<link rel="alternate" type="application/json" href="{% url chronam_counties_in_state_json state_abbr 'json' %}" />
+<link rel="alternate" type="application/json" href="{% url chronam_counties_in_state_json state|pack_url 'json' %}" />
 {% endblock %}
 
 {% block box_right %}
@@ -12,7 +12,7 @@
       <table class="data" width="100%">
     {% for county in counties %}
         <tr class="{% cycle 'lightGray' 'white' %}">
-          <td><a href="{% url chronam_cities_in_county state_abbr, county.abbr %}">{{county.name}}</a></td>
+          <td><a href="{% url chronam_cities_in_county state|pack_url, county|pack_url %}">{{county}}</a></td>
         </tr>
     {% endfor %}
       </table>
