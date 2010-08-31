@@ -99,10 +99,10 @@ have relevant data from the rdc in them:
       "<dataDir>/indexes/solr/public1</dataDir>"
 
 - apache
-  wget http://apache.mirrors.tds.net/httpd/httpd-2.2.15.tar.gz
-  gunzip httpd-2.2.15.tar.gz 
-  tar xvf httpd-2.2.15.tar
-  cd httpd-2.2.15
+  wget http://apache.mirrors.tds.net/httpd/httpd-2.2.16.tar.gz
+  gunzip httpd-2.2.16.tar.gz
+  tar xvf httpd-2.2.16.tar
+  cd httpd-2.2.16
   ./configure --prefix=/ndnp/public1/apache2 --enable-mods-shared="cache disk_cache expires rewrite" --with-included-apr --with-mpm=worker
   make install
   cp /ndnp/public1/chronam/projects/chronam-public1/conf/httpd-public1.conf /ndnp/public1/apache2/conf/httpd.conf
