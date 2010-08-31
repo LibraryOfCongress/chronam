@@ -1,7 +1,7 @@
 # Django settings for chronam project.
 import os
 
-DEBUG = True 
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 MASTER = True
@@ -84,7 +84,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'chronam.web.context_processors.extra_request_info',
 )
 
-STORAGE = '/ndnp/public1/data/batches'
+STORAGE = '/batches'
 BIB_STORAGE = '/ndnp/public1/data/bib/data'
 ESSAY_STORAGE = '/ndnp/public1/data/essays'
 

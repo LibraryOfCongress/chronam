@@ -6,7 +6,7 @@ These instructions also assume that batch data shares are available on the
 filesystem.  For example you'll want to make sure that the following locations 
 have relevant data from the rdc in them:
 
-  /ndnp/public1/data/batches   # rdc:/vol/ndnp/chronam/batches
+  /batches   # rdc:/vol/ndnp/chronam/batches
   /ndnp/public1/data/bib       # rdc:/vol/ndnp/chronam/bib
   /ndnp/public1/data/essays    # rdc:/vol/ndnp_staging/batches/essays
 
