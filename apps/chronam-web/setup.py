@@ -10,4 +10,5 @@ setup(name='chronam-web',
       url='',
       download_url='',
       packages=['chronam', 'chronam.web'],
+      requires=['rfc3339']
       )

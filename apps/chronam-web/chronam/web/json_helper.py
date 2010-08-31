@@ -3,7 +3,7 @@ try:
 except ImportError:
     import json
 
-from chronam.utils.rfc3339 import rfc3339
+from rfc3339 import rfc3339
 
 def batch_to_json(batch, serialize=True):
     b = {}
