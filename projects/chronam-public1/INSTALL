@@ -128,19 +128,19 @@ export LD_CONFIG_32
   /ndnp/public1/chronam/projects/chronam-public1/scripts/apache2-public1 start
 
 - load the data
-  cd /ndnp/public1/chronam/projects/chronam-public1/chronam
+  cd /ndnp/public1/logs/
 
   # load titles and holdings
-  python manage.py chronam_sync
+  django-admin.py --settings=chronan.settings chronam_sync
 
   # start up one or more batch load processes to load all the batches
-  python manage.py load_batches ../conf/batch_list &
+  django-admin.py --settings=chronan.settings load_batches ../conf/batch_list &
 
   # or load a specific batch
-  python manage.py load_batch batch_dlc_jamaica_ver01
+  django-admin.py --settings=chronan.settings load_batch batch_dlc_jamaica_ver01
 
   # To generate filename_of_batch_list from a batches directory:
   find /ndnp/public1/data/batches/* -name batch_* -print -prune | sed 's/\(.*\)\///g'
 
   # load up links to flickr using your flickr key
-  python manage.py flickr YOUR_FLICKR_KEY
+  django-admin.py --settings=chronan.settings flickr YOUR_FLICKR_KEY
