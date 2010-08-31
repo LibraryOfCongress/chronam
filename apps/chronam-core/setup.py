@@ -10,5 +10,5 @@ setup(name='chronam-core',
       url='',
       download_url='',
       packages=['chronam', 'chronam.core', 'chronam.utils'],
-      requires=["feedparser"]
+      requires=['feedparser', 'rfc3339']
       )
