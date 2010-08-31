@@ -11,7 +11,7 @@ echo "exporting release $tag"
 hg archive -q chronam_$tag
 
 # so that logs written by transfer user on sun11 are group ndnp
-chmod g+sw chronam_$tag/chronam
+chmod g+sw chronam_$tag/projects/chronam-$instance/chronam/
 
 echo "pushing release to sun11.loc.gov:/ndnp/$instance/$tag"
 tar cfp - chronam_$tag | ssh ndnp@sun11.loc.gov "cd /ndnp/$instance/; tar xfp -" >/dev/null
