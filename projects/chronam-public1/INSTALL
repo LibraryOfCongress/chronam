@@ -32,9 +32,9 @@ have relevant data from the rdc in them:
 
 - build and install mysql5 
   download mysl5.1 source from http://dev.mysql.com/downloads/mysql/5.1.html#source
-  gunzip mysql-5.1.44.tar.gz 
-  tar xvf mysql-5.1.44.tar
-  cd mysql-5.1.44
+  gunzip mysql-5.1.50.tar.gz 
+  tar xvf mysql-5.1.50.tar
+  cd mysql-5.1.50
   ./configure --prefix=/ndnp/public1/mysql5 --enable-thread-safe-client --datadir=/indexes/mysql/public1 # --with-low-memory (if needed)
   make install
   cp /ndnp/public1/chronam/projects/chronam-public1/conf/my-public1.cnf /ndnp/public1/mysql5/my.cnf
