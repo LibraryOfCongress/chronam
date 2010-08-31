@@ -6,6 +6,8 @@ pymarc
 solrpy
 PIL==1.1.7
 simplejson
+feedparser
+rfc3339
 -e ../../apps/chronam-core
 -e ../../apps/chronam-loc
 -e ../../apps/chronam-web
