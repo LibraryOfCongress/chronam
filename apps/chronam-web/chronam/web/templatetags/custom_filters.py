@@ -1,8 +1,10 @@
 from django import template
 from django.template.defaultfilters import stringfilter
 
+from rfc3339 import rfc3339
+
 from chronam.utils import url
-from chronam.utils.rfc3339 import rfc3339
+
 
 
 register = template.Library()
