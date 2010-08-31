@@ -38,11 +38,6 @@ class Awardee(models.Model):
     def abstract_url(self):
         return self.url.rstrip('/') + '#awardee'
 
-    class Meta:
-        db_table = 'awardees'
-    class Admin:
-        pass
-
 
 class Batch(models.Model):
     name = models.CharField(max_length=250, primary_key=True)
@@ -100,12 +95,6 @@ class Batch(models.Model):
     def __unicode__(self):
         return self.full_name
 
-    class Meta:
-        db_table = 'batches'
-        verbose_name_plural = 'batches'
-    class Admin:
-        pass
-
 
 class LoadBatchEvent(models.Model):
     # intentionally not a Foreign Key to batches
@@ -127,12 +116,6 @@ class LoadBatchEvent(models.Model):
 
     def __unicode__(self):
         return self.batch_name
-
-    class Meta:
-        db_table = 'load_batch_events'
-        verbose_name_plural = 'load_batch_events'
-    class Admin:
-        pass
 
 
 class Title(models.Model):
@@ -294,11 +277,6 @@ class Title(models.Model):
        
 
     class Meta:
-        db_table = 'titles'
-        ordering = ['name_normal']
-
-    class Admin:
-        list_display = ('name', 'lccn', 'oclc', 'start_year', 'end_year')
         ordering = ['name_normal']
 
 
@@ -308,7 +286,6 @@ class AltTitle(models.Model):
     title = models.ForeignKey('Title', related_name='alt_titles')
 
     class Meta:
-        db_table = 'alt_titles'
         ordering = ['name']
 
 
@@ -373,11 +350,6 @@ class MARC(models.Model):
     def url(self):
         return ('chronam_title_marcxml', (), {'lccn': self.title.lccn})
  
-    class Meta: 
-        db_table = 'marc'
-    class Admin:
-        pass
-
 
 class Issue(models.Model):
     date_issued = models.DateField(db_index=True)
@@ -447,10 +419,7 @@ class Issue(models.Model):
         return next_issue
     
     class Meta: 
-        db_table = 'issues'
         ordering = ('date_issued',)
-    class Admin:
-        pass
 
 
 class Page(models.Model):
@@ -629,7 +598,6 @@ class Page(models.Model):
         return u', '.join(parts)
 
     class Meta:
-        db_table = 'pages'
         ordering = ('sequence',)
 
     class Admin:
@@ -648,21 +616,13 @@ class OCR(models.Model):
         self.word_coordinates_json = json.dumps(word_coordinates)
     word_coordinates = property(__get_word_coordinates, __set_word_coordinates)
 
-    class Meta:
-        db_table = 'ocr'
-    class Admin:
-        pass
-
-
 
 class PublicationDate(models.Model):
     text = models.CharField(max_length=500)
     titles = models.ForeignKey('Title', related_name='publication_dates')
+
     class Meta:
-        db_table = 'publication_dates'
         ordering = ['text']
-    class Admin:
-        pass
 
 
 class Place(models.Model):
@@ -681,10 +641,6 @@ class Place(models.Model):
         return u"%s, %s, %s" % (self.city, self.county, self.state)
 
     class Meta: 
-        db_table = 'places'
-        ordering = ('name',)
-    class Admin:
-        list_display = ('name', 'state', 'county', 'city')
         ordering = ('name',)
 
 
@@ -699,10 +655,6 @@ class Subject(models.Model):
         return self.heading
 
     class Meta:
-        db_table = 'subjects'
-        ordering = ('heading',)
-    class Admin:
-        list_display = ('heading',)
         ordering = ('heading',)
 
 
@@ -715,11 +667,8 @@ class Note(models.Model):
         return self.text
 
     class Meta:
-        db_table = 'notes'
         ordering = ('text',)
 
-    class Admin:
-        pass
 
 class PageNote(models.Model):
     label = models.TextField()
@@ -731,11 +680,7 @@ class PageNote(models.Model):
         return u"type: %s label: %s text: %s" % (self.type, self.label, self.text)
 
     class Meta:
-        db_table = 'page_notes'
         ordering = ('text',)
-
-    class Admin:
-        pass
 
 
 class IssueNote(models.Model):
@@ -748,11 +693,7 @@ class IssueNote(models.Model):
         return u"type: %s label: %s text: %s" % (self.type, self.label, self.text)
 
     class Meta:
-        db_table = 'issue_notes'
         ordering = ('text',)
-
-    class Admin:
-        pass
 
 
 class Essay(models.Model):
@@ -809,12 +750,7 @@ class Essay(models.Model):
                                             'created': created})
 
     class Meta:
-        db_table = 'essays'
         ordering = ['created']
-
-
-    class Admin:
-        pass
 
 
 class Holding(models.Model):
@@ -840,11 +776,7 @@ class Holding(models.Model):
         return u"%s - %s - %s" % (self.institution.name, self.type, self.description)
 
     class Meta:
-        db_table = 'holdings'
         ordering = ('institution',)
-
-    class Admin:
-        pass
 
 
 class SucceedingTitleLink(models.Model):
@@ -854,11 +786,7 @@ class SucceedingTitleLink(models.Model):
     title = models.ForeignKey('Title', related_name='succeeding_title_links')
 
     class Meta:
-        db_table = 'succeeding_title_links'
         ordering = ('name',)
-
-    class Admin:
-        pass
 
 
 class PreceedingTitleLink(models.Model):
@@ -871,11 +799,7 @@ class PreceedingTitleLink(models.Model):
         return "%s (%s)" % (self.name, self.lccn)
 
     class Meta:
-        db_table = 'preceeding_title_links'
         ordering = ('name',)
-
-    class Admin:
-        pass
 
 
 class RelatedTitleLink(models.Model):
@@ -888,22 +812,14 @@ class RelatedTitleLink(models.Model):
         return "%s (%s)" % (self.name, self.lccn)
 
     class Meta:
-        db_table = 'related_title_links'
         ordering = ('name',)
-
-    class Admin:
-        pass
 
 
 class Ethnicity(models.Model):
     name = models.CharField(null=False, max_length=250, primary_key=True)
 
     class Meta:
-        db_table = 'ethnicities'
         ordering = ('name',)
-
-    class Admin:
-        pass
 
 
 class EthnicitySynonym(models.Model):
@@ -911,7 +827,6 @@ class EthnicitySynonym(models.Model):
     ethnicity = models.ForeignKey('Ethnicity', related_name='synonyms')
 
     class Meta:
-        db_table = 'ethnicity_synonyms'
         ordering = ('synonym',)
 
 
@@ -925,11 +840,7 @@ class Language(models.Model):
         return self.name
 
     class Meta:
-        db_table = 'languages'
         ordering = ('name',)
-
-    class Admin:
-        pass
 
 
 class Country(models.Model):
@@ -949,33 +860,21 @@ class Country(models.Model):
         return "%s (%s)" % (self.name, self.region)
 
     class Meta:
-        db_table = 'countries'
         ordering = ('name',)
-
-    class Admin:
-        pass
 
 
 class LaborPress(models.Model):
     name = models.CharField(null=False, max_length=250, primary_key=True)
 
     class Meta:
-        db_table = 'labor_presses'
         ordering = ('name',)
-
-    class Admin:
-        pass
 
 
 class MaterialType(models.Model):
     name = models.CharField(null=False, max_length=250, primary_key=True)
 
     class Meta:
-        db_table = 'material_types'
         ordering = ('name',)
-
-    class Admin:
-        pass
 
 
 class Institution(models.Model):
@@ -992,11 +891,7 @@ class Institution(models.Model):
         return u"%s, %s, %s" % (self.name, self.city, self.state)
 
     class Meta:
-        db_table = 'institutions'
         ordering = ('name',)
-
-    class Admin:
-        pass
 
 
 class PhysicalDescription(models.Model):
@@ -1005,7 +900,6 @@ class PhysicalDescription(models.Model):
     title = models.ForeignKey('Title', related_name='dates_of_publication')
 
     class Meta:
-        db_table = 'physical_descriptions'
         ordering = ('type',)
 
 
@@ -1017,8 +911,6 @@ class Url(models.Model):
     def __unicode__(self):
         return self.value
 
-    class Meta:
-        db_table = 'urls'
 
 class FlickrUrl(models.Model):
     value = models.TextField()
@@ -1027,9 +919,6 @@ class FlickrUrl(models.Model):
 
     def __unicode__(self):
         return self.value
-
-    class Meta:
-        db_table = 'flickr_urls'
 
 
 class Reel(models.Model):

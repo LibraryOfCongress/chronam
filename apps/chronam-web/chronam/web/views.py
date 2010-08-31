@@ -1117,7 +1117,7 @@ def states(request, format='html'):
     # TODO: maybe use Django ORM once the data is cleaned more on import
     cursor = connection.cursor()
     cursor.execute(\
-"SELECT state, COUNT(*) AS count FROM places \
+"SELECT state, COUNT(*) AS count FROM core_place \
 WHERE state IS NOT NULL GROUP BY state HAVING count > 10 ORDER BY state")
     if format == 'json' or request.META['HTTP_ACCEPT'] == 'application/json':
         states = [n[0] for n in cursor.fetchall()]
@@ -1158,7 +1158,7 @@ def states_counties(request, format='html'):
     cursor = connection.cursor()
 
     cursor.execute("\
-SELECT state, county, COUNT(*) AS total FROM places \
+SELECT state, county, COUNT(*) AS total FROM core_place \
 WHERE state IS NOT NULL AND county IS NOT NULL \
 GROUP BY state, county HAVING total >= 1 ORDER BY state, county")
 
