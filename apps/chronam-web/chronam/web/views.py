@@ -15,7 +15,7 @@ import Image
 
 from django.conf import settings
 
-from chronam.utils.rfc3339 import rfc3339
+from rfc3339 import rfc3339
 
 try:
     import j2k
