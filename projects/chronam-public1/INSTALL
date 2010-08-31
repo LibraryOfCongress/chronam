@@ -6,7 +6,7 @@ These instructions also assume that batch data shares are available on the
 filesystem.  For example you'll want to make sure that the following locations 
 have relevant data from the rdc in them:
 
-  /ndnp/public1/data/batches   # rdc:/vol/ndnp/chronam/batches
+  /batches   # rdc:/vol/ndnp/chronam/batches
   /ndnp/public1/data/bib       # rdc:/vol/ndnp/chronam/bib
   /ndnp/public1/data/essays    # rdc:/vol/ndnp_staging/batches/essays
 
@@ -67,7 +67,7 @@ have relevant data from the rdc in them:
 
 - install chronam requirements
   cd /ndnp/public1/chronam/projects/chronam-public1/
-  LDFLAGS="-L/ndnp/public1/python2.6/lib -L/ndnp/public1/mysql5/lib/mysql" pip install -r requirements.pip
+  LDFLAGS="-L/ndnp/public1/mysql5/lib/mysql" pip install -r requirements.pip
 
 - install chronam-public1
   pip install -e .
@@ -99,10 +99,10 @@ have relevant data from the rdc in them:
       "<dataDir>/indexes/solr/public1</dataDir>"
 
 - apache
-  wget http://apache.mirrors.tds.net/httpd/httpd-2.2.15.tar.gz
-  gunzip httpd-2.2.15.tar.gz 
-  tar xvf httpd-2.2.15.tar
-  cd httpd-2.2.15
+  wget http://apache.mirrors.tds.net/httpd/httpd-2.2.16.tar.gz
+  gunzip httpd-2.2.16.tar.gz
+  tar xvf httpd-2.2.16.tar
+  cd httpd-2.2.16
   ./configure --prefix=/ndnp/public1/apache2 --enable-mods-shared="cache disk_cache expires rewrite" --with-included-apr --with-mpm=worker
   make install
   cp /ndnp/public1/chronam/projects/chronam-public1/conf/httpd-public1.conf /ndnp/public1/apache2/conf/httpd.conf
