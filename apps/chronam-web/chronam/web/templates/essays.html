@@ -3,29 +3,26 @@
 {% block box_right %}
 
 <p>
-Below is a list of newspaper title essays that are available. Each newspaper
-title can be mentioned in multiple essays.
+Below is a list of essays written by NDNP Awardees about newspapers that
+are available in Chronicling America.
 </p>
 
 <table class="data">
     <tr>
-        <th>Newspaper Title</th>
-        <th>Essay Creation Time</th>
+        <th style="width: 55%;">Essay Title</th>
+        <th style="width: 25%;">Creator</th>
+        <th style="width: 20%;">Created</th>
     </tr>
-    {% for title in titles %}
+    {% for essay in essays %}
     <tr class="{% cycle 'lightGray' 'white' %}">
         <td>
-            <a href="{% url chronam_title title.lccn %}">{{ title }}</a>
-    </td>
-        <td>
-            {% for essay in title.essays.all %}
-            <a href="{{ essay.url }}">{{ essay.created|date }}</a>
-            {% endfor %}
+            <a href="{% url chronam_essay essay.id %}">{{ essay.title }}</a>
         </td>
+        <td><a href="{% url chronam_awardee essay.creator.org_code %}">{{ essay.creator.name }}</a></td> 
+        <td>{{ essay.created|date }}</td>
     </tr>
     {% endfor %}
 </table>
-
 
 {% endblock %}
 

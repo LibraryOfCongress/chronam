@@ -15,6 +15,7 @@ perform a search of the MARC Organization database.
         <th>Name</th>
         <th>MARC Organization Code</th>
         <th>Total Pages</th>
+        <th>Total Essays</th>
     </tr>
 
 {% for awardee in awardees %}
@@ -32,6 +33,9 @@ perform a search of the MARC Organization database.
       </td>
       <td style="text-align: right">
           {{ awardee.page_count|intcomma }}
+      </td>
+      <td style="text-align: right">
+          {{ awardee.essays.count|intcomma }}
       </td>
   </tr>
 

@@ -348,10 +348,10 @@ def index_titles(since=None):
     cursor = connection.cursor()
     solr = SolrConnection(settings.SOLR)
     if since:
-        cursor.execute("SELECT lccn FROM titles WHERE created >= '%s'" % since)
+        cursor.execute("SELECT lccn FROM core_title WHERE created >= '%s'" % since)
     else:
         solr.delete_query('type:title')
-        cursor.execute("SELECT lccn FROM titles")
+        cursor.execute("SELECT lccn FROM core_title")
 
     count = 0
     while True:

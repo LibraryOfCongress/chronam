@@ -9,7 +9,10 @@
 
 {% block box_right %}
 
-<br />
+<p>Below is some summary information about contributions to Chronicling America
+from the NDNP Awardee, {{ awardee }}. Summary information about <a href="{% url chronam_awardees %}">all awardees</a> is also available.</p>
+
+<h2>Batches</h2>
 
 <table class="data" width="100%">
     <tr>
@@ -26,5 +29,18 @@
 </table>
 
 <br />
+
+<h2>Essays</h2>
+
+<table class="data" width="100%">
+    <th width="75%">Essay Title</th>
+    <th>Created</th>
+    {% for essay in awardee.essays.all %}
+    <tr class="{% cycle 'lightGray' 'white' %}">
+        <td><a href="{% url chronam_essay essay.id %}">{{ essay.title }}</td>
+        <td>{{ essay.created|date }}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 {% endblock %}
