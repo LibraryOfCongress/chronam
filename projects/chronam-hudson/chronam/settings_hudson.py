@@ -81,7 +81,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 STORAGE = '/vol/ndnp/chronam/batches'
 BIB_STORAGE = '/vol/ndnp/chronam/bib'
-ESSAY_STORAGE = '/vol/ndnp_staging/batches/essays'
+ESSAY_STORAGE = '/vol/ndnp/chronam/ndnp-essays/essays'
 
 _ROOT = os.path.abspath(os.path.dirname(__file__))
 MEDIA_ROOT = os.path.join(_ROOT, 'static')
