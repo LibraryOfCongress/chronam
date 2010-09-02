@@ -13,4 +13,4 @@ DATABASES = {
 
 STORAGE = '/batches'
 BIB_STORAGE = '/ndnp/public1/data/bib/data'
-ESSAY_STORAGE = '/ndnp/public1/data/essays'
+ESSAY_STORAGE = '/ndnp/public1/data/ndnp-essays/essays'
