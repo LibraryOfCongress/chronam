@@ -11,7 +11,7 @@
         {% if title.essay %}
         <br/>
         <img src="{{script_name}}/images/arrow.gif" width="9" height="9" alt="" />
-        <a href="{% url chronam_title_essay title.lccn %}">More About this Newspaper</a>
+        <a href="{% url chronam_essay title.essay.id %}">More About this Newspaper</a>
         {% endif %}
     </dd>
     

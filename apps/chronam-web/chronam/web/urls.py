@@ -65,10 +65,17 @@ urlpatterns = patterns(
     # example: /essays/
     url(r'^essays/$', 'essays', name='chronam_essays'),
 
+    # example: /essays/1/
+    url(r'^essays/(?P<essay_id>\d+)/$', 'essay', name='chronam_essay'),
+
+    # TOD0: remove this some suitable time after 08/2010 since it
+    # permanently redirects to new essay id based URL
     # example: /lccn/sn85066387/essay
     url(r'^lccn/(?P<lccn>\w+)/essays/$', 'title_essays', 
         name="chronam_title_essays"),
 
+    # TOD0: remove this some suitable time after 08/2010 since it
+    # permanently redirects to new essay id based URL
     # example: /lccn/sn85066387/essay/20091101091232
     url(r'^lccn/(?P<lccn>\w+)/essays/(?P<created>\d+)/$', 'title_essay',
         name='chronam_title_essay'),

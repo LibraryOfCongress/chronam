@@ -2,7 +2,11 @@
 
 {% block newspaper_content %}
 
-{{essay_div|safe}}
+{{essay.html|safe}}
+
+<p>
+<em>Written by: <a href="{% url chronam_awardee essay.creator.org_code %}">{{ essay.creator }}</a></em>
+</p>
 
 {% endblock %}
 

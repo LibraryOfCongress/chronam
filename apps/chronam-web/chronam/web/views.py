@@ -26,7 +26,7 @@ except ImportError:
 from django.core.paginator import Paginator, EmptyPage
 from django.db import connection
 from django.http import HttpResponse, HttpResponseNotFound, Http404, \
-                        HttpResponseRedirect
+                        HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
@@ -346,43 +346,40 @@ def title_holdings(request, lccn):
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def essays(request):
-    page_title = 'Newspaper Title Essays'
-    titles = models.Title.objects.filter(essays__gte=0).distinct()
-    titles = titles.order_by('name')
+    essays = models.Essay.objects.all().order_by('title')
     return render_to_response('essays.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+@cache_page(settings.DEFAULT_TTL_SECONDS)
+def essay(request, essay_id):
+    essay = get_object_or_404(models.Essay, id=essay_id)
+    title = essay.first_title()
+    page_title = essay.title
+    return render_to_response('essay.html', dictionary=locals(),
+                              context_instance=RequestContext(request))
 
+# TODO: this redirect can go away some suitable time after 08/2010
+# it predates having explicit essay ids
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def title_essays(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
     # if there's only one essay might as well redirect to it
-    if len(title.essays.all()) == 1:
+    if len(title.essays.all()) >= 1:
         url = title.essays.all()[0].url
-        return HttpResponseRedirect(url)
-    elif len(title.essays.all()) == 0:
-        return HttpResponseNotFound("No essays for this title.")
-    page_title = "Essays for: %s" % unicode(title)
-    return render_to_response('title_essays.html', dictionary=locals(),
-                              context_instance=RequestContext(request))
+        return HttpResponsePermanentRedirect(url)
+    else:
+        return HttpResponseNotFound()
 
-
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+# TODO: this redirect can go away some suitable time after 08/2010
+# it predates having explicit essay_ids
 def title_essay(request, lccn, created):
-    #fh = open('/home/esummers/foo.log', 'a')
-    #fh.write("lccn=%s created=%s\n" % (lccn, created))
     try:
         created = datetime.datetime.strptime(created, '%Y%m%d%H%M%S')
     except:
         raise Http404()
     title = get_object_or_404(models.Title, lccn=lccn)
     essay = title.essays.filter(created=created)[0]
-    page_title = "More About This Newspaper: %s" % unicode(title)
-    base = request.META['SCRIPT_NAME']
-    essay_div = essay.get_div(base)
-    return render_to_response('essay.html', dictionary=locals(),
-                              context_instance=RequestContext(request))
-
+    return HttpResponsePermanentRedirect(essay.url)
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def issues(request, lccn, year=None):

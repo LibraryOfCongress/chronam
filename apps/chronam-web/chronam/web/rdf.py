@@ -170,6 +170,9 @@ def awardee_to_graph(a):
     for batch in a.batches.all():
         g.add((abstract_uri(batch), DCTERMS['creator'], uri))
     g.add((uri, RDFS.isDefinedBy, rdf_uri(a)))
+    for essay in a.essays.all():
+        g.add((URIRef(essay.url), DCTERMS['creator'], uri))
+        g.add((URIRef(essay.url), RDF['type'], NDNP['Essay']))
     if a.org_code == 'dlc':
         # important for resource maps that reference loc as dc:creator
         g.add((uri, FOAF['mbox'], Literal('help@loc.gov')))

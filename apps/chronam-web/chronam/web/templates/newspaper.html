@@ -27,7 +27,7 @@
               {% endif %}
               <a href="{% url chronam_title_marc title.lccn %}">MARC Record</a>
               {% if title.has_essays %} |
-              <a href="{% url chronam_title_essays title.lccn %}">More About this Newspaper</a>
+              <a href="{% url chronam_essay title.first_essay.id %}">More About this Newspaper</a>
               {% endif %}
               {% block extra_nav %}
               {% endblock %}

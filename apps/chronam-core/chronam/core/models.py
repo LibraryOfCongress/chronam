@@ -38,6 +38,9 @@ class Awardee(models.Model):
     def abstract_url(self):
         return self.url.rstrip('/') + '#awardee'
 
+    def __unicode__(self):
+        return self.name
+
 
 class Batch(models.Model):
     name = models.CharField(max_length=250, primary_key=True)
@@ -148,9 +151,6 @@ class Title(models.Model):
     def has_issues(self):
         return Issue.objects.filter(title=self).count() > 0
 
-    def has_essays(self):
-        return self.essays.count() > 0
-
     @property
     def first_issue(self):
         try:
@@ -158,6 +158,16 @@ class Title(models.Model):
         except IndexError, e:
             return None
 
+    def has_essays(self):
+        return self.essays.count() > 0
+
+    @property 
+    def first_essay(self):
+        try: 
+            return self.essays.all()[0]
+        except IndexError, e:
+            return None
+    
     @property
     def last_issue(self):
         try:
@@ -697,60 +707,24 @@ class IssueNote(models.Model):
 
 
 class Essay(models.Model):
-    html = models.TextField()
+    title = models.TextField()
     created = models.DateTimeField()
+    creator = models.ForeignKey('Awardee', related_name='essays')
+    filename = models.TextField()
+    html = models.TextField()
+    loaded = models.DateTimeField(auto_now_add=True)
     titles = models.ManyToManyField('Title', related_name='essays')
-    mets_file = models.TextField(null=True)
 
     def first_title(self):
         return self.titles.all()[0]
 
-    def get_div(self, base=None):
-        """
-        Extracts the contents of <body> and puts them in a <div> for
-        display in another page of html. If base is specified relative
-        hrefs are adjusted accordingly (currently ones starting with
-        /lccn).
-        """
-        div = etree.Element('div')
-        div.attrib['class'] = 'essay'
-        doc = etree.fromstring(self.html)
-
-        # strip all namespaces
-        for elem in doc.getiterator():
-            # comment elements don't have a string for tag
-            if type(elem.tag) != str:
-                continue
-            has_ns = re.match(r'{.+}(.+)', elem.tag)
-            if has_ns:
-                elem.tag = has_ns.group(1)
-
-        if base:
-            for elem in doc.getiterator():
-                if elem.tag=="a":
-                    current = elem.attrib['href']
-                    if current.startswith("/lccn"):
-                        elem.attrib['href'] = base + current
-                
-        body = doc.find('.//body')
-        for child in body.getchildren():
-            div.append(child)
-
-        return etree.tostring(div, pretty_print=True)
-
-    @property
-    def div(self):
-        return self.get_div()
-
     @property
     @permalink
     def url(self):
-        created = datetime.datetime.strftime(self.created, '%Y%m%d%H%M%S')
-        return ('chronam_title_essay', (), {'lccn': self.first_title().lccn, 
-                                            'created': created})
+        return ('chronam_essay', (), {'essay_id': self.id})
 
     class Meta:
-        ordering = ['created']
+        ordering = ['title']
 
 
 class Holding(models.Model):

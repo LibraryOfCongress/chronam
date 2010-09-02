@@ -15,7 +15,7 @@ except ImportError:
 from chronam import core
 from chronam.core import models
 from chronam.core.title_loader import TitleLoader
-from chronam.core.essay_loader import EssayLoader
+from chronam.core.essay_loader import load_essay
 from chronam.core.holding_loader import HoldingLoader
 from chronam.core.index import index_titles
 from chronam.core.management.commands import configure_logging
@@ -59,11 +59,9 @@ class Command(BaseCommand):
         # overlay place info harvested from dbpedia onto the places table
         self.load_place_links()
 
-        for batch_name in os.listdir(settings.ESSAY_STORAGE):
-            batch_dir = os.path.join(settings.ESSAY_STORAGE, batch_name)
-            loader = EssayLoader()            
+        for essay_file in os.listdir(settings.ESSAY_STORAGE):
             try:
-                loader.load(batch_dir)
+                load_essay(essay_file)
             except Exception, e:
                 _logger.exception(e)
 

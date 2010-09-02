@@ -800,6 +800,7 @@ table.data td {
     font: 70% verdana, helvetica, sans-serif;
     padding: 5px;
     border: 1px solid #ccc;
+    vertical-align: top;
 }
 
 table.data td.label {
