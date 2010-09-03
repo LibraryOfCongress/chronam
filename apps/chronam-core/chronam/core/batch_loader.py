@@ -45,8 +45,6 @@ class BatchLoader(object):
         The process_ocr parameter is used (mainly in testing) when we don't 
         want to spend time actually extracting ocr text and indexing.
         """
-        self.issues_processed = 0
-        self.pages_processed = 0
         self.PROCESS_OCR = process_ocr
         if self.PROCESS_OCR: 
             self.solr = SolrConnection(settings.SOLR)
@@ -81,6 +79,8 @@ class BatchLoader(object):
           loader.load_batch('batch_curiv_ahwahnee_ver01')
 
         """
+        self.pages_processed = 0
+
         batch_name = _normalize_batch_name(batch_name)
         if not strict:
             try:
@@ -129,16 +129,14 @@ class BatchLoader(object):
                     _logger.exception(e)
                     continue
                 reset_queries()
-                self.issues_processed += 1
-                seconds = time() - t0
-                times.append((seconds, self.pages_processed))
+                times.append((time() - t0, self.pages_processed))
 
             # commit new changes to the solr index, if we are indexing
             if self.PROCESS_OCR:
                 self.solr.commit()
             
             batch.save()
-            msg = "processed %s issues" % self.issues_processed 
+            msg = "processed %s pages" % batch.page_count()
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             _logger.info(msg)
             event.save()
