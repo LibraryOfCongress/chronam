@@ -1248,7 +1248,6 @@ def status(request):
     issue_count = models.Issue.objects.all().count()
     batch_count = models.Batch.objects.all().count()
     title_count = models.Title.objects.all().count()
-    batch_count = models.Batch.objects.all().count()
     holding_count = models.Holding.objects.all().count()
     essay_count = models.Essay.objects.all().count()
     pages_indexed = index.page_count()

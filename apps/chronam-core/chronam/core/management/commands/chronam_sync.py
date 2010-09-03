@@ -14,10 +14,10 @@ except ImportError:
 
 from chronam import core
 from chronam.core import models
+from chronam.core import index
 from chronam.core.title_loader import TitleLoader
 from chronam.core.essay_loader import load_essay
 from chronam.core.holding_loader import HoldingLoader
-from chronam.core.index import index_titles
 from chronam.core.management.commands import configure_logging
 
 configure_logging("chronam_sync_logging.config", "chronam_sync.log")
@@ -35,6 +35,17 @@ class Command(BaseCommand):
     args = ''
 
     def handle(self, **options):
+        if not (models.Title.objects.all().count() and \
+                models.Holding.objects.all().count() and \
+                models.Essay.objects.all().count() and \
+                models.Batch.objects.all().count() and \
+                models.Issue.objects.all().count() and \
+                models.Page.objects.all().count() and \
+                index.page_count() and \
+                index.title_count()):
+            _logger.warn("Database or index not empty as expected.")
+            return
+
         management.call_command('loaddata', 'languages.json')
         management.call_command('loaddata', 'institutions.json')
         management.call_command('loaddata', 'ethnicities.json')
@@ -65,7 +76,7 @@ class Command(BaseCommand):
             except Exception, e:
                 _logger.exception(e)
 
-        index_titles()
+        index.index_titles()
         _logger.info("chronam_sync done.")
 
     def load_place_links(self):
