@@ -39,16 +39,12 @@ class BatchLoader(object):
     object serves as a context for a particular batch loading job.
     """
 
-    def __init__(self, storage=settings.STORAGE, process_ocr=True):
-        """Create a loader for a given storage area on the filesystem 
-        The storage area is where batch files are located. By default
-        the loader will use the STORAGE location in the site-wide settings
-        file.
+    def __init__(self, process_ocr=True):
+        """Create a BatchLoader.
 
         The process_ocr parameter is used (mainly in testing) when we don't 
         want to spend time actually extracting ocr text and indexing.
         """
-        self.storage = os.path.abspath(storage)
         self.issues_processed = 0
         self.pages_processed = 0
         self.PROCESS_OCR = process_ocr
