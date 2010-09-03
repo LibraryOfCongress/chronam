@@ -80,7 +80,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 THUMBNAIL_WIDTH = 200
 
-SOLR = 'http://localhost:8086/solr'
+SOLR = 'http://localhost:8083/solr'
 
 OMNITURE_SCRIPT = "http://www.loc.gov/global/s_code.js"
 DEFAULT_TTL_SECONDS = 86400
