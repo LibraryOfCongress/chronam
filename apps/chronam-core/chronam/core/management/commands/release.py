@@ -4,6 +4,7 @@ public. It sets the 'release' date on the batches, and also generates up to date
 sitemap files for crawlers.
 """
 
+import os
 import re
 import logging
 
@@ -14,6 +15,7 @@ from datetime import datetime
 import feedparser
 from rfc3339 import rfc3339
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.core.paginator import Paginator
 from django.db import reset_queries
@@ -27,7 +29,7 @@ configure_logging("release.config", "release.log")
 _logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
-    help = "Prepares for a data release by setting the released datetime on batches that lack them using the current public feed of batches or the current time. This command also writes out sitemap files to the static directory."
+    help = "Prepares for a data release by setting the released datetime on batches that lack them using the current public feed of batches or the current time. This command also writes out sitemap files to the settings.DOCUMENT_ROOT directory."
     reset = make_option('--reset',
         action = 'store_true',
         dest = 'reset',
@@ -86,7 +88,8 @@ def write_sitemaps():
     sitemaps for all the batches, issues, pages and titles that have been
     loaded.
     """
-    sitemap_index = open('static/sitemaps/sitemap.xml', 'w')
+    sitemap_index = open(
+        os.path.join(settings.DOCUMENT_ROOT, 'sitemap.xml', 'w'))
     sitemap_index.write('<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
 
     max_urls = 50000
@@ -104,9 +107,9 @@ def write_sitemaps():
                 sitemap.write('</urlset>\n')
                 sitemap.close()
             sitemap_file = 'sitemap-%05d.xml' % page_count
-            sitemap_path = 'static/sitemaps/%s' % sitemap_file
             _logger.info("writing %s" % sitemap_path)
-            sitemap = open(sitemap_path, 'w')
+            sitemap = open(
+                os.path.join(settings.DOCUMENT_ROOT, sitemap_file), 'w')
             sitemap.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
             sitemap_index.write('<sitemap><loc>http://chroniclingamerica.loc.gov/%s</loc></sitemap>\n' % sitemap_file)
     
