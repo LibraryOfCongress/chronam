@@ -30,6 +30,7 @@ from the NDNP Awardee, {{ awardee }}. Summary information about <a href="{% url 
 
 <br />
 
+{% if awardee.essays.all.count > 0 %}
 <h2>Essays</h2>
 
 <table class="data" width="100%">
@@ -42,5 +43,6 @@ from the NDNP Awardee, {{ awardee }}. Summary information about <a href="{% url 
     </tr>
     {% endfor %}
 </table>
+{% endif %}
 
 {% endblock %}
