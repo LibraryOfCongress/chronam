@@ -89,7 +89,7 @@ def write_sitemaps():
     loaded.
     """
     sitemap_index = open(
-        os.path.join(settings.DOCUMENT_ROOT, 'sitemap.xml', 'w'))
+        os.path.join(settings.DOCUMENT_ROOT, 'sitemap.xml'), 'w')
     sitemap_index.write('<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
 
     max_urls = 50000
@@ -107,7 +107,7 @@ def write_sitemaps():
                 sitemap.write('</urlset>\n')
                 sitemap.close()
             sitemap_file = 'sitemap-%05d.xml' % page_count
-            _logger.info("writing %s" % sitemap_path)
+            _logger.info("writing %s" % sitemap_file)
             sitemap = open(
                 os.path.join(settings.DOCUMENT_ROOT, sitemap_file), 'w')
             sitemap.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')

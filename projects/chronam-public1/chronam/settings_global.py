@@ -86,4 +86,4 @@ OMNITURE_SCRIPT = "http://www.loc.gov/global/s_code.js"
 DEFAULT_TTL_SECONDS = 86400
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24 * 7 * 2  # 2 weeks
 
-DOCUMENT_ROOT = "/ndnp/public1/chronam"
+DOCUMENT_ROOT = "/ndnp/public1/static"
