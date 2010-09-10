@@ -136,7 +136,7 @@ class BatchLoader(object):
                 self.solr.commit()
             
             batch.save()
-            msg = "processed %s pages" % batch.page_count()
+            msg = "processed %s pages" % batch.page_count
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             _logger.info(msg)
             event.save()
