@@ -331,9 +331,6 @@ urlpatterns += patterns(
     url(r'^data/(?P<path>.*)$', 'django.views.static.serve', 
         {'document_root': _MEDIA_ROOT}, name="chronam_batch_files"),
 
-    url(r'^2010/media/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': _MEDIA_ROOT}, name="chronam_media"),
-
     url(r'^(?P<path>images/.*)$', 'django.views.static.serve', 
         {'document_root': _MEDIA_ROOT}, name="chronam_images"),
 
