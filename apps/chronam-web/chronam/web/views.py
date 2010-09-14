@@ -346,6 +346,7 @@ def title_holdings(request, lccn):
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def essays(request):
+    page_title = "Newspaper Essays"
     essays = models.Essay.objects.all().order_by('title')
     return render_to_response('essays.html', dictionary=locals(),
                               context_instance=RequestContext(request))
