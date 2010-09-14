@@ -179,7 +179,7 @@
     "pk": "okhi",
     "model": "core.Awardee", 
     "fields": {
-      "name": "Oklahoma Historical Society; Oklahoma City, OK", 
+      "name": "Oklahoma Historical Society", 
       "created": "2010-01-12 21:33:21"
     }
   },
