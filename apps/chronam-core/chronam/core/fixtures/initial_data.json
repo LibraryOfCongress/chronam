@@ -131,7 +131,7 @@
     "pk": "iune",
     "model": "core.Awardee", 
     "fields": {
-      "name": "University of Illinois, Urbana-Champaign", 
+      "name": "University of Illinois at Urbana-Champaign Library, Urbana, IL", 
       "created": "2010-01-12 21:33:21"
     }
   },
@@ -139,7 +139,7 @@
     "pk": "khi",
     "model": "core.Awardee", 
     "fields": {
-      "name": "Kansas State Historical Society", 
+      "name": "Kansas State Historical Society; Topeka, KS", 
       "created": "2010-01-12 21:33:21"
     }
   },
@@ -147,7 +147,7 @@
     "pk": "lu",
     "model": "core.Awardee", 
     "fields": {
-      "name": "Louisiana State University", 
+      "name": "Louisiana State University; Baton Rouge, LA", 
       "created": "2010-01-12 21:33:21"
     }
   },
@@ -155,7 +155,7 @@
     "pk": "mthi",
     "model": "core.Awardee", 
     "fields": {
-      "name": "Montana Historical Society", 
+      "name": "Montana Historical Society; Helena, MT", 
       "created": "2010-01-12 21:33:21"
     }
   },
@@ -163,7 +163,7 @@
     "pk": "oru",
     "model": "core.Awardee", 
     "fields": {
-      "name": "University of Oregon", 
+      "name": "University of Oregon, Knight Library; Eugene, OR", 
       "created": "2010-01-12 21:33:21"
     }
   },
@@ -171,7 +171,7 @@
     "pk": "scu",
     "model": "core.Awardee", 
     "fields": {
-      "name": "University of South Carolina", 
+      "name": "University of South Carolina; Columbia, SC", 
       "created": "2010-01-12 21:33:21"
     }
   },
@@ -179,7 +179,7 @@
     "pk": "okhi",
     "model": "core.Awardee", 
     "fields": {
-      "name": "Oklahoma Historical Society", 
+      "name": "Oklahoma Historical Society; Oklahoma City, OK", 
       "created": "2010-01-12 21:33:21"
     }
   },
