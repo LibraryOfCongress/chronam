@@ -1,6 +1,7 @@
 #!/bin/ksh
 
-export LD_CONFIG_32=/ndnp/public1/ld.config
+LD_CONFIG_32=/ndnp/public1/ld.config
+export LD_CONFIG_32
 
 case "$1" in
 start )
