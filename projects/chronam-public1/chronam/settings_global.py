@@ -4,7 +4,7 @@ import os
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
-MASTER = True
+MASTER = False
 
 ADMINS = (
     # ('NDNP Dev', 'ndnp-dev@rdc.lctl.gov'),
