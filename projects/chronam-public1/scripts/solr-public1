@@ -12,12 +12,12 @@ case $1 in
     start)
         echo "Starting Solr"
         cd $SOLR_DIR
-        $JAVA $JAVA_OPTIONS 2> $LOG_FILE &
+        su $USER -c "$JAVA $JAVA_OPTIONS 2> $LOG_FILE &"
         ;;
     stop)
         echo "Stopping Solr"
         cd $SOLR_DIR
-        $JAVA $JAVA_OPTIONS --stop
+        su $USER -c "$JAVA $JAVA_OPTIONS --stop"
         ;;
     restart)
         $0 stop

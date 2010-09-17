@@ -327,7 +327,7 @@ case "$mode" in
       # Give extra arguments to mysqld with the my.cnf file. This script
       # may be overwritten at next upgrade.
       pid_file=$server_pid_file
-      $bindir/mysqld_safe --datadir=$datadir --pid-file=$server_pid_file $other_args >/dev/null 2>&1 &
+      su ndnp -c "$bindir/mysqld_safe --datadir=$datadir --pid-file=$server_pid_file $other_args >/dev/null 2>&1 &"
       wait_for_pid created $!; return_value=$?
 
       # Make lock for RedHat / SuSE
