@@ -5,10 +5,10 @@ export LD_CONFIG_32
 
 case "$1" in
 start )
-       /ndnp/public1/apache2/bin/apachectl start
+       su ndnp -c "pfexec /ndnp/public1/apache2/bin/apachectl start"
        ;;
 stop )
-       /ndnp/public1/apache2/bin/apachectl stop
+       su ndnp -c "/ndnp/public1/apache2/bin/apachectl stop"
        ;;
 * )
        echo "Usage: $0 (start | stop)"
