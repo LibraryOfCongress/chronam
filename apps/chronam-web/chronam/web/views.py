@@ -801,7 +801,8 @@ def newspapers(request, state=None, format='html'):
         titles = titles.filter(country__name__iexact=state)
         if titles.count() == 0:
             raise Http404
-        page_title = '%s Newspapers' % titles[0].country.name
+        state = titles[0].country.name  # to get the right capitalization.
+        page_title = '%s Newspapers' % state
         crumbs = [
             {'label':'See All Available Newspapers',
              'href': urlresolvers.reverse('chronam_newspapers')},
