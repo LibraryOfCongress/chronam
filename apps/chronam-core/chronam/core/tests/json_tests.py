@@ -5,7 +5,7 @@ try:
 except ImportError:
     import json
 
-from chronam.web.json_helper import batch_to_json
+from chronam.core.models import batch_to_json
 from chronam.core import models as m
 
 class JsonTests(TestCase):

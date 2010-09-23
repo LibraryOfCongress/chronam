@@ -8,12 +8,26 @@ try:
 except ImportError:
     import json
 
+from rfc3339 import rfc3339
 from lxml import etree
 
 from django.db import models 
 from django.db.models import permalink
 from django.utils import datetime_safe
 from django.conf import settings
+
+
+def batch_to_json(batch, serialize=True):
+    b = {}
+    b['name'] = batch.name
+    b['ingested'] = rfc3339(batch.created)
+    b['page_count'] = batch.page_count
+    b['lccns'] = batch.lccns()
+    b['awardee'] = batch.awardee.name
+    if serialize:
+        return json.dumps(b)
+    else:
+        return b
 
 
 class Awardee(models.Model):
