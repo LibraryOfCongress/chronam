@@ -35,14 +35,14 @@ class Command(BaseCommand):
     args = ''
 
     def handle(self, **options):
-        if not (models.Title.objects.all().count() and \
-                models.Holding.objects.all().count() and \
-                models.Essay.objects.all().count() and \
-                models.Batch.objects.all().count() and \
-                models.Issue.objects.all().count() and \
-                models.Page.objects.all().count() and \
-                index.page_count() and \
-                index.title_count()):
+        if not (models.Title.objects.all().count()==0 and \
+                models.Holding.objects.all().count()==0 and \
+                models.Essay.objects.all().count()==0 and \
+                models.Batch.objects.all().count()==0 and \
+                models.Issue.objects.all().count()==0 and \
+                models.Page.objects.all().count()==0 and \
+                index.page_count()==0 and \
+                index.title_count()==0):
             _logger.warn("Database or index not empty as expected.")
             return
 
