@@ -205,7 +205,11 @@ class BatchLoader(object):
         # attach the Issue to the appropriate Title
         lccn = mods.xpath('string(.//mods:identifier[@type="lccn"])', 
             namespaces=ns).strip()
-        title = Title.objects.get(lccn=lccn)
+        try:
+            title = Title.objects.get(lccn=lccn)
+        except Exception, e:
+            management.call_command('load_titles', 'http://chroniclingamerica.loc.gov/lccn/%s/marc.xml' % lccn)
+            title = Title.objects.get(lccn=lccn)
         issue.title = title
 
         issue.batch = self.current_batch
