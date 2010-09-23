@@ -1,8 +1,8 @@
 from django.test import TestCase
 from chronam.core.models import Title, Page, Issue, Batch, Awardee
 
-from chronam.web import rdf
-from chronam.web.rdf import DCTERMS, ORE, NDNP
+from chronam.core import rdf
+from chronam.core.rdf import DCTERMS, ORE, NDNP
 
 from rdflib import Literal, URIRef, RDFS, RDF
 
