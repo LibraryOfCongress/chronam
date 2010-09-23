@@ -1,4 +1,6 @@
 import logging
+import urlparse
+import urllib2
 import datetime
 from re import sub
 from time import time, strptime
@@ -21,7 +23,8 @@ class TitleLoader(object):
         self.missing_lccns = 0
         self.errors = 0
 
-    def load_file(self, filename, skip=0):
+    def load_file(self, location, skip=0):
+        location = urlparse.urljoin("file:", location)
         t0 = time()
         times = []
 
@@ -47,7 +50,7 @@ class TitleLoader(object):
             	_logger.info("processed %sk records in %.2f seconds" % 
                              (self.records_processed/1000, seconds))
 
-        map_xml(load_record, file(filename, "rb"))
+        map_xml(load_record, urllib2.urlopen(location))
 
     def load_bib(self, record):
         title = None
@@ -313,18 +316,6 @@ class TitleLoader(object):
                 urls.append(models.Url(value=url, type=i2))
         title.urls = urls
 
-    def main(self, marcxml_file):
-        loader = TitleLoader()
-        _logger.info("loading titles from: %s" % marcxml_file)
-
-        loader.load_file(marcxml_file)
-
-        _logger.info("records processed: %i" % loader.records_processed)
-        _logger.info("records created: %i" % loader.records_created)
-        _logger.info("records updated: %i" % loader.records_updated)
-        _logger.info("errors: %i" % loader.errors)
-        _logger.info("missing lccns: %i" % loader.missing_lccns)
-
 def _extract(record, field, subfield=None):
     value = None
     try:
@@ -394,3 +385,17 @@ def nsplit(s, n):
 
 class TitleLoaderException(RuntimeError):
     pass
+
+
+def load(location):
+    loader = TitleLoader()
+    _logger.info("loading titles from: %s" % location)
+
+    loader.load_file(location)
+
+    _logger.info("records processed: %i" % loader.records_processed)
+    _logger.info("records created: %i" % loader.records_created)
+    _logger.info("records updated: %i" % loader.records_updated)
+    _logger.info("errors: %i" % loader.errors)
+    _logger.info("missing lccns: %i" % loader.missing_lccns)
+
