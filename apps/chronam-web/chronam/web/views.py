@@ -44,9 +44,9 @@ from chronam.core import models, index
 from chronam.web import forms
 from chronam.web.decorators import rdf_view, opensearch_clean
 from chronam.utils.url import unpack_url_path
-from chronam.web.rdf import title_to_graph, issue_to_graph, page_to_graph, \
+from chronam.core.rdf import title_to_graph, issue_to_graph, page_to_graph, \
                             titles_to_graph, batch_to_graph, awardee_to_graph
-from chronam.core.json_helper import batch_to_json
+from chronam.core.models import batch_to_json
 
 
 def _page_range_short(paginator, page):
