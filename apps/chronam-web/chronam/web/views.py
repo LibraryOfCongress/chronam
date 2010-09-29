@@ -1096,7 +1096,7 @@ def titles_in_state(request, state, page_number=1, order='name_normal'):
     if state:
         titles = titles.filter(places__state__iexact=state)
     titles = titles.order_by(order)
-    titles = titles.disticnt()
+    titles = titles.distinct()
 
     if titles.count() == 0:
         raise Http404
