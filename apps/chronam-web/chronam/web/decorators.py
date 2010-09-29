@@ -1,7 +1,7 @@
 import re
 
 from django.core import urlresolvers
-from chronam.utils.mimeparse import best_match
+from mimeparse import best_match
 
 from chronam.web import responses
 
