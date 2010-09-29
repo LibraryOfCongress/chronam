@@ -2532,7 +2532,7 @@
     "model": "core.country", 
     "fields": {
       "region": "North America", 
-      "name": "Washington (State)"
+      "name": "Washington"
     }
   }, 
   {
