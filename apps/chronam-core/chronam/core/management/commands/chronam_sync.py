@@ -15,7 +15,7 @@ except ImportError:
 from chronam import core
 from chronam.core import models
 from chronam.core import index
-from chronam.core.title_loader import TitleLoader
+from chronam.core import title_loader
 from chronam.core.essay_loader import load_essay
 from chronam.core.holding_loader import HoldingLoader
 from chronam.core.management.commands import configure_logging
@@ -53,10 +53,9 @@ class Command(BaseCommand):
         management.call_command('loaddata', 'countries.json')
 
         # look in BIB_STORAGE for titles to load
-        title_loader = TitleLoader()
         for filename in os.listdir(settings.BIB_STORAGE): 
             if filename.startswith('titles-') and filename.endswith('.xml'):
-                title_loader.main(os.path.join(settings.BIB_STORAGE, filename))
+                title_loader.load(os.path.join(settings.BIB_STORAGE, filename))
 
         # look in BIB_STORAGE for holdings files to load 
         # NOTE: must run after titles are all loaded or else they may 
