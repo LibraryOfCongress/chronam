@@ -220,19 +220,19 @@ urlpatterns = patterns(
     url(r'^states_counties/$', 'states_counties', name='chronam_states_counties'),
 
     # example: /states.json
-    url(r'^states.(?P<format>json)$', 'states', name='chronam_states_json'),
+    url(r'^states\.(?P<format>json)$', 'states', name='chronam_states_json'),
 
     # example: /counties/pennsylvania
     url(r'^counties/(?P<state>[^/;]+)/$', 'counties_in_state', name='chronam_counties_in_state'),
 
     # example: /counties/pennsylvania.json
-    url(r'^counties/(?P<state>[^/;]+).(?P<format>json)$', 'counties_in_state', name='chronam_counties_in_state_json'),
+    url(r'^counties/(?P<state>[^/;]+)\.(?P<format>json)$', 'counties_in_state', name='chronam_counties_in_state_json'),
 
     # example: /cities/pennsylvania/allegheny
     url(r'^cities/(?P<state>[^/;]+)/(?P<county>[^./]+)/$', 'cities_in_county', name='chronam_cities_in_county'),
 
     # example: /cities/pennsylvania/allegheny.json
-    url(r'^cities/(?P<state>[^/;]+)/(?P<county>[^./]+).(?P<format>json)$', 'cities_in_county', name='chronam_cities_in_county_json'),
+    url(r'^cities/(?P<state>[^/;]+)/(?P<county>[^./]+)\.(?P<format>json)$', 'cities_in_county', name='chronam_cities_in_county_json'),
 
     # example: /cities/pennsylvania
     url(r'^cities/(?P<state>[^/;]+)/$', 'cities_in_state', name='chronam_cities_in_state'),
@@ -305,11 +305,11 @@ urlpatterns += patterns(
     # batch view
     url(r'^batches/$', 'batches', name='chronam_batches'),
     url(r'^batches/feed/$', 'batches_atom', name='chronam_batches_atom'),
-    url(r'^batches/json/$', 'batches_json', name='chronam_batches_json'),
+    url(r'^batches\.json/$', 'batches_json', name='chronam_batches_json'),
     url(r'^batches/(?P<batch_name>.+)/$', 'batch', name='chronam_batch'),
     url(r'^batches/(?P<batch_name>.+).rdf$', 'batch_rdf', 
         name='chronam_batch_dot_rdf'),
-    url(r'^batches/(?P<batch_name>.+)/json$', 'batch_json', 
+    url(r'^batches/(?P<batch_name>.+)\.json$', 'batch_json', 
         name='chronam_batch_dot_json'),
     url(r'^batches/(?P<batch_name>.+)$', 'batch_rdf', name='chronam_batch_rdf'),
 
