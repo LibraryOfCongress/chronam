@@ -18,7 +18,10 @@
         <link rel="alternate" type="application/rdf+xml" href="{% url chronam_batch_dot_rdf batch.name %}" />
         <link rel="alternate" type="application/json" href="{% url chronam_batch_dot_json batch.name %}" />
         <id>info:lc/ndnp/batch/{{batch.name}}</id>
-        <author><name>{{batch.awardee.name}}</name></author>
+        <author>
+            <name>{{batch.awardee.name}}</name>
+            <uri>http://chroniclingamerica.loc.gov{{batch.awardee.url}}</uri>
+        </author>
         <updated>{% if batch.released %}{{ batch.released|rfc3339 }}{% else %}{{ batch.created|rfc3339 }}{% endif %}</updated>
     </entry>
     {% endfor %}
