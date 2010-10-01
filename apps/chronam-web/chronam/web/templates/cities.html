@@ -1,5 +1,7 @@
 {% extends "site.html" %}
 
+{% load custom_filters %}
+
 {% block more_style %}
 {% if county %}
 <link rel="alternate" type="application/json" href="{% url chronam_cities_in_county_json state|pack_url county|pack_url 'json' %}" />
