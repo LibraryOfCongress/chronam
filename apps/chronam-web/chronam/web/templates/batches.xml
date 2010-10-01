@@ -20,7 +20,7 @@
         <id>info:lc/ndnp/batch/{{batch.name}}</id>
         <author>
             <name>{{batch.awardee.name}}</name>
-            <uri>http://chroniclingamerica.loc.gov{{batch.awardee.url}}</uri>
+            <uri>http://{{ request.get_host }}{% url chronam_awardee batch.awardee.org_code %}</uri>
         </author>
         <updated>{% if batch.released %}{{ batch.released|rfc3339 }}{% else %}{{ batch.created|rfc3339 }}{% endif %}</updated>
     </entry>
