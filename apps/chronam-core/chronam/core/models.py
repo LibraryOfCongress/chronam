@@ -477,6 +477,13 @@ class Page(models.Model):
     def ocr_abs_filename(self):
         return self._abs_path(self.ocr_filename)
 
+    @property
+    def noteAboutReproduction(self):
+        try:
+            return self.notes.filter(type="noteAboutReproduction")[0]
+        except IndexError:
+            return ""
+
     def _abs_path(self, rel_path):
         if rel_path:
             return os.path.join(self.issue.batch.path, rel_path)
