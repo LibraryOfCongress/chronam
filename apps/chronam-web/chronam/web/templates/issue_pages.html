@@ -81,17 +81,18 @@
 {% if page.object_list %}
   {% for page in page.object_list %}
     {% url chronam_page title.lccn,page.issue.date_issued,page.issue.edition,page.sequence as url %}
-<div>
+    {% if page.jp2_filename %}
+    <div>
       <a href="{{url}}">
-        {% if page.jp2_filename %}
           <img src="{% url chronam_page_thumbnail title.lccn,page.issue.date_issued,page.issue.edition,page.sequence %}" alt="Thumbnail for {{page.number}}"/>
-        {% else %}
-          <img src="{{script_name}}/images/no_thumbnail.gif" alt="No Thumbnail for {{page.number}}"></img>
-        {% endif %}
       </a>
+    {% else %}
+    <div style="height: auto; margin-bottom: 3em;">
+      {{page.noteAboutReproduction.text}}<br/>
+    {% endif %}
       <br/>
       <a href="{{url}}" shape="rect">{{ page }}</a>
-</div>
+    </div>
 
 {% if forloop.counter|divisibleby:2 %}<br/>{% endif %}
 
