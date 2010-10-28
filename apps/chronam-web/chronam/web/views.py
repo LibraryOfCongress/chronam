@@ -936,7 +936,7 @@ def page_image_tile(request, lccn, date, edition, sequence,
             im = Image.open(filename)
         except IOError:
             raise Http404
-        c = im.crop(x1, y1, x2, y2)
+        c = im.crop((x1, y1, x2, y2))
         f = c.resize((width, height))
         f.save(response, "JPEG")
     else:
