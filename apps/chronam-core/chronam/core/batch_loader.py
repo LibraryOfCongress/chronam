@@ -8,6 +8,7 @@ from datetime import datetime
 from lxml import etree
 from solr import SolrConnection
 
+from django.core import management
 from django.db import reset_queries
 from django.conf import settings
 
