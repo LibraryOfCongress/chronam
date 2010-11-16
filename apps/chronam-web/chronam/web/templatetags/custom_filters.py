@@ -14,6 +14,8 @@ def rfc3339_filter(d):
     return rfc3339(d)
 
 def pack_url(value, default='-'):
+    if isinstance(value, unicode):
+        value = value.encode('utf-8')
     return url.pack_url_path(value, default)
 
 register.filter('pack_url', pack_url)
