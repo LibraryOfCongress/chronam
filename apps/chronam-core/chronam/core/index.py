@@ -35,7 +35,7 @@ class SolrPaginator(Paginator):
     a HTML form.
     """
 
-    def __init__(self, query, page_size=10):
+    def __init__(self, query):
         self.query = query.copy()
 
         # figure out the solr query and execute it
@@ -45,8 +45,8 @@ class SolrPaginator(Paginator):
             page_num = int(self.query.get('page', 1))
         except ValueError, e:
             page_num = 1
-        rows = int(self.query.get('rows', page_size))
-        start = page_num * rows - page_size
+        rows = int(self.query.get('rows', 10))
+        start = page_num * rows - rows
         params = {"hl.snippets": 100, # TODO: make this unlimited
             "hl.requireFieldMatch": 'true', # limits highlighting slop
             } 
@@ -176,7 +176,7 @@ class SolrTitlesPaginator(Paginator):
     for use in a HTML form.
     """
 
-    def __init__(self, query, page_size=50):
+    def __init__(self, query):
         self.query = query.copy()
 
         # figure out the solr query
@@ -187,8 +187,8 @@ class SolrTitlesPaginator(Paginator):
         except ValueError:
             page = 1
 
-        rows = int(self.query.get('rows', page_size))
-        start = page * rows - page_size
+        rows = int(self.query.get('rows', 10))
+        start = page * rows - rows
 
         # determine sort order
         sort_field, sort_order = _get_sort(self.query.get('sort'))
