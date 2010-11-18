@@ -307,6 +307,9 @@ def page_search(d):
         distance = d.get('proxdistance', PROX_DISTANCE_DEFAULT)
         q.append('+ocr:"%s"~%s' % (d['proxtext'], distance))
 
+    if d.get('sequence', None):
+        q.append('+sequence:"%s"' % d['sequence'])
+
     return ' '.join(q)
 
 
