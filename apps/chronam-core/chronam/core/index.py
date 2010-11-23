@@ -46,7 +46,7 @@ class SolrPaginator(Paginator):
         except ValueError, e:
             page_num = 1
         rows = int(self.query.get('rows', 10))
-        start = page_num * rows - rows
+        start = page_num * rows - 10
         params = {"hl.snippets": 100, # TODO: make this unlimited
             "hl.requireFieldMatch": 'true', # limits highlighting slop
             } 
