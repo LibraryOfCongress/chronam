@@ -187,8 +187,8 @@ class SolrTitlesPaginator(Paginator):
         except ValueError:
             page = 1
 
-        rows = int(self.query.get('rows', 10))
-        start = page * rows - rows
+        rows = int(self.query.get('rows', 50))
+        start = page * rows - 50
 
         # determine sort order
         sort_field, sort_order = _get_sort(self.query.get('sort'))
