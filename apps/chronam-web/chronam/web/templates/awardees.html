@@ -1,8 +1,11 @@
 {% extends "site.html" %}
 {% load humanize %}
 
-{% block box_right %}
+{% block extra_link_types %}
+<link rel="alternate" type="application/json" href="{% url chronam_awardees_json %}" tite="Atom Feed" />
+{% endblock %}
 
+{% block box_right %}
 <p>
 Below is a list of NDNP Awardees that have content in the Chronicling 
 America Web Application. Clicking on the name will bring you to a 

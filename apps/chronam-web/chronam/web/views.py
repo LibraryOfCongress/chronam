@@ -1265,6 +1265,10 @@ def awardees(request):
     return render_to_response('awardees.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+@cache_page(settings.DEFAULT_TTL_SECONDS)
+def awardees_json(request):
+    awardees= [{'name': a.name, 'url': a.url} for a in models.Awardee.objects.all()]
+    return HttpResponse(json.dumps(awardees, indent=3), mimetype='application/json')
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def awardee(request, institution_code):
