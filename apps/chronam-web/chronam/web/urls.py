@@ -166,6 +166,7 @@ urlpatterns = patterns(
     url(r'^events/feed/$', 'events_atom', name='chronam_events_atom'),
     url(r'^events/(?P<event_id>.+)/$', 'event', name='chronam_event'),
     url(r'^awardees/$', 'awardees', name='chronam_awardees'),
+    url(r'^awardees\.json$', 'awardees_json', name='chronam_awardees_json'),
 
     # example: /titles
     url(r'^titles/$', 'titles', name='chronam_titles'),

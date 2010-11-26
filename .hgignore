@@ -7,3 +7,5 @@ syntax: glob
 chronam/settings.py
 chronam/static/sitemaps/*
 chronam/*.log
+pythonenv/*
+j2kmodule/build/
