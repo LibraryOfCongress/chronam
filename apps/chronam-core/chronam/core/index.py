@@ -46,7 +46,7 @@ class SolrPaginator(Paginator):
         except ValueError, e:
             page_num = 1
         rows = int(self.query.get('rows', 10))
-        start = page_num * rows - 10
+        start = rows * (page_num - 1)
         params = {"hl.snippets": 100, # TODO: make this unlimited
             "hl.requireFieldMatch": 'true', # limits highlighting slop
             } 
@@ -188,7 +188,7 @@ class SolrTitlesPaginator(Paginator):
             page = 1
 
         rows = int(self.query.get('rows', 50))
-        start = page * rows - 50
+        start = rows * (page - 1)
 
         # determine sort order
         sort_field, sort_order = _get_sort(self.query.get('sort'))
