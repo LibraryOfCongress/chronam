@@ -52,28 +52,33 @@ class Command(BaseCommand):
         management.call_command('loaddata', 'labor_presses.json')
         management.call_command('loaddata', 'countries.json')
 
-        # look in BIB_STORAGE for titles to load
-        for filename in os.listdir(settings.BIB_STORAGE): 
-            if filename.startswith('titles-') and filename.endswith('.xml'):
-                title_loader.load(os.path.join(settings.BIB_STORAGE, filename))
+        if hasattr(settings, "BIB_STORAGE"):
+            # look in BIB_STORAGE for titles to load
+            for filename in os.listdir(settings.BIB_STORAGE): 
+                if filename.startswith('titles-') and filename.endswith('.xml'):
+                    title_loader.load(os.path.join(settings.BIB_STORAGE, filename))
 
-        # look in BIB_STORAGE for holdings files to load 
-        # NOTE: must run after titles are all loaded or else they may 
-        # not link up properly
-        holding_loader = HoldingLoader()
-        for filename in os.listdir(settings.BIB_STORAGE):
-            if filename.startswith('holdings-') and filename.endswith('.xml'):
-                holding_loader.main(
-                    os.path.join(settings.BIB_STORAGE, filename))
+            # look in BIB_STORAGE for holdings files to load 
+            # NOTE: must run after titles are all loaded or else they may 
+            # not link up properly
+            holding_loader = HoldingLoader()
+            for filename in os.listdir(settings.BIB_STORAGE):
+                if filename.startswith('holdings-') and filename.endswith('.xml'):
+                    holding_loader.main(
+                        os.path.join(settings.BIB_STORAGE, filename))
 
         # overlay place info harvested from dbpedia onto the places table
-        self.load_place_links()
+        try:
+            self.load_place_links()
+        except Exception, e:
+            _logger.exception(e)
 
-        for essay_file in os.listdir(settings.ESSAY_STORAGE):
-            try:
-                load_essay(essay_file)
-            except Exception, e:
-                _logger.exception(e)
+        if hasattr(settings, "ESSAY_STORAGE"):
+            for essay_file in os.listdir(settings.ESSAY_STORAGE):
+                try:
+                    load_essay(essay_file)
+                except Exception, e:
+                    _logger.exception(e)
 
         index.index_titles()
         _logger.info("chronam_sync done.")
