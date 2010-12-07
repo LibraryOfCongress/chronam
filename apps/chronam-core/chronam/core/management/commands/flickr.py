@@ -1,3 +1,4 @@
+import re
 import json
 import urllib
 import logging
@@ -46,30 +47,43 @@ class Command(BaseCommand):
         _log.info("created %s flickr urls" % create_count)
     
 
-def newspaper_photo_ids(key):
+def photos_in_set(key, set_id):
+    """A generator for all the photos in a set. 
     """
-    Fetches JSON info for all the images in the Flickr newspaper set.
-    """
-    u = 'http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=72157619452486566&format=json&nojsoncallback=1' % key
+    u = 'http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=%s&format=json&nojsoncallback=1' % (key, set_id)
     photos = json.loads(urllib.urlopen(u).read())
-    for photo in photos['photoset']['photo']:
-        yield photo
+    for p in photos['photoset']['photo']:
+        yield photo(key, p['id'])
 
 
-def flickr_url(photo_id):
-    return 'http://www.flickr.com/photos/library_of_congress/%s' % photo_id
-
-
-def chronam_url(photo_id, key):
-    """
-    Looks at complete information for a Flickr image, and tries to find
-    the first chroniclingamerica.loc.gov identifier in the machine tags.
+def photo(key, photo_id):
+    """Return JSON for a given photo.
     """
     u = 'http://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=%s&photo_id=%s&format=json&nojsoncallback=1' % (key, photo_id)
-    j = json.loads(urllib.urlopen(u).read())
-    for tag in j['photo']['tags']['tag']:
+    return json.loads(urllib.urlopen(u).read())
+
+
+def flickr_url(photo):
+    for url in photo['photo']['urls']['url']:
+        if url['type'] == 'photopage':
+            return url['_content']
+    return None
+
+
+def chronam_url(photo):
+    """Tries to find a chronam link in the photo metadata
+    """
+    # libraryofcongress photos are uploaded with a machinetag
+    for tag in photo['photo']['tags']['tag']:
         if 'chroniclingamerica.loc.gov' in tag['raw']:
             return tag['raw'].replace('dc:identifier=', '')
+   
+    # some other photos might have a link in the textual description
+    m = re.search('"(http://chroniclingamerica.loc.gov/.+?)"',
+    photo['photo']['description']['_content'])
+    if m:
+        return m.group(1)
+
     return None
 
 
@@ -78,7 +92,10 @@ def flickr_chronam_links(key):
     A generator that returns a tuple of flickr urls, and their corresponding
     chroniclingamerica.loc.gov page url.
     """
-
-    for photo in newspaper_photo_ids(key):
-        yield flickr_url(photo['id']), chronam_url(photo['id'], key)
-
+    # these are two flickr sets that have known chronam content
+    for set_id in [72157600479553448, 72157619452486566]:
+        for photo in photos_in_set(key, set_id):
+            chronam = chronam_url(photo)
+            # not all photos in set will have a link to chronam
+            if chronam:
+                yield flickr_url(photo), chronam
