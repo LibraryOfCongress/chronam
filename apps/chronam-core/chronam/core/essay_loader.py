@@ -30,8 +30,10 @@ def load_essay(essay_file, index=True):
     g = Graph()
     g.parse(path, format='rdfa')
 
+    # determine the essay uri
+    essay_uri = _essay_uri(essay_file)
+
     # create the essay instance 
-    essay_uri = _essay_uri(g)
     essay_id = _essay_id(essay_uri)
 
     essay = Essay(id=essay_id)
@@ -66,7 +68,7 @@ def purge_essay(essay_file, index=True):
     """
     try:
         essay = Essay.objects.get(filename=essay_file)
-        titles = essay.titles.all()
+        titles = list(essay.titles.all())
         essay.delete()
         _logger.info("deleted essay %s" % essay_file)
         
@@ -74,16 +76,15 @@ def purge_essay(essay_file, index=True):
         if index:
             for title in titles:
                 index_title(title)
-                _logger.info("reindexed title %s" % title.lccn)
 
     except Essay.DoesNotExist:
         raise Exception("No such essay loaded with filename=%s" % essay_file)
 
 
-def _essay_uri(graph):
-    for subject in graph.subjects(RDF.type, NDNP.Essay):
-        return subject
-    return None
+def _essay_uri(html_file):
+    path, ext = os.path.splitext(os.path.basename(html_file))
+    path = int(path) # i.e. turn 00012 into 12
+    return URIRef('http://chroniclingamerica.loc.gov/essays/%s/' % path)
 
 def _essay_id(essay_uri):
     return int(re.search(r'/essays/(\d+)/', essay_uri).group(1))
