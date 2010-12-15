@@ -789,6 +789,31 @@ def search_titles_results(request):
                               dictionary=locals(),
                               context_instance=RequestContext(request))
 
+@cache_page(settings.DEFAULT_TTL_SECONDS)
+def suggest_titles(request):
+    q = request.GET.get('q', '')
+    q = q.lower()
+
+    # remove initial articles (maybe there are more?)
+    q = re.sub(r'^(the|a|an) ', '', q)
+
+    # build up the suggestions
+    # See http://www.opensearch.org/Specifications/OpenSearch/Extensions/Suggestions/1.0
+    # for details on why the json is this way
+
+    titles = []
+    descriptions = []
+    urls = []
+    host = request.get_host()
+    for t in models.Title.objects.filter(name_normal__startswith=q)[0:50]:
+        titles.append(str(t))
+        descriptions.append(str(t) + " [%s]" % t.lccn)
+        urls.append("http://" + host + t.url)
+
+    suggestions = [q, titles, descriptions, urls]
+
+    return HttpResponse(json.dumps(suggestions, indent=2), 
+            mimetype='application/x-suggestions+json')
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def newspapers(request, state=None, format='html'):
