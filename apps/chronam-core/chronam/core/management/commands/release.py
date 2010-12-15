@@ -22,7 +22,7 @@ from django.db import reset_queries
 
 from chronam.core.management.commands import configure_logging
 from chronam.core import models as m
-from chronam.web.rdf import rdf_uri
+from chronam.core.rdf import rdf_uri
 
 configure_logging("release.config", "release.log")
 
