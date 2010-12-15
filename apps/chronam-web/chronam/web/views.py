@@ -806,8 +806,8 @@ def suggest_titles(request):
     urls = []
     host = request.get_host()
     for t in models.Title.objects.filter(name_normal__startswith=q)[0:50]:
-        titles.append(str(t))
-        descriptions.append(str(t) + " [%s]" % t.lccn)
+        titles.append(unicode(t))
+        descriptions.append(t.lccn)
         urls.append("http://" + host + t.url)
 
     suggestions = [q, titles, descriptions, urls]
