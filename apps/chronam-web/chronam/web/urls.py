@@ -158,9 +158,11 @@ urlpatterns = patterns(
     url('search/titles/opensearch.xml', 'search_titles_opensearch',
         name='chronam_search_titles_opensearch'),
     url(r'^search/titles/$', 'search_titles', 
-        name="chronam_search_titles"),
+        name='chronam_search_titles'),
     url(r'^search/titles/results/$', 'search_titles_results', 
         name='chronam_search_titles_results'),
+    url(r'^suggest/titles/$', 'suggest_titles',
+        name='chronam_suggest_titles'),
 
     url(r'^events/$', 'events', name='chronam_events'),
     url(r'^events/feed/$', 'events_atom', name='chronam_events_atom'),
