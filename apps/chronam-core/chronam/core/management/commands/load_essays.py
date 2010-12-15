@@ -1,4 +1,5 @@
 import os
+import re
 import logging
 
 from django.core.management.base import BaseCommand, CommandError
@@ -19,7 +20,8 @@ class Command(BaseCommand):
         essay_files.sort()
 
         for essay_file in essay_files:
-            if "template.html" in essay_file:
+            # ignore anything that doesn't look like an essay
+            if not re.match(r'^\d+.html$', essay_file):
                 continue
             try:
                 load_essay(essay_file)

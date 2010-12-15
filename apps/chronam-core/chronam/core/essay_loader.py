@@ -58,7 +58,7 @@ def load_essay(essay_file, index=True):
         except Title.DoesNotExist, e:
             raise Exception("title with lccn=%s is not loaded" % lccn)
 
-    _logger.info("loaded essay: %s" % essay.id)
+    _logger.info("loaded essay: %s" % essay_file)
     return essay
 
     
