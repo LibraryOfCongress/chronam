@@ -15,6 +15,7 @@
     <link rel="canonical" href="http://{{host}}{% url chronam_page title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
     <link rel="up" href="{{ issue.url }}" />
     <link rel="up" href="{{ issue.batch.url }}" />
+    <link rel="up" href="{% url chronam_reel page.reel.number %}" />
     {% if page.on_flickr %}{% for flickr_url in page.flickr_urls.all %}<link rel="alternate" type="text/html" href="{{ flickr_url.value }}" />{% endfor %}{% endif %}
     <meta property="og:image" content="http://{{ host }}{% url chronam_page_thumbnail title.lccn,page.issue.date_issued,page.issue.edition,page.sequence %}" />
     <meta property="og:title" content="{{ page_title }}" />
