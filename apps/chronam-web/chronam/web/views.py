@@ -1368,7 +1368,7 @@ def reel(request, reel_number):
          'href': urlresolvers.reverse('chronam_reels')},
         ]
     page_title = 'Reel %s' % reel_number
-    reel = models.Reel.objects.get(number=reel_number)
+    reels = models.Reel.objects.filter(number=reel_number)
     return render_to_response('reel.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
