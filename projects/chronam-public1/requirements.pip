@@ -9,6 +9,7 @@ simplejson
 feedparser
 rfc3339
 mimeparse==0.1.3
+south
 -e ../../apps/chronam-core
 -e ../../apps/chronam-loc
 -e ../../apps/chronam-web

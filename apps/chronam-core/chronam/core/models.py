@@ -152,6 +152,7 @@ class Title(models.Model):
     country = models.ForeignKey('Country')
     version = models.DateTimeField() # http://www.loc.gov/marc/bibliographic/bd005.html
     created = models.DateTimeField(auto_now_add=True)
+    has_issues = models.BooleanField(default=False)
 
     @property
     @permalink
@@ -161,9 +162,6 @@ class Title(models.Model):
     @property
     def abstract_url(self):
         return self.url.rstrip('/') + '#title'
-
-    def has_issues(self):
-        return Issue.objects.filter(title=self).count() > 0
 
     @property
     def first_issue(self):
@@ -441,6 +439,23 @@ class Issue(models.Model):
         while next_issue is not None and next_issue.date_issued==self.date_issued and next_issue.edition==self.edition:
             next_issue = next_issue._next
         return next_issue
+
+    def save(self, *args, **kwargs):
+        """override the default save behavior to populate has_issues on title.
+        this is an intentional denormalization to speed up some queries.
+        """
+        self.title.has_issues = True
+        self.title.save()
+        super(Issue, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        """override the default delete behavior to make sure has_issues is
+        set to False when the last issue is deleted.
+        """
+        super(Issue, self).delete(*args, **kwargs)
+        if self.title.issues.all().count() == 0:
+            self.title.has_issues = False
+            self.title.save()
     
     class Meta: 
         ordering = ('date_issued',)
