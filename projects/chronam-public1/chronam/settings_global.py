@@ -61,6 +61,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.http.ConditionalGetMiddleware',
+    'sugar.middleware.cors.CORSMiddleware',
 )
 
 ROOT_URLCONF = 'chronam.urls'
@@ -72,6 +73,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'chronam.core',
     'chronam.web',
+    'south',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

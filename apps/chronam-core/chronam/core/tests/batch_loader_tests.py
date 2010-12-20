@@ -24,7 +24,7 @@ class BatchLoaderTest(TestCase):
         self.assertEqual(len(batch.issues.all()), 304)
 
         title = Title.objects.get(lccn = 'sn83030214')
-        self.assertTrue(title.has_issues())
+        self.assertTrue(title.has_issues)
 
         issue = batch.issues.all()[0]
         self.assertEqual(issue.volume, '63')
@@ -83,4 +83,10 @@ class BatchLoaderTest(TestCase):
         f = os.path.join(os.path.dirname(chronam.core.__file__), 'test-data', 
             'ocr.txt')
         self.assertEqual(solr_doc['ocr'], file(f).read().decode('utf-8'))
+
+        # purge the batch and make sure it's gone from the db
+        loader.purge_batch('batch_dlc_jamaica_ver01')
+        self.assertEqual(Batch.objects.all().count(), 0)
+        self.assertEqual(Title.objects.get(lccn='sn83030214').has_issues, False)
+
 

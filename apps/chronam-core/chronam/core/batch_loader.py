@@ -413,8 +413,9 @@ class BatchLoader(object):
                 reset_queries()
             issue.delete()
         batch.delete()
-        self.solr.delete_query('batch:"%s"' % batch_name)
-        self.solr.commit()
+        if self.PROCESS_OCR:
+            self.solr.delete_query('batch:"%s"' % batch_name)
+            self.solr.commit()
 
 class BatchLoaderException(RuntimeError):
     pass
