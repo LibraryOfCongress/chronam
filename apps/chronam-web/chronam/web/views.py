@@ -212,7 +212,7 @@ def home(request):
     letters = [chr(n) for n in range(65, 91)]
 
     states = set()
-    for title in models.Title.objects.distinct().filter(issues__isnull=False):
+    for title in models.Title.objects.filter(has_issues=True):
         states.add(title.country.name)
     states = sorted(states)
 
@@ -817,7 +817,7 @@ def suggest_titles(request):
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def newspapers(request, state=None, format='html'):
-    titles = models.Title.objects.distinct().filter(issues__isnull=False)
+    titles = models.Title.objects.filter(has_issues=True)
     if state:
         template = 'newspapers_state'
         state = unpack_url_path(state)
@@ -860,7 +860,7 @@ def newspapers(request, state=None, format='html'):
 def newspapers_atom(request):
     # get a list of titles with issues that are in order by when they
     # were last updated
-    titles = models.Title.objects.filter(issues__isnull=False)
+    titles = models.Title.objects.filter(has_issues=True)
     titles = titles.annotate(last_release=Max('issues__batch__released'))
     titles = titles.distinct().order_by('-last_release')
 
@@ -884,7 +884,7 @@ def newspapers_atom(request):
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @rdf_view
 def newspapers_rdf(request):
-    titles = models.Title.objects.distinct().filter(issues__isnull=False)
+    titles = models.Title.objects.filter(has_issues=True)
     graph = titles_to_graph(titles)
     return HttpResponse(graph.serialize(base=_rdf_base(request),
                                         include_base=True),
