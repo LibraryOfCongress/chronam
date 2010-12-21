@@ -1,3 +1,5 @@
+from chronam.core.settings import *
+
 # Base Django settings for chronam project.
 import os
 
