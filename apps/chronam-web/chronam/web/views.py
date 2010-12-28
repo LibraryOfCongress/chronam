@@ -37,7 +37,7 @@ from django.views import static
 from django.core import urlresolvers
 from django import forms as django_forms
 from django.forms import fields
-from django.db.models import Count, Max
+from django.db.models import Count, Max, Min
 from django.utils import html
 
 from chronam.core import models, index
@@ -818,6 +818,8 @@ def suggest_titles(request):
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def newspapers(request, state=None, format='html'):
     titles = models.Title.objects.filter(has_issues=True)
+    titles = titles.annotate(first=Min('issues__date_issued'))
+    titles = titles.annotate(last=Max('issues__date_issued'))
     if state:
         template = 'newspapers_state'
         state = unpack_url_path(state)

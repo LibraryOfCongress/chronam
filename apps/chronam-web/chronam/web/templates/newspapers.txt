@@ -1,3 +1,3 @@
 Persistent Link | State | Title | LCCN | ISSN | First Issue Date | Last Issue Date | More Info
-{% for title in titles %}http://{{host}}{% url chronam_issues title.lccn %} | {{title.country.name}} | {{title}} | {{title.lccn|default:""}} | {{title.issn|default:""}} | {{title.first_issue.date_issued}} | {{title.last_issue.date_issued}} | {% if title.has_essays %}http://{{host}}{% url chronam_title_essays title.lccn %}{% endif %}
+{% for title in titles %}http://{{host}}{% url chronam_issues title.lccn %} | {{title.country.name}} | {{title}} | {{title.lccn|default:""}} | {{title.issn|default:""}} | {{title.first}} | {{title.last}} | {% if title.has_essays %}http://{{host}}{% url chronam_title_essays title.lccn %}{% endif %}
 {% endfor %}

@@ -38,22 +38,14 @@
                 {% for title in titles %}
                   {% with title.country.name as country_name %}
                   {% with title.lccn as lccn %}
-                  {% with title.first_issue as first_issue %}
-                  {% with title.last_issue as last_issue %}
-                  {% with first_issue.date_issued as first_issue_date_issued %}
-                  {% with last_issue.date_issued as last_issue_date_issued %}
                 <tr class="{% cycle 'lightGray' 'white' %}">
                     <td><a {% ifchanged country_name %}name="{{country_name}}" {% endifchanged %}href="{% url chronam_newspapers_state country_name|pack_url %}">{{country_name}}</a></td>
                     <td><a href="{% url chronam_title lccn %}">{{title}}</a></td>
                     <td><a href="{% url chronam_issues lccn %}" shape="rect"><img src="{{script_name}}/images/calendar_icon.gif" alt="calendar"/></a></td>
-                    <td><a href="{% url chronam_issue_pages lccn,first_issue_date_issued,first_issue.edition %}">{{first_issue_date_issued}}</a></td>
-                    <td><a href="{% url chronam_issue_pages lccn,last_issue_date_issued,last_issue.edition %}">{{last_issue_date_issued}}</a></td>
+                    <td><a href="{% url chronam_issue_pages lccn,title.first,1 %}">{{title.first}}</a></td>
+                    <td><a href="{% url chronam_issue_pages lccn,title.last,1 %}">{{title.last}}</a></td>
                     <td>{% if title.has_essays %}<a href="{% url chronam_essay title.first_essay.id %}">Yes</a>{% endif %}</td>
                 </tr>
-                  {% endwith %}
-                  {% endwith %}
-                  {% endwith %}
-                  {% endwith %}
                   {% endwith %}
                   {% endwith %}
                 {% endfor %}
@@ -67,8 +59,3 @@
             </div>
 
 {% endblock %}
-
-    
-
-
-
