@@ -12,6 +12,7 @@
     <tr class="lightGray">
         <th>Batch</th>
         <th>Title</th>
+        <th>Date Range</th>
     </tr>
 
     {% for reel in reels %}
@@ -26,6 +27,7 @@
             <a href="{% url chronam_title title.lccn %}">{{ title.name }} ({{title.lccn}})</a> 
             {% endfor %}
         </td>
+        <td>{{ reel.title_range }}</td>
     </tr>
     {% endfor %}
 

@@ -998,6 +998,17 @@ def batches_json(request):
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def batch(request, batch_name):
     batch = get_object_or_404(models.Batch, name=batch_name)
+    reels = []
+    for reel in batch.reels.all():
+        if reel:
+            agg = models.Issue.objects.filter(pages__reel=reel).distinct().aggregate(
+                mn=Min('date_issued'), mx=Max('date_issued'))
+            mn = datetime_safe.new_datetime(agg['mn']).strftime('%b %d, %Y')
+            mx = datetime_safe.new_datetime(agg['mx']).strftime('%b %d, %Y')
+            reels.append({'number': reel.number,
+                          'titles': reel.titles(),
+                          'title_range': "%s - %s" %(mn, mx), 
+                          'page_count': len(reel.pages.all()),})
     page_title = 'Batch: %s' % batch.name
     profile_uri = 'http://www.openarchives.org/ore/html/'
     return render_to_response('batch.html', dictionary=locals(),
@@ -1368,7 +1379,16 @@ def reel(request, reel_number):
          'href': urlresolvers.reverse('chronam_reels')},
         ]
     page_title = 'Reel %s' % reel_number
-    reels = models.Reel.objects.filter(number=reel_number)
+    m_reels = models.Reel.objects.filter(number=reel_number)
+    reels = [] 
+    for reel in m_reels:
+        agg = models.Issue.objects.filter(pages__reel=reel).distinct().aggregate(
+            mn=Min('date_issued'), mx=Max('date_issued'))
+        mn = datetime_safe.new_datetime(agg['mn']).strftime('%b %d, %Y')
+        mx = datetime_safe.new_datetime(agg['mx']).strftime('%b %d, %Y')
+        reels.append({'batch':reel.batch,
+                      'titles': reel.titles(),
+                      'title_range': "%s - %s" %(mn, mx),}) 
     return render_to_response('reel.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
