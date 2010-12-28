@@ -80,10 +80,11 @@
   <table class="data">
     <tr>
       <th>Reel Number</th>
-      <th>titles in reel</th>
+      <th>Titles in Reel</th>
+      <th>Date Range</th>
       <th>Number of Pages</th>
     </tr>
-    {% for reel in batch.reels.all %}
+    {% for reel in reels %}
     {% if reel.number %}
     <tr class="{% cycle 'lightGray' 'white' %}">
       <td><a href="{% url chronam_reel reel.number %}">{{ reel.number }}</a></td>
@@ -92,7 +93,8 @@
             <a href="{% url chronam_title title.lccn %}">{{ title.name }} ({{title.lccn}})</a> 
             {% endfor %}
         </td>
-      <td>{{ reel.pages.all.count }}</td>
+      <td>{{ reel.title_range }}</td>
+      <td>{{ reel.page_count }}</td>
     </tr>
     {% endif %}
     {% endfor %}
