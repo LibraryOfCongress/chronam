@@ -25,6 +25,7 @@ except ImportError:
 
 from django.core.paginator import Paginator, EmptyPage
 from django.db import connection
+from django.utils import datetime_safe
 from django.http import HttpResponse, HttpResponseNotFound, Http404, \
                         HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.template import RequestContext
