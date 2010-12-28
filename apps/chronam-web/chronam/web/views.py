@@ -826,17 +826,13 @@ def newspapers(request, state=None, format='html'):
         if state is None:
             raiseHttp404
         titles = titles.filter(country__name__iexact=state)
-        if titles.count() == 0:
-            raise Http404
-        state = titles[0].country.name  # to get the right capitalization.
+        # capitalize every word in the state name
+        state = ' '.join([s.capitalize() for s in state.split(' ')])
         page_title = '%s Newspapers' % state
         crumbs = [
             {'label':'See All Available Newspapers',
              'href': urlresolvers.reverse('chronam_newspapers')},
             ]
-        q = models.Issue.objects.filter(title__in=titles)
-        q = q.aggregate(Count('pages'))
-        number_of_pages = q['pages__count']
     else:
         template = 'newspapers'
         titles = titles.order_by('country__name', 'name_normal')
