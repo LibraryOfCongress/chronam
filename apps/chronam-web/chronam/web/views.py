@@ -1295,7 +1295,7 @@ def status(request):
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def awardees(request):
-    page_title = 'Awardees'
+    page_title = 'Awardee Data Deliveries'
     awardees = models.Awardee.objects.all().order_by('name')
     return render_to_response('awardees.html', dictionary=locals(),
                               context_instance=RequestContext(request))
