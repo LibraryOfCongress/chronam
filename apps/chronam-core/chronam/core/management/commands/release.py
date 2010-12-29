@@ -20,6 +20,7 @@ from django.db import reset_queries
 from django.core.paginator import Paginator
 from django.core.management.base import BaseCommand
 from django.template.defaultfilters import force_escape
+from django.utils import datetime_safe
 
 from chronam.core.management.commands import configure_logging
 from chronam.core import models as m
@@ -28,6 +29,11 @@ from chronam.core.rdf import rdf_uri
 configure_logging("release.config", "release.log")
 
 _logger = logging.getLogger(__name__)
+
+def rfc3339_safe(date):
+    dt = datetime_safe.new_datetime(date)
+    return dt.strftime('%Y-%m-%dT%H:%M:%S+00:00')
+
 
 class Command(BaseCommand):
     help = "Prepares for a data release by setting the released datetime on batches that lack them using the current public feed of batches or the current time. This command also writes out sitemap files to the settings.DOCUMENT_ROOT directory."
@@ -115,7 +121,7 @@ def write_sitemaps():
     
         # add a url to the sitemap
         if newspaper and pub_date and title:
-            sitemap.write("<url><loc>http://chroniclingamerica.loc.gov%s</loc><lastmod>%s</lastmod><news:news><news:publication><news:name>%s</news:name><news:language>en</news:language></news:publication><news:publication_date>%s</news:publication_date><news:title>%s</news:title></news:news></url>\n" % (loc, rfc3339(last_mod), force_escape(newspaper), rfc3339(pub_date), force_escape(title)))
+            sitemap.write("<url><loc>http://chroniclingamerica.loc.gov%s</loc><lastmod>%s</lastmod><news:news><news:publication><news:name>%s</news:name><news:language>en</news:language></news:publication><news:publication_date>%s</news:publication_date><news:title>%s</news:title></news:news></url>\n" % (loc, rfc3339(last_mod), force_escape(newspaper), rfc3339_safe(pub_date), force_escape(title)))
         else:
             sitemap.write("<url><loc>http://chroniclingamerica.loc.gov%s</loc><lastmod>%s</lastmod></url>\n" % (loc, rfc3339(last_mod)))
         url_count += 1
