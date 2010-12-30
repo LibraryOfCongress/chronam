@@ -121,9 +121,10 @@ def write_sitemaps():
     
         # add a url to the sitemap
         if newspaper and pub_date and title:
-            sitemap.write("<url><loc>http://chroniclingamerica.loc.gov%s</loc><lastmod>%s</lastmod><news:news><news:publication><news:name>%s</news:name><news:language>en</news:language></news:publication><news:publication_date>%s</news:publication_date><news:title>%s</news:title></news:news></url>\n" % (loc, rfc3339(last_mod), force_escape(newspaper), rfc3339_safe(pub_date), force_escape(title)))
+            url = "<url><loc>http://chroniclingamerica.loc.gov%s</loc><lastmod>%s</lastmod><news:news><news:publication><news:name>%s</news:name><news:language>en</news:language></news:publication><news:publication_date>%s</news:publication_date><news:title>%s</news:title></news:news></url>\n" % (loc, rfc3339(last_mod), force_escape(newspaper), rfc3339_safe(pub_date), force_escape(title))
         else:
-            sitemap.write("<url><loc>http://chroniclingamerica.loc.gov%s</loc><lastmod>%s</lastmod></url>\n" % (loc, rfc3339(last_mod)))
+            url = "<url><loc>http://chroniclingamerica.loc.gov%s</loc><lastmod>%s</lastmod></url>\n" % (loc, rfc3339(last_mod))
+        sitemap.write(url.encode("utf-8"))
         url_count += 1
 
         # necessary to avoid memory bloat when settings.DEBUG = True
