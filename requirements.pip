@@ -1,0 +1,17 @@
+hg+https://rdc.lctl.gov/hg/chronam-core#egg=chronam-core
+hg+https://rdc.lctl.gov/hg/chronam-web#egg=chronam-web
+hg+https://rdc.lctl.gov/hg/chronam-loc#egg=chronam-loc
+Django
+MySQL-python
+lxml
+rdflib
+pymarc
+solrpy
+PIL
+simplejson
+feedparser
+rfc3339
+mercurial
+south
+-e hg+https://eikeon@bitbucket.org/eikeon/django-memorious#egg=django-memorious
+mimeparse

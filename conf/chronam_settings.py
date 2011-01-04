@@ -1,5 +1,6 @@
 import os
 
+from chronam_core_settings import *
 from chronam.settings_default import *
 
 
