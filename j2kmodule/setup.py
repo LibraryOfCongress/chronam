@@ -11,8 +11,9 @@
 from distutils.core import setup, Extension
 setup(name='j2k',
       version='1.0',
+      py_modules=['j2k'],
       ext_modules=[
-        Extension('j2k', ['j2kmodule.c'],
+        Extension('_j2k', ['j2kmodule.c'],
                   include_dirs=['./include'],
                   libraries=['awj2k'])
         ],
