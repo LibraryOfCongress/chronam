@@ -96,6 +96,7 @@ Add ${CHRONAM_HOME}/conf to your virtualenv's Python path.
 mkdir ${CHRONAM_HOME}/data
 cd ${CHRONAM_HOME}/data
 hg clone https://rdc.lctl.gov/hg/ndnp-essays
+hg clone https://rdc.lctl.gov/hg/chronam-loc memorious # for media files
   
 # TODO: ln -s /vol/ndnp/chronam/bib .
 
