@@ -4,8 +4,7 @@ syntax: glob
 *~
 \#*\#
 *.egg-info/*
-chronam/settings.py
-chronam/static/sitemaps/*
-chronam/*.log
-pythonenv/*
-j2kmodule/build/
+data/*
+lib/*
+bin/*
+include/*
