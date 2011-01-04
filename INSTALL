@@ -1,0 +1,151 @@
+# TODO: create wiki page with instructions to find this INSTALL file/repo. 
+#
+# hg clone https://rdc.lctl.gov/hg/chronam ${CHRONAM_HOME}
+
+==================
+Installation
+==================
+
+Installation instructions for building Chronicling America on Ubuntu.
+
+System Dependencies
+===================
+
+* virtualenv
+* mysql
+* apache
+* wsgi
+* solr
+
+To install all of these system dependencies on a Debian-based system, run::
+
+        sudo apt-get install python-dev
+	sudo apt-get install python-virtualenv
+	sudo apt-get install mysql-server
+        sudo apt-get install libmysqlclient-dev
+	sudo apt-get install apache2
+	sudo apt-get install libapache2-mod-wsgi
+	sudo apt-get install solr-jetty openjdk-6-jdk
+        sudo apt-get install libxml2-dev
+        sudo apt-get install libxslt2-dev  # I get the following when trying to run this command: "E: Couldn't find package libxslt2-dev" --eik
+        sudo apt-get install mercurial
+        sudo apt-get install libjpeg-dev
+
+* aware library
+
+To install the aware library run the following commands::
+
+        wget --no-check-certificate --http-user your-username --http-password your-password https://rdc.lctl.gov/svn/ndnp/third-party/j2k-3.18.9-linux-x86-64.tar.gz
+	tar -zxvf j2k-3.18.9-linux-x86-64.tar.gz
+	sudo cp j2k-3.18.9-linux-x86-64/include/*.h /usr/include/
+	sudo cp j2k-3.18.9-linux-x86-64/lib/libawj2k.so.2.0.1 /usr/lib/libawj2k.so
+	#sudo cp j2k-3.18.9-linux-x86-64/lib/libawj2k.so /usr/lib
+	sudo ldconfig
+
+Create (Python) Environment
+===========================
+
+export CHRONAM_HOME=/ndnp/chronam-dev
+
+# create python environment
+cd ${CHRONAM_HOME}
+virtualenv --no-site-packages ${CHRONAM_HOME}
+source ${CHRONAM_HOME}/bin/activate
+
+
+Create Database
+===============
+
+# create database and test database
+echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one'; GRANT ALL ON test_chronam.* TO 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root -p
+
+
+Configure Solr
+==============
+
+sudo cp ${CHRONAM_HOME}/conf/schema.xml /etc/solr/conf/
+sudo cp ${CHRONAM_HOME}/conf/solrconfig.xml /etc/solr/conf/
+
+sudo service jetty restart
+
+
+Configure Apache
+================
+
+sudo ln -s /etc/apache2/mods-available/cache.load /etc/apache2/mods-enabled/cache.load
+sudo ln -s /etc/apache2/mods-available/expires.load /etc/apache2/mods-enabled/expires.load
+sudo ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load
+sudo ln -s /etc/apache2/mods-available/disk_cache.load /etc/apache2/mods-enabled/disk_cache.load
+
+sudo ln -s ${CHRONAM_HOME}/conf/chronam.conf /etc/apache2/sites-enabled/
+
+sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/static
+
+# sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/.python-eggs
+
+
+Install Chronam Source
+======================
+
+cd ${CHRONAM_HOME}
+  
+# TODO: update the following re: repo reorg
+#
+# hg clone https://rdc.lctl.gov/hg/chronam-core
+# pip install -e chronam-core
+#
+# hg clone https://rdc.lctl.gov/hg/chronam-web
+# pip install -e chronam-web
+#
+# pip install -e j2kmodule
+
+hg clone https://rdc.lctl.gov/hg/chronam-loc
+  
+pip install -r chronam-loc/requirements.pip
+pip install -e chronam-loc
+
+
+Configure Chronam
+=================
+
+ln -s ${CHRONAM_HOME}/conf/chronam_core_settings.py ${CHRONAM_HOME}/chronam-core/chronam/core/settings.py
+ln -s ${CHRONAM_HOME}/conf/chronam_loc_settings.py ${CHRONAM_HOME}/chronam-loc/chronam_loc/settings.py
+ln -s ${CHRONAM_HOME}/conf/chronam_settings.py ${CHRONAM_HOME}/chronam-web/chronam/settings.py
+
+mkdir ${CHRONAM_HOME}/data
+cd ${CHRONAM_HOME}/data
+hg clone https://rdc.lctl.gov/hg/ndnp-essays
+  
+ln -s /vol/ndnp/chronam/bib .
+
+django-admin.py syncdb --settings=chronam_loc.settings --noinput
+# if chronam.core is from a datacase created by pre south codebase
+# django-admin.py migrate chronam.core 0001 --fake --settings=chronam_loc.settings
+django-admin.py migrate chronam.core --settings=chronam_loc.settings
+
+django-admin.py test --settings=chronam_loc.settings
+
+
+Loading the Data
+================
+
+sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/logs/
+cd ${CHRONAM_HOME}/logs/
+
+# load titles and holdings
+django-admin.py chronam_sync --settings=chronam.settings
+
+django-admin.py loaddata languages.json institutions.json ethnicities.json labor_presses.json countries.json --settings=chronam.settings
+
+
+# start up one or more batch load processes to load all the batches
+django-admin.py load_batches --settings=chronam.settings ../conf/batch_list &
+
+# or load a specific batch
+django-admin.py load_batch batch_dlc_jamaica_ver01 --settings=chronam.settings 
+
+# To generate filename_of_batch_list from a batches directory:
+find /vol/ndnp/chronam/batches/* -name batch_* -print -prune | sed 's/\(.*\)\///g'
+
+# load up links to flickr using your flickr key
+django-admin.py --settings=chronam.settings flickr YOUR_FLICKR_KEY

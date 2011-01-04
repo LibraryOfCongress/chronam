@@ -1,6 +1,0 @@
-# Hi Robot, welcome to Chronicling America
-
-User-agent: *
-Disallow: /nothing---please-crawl-us--
-
-Sitemap: http://chroniclingamerica.loc.gov/sitemap.xml
