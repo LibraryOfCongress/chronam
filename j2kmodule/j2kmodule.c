@@ -289,11 +289,11 @@ static PyMethodDef J2KMethods[] = {
 };
 
 PyMODINIT_FUNC
-initj2k(void)
+init_j2k(void)
 {
   PyObject *m;
 
-  m = Py_InitModule("j2k", J2KMethods);
+  m = Py_InitModule("_j2k", J2KMethods);
   if (m == NULL)
     return;
 
