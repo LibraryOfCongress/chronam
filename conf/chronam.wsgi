@@ -1,6 +1,6 @@
 import os, sys
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'chronam.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'chronam_settings'
 
 import django.core.handlers.wsgi
 
