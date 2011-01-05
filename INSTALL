@@ -96,7 +96,7 @@ hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam-loc mem
   
 # TODO: ln -s /vol/ndnp/chronam/bib .
 
-django-admin.py syncdb --settings=chronam_settings --noinput
+django-admin.py syncdb --settings=chronam_settings --noinput --migrate
 # if chronam.core is from a datacase created by pre south codebase
 # django-admin.py migrate chronam.core 0001 --fake --settings=chronam_settings
 # django-admin.py migrate chronam.core --settings=chronam_settings
