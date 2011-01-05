@@ -1,7 +1,3 @@
-# TODO: create wiki page with instructions to find this INSTALL file/repo. 
-#
-# hg clone https://rdc.lctl.gov/hg/chronam ${CHRONAM_HOME}
-
 ==================
 Installation
 ==================
@@ -45,7 +41,7 @@ source ${CHRONAM_HOME}/bin/activate
 Install j2kmodule
 =================
 
-pip install git+git://git.rdc.lctl.gov/j2kmodule#egg=j2kmodule
+pip install git+git://loc-ndnp.git.sourceforge.net/gitroot/loc-ndnp/j2kmodule#egg=j2kmodule
 
 
 Create Database
@@ -95,8 +91,8 @@ Add ${CHRONAM_HOME}/conf to your virtualenv's Python path.
 
 mkdir ${CHRONAM_HOME}/data
 cd ${CHRONAM_HOME}/data
-hg clone https://rdc.lctl.gov/hg/ndnp-essays
-hg clone https://rdc.lctl.gov/hg/chronam-loc memorious # for media files
+hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/ndnp-essays
+hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam-loc memorious # for media files
   
 # TODO: ln -s /vol/ndnp/chronam/bib .
 
