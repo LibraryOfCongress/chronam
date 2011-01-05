@@ -1,6 +1,5 @@
-hg+https://rdc.lctl.gov/hg/chronam-core#egg=chronam-core
-hg+https://rdc.lctl.gov/hg/chronam-web#egg=chronam-web
-hg+https://rdc.lctl.gov/hg/chronam-loc#egg=chronam-loc
+hg+http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam-core#egg=chronam-core
+hg+http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam-loc#egg=chronam-loc
 Django
 MySQL-python
 lxml
