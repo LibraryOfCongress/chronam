@@ -12,5 +12,6 @@ feedparser
 rfc3339
 mercurial
 south
--e hg+https://eikeon@bitbucket.org/eikeon/django-memorious#egg=django-memorious
+hg+https://eikeon@bitbucket.org/eikeon/django-memorious#egg=django-memorious
 mimeparse
+git+git://loc-ndnp.git.sourceforge.net/gitroot/loc-ndnp/j2kmodule#egg=j2kmodule
