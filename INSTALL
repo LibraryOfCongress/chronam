@@ -1,53 +1,32 @@
-==================
+============
 Installation
-==================
+============
 
-Installation instructions for building Chronicling America on Ubuntu.
+Installation instructions for building Chronicling America on Ubuntu. 
+
 
 System Dependencies
 ===================
 
-* virtualenv
-* mysql
-* apache
-* wsgi
-* solr
+To install system dependencies on a Debian-based system run:
 
-To install all of these system dependencies on a Debian-based system, run::
+sudo apt-get install python-dev python-virtualenv mysql-server libmysqlclient-dev apache2 libapache2-mod-wsgi solr-jetty openjdk-6-jdk libxml2-dev libxslt-dev mercurial libjpeg-dev
 
-        sudo apt-get install python-dev
-	sudo apt-get install python-virtualenv
-	sudo apt-get install mysql-server
-        sudo apt-get install libmysqlclient-dev
-	sudo apt-get install apache2
-	sudo apt-get install libapache2-mod-wsgi
-	sudo apt-get install solr-jetty openjdk-6-jdk
-        sudo apt-get install libxml2-dev
-        sudo apt-get install libxslt2-dev  # I get the following when trying to run this command: "E: Couldn't find package libxslt2-dev" --eik
-        sudo apt-get install mercurial
-        sudo apt-get install libjpeg-dev
 
-Create (Python) Environment
-===========================
+Create Python Environment
+=========================
 
+hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam
+sudo mv chronam /ndnp/
 export CHRONAM_HOME=/ndnp/chronam
-
-# create python environment
 cd ${CHRONAM_HOME}
 virtualenv --no-site-packages ${CHRONAM_HOME}
 source ${CHRONAM_HOME}/bin/activate
 
 
-Install j2kmodule
-=================
-
-pip install git+git://loc-ndnp.git.sourceforge.net/gitroot/loc-ndnp/j2kmodule#egg=j2kmodule
-
-
 Create Database
 ===============
 
-# create database and test database
 echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one'; GRANT ALL ON test_chronam.* TO 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root -p
 
 
@@ -56,22 +35,15 @@ Configure Solr
 
 sudo cp ${CHRONAM_HOME}/conf/schema.xml /etc/solr/conf/
 sudo cp ${CHRONAM_HOME}/conf/solrconfig.xml /etc/solr/conf/
-
 sudo service jetty restart
 
 
 Configure Apache
 ================
 
-sudo ln -s /etc/apache2/mods-available/cache.load /etc/apache2/mods-enabled/cache.load
-sudo ln -s /etc/apache2/mods-available/expires.load /etc/apache2/mods-enabled/expires.load
-sudo ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load
-sudo ln -s /etc/apache2/mods-available/disk_cache.load /etc/apache2/mods-enabled/disk_cache.load
-
+sudo a2enmod cache expires rewrite disk_cache
 sudo ln -s ${CHRONAM_HOME}/conf/chronam.conf /etc/apache2/sites-enabled/
-
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/static
-
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/.python-eggs
 
 
@@ -79,7 +51,6 @@ Install Chronam Source
 ======================
 
 cd ${CHRONAM_HOME}
-  
 pip install -r requirements.pip
 
 
@@ -91,6 +62,7 @@ Add ${CHRONAM_HOME}/conf to your virtualenv's Python path.
 
 mkdir ${CHRONAM_HOME}/data
 cd ${CHRONAM_HOME}/data
+
 hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/ndnp-essays
 hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam-loc memorious # for media files
   
@@ -101,6 +73,10 @@ django-admin.py syncdb --settings=chronam_settings --noinput --migrate
 # django-admin.py migrate chronam.core 0001 --fake --settings=chronam_settings
 # django-admin.py migrate chronam.core --settings=chronam_settings
 
+# get a test batch and run the tests (some day soon we could remote load?)
+mkdir batches
+cd batches
+wget --recursive --no-host-directories --cut-dirs 1 --include-directories /data/dlc/batch_dlc_jamaica_ver01 http://chroniclingamerica.loc.gov/data/dlc/batch_dlc_jamaica_ver01
 django-admin.py test --settings=chronam_settings
 
 
@@ -115,7 +91,6 @@ django-admin.py chronam_sync --settings=chronam_settings
 
 django-admin.py loaddata languages.json institutions.json ethnicities.json labor_presses.json countries.json --settings=chronam_settings
 
-
 # start up one or more batch load processes to load all the batches
 django-admin.py load_batches --settings=chronam_settings ../conf/batch_list &
 
@@ -127,3 +102,9 @@ find /vol/ndnp/chronam/batches/* -name batch_* -print -prune | sed 's/\(.*\)\///
 
 # load up links to flickr using your flickr key
 django-admin.py --settings=chronam_settings flickr YOUR_FLICKR_KEY
+
+
+Optional: Install j2kmodule 
+===========================
+
+pip install git+git://loc-ndnp.git.sourceforge.net/gitroot/loc-ndnp/j2kmodule#egg=j2kmodule
