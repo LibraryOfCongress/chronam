@@ -1,7 +1,6 @@
 import os
 
 from chronam_core_settings import *
-from chronam.core.settings_default import *
 
 
 DEBUG = True
