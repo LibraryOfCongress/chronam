@@ -3,6 +3,14 @@ Installation
 ============
 
 Installation instructions for building Chronicling America on Ubuntu. 
+First you'll need to get the latest Chronicling America code. Which
+will include this file.
+
+sudo apt-get install mercurial 
+hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam
+export CHRONAM_HOME=/opt/chronam
+sudo mv chronam ${CHRONAM_HOME}
+cd ${CHRONAM_HOME}
 
 
 System Dependencies
@@ -16,10 +24,6 @@ sudo apt-get install python-dev python-virtualenv mysql-server libmysqlclient-de
 Create Python Environment
 =========================
 
-hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam
-sudo mv chronam /ndnp/
-export CHRONAM_HOME=/ndnp/chronam
-cd ${CHRONAM_HOME}
 virtualenv --no-site-packages ${CHRONAM_HOME}
 source ${CHRONAM_HOME}/bin/activate
 
@@ -42,7 +46,9 @@ Configure Apache
 ================
 
 sudo a2enmod cache expires rewrite disk_cache
-sudo ln -s ${CHRONAM_HOME}/conf/chronam.conf /etc/apache2/sites-enabled/
+sudo cp conf/chronam.conf /etc/apache2/sites-available/chronam
+sudo a2ensite chronam
+
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/static
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/.python-eggs
 
@@ -57,8 +63,8 @@ pip install -r requirements.pip
 Configure Chronam
 =================
 
-Add ${CHRONAM_HOME}/conf to your virtualenv's Python path.
-  ( For example, add the line "import sys; sys.path.append("/ndnp/chronam/conf")" to a file named ${CHRONAM_HOME}/lib/python2.6/sitecustomize.py )
+# make configuration files globally
+echo "${CHRONAM_HOME}/conf" > ${CHRONAM_HOME}/lib/python2.6/site-packages/chronam.pth
 
 mkdir ${CHRONAM_HOME}/data
 cd ${CHRONAM_HOME}/data
@@ -69,9 +75,6 @@ hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam-loc mem
 # TODO: ln -s /vol/ndnp/chronam/bib .
 
 django-admin.py syncdb --settings=chronam_settings --noinput --migrate
-# if chronam.core is from a datacase created by pre south codebase
-# django-admin.py migrate chronam.core 0001 --fake --settings=chronam_settings
-# django-admin.py migrate chronam.core --settings=chronam_settings
 
 # get a test batch and run the tests (some day soon we could remote load?)
 mkdir batches
@@ -104,7 +107,4 @@ find /vol/ndnp/chronam/batches/* -name batch_* -print -prune | sed 's/\(.*\)\///
 django-admin.py --settings=chronam_settings flickr YOUR_FLICKR_KEY
 
 
-Optional: Install j2kmodule 
-===========================
 
-pip install git+git://loc-ndnp.git.sourceforge.net/gitroot/loc-ndnp/j2kmodule#egg=j2kmodule
