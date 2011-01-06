@@ -14,13 +14,13 @@ DATABASES = {
 
 SOLR = 'http://localhost:8080/solr'
 
-DOCUMENT_ROOT = "/ndnp/chronam/static"
+DOCUMENT_ROOT = "/opt/chronam/static"
 
 if os.uname()[1]=="sun11":
     STORAGE = '/batches'
 else:
     STORAGE = '/vol/ndnp/chronam/batches/'
 
-BIB_STORAGE = '/ndnp/chronam/data/bib/data'
-ESSAY_STORAGE = '/ndnp/chronam/data/ndnp-essays/essays'
+BIB_STORAGE = '/opt/chronam/data/bib/data'
+ESSAY_STORAGE = '/opt/chronam/data/ndnp-essays/essays'
 
