@@ -8,3 +8,4 @@ data/*
 lib/*
 bin/*
 include/*
+src
