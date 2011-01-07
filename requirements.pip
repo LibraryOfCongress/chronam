@@ -14,4 +14,4 @@ mercurial
 south
 hg+https://eikeon@bitbucket.org/eikeon/django-memorious#egg=django-memorious
 mimeparse
--e git://loc-ndnp.git.sourceforge.net/gitroot/loc-ndnp/j2kmodule#egg=j2kmodule
+git+git://loc-ndnp.git.sourceforge.net/gitroot/loc-ndnp/j2kmodule#egg=j2kmodule
