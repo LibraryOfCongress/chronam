@@ -39,6 +39,9 @@ Configure Solr
 
 sudo cp ${CHRONAM_HOME}/conf/schema.xml /etc/solr/conf/
 sudo cp ${CHRONAM_HOME}/conf/solrconfig.xml /etc/solr/conf/
+sudo ln -s /usr/share/java/lucene-memory.jar
+# until https://bugs.launchpad.net/ubuntu/+source/solr/+bug/709399 is resolved
+/usr/share/solr/WEB-INF/lib/lucene-memory.jar 
 sudo service jetty restart
 
 
