@@ -60,6 +60,9 @@ Configure Chronam
 # install python dependencies
 pip install -r requirements.pip
 
+# NOTE: if the above command fails and you don't have pip>=0.8 then run the following and retry.
+# pip install -U pip
+
 # make configuration available to Python
 echo "${CHRONAM_HOME}/conf" > ${CHRONAM_HOME}/lib/python2.6/site-packages/chronam.pth
 
