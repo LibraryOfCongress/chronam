@@ -79,7 +79,7 @@ django-admin.py syncdb --settings=chronam_settings --noinput --migrate
 Start Up Chronicling America
 ============================
 
-sudo /etc/init.d/apache restart
+sudo service apache2 restart
 
 
 Running Unit Tests
@@ -96,19 +96,10 @@ Loading the Data
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/logs/
 cd ${CHRONAM_HOME}/logs/
 
-# load titles and holdings
-django-admin.py chronam_sync --settings=chronam_settings
-
 django-admin.py loaddata languages.json institutions.json ethnicities.json labor_presses.json countries.json --settings=chronam_settings
-
-# start up one or more batch load processes to load all the batches
-django-admin.py load_batches --settings=chronam_settings ../conf/batch_list &
 
 # or load a specific batch
 django-admin.py load_batch batch_dlc_jamaica_ver01 --settings=chronam_settings 
-
-# To generate filename_of_batch_list from a batches directory:
-find /vol/ndnp/chronam/batches/* -name batch_* -print -prune | sed 's/\(.*\)\///g'
 
 # load up links to flickr using your flickr key
 django-admin.py --settings=chronam_settings flickr YOUR_FLICKR_KEY
