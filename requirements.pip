@@ -14,5 +14,5 @@ mercurial
 south
 hg+https://eikeon@bitbucket.org/eikeon/django-memorious#egg=django-memorious
 mimeparse
-pip install https://github.com/eikeon/NativeImaging/tarball/master
+https://github.com/eikeon/NativeImaging/tarball/master
 
