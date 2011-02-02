@@ -52,6 +52,7 @@ sudo a2ensite chronam
 
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/static
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/.python-eggs
+sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/cache
 
 
 Configure Chronam
@@ -71,7 +72,10 @@ cd ${CHRONAM_HOME}/data
 
 hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/ndnp-essays
 hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam-loc memorious # for media files
+
 mkdir batches
+mkdir cache
+sudo chown www-data:www-data cache
 
 django-admin.py syncdb --settings=chronam_settings --noinput --migrate
 

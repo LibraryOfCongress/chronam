@@ -4,8 +4,8 @@ from chronam_core_settings import *
 from chronam_loc.settings_default import *
 
 
-DEBUG = True
-TEMPLATE_DEBUG = True
+DEBUG = False
+TEMPLATE_DEBUG = False
 
 OMNITURE_SCRIPT = "http://www.loc.gov:8081/global/s_code.js"
 DEFAULT_TTL_SECONDS = 1
