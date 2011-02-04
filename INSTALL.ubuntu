@@ -77,6 +77,7 @@ mkdir cache
 sudo chown www-data:www-data cache
 
 django-admin.py syncdb --settings=chronam_settings --noinput --migrate
+django-admin.py chronam_sync --settings=chronam_settings
 
 
 Start Up Chronicling America
@@ -98,8 +99,6 @@ Loading the Data
 
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/logs/
 cd ${CHRONAM_HOME}/logs/
-
-django-admin.py loaddata languages.json institutions.json ethnicities.json labor_presses.json countries.json --settings=chronam_settings
 
 # or load a specific batch
 django-admin.py load_batch batch_dlc_jamaica_ver01 --settings=chronam_settings 
