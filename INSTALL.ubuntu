@@ -52,8 +52,6 @@ sudo a2ensite chronam
 
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/static
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/.python-eggs
-sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/data/cache
-sudo chown www-data:www-data ${CHRONAM_HOME}/data/cache
 
 
 Configure Chronam
