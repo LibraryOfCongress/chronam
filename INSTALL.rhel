@@ -29,7 +29,6 @@ pip install -r requirements.pip
 --Note: You will need to use the --python option above if you're running RHEL
 5.5
 
-
 Create Database 
 ===============
 
@@ -43,26 +42,21 @@ edit /etc/mysql/my.cnf so that max_allowed_packet = 16M
 Solr Setup
 ==========
 
-wget download & extract solr-1.4.1
-
-sudo mkdir /opt/solr/
-
-cp -R solr-1.4.1.../example/solr /opt
-
-cp solr-1.4.1.../dist/apache-solr-1.4.1.war /opt/solr
-
-mkdir /opt/solr/data
-
-chown tomcat:tomcat /opt/solr/data
-
-cp /opt/chronam/conf/schema.xml /opt/solr/conf/
-
-cp /opt/chronam/conf/solrconfig.xml /opt/solr/conf/
+wget http://www.apache.org/dist//lucene/solr/1.4.1/apache-solr-1.4.1.tgz
+tar xvfz apache-solr-1.4.1.tgz
+sudo cp -R apache-solr-1.4.1/example/solr /opt
+sudo cp apache-solr-1.4.1/dist/apache-solr-1.4.1.war /opt/solr
+sudo mkdir /opt/solr/data
+sudo chown tomcat:tomcat /opt/solr/data
+sudo cp /opt/chronam/conf/schema.xml /opt/solr/conf/
+sudo cp /opt/chronam/conf/solrconfig.xml /opt/solr/conf/
 
 edit /opt/solr/conf/solrconfig.xml:
+TODO: put the modified config in conf 
 change path in <dataDir>[...]</dataDir> to: /opt/solr/data
 
 create tomcat context fragment as: /etc/tomcat6/Catalina/localhost/solr.xml
+TODO: put this fragement in a text file in chrona/conf
 
 <?xml version="1.0" encoding="utf-8"?>
 <Context docBase="/opt/solr/apache-solr-1.4.1.war" debug="0"
@@ -81,6 +75,7 @@ edit /etc/httpd/conf.d/chronam.conf
 add the line:
 
 WSGISocketPrefix /opt/chronam/chronam
+TODO: is this redhat only, or can we modify chronam.conf appropriately?
 
 It's important to note that python26-mod_wsgi WILL NOT LOAD if either mod_wsgi
 or mod_python is loaded. Make sure you've commented out any LoadModule?
