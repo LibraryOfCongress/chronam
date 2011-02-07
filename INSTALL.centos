@@ -1,11 +1,12 @@
-====================================
-Redhat Enterprise Linux Installation
-====================================
+===================
+CentOS Installation
+===================
 
-Installation instructions for building Chronicling America on RHEL 6.0. These
-are a work in progress so there may be some rough bits marked w/ TODO. But 
-they have resulted in a working install, so give them a shot and help us
-tighten them up.
+Installation instructions for building Chronicling America on CentOS 5.5. 
+These are a work in progress so there may be some rough bits marked w/ TODO. 
+We've targeted CentOS since it is the open version of RedHat Enterprise Linux.
+If you use RHEL you should be able to follow along w/ these instructions.
+If you use CentOS or Redhat give them a shot and help us tighten them up.
 
 System Dependencies
 ===================
@@ -75,7 +76,7 @@ edit /etc/httpd/conf.d/chronam.conf
 add the line:
 
 WSGISocketPrefix /opt/chronam/chronam
-TODO: is this redhat only, or can we modify chronam.conf appropriately?
+TODO: is this CentOS only, can we modify chronam.conf appropriately?
 
 It's important to note that python26-mod_wsgi WILL NOT LOAD if either mod_wsgi
 or mod_python is loaded. Make sure you've commented out any LoadModule?
