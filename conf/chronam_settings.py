@@ -14,3 +14,4 @@ STORAGE = "/opt/chronam/data/batches/"
 
 MEMORIOUS_REPOSITORIES = {"default": "/opt/chronam/data/memorious"}
 MEMORIOUS_DEBUG = False
+SOLR = "http://localhost:8080/solr"
