@@ -23,12 +23,9 @@ export CHRONAM_HOME=/opt/chronam
 sudo mv chronam ${CHRONAM_HOME}
 cd ${CHRONAM_HOME}
 
-virtualenv [--python=/usr/bin/python26] --no-site-packages ${CHRONAM_HOME}
+virtualenv --python=/usr/bin/python26 --no-site-packages ${CHRONAM_HOME}
 source ${CHRONAM_HOME}/bin/activate
 pip install -r requirements.pip
-
---Note: You will need to use the --python option above if you're running RHEL
-5.5
 
 Create Database 
 ===============
