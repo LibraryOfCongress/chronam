@@ -54,7 +54,7 @@ TODO: put the modified config in conf
 change path in <dataDir>[...]</dataDir> to: /opt/solr/data
 
 create tomcat context fragment as: /etc/tomcat6/Catalina/localhost/solr.xml
-TODO: put this fragement in a text file in chrona/conf
+TODO: put this fragement in a text file in chronam/conf
 
 <?xml version="1.0" encoding="utf-8"?>
 <Context docBase="/opt/solr/apache-solr-1.4.1.war" debug="0"
@@ -84,7 +84,6 @@ mkdir ${CHRONAM_HOME}/static
 mkdir ${CHRONAM_HOME}/.python-eggs
 mkdir -p ${CHRONAM_HOME}/data/cache
 chown apache:apache ${CHRONAM_HOME}/data/cache/
-chown 
 
 Configure Chronam
 =================
