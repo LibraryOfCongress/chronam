@@ -11,7 +11,7 @@ If you use CentOS or Redhat give them a shot and help us tighten them up.
 System Dependencies
 ===================
 
-rpm -Uvh http://download.fedora.redhat.com/pub/epel/[YOUR-RHEL-VERSION]/x86_64/epel-release-6-5.noarch.rpm
+rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm
 
 yum install mercurial python26 python26-devel python26-mod_wsgi python-devel python-virtualenv mysql-server mysql-devel httpd java-1.6.0-openjdk-devel libxml2-devel libxslt-devel libjpeg-devel git gcc tomcat6 zlib-devel
 
