@@ -11,9 +11,17 @@ If you use CentOS or Redhat give them a shot and help us tighten them up.
 System Dependencies
 ===================
 
-rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm
+sudo rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm
 
-yum install mercurial python26 python26-devel python26-mod_wsgi python-devel python-virtualenv mysql-server mysql-devel httpd java-1.6.0-openjdk-devel libxml2-devel libxslt-devel libjpeg-devel git gcc tomcat6 zlib-devel
+cd /etc/yum.repos.d
+wget http://www.jpackage.org/jpackage50.repo
+
+TODO: Is mysql-5.1 required over mysql-5.0? If so:
+sudo rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-5.rpm
+
+NOTE: The remi repo should not be enabled by default; only enable it when needed with the --enablerepo flag as seen below.
+
+sudo yum --enablerepo=remi install mercurial python26 python26-devel python26-mod_wsgi python-devel python-virtualenv mysql-server mysql-devel httpd java-1.6.0-openjdk-devel libxml2-devel libxslt-devel libjpeg-devel git gcc tomcat6 zlib-devel
 
 Create Python Environment
 =========================
