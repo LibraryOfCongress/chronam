@@ -30,7 +30,7 @@ Create Python Environment
 
 hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam
 export CHRONAM_HOME=/opt/chronam
-sudo mv chronam ${CHRONAM_HOME}
+sudo mv chronam /opt
 cd ${CHRONAM_HOME}
 
 virtualenv --python=/usr/bin/python26 --no-site-packages ${CHRONAM_HOME}
