@@ -18,10 +18,12 @@ wget http://www.jpackage.org/jpackage50.repo
 
 TODO: Is mysql-5.1 required over mysql-5.0? If so:
 sudo rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-5.rpm
+TODO: Also, to avoid conflict with base/update mysql client, architecture must be explicitly defined for mysql-server.x86_64 mysql-devel.x86_64.  Otherwise, yum stubbornly wants to include mysql.i386, pulled from base, which is version 5.0 and conlicts with mysql client 5.1 pulled from remi.
 
 NOTE: The remi repo should not be enabled by default; only enable it when needed with the --enablerepo flag as seen below.
 
-sudo yum --enablerepo=remi install mercurial python26 python26-devel python26-mod_wsgi python-devel python-virtualenv mysql-server mysql-devel httpd java-1.6.0-openjdk-devel libxml2-devel libxslt-devel libjpeg-devel git gcc tomcat6 zlib-devel
+sudo yum --enablerepo=remi install mercurial python26 python26-devel python26-mod_wsgi python-devel python-virtualenv mysql-server.x86_64 mysql-devel.x86_64 httpd java-1.6.0-openjdk-devel libxml2-devel libxslt-devel libjpeg-devel git gcc tomcat6 zlib-devel
+
 
 Create Python Environment
 =========================
