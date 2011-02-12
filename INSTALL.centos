@@ -58,10 +58,6 @@ sudo chown tomcat:tomcat /opt/solr/data
 sudo cp /opt/chronam/conf/schema.xml /opt/solr/conf/
 sudo cp /opt/chronam/conf/solrconfig.xml /opt/solr/conf/
 
-edit /opt/solr/conf/solrconfig.xml:
-TODO: put the modified config in conf 
-change path in <dataDir>[...]</dataDir> to: /opt/solr/data
-
 create tomcat context fragment as: /etc/tomcat6/Catalina/localhost/solr.xml
 TODO: put this fragement in a text file in chronam/conf
 
