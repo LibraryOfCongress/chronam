@@ -57,16 +57,7 @@ sudo mkdir /opt/solr/data
 sudo chown tomcat:tomcat /opt/solr/data
 sudo cp /opt/chronam/conf/schema.xml /opt/solr/conf/
 sudo cp /opt/chronam/conf/solrconfig.xml /opt/solr/conf/
-
-create tomcat context fragment as: /etc/tomcat6/Catalina/localhost/solr.xml
-TODO: put this fragement in a text file in chronam/conf
-
-<?xml version="1.0" encoding="utf-8"?>
-<Context docBase="/opt/solr/apache-solr-1.4.1.war" debug="0"
-crossContext="true">
-    <Environment name="solr/home" type="java.lang.String" value="/opt/solr/"
-override="true"/>
-</Context>
+sudo cp /opt/chronam/conf/solr.xml /etc/tomcat6/Catalina/localhost/
 
 Setup Apache
 ============
