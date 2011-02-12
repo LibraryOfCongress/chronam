@@ -62,7 +62,7 @@ sudo cp /opt/chronam/conf/solr.xml /etc/tomcat6/Catalina/localhost/
 Setup Apache
 ============
 
-cp /opt/chronam/conf/chronam.conf to /etc/httpd/conf.d/
+sudo cp /opt/chronam/conf/chronam.conf /etc/httpd/conf.d/
 
 edit /etc/httpd/conf.d/chronam.conf
 
@@ -76,10 +76,10 @@ or mod_python is loaded. Make sure you've commented out any LoadModule?
 statements that load either of those modules from your apache configuration, and
 that you've Loaded python26-mod-wsgi.
 
-mkdir ${CHRONAM_HOME}/static
-mkdir ${CHRONAM_HOME}/.python-eggs
-mkdir -p ${CHRONAM_HOME}/data/cache
-chown apache:apache ${CHRONAM_HOME}/data/cache/
+sudo mkdir ${CHRONAM_HOME}/static
+sudo mkdir ${CHRONAM_HOME}/.python-eggs
+sudo mkdir -p ${CHRONAM_HOME}/data/cache
+sudo chown apache:apache ${CHRONAM_HOME}/data/cache/
 
 Configure Chronam
 =================
