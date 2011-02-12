@@ -42,8 +42,7 @@ Create Database
 
 echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET
 utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one';
-GRANT ALL ON test_chronam.* TO 'chronam'@'localhost' identified by 'pick_one';"
-| mysql -u root -p
+GRANT ALL ON test_chronam.* TO 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root -p
 
 edit /etc/mysql/my.cnf so that max_allowed_packet = 16M
 
