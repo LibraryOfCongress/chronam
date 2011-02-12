@@ -40,9 +40,7 @@ pip install -r requirements.pip
 Create Database 
 ===============
 
-echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET
-utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one';
-GRANT ALL ON test_chronam.* TO 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root -p
+echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one'; GRANT ALL ON test_chronam.* TO 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root -p
 
 edit /etc/mysql/my.cnf so that max_allowed_packet = 16M
 
@@ -71,8 +69,8 @@ add the line:
 WSGISocketPrefix /opt/chronam/chronam
 TODO: is this CentOS only, can we modify chronam.conf appropriately?
 
-It's important to note that python26-mod_wsgi WILL NOT LOAD if either mod_wsgi
-or mod_python is loaded. Make sure you've commented out any LoadModule?
+NOTE: python26-mod_wsgi WILL NOT LOAD if either mod_wsgi
+or mod_python is loaded. Make sure you've commented out any LoadModule
 statements that load either of those modules from your apache configuration, and
 that you've Loaded python26-mod-wsgi.
 
@@ -85,26 +83,25 @@ Configure Chronam
 =================
 
 # make configuration available to Python
-echo "${CHRONAM_HOME}/conf" >
-${CHRONAM_HOME}/lib/python2.6/site-packages/chronam.pth
+echo "${CHRONAM_HOME}/conf" > ${CHRONAM_HOME}/lib/python2.6/site-packages/chronam.pth
 
 cd ${CHRONAM_HOME}/data
 
-hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/ndnp-essays
-hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam-loc memorious # for media files
+sudo hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/ndnp-essays
+sudo hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam-loc memorious # for media files
 
-mkdir batches # or symlink to where your batches are
+sudo mkdir batches # or symlink to where your batches are
 
 django-admin.py syncdb --settings=chronam_settings --noinput --migrate
 
 Restart Services
 ================
 
-sudo /etc/init.d/mysql restart
-sudo /etc/init.d/tomcat restart
-sudo /etc/init.d/apache2 restart
+sudo /sbin/service mysqld restart
+sudo /sbin/service tomcat6 restart
+sudo /sbin/service httpd restart
 
 Load Initial Data
 =================
 
-django-admin.py chronam_sync --settings=chronam_settings
+sudo django-admin.py chronam_sync --settings=chronam_settings
