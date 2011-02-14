@@ -54,8 +54,8 @@ sudo cp apache-solr-1.4.1/dist/apache-solr-1.4.1.war /opt/solr
 sudo mkdir /opt/solr/data
 sudo chown tomcat:tomcat /opt/solr/data
 sudo cp /opt/chronam/conf/schema.xml /opt/solr/conf/
-sudo cp /opt/chronam/conf/solrconfig.xml /opt/solr/conf/
-sudo cp /opt/chronam/conf/solr.xml /etc/tomcat6/Catalina/localhost/
+sudo cp /opt/chronam/conf/solrconfig-centos.xml /opt/solr/conf/solrconfig.xml
+sudo cp /opt/chronam/conf/solr-tomcat.xml /etc/tomcat6/Catalina/localhost/solr.xml
 
 Setup Apache
 ============
