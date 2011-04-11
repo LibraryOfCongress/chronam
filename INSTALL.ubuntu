@@ -90,6 +90,7 @@ sudo service apache2 restart
 Running Unit Tests
 ==================
 
+# beware this will pull down 60G of data !!
 cd ${CHRONAM_HOME}/data/batches
 wget --recursive --no-host-directories --cut-dirs 1 --include-directories /data/dlc/batch_dlc_jamaica_ver01 http://chroniclingamerica.loc.gov/data/dlc/batch_dlc_jamaica_ver01
 django-admin.py test --settings=chronam_settings
