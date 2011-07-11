@@ -3,7 +3,11 @@ hg+http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam-loc#egg=chron
 Django
 MySQL-python
 lxml
-rdflib
+
+# RDFlib - Pull from trunk
+# There is a feature in the next version that hasn't been included an official 3.1 release.
+hg+https://rdflib.googlecode.com/hg/
+
 pymarc
 solrpy
 PIL
