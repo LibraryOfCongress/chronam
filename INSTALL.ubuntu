@@ -2,9 +2,9 @@
 Installation
 ============
 
-Installation instructions for building Chronicling America on Ubuntu. 
-First you'll need to get the latest Chronicling America code. Which
-will include this file.
+# Installation instructions for building Chronicling America on Ubuntu. 
+# First you'll need to get the latest Chronicling America code. Which
+# will include this file.
 
 sudo apt-get install mercurial 
 hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam
@@ -16,9 +16,12 @@ cd ${CHRONAM_HOME}
 System Dependencies
 ===================
 
-To install system dependencies on a Debian-based system run:
-
+# To install system dependencies on a Debian-based system run:
 sudo apt-get install python-dev python-virtualenv mysql-server libmysqlclient-dev apache2 libapache2-mod-wsgi solr-jetty openjdk-6-jdk libxml2-dev libxslt-dev mercurial libjpeg-dev git-core graphicsmagick
+
+# Note: When you install mysql-server, you will be prompted for a root password.
+# If you choose one, make a note of what it is. Later you will be asked to enter
+# the password when you create the database for the project.
 
 
 Create Python Environment
@@ -66,6 +69,7 @@ pip install -r requirements.pip
 
 # make configuration available to Python
 echo "${CHRONAM_HOME}/conf" > ${CHRONAM_HOME}/lib/python2.6/site-packages/chronam.pth
+# If this fails, check to make sure that you have the right version of python or update the path to reflect the version python are using.
 
 mkdir ${CHRONAM_HOME}/data
 cd ${CHRONAM_HOME}/data
@@ -87,12 +91,27 @@ Start Up Chronicling America
 sudo service apache2 restart
 
 
-Running Unit Tests
-==================
+Get Sample Data / Run Unit Tests
+================================
 
-# beware this will pull down 60G of data !!
+# Sample data set 1: batch_vi_affirmed_ver01
+# The first dataset is provided to be a quick and easy download in order for you to understand how the project works.
+cd ${CHRONAM_HOME}/data/batches
+wget --recursive --no-host-directories --cut-dirs 1 --include-directories /data/vi/batch_vi_affirmed_ver01 http://chroniclingamerica.loc.gov/data/vi/batch_vi_affirmed_ver01
+
+# Sample data set 2: batch_dlc_jamaica_ver01
+# The second dataset is provided to run tests against.
+# Beware this will pull down 60G of data, which could take hours to days to download depending on your connection speed.
+# Make sure you have a stable connection and enough room on your harddrive.
 cd ${CHRONAM_HOME}/data/batches
 wget --recursive --no-host-directories --cut-dirs 1 --include-directories /data/dlc/batch_dlc_jamaica_ver01 http://chroniclingamerica.loc.gov/data/dlc/batch_dlc_jamaica_ver01
+
+
+Run Unit Tests
+==============
+
+# Currently chronam.core.tests.batch_loader_tests.BatchLoaderTest checks batch_dlc_jamaica_ver01
+# If you grabbed the smaller sample set, the tests will fail.
 django-admin.py test --settings=chronam_settings
 
 
@@ -102,8 +121,9 @@ Loading the Data
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/logs/
 cd ${CHRONAM_HOME}/logs/
 
-# or load a specific batch
-django-admin.py load_batch batch_dlc_jamaica_ver01 --settings=chronam_settings 
+# or load a specific batch, replace $BATCH_NAME with a specific batch.
+django-admin.py load_batch $BATCH_NAME --settings=chronam_settings
+# Example: django-admin.py load_batch batch_vi_affirmed_ver01 --settings=chronam_settings
 
 # load up links to flickr using your flickr key
-django-admin.py --settings=chronam_settings flickr YOUR_FLICKR_KEY
+django-admin.py --settings=chronam_settings flickr $YOUR_FLICKR_KEY
