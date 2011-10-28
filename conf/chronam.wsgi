@@ -1,6 +1,7 @@
 import os, sys
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'chronam_settings'
+os.environ['CELERY_LOADER'] = 'django'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'chronam_loc_settings'
 
 import django.core.handlers.wsgi
 
