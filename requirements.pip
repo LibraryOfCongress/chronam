@@ -20,3 +20,4 @@ hg+https://eikeon@bitbucket.org/eikeon/django-memorious#egg=django-memorious
 mimeparse
 https://github.com/eikeon/NativeImaging/tarball/master
 html5lib
+requests
