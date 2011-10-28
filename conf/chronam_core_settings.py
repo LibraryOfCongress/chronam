@@ -21,6 +21,6 @@ if os.uname()[1]=="sun11":
 else:
     STORAGE = '/opt/chronam/data/batches/'
 
-BIB_STORAGE = '/opt/chronam/data/bib/data'
+BIB_STORAGE = '/opt/chronam/data/bib'
 ESSAY_STORAGE = '/opt/chronam/data/ndnp-essays/essays'
 
