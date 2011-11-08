@@ -14,7 +14,7 @@ INSTALLED_APPS += ("djkombu", "djcelery" )
 CELERY_IMPORTS = ("chronam.core.tasks",)
 CELERYD_LOG_FILE = os.path.join(APP_DIR, "logs", "celery.log")
 CELERYD_LOG_LEVEL = logging.INFO
-CELERYD_CONCURRENCY = 1
+CELERYD_CONCURRENCY = 2
 
 CELERYBEAT_SCHEDULE = {
     "poll_cts": {
