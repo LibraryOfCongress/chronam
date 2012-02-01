@@ -97,8 +97,10 @@
           required="false" multiValued="false" />
       <field name="page" type="string" indexed="true" stored="true"
           required="false" multiValued="false" />
-      <field name="ocr" type="text" indexed="true" stored="true"
+      <dynamicField name="ocr_*" type="text" indexed="true" stored="true"
           required="false" multivalued="false" />
+      <field name="ocr" type="text" indexed="true" stored="true"
+          required="false" multiValued="true" />
       <field name="batch" type="string" indexed="true" stored="true"
           required="false" multiValued="false" />
       <field name="edition_label" type="text" indexed="true" stored="true"
@@ -115,6 +117,7 @@
   <copyField source="subject" dest="subject_facet" />
   <copyField source="place_of_publication" dest="place_of_publication_facet" />
   <copyField source="title" dest="title_facet" />
+  <copyField source="ocr_*" dest="ocr" />
 
   <uniqueKey>id</uniqueKey>
   <defaultSearchField>ocr</defaultSearchField>
