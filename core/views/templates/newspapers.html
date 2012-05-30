@@ -1,0 +1,44 @@
+{% extends "site_base.html" %}
+{% load custom_filters %}
+{% load memorious %}
+{% load humanize %}
+
+{% block content %}
+{% if titles.count > 0 %}
+<p class="gray nomargin-bottom3">These historical newspapers are available to browse and view issues in this site. {% if number_of_pages %}Pages currently available: {{number_of_pages|intcomma}}{% endif %}</p>
+
+<div class="browse_collect_body">
+    <table class="browse_collect" cellspacing="0" summary="">
+        <tr>
+            <th>State</th>
+            <th>Newspaper</th>
+            <th>Browse Issues</th>
+            <th>No. of Issues</th>
+            <th>Earliest Issue</th>
+            <th>Latest Issue</th>
+            <th>More Info</th>
+        </tr>
+        {% for state, titles in newspapers_by_state %}
+        {% for title in titles %}
+            {% with title.lccn as lccn %}
+            <tr class="{% cycle '' 'alt' %}">
+                <td class="first"><a {% ifchanged state %}name="{{state}}" {% endifchanged %}href="{% url chronam_newspapers_state state|pack_url %}">{{state}}</a></td>
+                <td><a href="{% url chronam_title lccn %}"><strong>{{title.name}}</strong></a><br />{{title.place_of_publication}}, {{title.start_year}}-{{title.end_year}}</td>
+                <td><a href="{% url chronam_issues lccn %}" shape="rect"><img src="{% memorious 'media/images/calendar_icon.gif' %}" alt="calendar"/></a></td>
+                <td>{{title.issues.count}}</td>
+                <td><a href="{% url chronam_issue_pages lccn,title.first,1 %}">{{title.first|date:'Y-m-d'}}</a></td>
+                <td><a href="{% url chronam_issue_pages lccn,title.last,1 %}">{{title.last|date:'Y-m-d'}}</a></td>
+                <td class="last">{% if title.has_essays %}<a href="{% url chronam_title lccn %}">Yes</a>{% endif %}</td>
+            </tr>
+            {% endwith %}
+        {% endfor %}
+        {% endfor %}
+    </table>
+    <div class="txt_wrapper">
+        <p class="backtotop"><a href="#skip_menu">Top</a></p>
+    </div>
+</div><!-- end class:search_results_body -->
+{% else %}
+<h2>No Results</h2>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "search_pages_results.html" %}
+
+{% load memorious %}
+{% load custom_filters %}
+
+{% block search_results_box %}
+
+{% ifequal paginator.count 0 %}
+<h2>No Results</h2>
+{% else %}
+<ul class="results_list">
+    {% for num, object in page_list %}
+      {% with object.issue.title as title %}
+    <li><a href="{{ object.url }};words={{object.words}}?{{q}}&index={{forloop.counter0}}"><strong>{{title.name}}</strong> ({{title.place_of_publication}}), {{object.issue|label}}, {{object|label}}</a></li>
+      {% endwith %}
+    {% endfor %}
+</ul>
+<div class="txt_wrapper">
+    <p class="backtotop">
+    <a href="#skip_menu">Top</a>
+    </p>
+</div>
+{% endifequal %}
+{% endblock %}

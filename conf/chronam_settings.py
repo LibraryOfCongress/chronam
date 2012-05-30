@@ -1,26 +1,40 @@
 import os
 
-from chronam_core_settings import *
-from chronam_loc.settings_default import *
+from settings_default import *
 
+SECRET_KEY = 'px2@!q2(m5alb$0=)h@u*80mmf9cd-nn**^y4j2j&+_8h^n_0f'
 
-DEBUG = False
-TEMPLATE_DEBUG = False
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'chronam',
+        'USER': 'chronam',
+        'PASSWORD': 'chronam',
+        }
+    }
+
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+
+SHARETOOL_URL = "http://cdn.loc.gov/share/sites/dUcuwr5p/share-jquery-min.js"
 
 OMNITURE_SCRIPT = "http://www.loc.gov:8081/global/s_code.js"
 DEFAULT_TTL_SECONDS = 60 * 60 * 24
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24
 FEED_TTL_SECONDS = 60 * 60 * 24 * 7
-STORAGE = "/opt/chronam/data/batches/"
 
 MEMORIOUS_REPOSITORIES = {"default": "/opt/chronam/data/memorious"}
-MEMORIOUS_DEBUG = False
-SOLR = "http://localhost:8080/solr"
+MEMORIOUS_DEBUG = True
+SOLR = "http://localhost:8083/solr"
 
-IS_PRODUCTION = False
-CTS_USERNAME = None
-CTS_PASSWORD = None
-CTS_PROJECT_ID = None
-CTS_QUEUE = None
-CTS_SERVICE_TYPE = None
-CTS_URL = None
+DOCUMENT_ROOT = "/opt/chronam/static"
+
+if os.uname()[1] == "sun11":
+    STORAGE = '/batches'
+else:
+    STORAGE = "/vol/ndnp_staging_02/"
+
+BIB_STORAGE = '/opt/chronam/data/bib'
+ESSAY_STORAGE = '/opt/chronam/data/ndnp-essays/essays'
+
+USE_TIFF = False
