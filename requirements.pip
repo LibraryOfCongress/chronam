@@ -1,6 +1,4 @@
-hg+http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam-core#egg=chronam-core
-hg+http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/chronam-loc#egg=chronam-loc
-Django
+Django==1.3.1
 MySQL-python
 lxml
 
@@ -16,8 +14,12 @@ feedparser
 rfc3339
 mercurial
 south
-hg+https://eikeon@bitbucket.org/eikeon/django-memorious#egg=django-memorious
+https://github.com/eikeon/django-memorious/tarball/master
 mimeparse
 https://github.com/eikeon/NativeImaging/tarball/master
 html5lib
 requests
+GitPython
+
+django-celery
+django-kombu

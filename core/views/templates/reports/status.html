@@ -1,0 +1,51 @@
+{% extends "reports/reports.html" %}
+{% load humanize %}
+
+{% block content %}
+<h2>System Status</h2>
+
+<table class="data" width="100%">
+    <tr class="lightGray">
+        <td>Batches modeled</td>
+        <td>{{ batch_count|intcomma }}</td>
+    </tr>
+    <tr class="white">
+        <td>Titles modeled</td>
+        <td>{{ title_count|intcomma }}</td>
+    </tr>
+    <tr class="lightGray">
+        <td>Issues modeled</td>
+        <td>{{ issue_count|intcomma }}</td>
+    </tr>
+    <tr class="white">
+        <td>Pages modeled</td>
+        <td>{{ page_count|intcomma }}</td>
+    </tr>
+    <tr class="lightGray">
+        <td>Holdings modeled</td>
+        <td>{{ holding_count|intcomma }}</td>
+    </tr>
+    <tr class="white">
+        <td>Essays modeled</td>
+        <td>{{ essay_count|intcomma }}</td>
+    </tr>
+    <tr class="lightGray">
+        <td>Titles indexed</td>
+        <td>{{ titles_indexed|intcomma }}</td>
+    </tr>
+    <tr class="white">
+        <td>Pages indexed*</td>
+        <td>{{ pages_indexed|intcomma }}</td>
+    </tr>
+</table>
+
+<br />
+
+<p>
+<em>(*) discrepancy between pages modeled and pages indexed is due to duplicate
+    pages (same lccn, date, edition, sequence) in the database, which are 
+    collapsed down in the solr index</em>
+</p>
+    
+    
+{% endblock %}

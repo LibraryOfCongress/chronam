@@ -1,0 +1,92 @@
+[
+  {
+    "pk": "sn83030214",
+    "model": "core.Title",
+    "fields": {
+      "lccn_orig"             : "sn 83030214",
+      "name"                  : "New-York tribune.",
+      "name_normal"           : "New-York tribune.",
+      "place_of_publication"  : "New York [N.Y.]",
+      "publisher"             : "New York Tribune",
+      "frequency"             : "Daily",
+      "oclc"                  : "ocm09405688",
+      "start_year"            : "1866",
+      "end_year"              : "1924",
+      "created"               : "2009-02-09 06:44:45",
+      "version"               : "2004-10-11 13:00:00",
+      "country"               : "nyu"
+    }
+  },
+  {
+    "pk": 1, 
+    "model": "core.subject", 
+    "fields": {
+      "titles": ["sn83030214"],
+      "type": "t", 
+      "heading": "New York County (N.Y.)--Newspapers."
+    }
+  },
+  {
+    "pk": 2, 
+    "model": "core.subject", 
+    "fields": {
+      "titles": ["sn83030214"], 
+      "type": "g", 
+      "heading": "New York (N.Y.)--Newspapers."
+    }
+  },
+  {
+    "pk": 1,
+    "model": "core.place",
+    "fields": {
+      "titles": ["sn83030214"],
+      "name": "New York--Queens--New York City",
+      "city": "New York City",
+      "county": "Queens",
+      "state": "New York"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "core.place",
+    "fields": {
+      "titles": ["sn83030214"],
+      "name": "New York--Brooklyn--New York City",
+      "city": "New York City",
+      "county": "Brooklyn",
+      "state": "New York"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "core.note",
+    "fields": {
+      "text": "The Big Apple",
+      "title": "sn83030214"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "core.note",
+    "fields": {
+      "text": "I'll take Manhattan",
+      "title": "sn83030214"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "core.marc",
+    "fields": {
+      "xml": "<record></record>",
+      "title": "sn83030214"
+    }
+  },
+  {
+    "pk": "eng",
+    "model": "core.Language",
+    "fields": {
+      "titles": ["sn83030214"],
+      "name": "English"
+    }
+  }
+]

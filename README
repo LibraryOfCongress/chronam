@@ -1,17 +1,9 @@
 This repository contains instructions for how to assemble the Chronicling
-America web application. For more information about the project seem the
-project's Trac website at:
-
-    http://loc-ndnp.sf.net
+America web application.
 
 To learn more about how to install the software see operating specific 
 instructions:
 
     INSTALL.ubuntu
-
-Comments, questions and participation are welcome on the project's mailing 
-list at SourceForge:
-
-    https://lists.sourceforge.net/lists/listinfo/loc-ndnp-mail
 
 This software is in the Public Domain.

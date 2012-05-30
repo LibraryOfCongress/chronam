@@ -1,0 +1,29 @@
+{% extends "newspaper.html" %}
+
+{% load memorious %}
+
+{% block extrahead %}
+{{ block.super }}
+    <link rel="alternate" 
+          type="application/marc+xml" 
+          href="{% url chronam_title_marcxml title.lccn %}" />
+
+{% endblock %}
+
+{% block newspaper_content %}
+
+{% autoescape off %}
+{{title.marc.html}}
+{% endautoescape %}
+
+<br />
+ 
+<div style="text-align: center;"> 
+<a href="{% url chronam_title_marcxml title.lccn %}">
+    <img src="{% memorious 'media/images/xml.png' %}"></img>
+</a>
+</div>
+
+<br />
+
+{% endblock %}

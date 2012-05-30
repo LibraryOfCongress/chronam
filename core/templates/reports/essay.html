@@ -1,0 +1,14 @@
+{% extends "reports/reports.html" %}
+
+{% block content %}
+{{essay.html|safe}}
+
+<p>
+<em>Provided by: <a href="{% url chronam_awardee essay.creator.org_code %}">{{ essay.creator }}</a></em>
+</p>
+
+{% endblock %}
+
+
+
+

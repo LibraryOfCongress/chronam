@@ -1,0 +1,557 @@
+{% extends "site_base.html" %}
+{% load memorious %}
+
+{% block lc_metadata %}
+    {% with page as title_metadata %}
+    {% include "includes/lc_metadata.html" %}
+    {% endwith %}
+{% endblock %}
+
+{% block extrahead %}
+    <link rel="primaryTopic" href="{{ page.abstract_url }}" />
+    <link rel="resourcemap" type="application/rdf+xml" href="{% url chronam_page_dot_rdf page.issue.title.lccn, page.issue.date_issued, page.issue.edition, page.sequence %}" />
+    <link rel="alternate" type="image/jp2" href="{% url chronam_page_jp2 title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
+    <link rel="alternate" type="application/pdf" href="{% url chronam_page_pdf title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
+    <link rel="alternate" type="application/xml" href="{% url chronam_page_ocr_xml title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
+    <link rel="alternate" type="text/plain" href="{% url chronam_page_ocr_txt title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
+    <link rel="canonical" href="http://{{host}}{% url chronam_page title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
+    <link rel="up" href="{{ issue.url }}" />
+    <link rel="up" href="{{ issue.batch.url }}" />
+    {% if page.reel.number %}<link rel="up" href="{% url chronam_reel page.reel.number %}" />{% endif %}
+    {% if page.on_flickr %}{% for flickr_url in page.flickr_urls.all %}<link rel="alternate" type="text/html" href="{{ flickr_url.value }}" />{% endfor %}{% endif %}
+    <meta property="og:image" content="http://{{ host }}{% url chronam_page_thumbnail title.lccn,page.issue.date_issued,page.issue.edition,page.sequence %}" />
+    <meta property="og:title" content="{{ page_title }}" />
+    <meta property="og:description" content="{{ page_title }}, brought to you by {{ image_credit }}, and the National Digital Newspaper Program." />
+
+    <style type="text/css">
+        /* header for full-page view */
+		/* begin IE7 only */
+		* html #full_header,
+		* html #navigation {
+		width:100% !important;
+		}
+		/* end IE7 only */
+        body #full_header.normal {
+	    display: none;
+        }
+        body #full_header.full {
+	    display: block;
+        }
+        #full_header {
+            overflow:hidden;
+            padding-top:2px;
+	    width: 100%;
+	    height: 40px;
+            background: #900 url({% memorious 'media/images/line2.gif' %}) top left no-repeat !important;
+        }
+        #navigation {
+    	    overflow:hidden;
+            margin:0;
+            padding:0;
+    		background-color:#2a354a;
+        }
+        #navigation span {
+            font-size:0.8em;
+            float:left;
+            padding: 6px 29px 20px 29px;
+    		background-color:#afb9c7;
+        }
+       ul.nav {
+           display:block;
+           background-color:#2a354a;
+           margin:0 0 0 190px;
+           overflow:hidden;
+           padding-bottom:5px;
+       }
+       ul.nav li {
+	       float: left;
+    	   list-style: none outside none;
+		   padding: 5px 10px 0;
+		   text-align: left;
+		   color: #CCCCCC;
+		   font-size: 0.8em;
+       }
+       ul.nav li.bar {
+           border-right: 1px solid #666;
+           height: 35px;
+       } 
+       ul.nav li.last {
+           clear:right;
+       }
+       /* viewer */
+       #viewer_container
+       {
+           width: 100%;//500px;
+           height: 600px;
+           background-color: black;
+           border: 1px solid black;
+           color: white;   /* for error messages, etc. */
+       }
+       .overlay
+       {
+           border: 1px solid red;
+           opacity: 0.4;      
+           -moz-opacity: 0.4;
+           -webkit-opacity: 0.4;
+           background: red;
+       }
+       #outputHolder
+       {
+           xwidth: 600px;
+           height: 1em;
+           margin-bottom: 1em;
+           font-size: 125%;
+       }
+       #outputText
+       {
+           font-style: italic;
+           font-weight: bold;
+           margin-left: 0.5em;
+       }
+    </style>
+
+    <style type="text/css" media="screen">
+      #imageViewer_nav {
+          /*border: 0px;*/
+          margin: 0px;
+          padding: 0px;
+      }
+      #item-ctrl {
+          padding: 0px;
+          margin: 0px;
+      }
+      #main_body {
+          margin: 0px;
+          padding: 0px;
+          width: 100%;
+          float: none;
+          clear: none;
+      }
+    </style>  
+      
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript"
+        src="{% memorious 'media/js/openseadragon.js' %}">
+    </script>
+    
+    <script type="text/javascript">
+        var viewer = null;
+        var output = null;
+        var ts = null;
+
+        function init() {
+            var width = {{page.jp2_width}};
+            var height = {{page.jp2_length}};
+            var tileSize = 256;
+            var tileOverlap = 1;
+            var minLevel = 10;
+            var maxLevel = Math.ceil(Math.log(Math.max(width, height)) / Math.log(2));
+
+            ts = new Seadragon.TileSource(width, height, tileSize, tileOverlap, minLevel, maxLevel);
+
+            ts.getTileUrl =  function(level, column, row) {
+                var px = 0
+                if (column!=0) {
+                    px = this.tileSize * column - this.tileOverlap;
+                }
+                var py = 0
+                if (row!=0) {
+                    py = this.tileSize * row - this.tileOverlap;
+                }
+                var scale = this.getLevelScale(level);
+                var dimensionsScaled = this.dimensions.times(scale);
+
+                // find the dimension of the tile, adjust for no
+                // overlap data on top and left edges
+                sx = this.tileSize + (column==0 ? 1 : 2) * this.tileOverlap;
+                sy = this.tileSize + (row==0 ? 1 : 2) * this.tileOverlap;
+
+                // adjust size for single-tile levels where the image
+                // size is smaller than the regular tile size, and for
+                // tiles on the bottom and right edges that would
+                // exceed the image bounds.
+                sx = Math.min(sx, dimensionsScaled.x - px)
+                sy = Math.min(sy, dimensionsScaled.y - py)
+
+                var tile_width = parseInt(sx);
+                var tile_height = parseInt(sy);
+
+                var x1 = parseInt(px / scale);
+                var y1 = parseInt(py / scale);
+                var x2 = parseInt((px + sx) / scale);
+                var y2 = parseInt((py + sy) / scale);
+
+                return '{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}' + 'image_'+tile_width+'x'+tile_height+'_from_'+x1+','+y1+'_to_'+x2+','+y2+'.jpg';
+            }
+
+            Seadragon.Config.autoHideControls = false;
+    	    var config = new Seadragon.Config();
+    	    config.debugMode = false;
+    	    config.navImages = {
+        		zoomIn: {
+        		    REST: "{% memorious 'media/images/zoomin_rest.png' %}",
+        		    GROUP: "{% memorious 'media/images/zoomin_grouphover.png' %}",
+        		    HOVER: "{% memorious 'media/images/zoomin_hover.png' %}",
+        		    DOWN: "{% memorious 'media/images/zoomin_pressed.png' %}"
+        		},
+        		zoomOut: {
+        		    REST: "{% memorious 'media/images/zoomout_rest.png' %}",
+        		    GROUP: "{% memorious 'media/images/zoomout_grouphover.png' %}",
+        		    HOVER: "{% memorious 'media/images/zoomout_hover.png' %}",
+        		    DOWN: "{% memorious 'media/images/zoomout_pressed.png' %}"
+        		},
+        		home: {
+        		    REST: "{% memorious 'media/images/home_rest.png' %}",
+        		    GROUP: "{% memorious 'media/images/home_grouphover.png' %}",
+        		    HOVER: "{% memorious 'media/images/home_hover.png' %}",
+        		    DOWN: "{% memorious 'media/images/home_pressed.png' %}"
+        		},
+        		fullpage: {
+        		    REST: "{% memorious 'media/images/fullpage_rest.png' %}",
+        		    GROUP: "{% memorious 'media/images/fullpage_grouphover.png' %}",
+        		    HOVER: "{% memorious 'media/images/fullpage_hover.png' %}",
+        		    DOWN: "{% memorious 'media/images/fullpage_pressed.png' %}"
+        		}
+    	    };
+    	    config.showNavigationControl = false;
+    
+            var viewer = new Seadragon.Viewer("viewer_container", undefined, undefined, undefined, undefined, undefined, config);
+    
+    	    viewer.addControl("full_header", Seadragon.ControlAnchor.NONE);
+    
+    	    var navControl = new Seadragon.NavControl(viewer);
+    	    viewer.navControl = navControl;
+    	    navControl.elmt.id = "nav_control";
+            viewer.addControl(navControl.elmt, Seadragon.ControlAnchor.TOP_LEFT);
+    
+            output = document.getElementById("outputText");
+            viewer.get_events().addHandler("open", addOverlays);
+            viewer.get_events().addHandler("open", onOpen);
+            viewer.get_events().addHandler("open", resizePrint);
+            viewer.get_events().addHandler("animationfinish", resizePrint);
+            viewer.get_events().addHandler("animationstart", onAnimationStart);
+            viewer.get_events().addHandler("animationfinish", onAnimationFinish);
+            viewer.get_events().addHandler("resize", fullHeaderVisibility);
+    
+            {% ifequal mode "full" %}
+    	    viewer.setFullPage(true);
+            {% endifequal %}
+    	    fullHeaderVisibility(viewer);
+               
+            viewer.openTileSource(ts);
+        };
+      
+        function fullHeaderVisibility(viewer)
+        {
+            var elmt = Seadragon.Utils.getElement("full_header");
+    	    var i = viewer._getControlIndex(elmt);
+    	    if (i >= 0) {
+    		  viewer._controls[i].setVisible(viewer.isFullPage());
+            }
+    	    if (viewer.isFullPage()) {
+    		    viewer.navControl.elmt.style.margin = "45px 0px 0px 0px";
+    	    } else {
+    		    viewer.navControl.elmt.style.margin = "0px";
+    	    }
+        }
+        
+        function resizePrint(viewer)
+        {
+            var image = viewer.source;
+            var zoom = viewer.viewport.getZoom(); 
+            var size = new Seadragon.Rect(0, 0, image.dimensions.x, image.dimensions.y);
+            var container = viewer.viewport.getContainerSize();
+            var fit_source = fitWithinBoundingBox(size, container);
+            var total_zoom = fit_source.x/image.dimensions.x;
+            var container_zoom = fit_source.x/container.x;
+            var level =  (zoom * total_zoom) / container_zoom;
+            var box = getDisplayRegion(viewer, new Seadragon.Point(parseInt(image.dimensions.x*level), parseInt(image.dimensions.y*level)));
+            var scaledBox = new Seadragon.Rect(parseInt(box.x/level), parseInt(box.y/level), parseInt(box.width/level), parseInt(box.height/level));
+            var d = fitWithinBoundingBox(box, new Seadragon.Point(681, 817));
+            var dimension = '{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}'+'print/image_'+d.x+'x'+d.y+'_from_'+ scaledBox.x+','+scaledBox.y+'_to_'+scaledBox.getBottomRight().x+','+scaledBox.getBottomRight().y;
+            jQuery("#clip").attr('href', dimension);
+            jQuery(".locshare-print-button").find('a:first').attr('href', dimension).click(function(event) {
+                window.open($(this).attr('href'), "print");
+            });
+        };
+
+        function fitWithinBoundingBox(d, max) {
+            if (d.width/d.height > max.x/max.y) {
+                return new Seadragon.Point(max.x, parseInt(d.height * max.x/d.width));
+            } else {
+                return new Seadragon.Point(parseInt(d.width * max.y/d.height),max.y);
+            }
+        }
+    
+        function getDisplayRegion(viewer, source)
+        {
+            //Determine portion of scaled image that is being displayed
+            var box = new Seadragon.Rect(0, 0, source.x, source.y);
+            var container = viewer.viewport.getContainerSize();
+            var bounds = viewer.viewport.getBounds();
+            //If image is offset to the left
+            if (bounds.x > 0){
+                box.x = box.x - viewer.viewport.pixelFromPoint(new Seadragon.Point(0,0)).x;
+            }
+            //If full image doesn't fit
+            if (box.x + source.x > container.x) {
+                box.width = container.x - viewer.viewport.pixelFromPoint(new Seadragon.Point(0,0)).x;
+                if (box.width > container.x) {
+                    box.width = container.x;
+                }
+            }
+            //If image is offset up
+            if (bounds.y > 0) {
+                box.y = box.y - viewer.viewport.pixelFromPoint(new Seadragon.Point(0,0)).y;
+            }
+            //If full image doesn't fit
+            if (box.y + source.y > container.y) {
+                box.height = container.y - viewer.viewport.pixelFromPoint(new Seadragon.Point(0,0)).y;
+                if (box.height > container.y) {
+                    box.height = container.y;
+                }
+            }
+            return box;
+        }
+
+        function addOverlay(viewer, x1, y1, x2, y2) {
+		    var img = document.createElement("img");
+		    var placement = Seadragon.OverlayPlacement.BOTTOM;
+                
+            var div = document.createElement("div");
+            var rect = new Seadragon.Rect(x1, y1, x2, y2);
+
+            div.className = "overlay";
+            viewer.drawer.addOverlay(div, rect);
+	    };
+
+        function addOverlays(viewer) {
+            var $ = jQuery; 
+            var dimensions = viewer.source.dimensions;
+            var factor = dimensions.y / dimensions.x;
+            $.each("{{words|default:""}}".split("+"), function(index, word) {
+                if (word!="") {
+                    $.getJSON('{% url chronam_page_coordinates page.issue.title.lccn,page.issue.date_issued,page.issue.edition,page.sequence %};words='+word, function(all_coordinates) {
+                        var boxes = [];
+                        for (word in all_coordinates) {
+                            var coordinates = all_coordinates[word];
+                            $.each(coordinates, function(index, value) {
+                                addOverlay(viewer, 
+                                           value["hpos"],
+                                           value["vpos"]*factor,
+                                           value["width"],
+                                           value["height"]*factor);
+                            });
+                        };
+                    });
+                }
+            });
+        }
+
+       function show(msg) {
+           var timeString = new Date().toLocaleTimeString();
+           output.innerHTML = msg + " at " + timeString + ".";
+       }
+
+       function onOpen(viewer) {
+           show("Image opened");
+       }
+
+       function onAnimationStart(viewer) {
+           show("Animation started");
+       }
+
+       function onAnimationFinish(viewer) {
+           show("Animation finished");
+       }
+
+       Seadragon.Utils.addEvent(window, "load", init);
+    </script>
+
+    <script type="text/javascript">
+        jQuery(function($) {
+            $("#pageNum").change(
+                function(event) { 
+                    document.location=$("#pageNum").val(); 
+                });
+        });
+    </script>
+    
+{% endblock %}
+
+{% block sharetool_container_left %}
+{% if q %}
+<div class="nav_result">
+    <a class="ar-back backtoresults" href="{{ results }}">Back to search results</a>
+    {% if previous_result %}<a class="ar-back" href="{{ previous_result }}">Previous</a> | {% endif %}
+    {{index_count}} of {{total}}
+    {% if next_result %} | <a class="ar-more" href="{{ next_result }}">Next</a>{% endif %}
+</div>
+{% endif %}
+{% endblock %}
+
+{% block download_links %}
+{
+    link: '{% url chronam_page_jp2 title.lccn, issue.date_issued, issue.edition, page.sequence %}',
+    label: 'image/jp2',
+    meta: '',
+},
+{
+    link: '{% url chronam_page_pdf title.lccn, issue.date_issued, issue.edition, page.sequence %}',
+    label: 'application/pdf',
+    meta: '',
+},
+{
+    link: '{% url chronam_page_ocr_xml title.lccn, issue.date_issued, issue.edition, page.sequence %}',
+    label: 'application/xml',
+    meta: '',
+},
+{
+    link: '{% url chronam_page_ocr_txt title.lccn, issue.date_issued, issue.edition, page.sequence %}',
+    label: 'text/plain',
+    meta: '',
+},
+{% endblock %}
+                      
+{% block page_head %}
+<h1>
+{{ page_head_heading }}<br />
+<span>About <a href="{% url chronam_title title.lccn %}">{{page_head_subheading}}</a></span>
+</h1>
+{% endblock %}
+
+{% block body %}
+  <div id="full_header" class="{{mode}}">
+   <div id="navigation">
+      <span><strong><a href="{% url chronam_home %}">Chronicling America</a></strong><br />
+      <a id="normal_mode" class="ar-back" href="{% if c_result %}{{c_result}}{% else %}{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}{% endif %}">Back to Normal Screen Mode</a></span>  
+      <ul class="nav">
+	{% if q %}
+	<li class="nav_result">
+	  Search Results<br />
+	  {% if previous_result_full %}<a class="wh" href="{{ previous_result_full }}">Previous</a> | {% endif %}
+	  {{index_count}} of {{total}}
+	  {% if next_result_full %} | <a class="wh" href="{{ next_result_full }}">Next</a>{% endif %}
+	</li>
+	{% endif %}
+
+        <li>
+          Page<br />
+          {% if page.previous %}
+          <a href='{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.previous.sequence %};mode=full'>
+            <img src="{% memorious 'media/images/prev_page.gif' %}" width="17" height="17" alt="Previous Page">
+          </a> 
+          {% endif %}
+          {% if page.next %}
+          <a href='{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.next.sequence %};mode=full'>
+            <img src="{% memorious 'media/images/next_page.gif' %}" width="17" height="17" alt="Next Page">
+          </a>
+          {% endif %}
+        </li>
+        <li>
+          Issues<br />
+           {% if previous_issue_first_page %}
+          <a href="{% url chronam_page title.lccn,previous_issue_first_page.issue.date_issued,previous_issue_first_page.issue.edition,previous_issue_first_page.sequence %};mode=full">
+            <img src="{% memorious 'media/images/prev_page.gif' %}" width="17" height="17" alt="Previous Issue" /></a> 
+          {% endif %}
+          {% if next_issue_first_page %}
+          <a href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %};mode=full">
+            <img src="{% memorious 'media/images/next_page.gif' %}" width="17" height="17" alt="Next Issue" /></a>
+          {% endif %}
+        </li>
+        <li class="bar"></li>
+        <li>
+          <strong>{{ title.name }}</strong><br />
+          {{ issue.date_issued }}, Edition {{issue.edition}}, Image {{page.sequence}}
+        </li>
+        <li class="bar"></li>
+        <li class="last">
+          Image provided by:<br />
+          {{ image_credit }}
+        </li> 
+     </ul>
+   </div><!-- end: n_title id:navigation -->
+  </div>
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="clear"></div>
+  <p class="gray nomargin-bottom2">Image provided by: {{image_credit}}</p> 
+  <div id="item-wrapper"> 
+    <div id="imageViewer_nav">
+      <div id="item-ctrl"> 
+        <span class="c-images"> 
+          <label for="pageNum">Image:</label> 
+          <select name="pageNum" id="pageNum">
+            {% for p in issue.pages.all%}
+            <option value="{% url chronam_page title.lccn,issue.date_issued,issue.edition,p.sequence %}" {% ifequal p.sequence page.sequence %}selected="selected"{% endifequal %}>{{p.sequence}}</option>
+            {% endfor %}
+          </select>
+          of {{issue.pages.all|length}}.
+        </span> 
+        <span class="c-pages"> 
+          {% if page.previous %}
+          <a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.previous.sequence %}"><img src="{% memorious 'media/images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Page"></a> 
+          {% endif %}
+          <strong>Page</strong> 
+          {% if page.next %}
+          <a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.next.sequence %}"><img src="{% memorious 'media/images/item_btn_next.png' %}" width="17" height="17" alt="Next Page"></a>
+          {% endif %}
+          <a class="all" href="{% url chronam_issue_pages title.lccn,issue.date_issued,issue.edition %}"><small>All Pages</small></a> 
+        </span> 
+        <span class="c-issues"> 
+          {% if previous_issue_first_page %}
+          <a href="{% url chronam_page title.lccn,previous_issue_first_page.issue.date_issued,previous_issue_first_page.issue.edition,previous_issue_first_page.sequence %}"><img src="{% memorious 'media/images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Issue" /></a> 
+          {% endif %}
+          <strong>Issues</strong> 
+          {% if next_issue_first_page %}
+          <a href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %}"><img src="{% memorious 'media/images/item_btn_next.png' %}" width="17" height="17" alt="Next Issue" /></a> <a class="all" href="{% url chronam_issues title.lccn %}"><small>All Issues</small></a> 
+          {% endif %}
+        </span>
+        {% if page.jp2_filename %}
+        <span class="c-view"> 
+          <!-- view --> 
+          <strong>View:</strong> 
+          <a class="text" href="{% url chronam_page_ocr title.lccn,issue.date_issued,issue.edition,page.sequence %}">Text</a> <span>|</span> <a href="{% url chronam_page_pdf title.lccn, issue.date_issued, issue.edition, page.sequence %}">PDF</a> 
+        </span> 
+        <span class="c-download"> 
+          <!-- download --> 
+          <strong>Download:</strong> <a href="{% url chronam_page_jp2 title.lccn, issue.date_issued, issue.edition, page.sequence %}">JP2 ({{image_size}})</a> 
+        </span>
+        <span class="c-clip">
+             <a id="clip" href="#" target="print">Clip Image <img src="{% memorious 'media/images/item_clip_icon.png' %}" width="18" height="17" alt="Clip Image" /></a>
+        </span>
+        {% endif %}
+      </div><!-- end id:item-ctrl -->
+
+      <div id="outputHolder" style="display: none">
+        Last event: <span id="outputText"></span>
+      </div>
+      
+      {% if page.jp2_filename %}
+      <div id="viewer_container"></div>
+      {% else %}
+      <div class="missing">
+        <h3>Missing Page: {{explanation}}</h3>
+      </div>
+      {% endif %}
+      
+      <div class="item-foot"> 
+        <ul class="plain"> 
+          <li><strong>Persistent Link</strong> <a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}">http://{{host}}{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}</a></li> 
+          {% if page.on_flickr %}
+          <li><strong>Flickr Link</strong> <a href="{{ page.first_flickr_url }}">{{ page.first_flickr_url }}</a></li> 
+          {% endif %}
+        </ul> 
+      </div>
+    </div><!-- end id:imageViewer_nav --> 
+  </div><!-- end id:item-wrapper --> 
+  <noscript><!-- without javascript the pageviewer does not work; display OCR in this case instead. -->
+    <h3>Newspaper Page Text</h3>
+    <pre>{{ page.ocr.text }}</pre>
+  </noscript>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "reports/reports.html" %}
+
+{% block extra_link_types %}
+<link rel="alternate" type="application/atom+xml" href="{% url chronam_batches_atom %}" title="Atom Feed" />
+<link rel="alternate" type="application/json" href="{% url chronam_batches_json %}" title="Atom Feed" />
+<link rel="alternate" type="application/rss+xml" href="{% url chronam_batches_atom %}" title="Rss Feed" />
+    
+{% endblock %}
+<a href="{% url chronam_batches_atom %}">Batches</a>
+
+{% block content %}
+
+<br />
+
+<table class="data" width="100%">
+
+  <tr>
+    <th>Created</th>
+    <th>Batch Name</th>
+    <th>Awardee</th>
+    <th>Total Pages</th>
+    <th>Released</th>
+  </tr>
+
+{% for batch in batches %}
+
+  <tr class="{% cycle 'lightGray' 'white' %}">
+    <td>{{batch.created }}</td>
+    <td><a href="{% url chronam_batch batch.name %}">{{ batch.name }}</a></td>
+    <td>
+        <a href="{% url chronam_awardee batch.awardee.org_code %}">
+            {{ batch.awardee.name }}
+        </a>
+    </td>
+    <td>{{ batch.page_count }}</td>
+    <td>{{ batch.released|date:"F d, Y" }}</td>
+  </tr>
+
+{% endfor %}
+
+</table>
+
+<br />
+
+{% endblock %}

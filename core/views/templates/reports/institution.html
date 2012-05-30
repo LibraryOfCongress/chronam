@@ -1,0 +1,46 @@
+{% extends "reports/reports.html" %}
+
+{% block content %}
+
+<div>
+  <table class="data">
+    <tr class="lightGray">
+      <td class="label">Name</td>
+      <td>{{institution.name}}</td>
+    </tr>
+    <tr class="white">
+      <td class="label">Address</td>
+      <td>
+                {% if institution.address1 %}
+                {{institution.address1}} <br />
+                {% endif %}
+                {% if institution.address2 %}
+                {{institution.address2}} <br />
+                {% endif %}
+                {% if institution.city %}
+                {{institution.city}} <br />
+                {% endif %}
+                {% if institution.state %}
+                {{institution.state}} <br />
+                {% endif %}
+                {% if institution.zip %}
+                {{institution.zip}}
+                {% endif %}
+      </td>
+    </tr>
+    <tr class="lightGray">
+      <td class="label">OCLC Institution Code</td>
+      <td>{{ institution.code }}</td>
+    </tr>
+    <tr class="white">
+      <td class="label">Total Titles</td>
+      <td><a href="{% url chronam_institution_titles institution.code.lower %}">{{ titles_count }}</a></td>
+    </tr>
+    <tr class="lightGray">
+      <td class="label">Total Holdings</td>
+      <td>{{ holdings_count }}</td>
+    </tr>
+  </table>
+</div>
+
+{% endblock %}

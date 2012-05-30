@@ -1,0 +1,133 @@
+/*  top navigation    */	
+div#topnav	{
+height: 63px;
+width: 983px;
+margin: 0;
+padding: 0;
+background: #fff url(../img-head/line.gif) top left no-repeat;
+}
+div#topnav ul#menu	{
+height: 63px;
+width: 983px;
+margin: 0;
+padding: 0;
+position: relative;
+}
+div#topnav ul#menu li {
+margin: 0;
+display: block;
+padding: 0;
+list-style: none;
+position: absolute;
+}
+#logo_lc { 
+background: transparent url(../img-head/loc.gif) top left no-repeat;
+left:0;
+top:0;
+width: 194px;
+height: 63px;
+}
+#global_nav { 
+left: 194px;
+left: 204px;
+top: 0px;
+width: 461px;
+height: 63px;
+font: normal 10px/10px Verdana, Arial, Helvetica, sans-serif;
+padding: 0;
+}
+ul#menu li#logo_lc a {
+display: block;
+width: 194px;
+height: 63px;
+text-decoration: none;
+}
+ul#menu li#logo_lc a:visited, ul#menu li#logo a:visited {
+text-decoration: none;
+}
+ul#menu li#global_nav a:link, ul#menu li#global_nav a:hover, ul#menu li#global_nav a:visited {
+text-decoration: underline;
+}
+div#topnav ul#menu li#searchmenu {
+padding: 10px 0 0 22px;
+margin: 0;
+top: 0px;
+height:63px;
+left: 644px; 
+width: 330px;
+font: normal 10px/10px Verdana, Arial, Helvetica, sans-serif;
+text-align: left;
+background: transparent url(../img-head/vert_dots.gif) top left no-repeat;
+}
+div#topnav ul#menu li#searchmenu form a:link, div#topnav ul#menu li#searchmenu form a:hover, div#topnav ul#menu li#searchmenu form a:visited {
+font: normal 10px verdana, Helvetica, sans-serif;
+text-decoration: underline;
+}
+div#topnav form {
+margin: 0 0 0 0;
+padding: 0;
+height:40px;
+width: 330px;
+border: 0;
+font: normal 100%/100% Verdana, Arial, Helvetica, sans-serif;
+}
+div#topnav form label {
+margin: 0;
+padding: 0;
+}
+div#topnav ul#menu #searchmenu form label a:link, div#topnav ul#menu #searchmenu form label a:hover, div#topnav ul#menu #searchmenu form label a:visited {
+margin: 0;
+padding: 0;
+color: #666;
+text-decoration: none;
+}
+div#topnav form input.button {
+background-color: #0069aa;
+width:auto;
+height: 26px;
+font-weight: bold;
+vertical-align:bottom;
+color: #fff;
+margin: 0px 0px 0px 0px;
+padding: 0 3px 0 3px;
+border: 3px solid #e2e2e2;
+
+}
+div#topnav form input {
+width: 260px;
+margin: -2px 0 0px 0;
+padding: 0;
+height: 22px;
+background-color: #fff;
+border: 2px solid #e2e2e2;
+}
+
+
+/********************
+breadcrumb
+********************/
+#crumb_nav {
+clear: both;
+padding: 10px 14px;
+color: #fff;
+background-color: #333;
+border-bottom: 1px solid #000;
+text-align: left;
+font: normal 11px Verdana, Arial, Helvetica, sans-serif;
+}
+#crumb_nav span {
+color: #ccc;
+font-weight: bold;
+}
+#crumb_nav a:link,
+#crumb_nav a:visited {
+color: #ccc;
+text-decoration: underline;
+}
+#crumb_nav a:focus,
+#crumb_nav a:hover,
+#crumb_nav a:active {
+color: #fff;
+text-decoration: underline;
+}
+
