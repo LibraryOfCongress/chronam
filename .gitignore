@@ -1,0 +1,4 @@
+*.pyc
+ENV
+data/batches
+data/bib

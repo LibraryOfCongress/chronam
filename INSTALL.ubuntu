@@ -6,29 +6,30 @@ Installation
 # First you'll need to get the latest Chronicling America code. Which
 # will include this file.
 
-sudo apt-get install git-core 
-git clone https://rdc.lctl.gov/git/chronam.git
-export CHRONAM_HOME=/opt/chronam
-sudo mv chronam ${CHRONAM_HOME}
-cd ${CHRONAM_HOME}
-
-
 System Dependencies
 ===================
 
-# To install system dependencies on a Debian-based system run:
 sudo apt-get install python-dev python-virtualenv mysql-server libmysqlclient-dev apache2 libapache2-mod-wsgi solr-jetty openjdk-6-jdk libxml2-dev libxslt-dev libjpeg-dev git-core graphicsmagick
 
-# Note: When you install mysql-server, you will be prompted for a root password.
-# If you choose one, make a note of what it is. Later you will be asked to enter
-# the password when you create the database for the project.
+# Note: When you install mysql-server, you will be prompted for a root 
+# password. If you choose one, make a note of what it is. Later you will be 
+# asked to enter the password when you create the database for the project.
+
+Get Chronam
+===========
+
+mkdir /opt/chronam
+git clone https://rdc.lctl.gov/git/chronam.git /opt/chronam
+export CHRONAM_HOME=/opt/chronam
+cd ${CHRONAM_HOME}
 
 
 Create Python Environment
 =========================
 
-virtualenv --no-site-packages ${CHRONAM_HOME}
-source ${CHRONAM_HOME}/bin/activate
+virtualenv --no-site-packages ${CHRONAM_HOME}/ENV
+source ${CHRONAM_HOME}/ENV/bin/activate
+add2virtualenv ${CHRONAM_HOME}/ENV
 
 
 Create Database
@@ -64,23 +65,11 @@ Configure Chronam
 # install python dependencies
 pip install -r requirements.pip
 
-# NOTE: if the above command fails and you don't have pip>=0.8 then run the following and retry.
-# pip install -U pip
+# create directories for data
+mkdir ${CHRONAM_HOME}/data/batches
+mkdir ${CHRONAM_HOME}/data/cache
 
-# make configuration available to Python
-echo "${CHRONAM_HOME}/conf" > ${CHRONAM_HOME}/lib/python2.6/site-packages/chronam.pth
-# If this fails, check to make sure that you have the right version of python or update the path to reflect the version python are using.
-
-mkdir ${CHRONAM_HOME}/data
-cd ${CHRONAM_HOME}/data
-
-hg clone http://loc-ndnp.hg.sourceforge.net:8000/hgroot/loc-ndnp/ndnp-essays
-git clone https://rdc.lctl.gov/git/chronam memorious # for media files
-
-mkdir batches
-mkdir cache
-sudo chown www-data:www-data cache
-
+# set up the database and load initial data
 django-admin.py syncdb --settings=chronam_settings --noinput --migrate
 django-admin.py chronam_sync --settings=chronam_settings
 
