@@ -86,16 +86,17 @@ USE_TIFF = False
 
 SOUTH_TESTS_MIGRATE = False
 ESSAYS_FEED = "http://ndnp-essays.rdc.lctl.gov/feed/"
-MAX_BATCHES = 8
 CACHE_BACKEND = 'file:///var/tmp/django_cache?timeout=100'
 
 IS_PRODUCTION = False
-CTS_USERNAME = None
-CTS_PASSWORD = None
-CTS_PROJECT_ID = None
-CTS_QUEUE = None
-CTS_SERVICE_TYPE = None
-CTS_URL = None
+CTS_USERNAME = 'username'
+CTS_PASSWORD = 'password'
+CTS_PROJECT_ID = 'ndnp'
+CTS_QUEUE = 'ndnpingestqueue'
+CTS_SERVICE_TYPE = 'ingest.NdnpIngest.ingest'
+CTS_URL = "https://cts.loc.gov/transfer/"
+
+MAX_BATCHES = 0
 
 SHARETOOL_URL = "http://cdn.loc.gov/share/sites/dUcuwr5p/share-jquery-min.js"
 OMNITURE_SCRIPT = "http://www.loc.gov:8081/global/s_code.js"
