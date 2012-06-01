@@ -2,3 +2,4 @@
 ENV
 data/batches
 data/bib
+settings.py
