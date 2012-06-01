@@ -6,7 +6,7 @@ Installation
 # First you'll need to get the latest Chronicling America code. Which
 # will include this file.
 
-sudo apt-get install mercurial 
+sudo apt-get install git-core 
 git clone https://rdc.lctl.gov/git/chronam.git
 export CHRONAM_HOME=/opt/chronam
 sudo mv chronam ${CHRONAM_HOME}
@@ -17,7 +17,7 @@ System Dependencies
 ===================
 
 # To install system dependencies on a Debian-based system run:
-sudo apt-get install python-dev python-virtualenv mysql-server libmysqlclient-dev apache2 libapache2-mod-wsgi solr-jetty openjdk-6-jdk libxml2-dev libxslt-dev mercurial libjpeg-dev git-core graphicsmagick
+sudo apt-get install python-dev python-virtualenv mysql-server libmysqlclient-dev apache2 libapache2-mod-wsgi solr-jetty openjdk-6-jdk libxml2-dev libxslt-dev libjpeg-dev git-core graphicsmagick
 
 # Note: When you install mysql-server, you will be prompted for a root password.
 # If you choose one, make a note of what it is. Later you will be asked to enter
