@@ -11,7 +11,11 @@ class OcrExtractorTests(TestCase):
         dir = join(dirname(dirname(__file__)), 'test-data')
         ocr_file = join(dir, 'ocr.xml')
         text, coords = ocr_extractor(ocr_file)
-        expected_text = file(join(dir, 'ocr.txt')).read().decode('utf-8')
+        expected_text = {"eng": file(join(dir, 'ocr.txt')).read().decode('utf-8')}
+
+        open("a", "w").write(text["eng"].encode('utf-8'))
+        open("b", "w").write(expected_text["eng"].encode('utf-8'))
+
         self.assertEqual(text, expected_text)
         self.assertEqual(len(coords.keys()), 2196)
         self.assertEqual(len(coords['place']), 3)
