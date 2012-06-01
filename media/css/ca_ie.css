@@ -1,0 +1,32 @@
+/*
+Project:    loc.gov
+Variant:    ie6 and 7 screen
+Date:       01 Apr 2010
+----------------------------------------*/
+
+#content,
+#main_body,
+.fix-float {
+height:1%;
+}
+#left_nav ul, 
+#left_nav ol, 
+#left_nav dl {
+position: relative;
+}
+ul.tabnav li {
+overflow: hidden;
+}
+a.external {
+/*display:inline-block;
+zoom:1;*/
+}
+
+/********************
+footer
+********************/
+#footer .f_container, 
+#footer .f_inner_mid,
+#footer .f_inner_bot {
+height:1%;
+}

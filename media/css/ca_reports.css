@@ -1,0 +1,50 @@
+
+/* report table */
+table {
+    margin: 0;
+    width: auto;
+    padding: 0;
+   }
+table.data {
+    background-color: #d7c9b0;
+    margin: 0 auto 0 10px;
+    padding: 0;
+    border-collapse: collapse;
+    width: 95%;
+}
+
+table.data th {
+    background-color: #fbf9ee;
+    border: 1px solid #ccc;
+}
+
+table.data tr {
+    height: 30px;
+}
+
+table.data tr.lightGray {
+    background-color: #eee;
+}
+
+table.data tr.white {
+    background-color: #fff;
+}
+
+table.data td {
+    font: verdana, helvetica, sans-serif;
+    padding: 5px;
+    border: 1px solid #ccc;
+    vertical-align: top;
+    color: #333333;
+}
+
+table.data td.label {
+    font-weight: bold;
+}
+
+/* search results */
+
+table.search_results td {
+    padding: 15px;
+    font-size: smaller;
+}
