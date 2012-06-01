@@ -29,7 +29,8 @@ Create Python Environment
 
 virtualenv --no-site-packages ${CHRONAM_HOME}/ENV
 source ${CHRONAM_HOME}/ENV/bin/activate
-add2virtualenv ${CHRONAM_HOME}/ENV
+add2virtualenv /opt
+export DJANGO_SETTINGS_MODULE=chronam.settings
 
 
 Create Database
@@ -68,10 +69,14 @@ pip install -r requirements.pip
 # create directories for data
 mkdir ${CHRONAM_HOME}/data/batches
 mkdir ${CHRONAM_HOME}/data/cache
+mkdir ${CHRONAM_HOME}/data/bib
+
+# create settings file, and set the mysql username/password
+cp ${CHRONAM_HOME}/settings_template.py settings.py
 
 # set up the database and load initial data
-django-admin.py syncdb --settings=chronam_settings --noinput --migrate
-django-admin.py chronam_sync --settings=chronam_settings
+django-admin.py syncdb --settings=settings --noinput --migrate
+django-admin.py chronam_sync --settings=settings
 
 
 Start Up Chronicling America
@@ -101,7 +106,7 @@ Run Unit Tests
 
 # Currently chronam.core.tests.batch_loader_tests.BatchLoaderTest checks batch_dlc_jamaica_ver01
 # If you grabbed the smaller sample set, the tests will fail.
-django-admin.py test --settings=chronam_settings
+django-admin.py test --settings=settings
 
 
 Loading the Data
@@ -111,8 +116,8 @@ sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/logs/
 cd ${CHRONAM_HOME}/logs/
 
 # or load a specific batch, replace $BATCH_NAME with a specific batch.
-django-admin.py load_batch $BATCH_NAME --settings=chronam_settings
-# Example: django-admin.py load_batch batch_vi_affirmed_ver01 --settings=chronam_settings
+django-admin.py load_batch $BATCH_NAME --settings=settings
+# Example: django-admin.py load_batch batch_vi_affirmed_ver01 --settings=settings
 
 # load up links to flickr using your flickr key
 django-admin.py --settings=chronam_settings flickr $YOUR_FLICKR_KEY
