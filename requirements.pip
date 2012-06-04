@@ -9,6 +9,7 @@ simplejson
 feedparser
 rfc3339
 south
+mercurial
 https://github.com/eikeon/django-memorious/tarball/master
 mimeparse
 https://github.com/eikeon/NativeImaging/tarball/master
