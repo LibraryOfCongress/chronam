@@ -96,7 +96,7 @@ class BatchLoader(object):
             batch_source = None
         else:
             batch_name = os.path.basename(batch_location)
-            batch_source = urlparse.urljoin(settings.STORAGE,
+            batch_source = urlparse.urljoin(settings.BATCH_STORAGE,
                                             batch_location)
             if not batch_source.endswith("/"):
                 batch_source += "/"
