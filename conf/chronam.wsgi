@@ -1,9 +1,7 @@
 import os, sys
 
-sys.path.append("/opt/chronam")
-
 os.environ['CELERY_LOADER'] = 'django'
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'chronam.settings'
 
 import django.core.handlers.wsgi
 
