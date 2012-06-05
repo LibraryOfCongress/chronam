@@ -108,6 +108,7 @@ FEED_TTL_SECONDS = 60 * 60 * 24 * 7
 SOLR = "http://localhost:8080/solr"
 
 DOCUMENT_ROOT = "/opt/chronam/static"
-STORAGE = '/opt/chronam/data/batches'
-BIB_STORAGE = '/opt/chronam/data/bib'
-ESSAY_STORAGE = '/opt/chronam/data/ndnp-essays/essays'
+
+STORAGE = '/opt/chronam/data/'
+BATCH_STORAGE = os.path.join(STORAGE, "batches")
+BIB_STORAGE = os.path.join(STORAGE, "bib")

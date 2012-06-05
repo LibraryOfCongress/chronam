@@ -21,7 +21,7 @@ if j2k:
     class JP2Test(TestCase):
 
         def test_raw_image(self):
-            filename = os.path.join(settings.STORAGE, JP2_PATH)
+            filename = os.path.join(settings.BATCH_STORAGE, JP2_PATH)
 
             rows, cols, nChannels, bpp, data = j2k.raw_image(filename,
                                                              300, 300)
@@ -34,7 +34,7 @@ if j2k:
             self.assertTrue(sio.getvalue())
 
         def test_image_tile_raw(self):
-            filename = os.path.join(settings.STORAGE, JP2_PATH)
+            filename = os.path.join(settings.BATCH_STORAGE, JP2_PATH)
 
             width, height = 640, 480
             rows, cols, nChannels, bpp, data = j2k.image_tile_raw(filename,
@@ -53,7 +53,7 @@ if j2k:
             self.assertTrue(sio.getvalue())
 
         def test_dimensions(self):
-            filename = os.path.join(settings.STORAGE, JP2_PATH)
+            filename = os.path.join(settings.BATCH_STORAGE, JP2_PATH)
 
             width, height = j2k.dimensions(filename)
             self.assertEqual((width, height), (6378, 8724))
