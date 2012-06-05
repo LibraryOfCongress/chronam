@@ -1,5 +1,6 @@
 *.pyc
 ENV
 data/batches
-data/bib
+data/
 settings.py
+
