@@ -1,3 +1,5 @@
+import os
+import re
 from rfc3339 import rfc3339
 import json, datetime
 
@@ -441,6 +443,29 @@ def essay(request, essay_id):
     page_title = essay.title
     return render_to_response('reports/essay.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
+@cache_page(settings.API_TTL_SECONDS)
+def ocr_dumps_atom(request, page_number=1):
+    batches = models.Batch.objects.filter(released__isnull=False)
+    batches = batches.order_by('-released')
+    now = rfc3339(datetime.datetime.now())
+
+    paginator = Paginator(batches, 25)
+    page = paginator.page(page_number)
+
+    dumpfiles = []
+    for filename in os.listdir(settings.OCR_DUMP_STORAGE):
+        if re.match("^part-\d+.tar.bz2$", filename):
+            # use file modified time to indicate when the dump was last modified
+            full_path = os.path.join(settings.OCR_DUMP_STORAGE, filename)
+            t = os.path.getmtime(full_path)
+            updated= datetime.datetime.fromtimestamp(t)
+            dumpfiles.append({"name": filename, "updated": updated})
+
+    return render_to_response('reports/ocr_dumps.xml', dictionary=locals(),
+                              context_instance=RequestContext(request),
+                              mimetype='application/atom+xml')
+
 
 def _title_range(reel):
     agg = models.Issue.objects.filter(pages__reel=reel).distinct().aggregate(

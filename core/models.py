@@ -64,6 +64,7 @@ class Batch(models.Model):
     awardee = models.ForeignKey('Awardee', related_name='batches', null=True)
     released = models.DateTimeField(null=True)
     source = models.CharField(max_length=4096, null=True)
+    ocr_dumped = models.DateTimeField(null=True)
 
     @property
     def storage_url(self):
