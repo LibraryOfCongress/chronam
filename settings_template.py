@@ -49,6 +49,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.http.ConditionalGetMiddleware',
+    'chronam.core.middleware.TooBusyMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -100,6 +101,9 @@ MAX_BATCHES = 0
 
 SHARETOOL_URL = "http://cdn.loc.gov/share/sites/dUcuwr5p/share-jquery-min.js"
 OMNITURE_SCRIPT = "http://www.loc.gov:8081/global/s_code.js"
+
+import multiprocessing
+TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
 
 DEFAULT_TTL_SECONDS = 60 * 60 * 24
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24
