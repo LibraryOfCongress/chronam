@@ -369,6 +369,15 @@ urlpatterns += patterns(
     url(r'^reels/;page=(?P<page_number>\d+)$', 'reels', 
         name='chronam_reels_page'),
     url(r'^reel/(?P<reel_number>\w+)/$', 'reel', name='chronam_reel'),
+ 
+    # languages 
+    url(r'^languages/$', 'languages', name='chronam_languages'),
+    url(r'^languages/batches/(?P<language>.+)/$', 'language_batches', name='chronam_language_batches'),
+    url(r'^languages/batches/(?P<language>.+)/;page=(?P<page_number>\d+)$', 'language_batches', name='chronam_language_batches'),
+    url(r'^languages/titles/(?P<language>.+)/$', 'language_titles', name='chronam_language_titles'),
+    url(r'^languages/titles/(?P<language>.+)/;page=(?P<page_number>\d+)$', 'language_titles', name='chronam_language_titles'),
+
+    # reports 
     url(r'^reports/$', 'reports', name='chronam_reports'),
 
     # dumps
