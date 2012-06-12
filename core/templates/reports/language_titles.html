@@ -1,0 +1,59 @@
+{% extends "reports/reports.html" %}
+{% load memorious %}
+
+{% block content %}
+
+  {% ifnotequal paginator.num_pages 1 %}
+  <div id="searchnav">
+      <div class="pageNavigator">
+      Pages: 
+      {% if page.has_previous %}
+      <a rel="prev" href="{% url chronam_language_titles language page.previous_page_number %}"><img src="{% memorious 'media/images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" /></a>
+      {% endif %}
+      {% for page_number in page_range_short %}
+      {% ifequal page_number "..." %}
+      ...
+      {% else %}
+
+      {% ifequal page_number page.number %}
+      <span class="off">{{page_number}}</span> 
+      {% else %}
+      <a href="{% url chronam_language_titles language page_number %}">{{ page_number }}</a> 
+      {% endifequal %}
+
+      {% endifequal %}
+      {% endfor %}
+      {% if page.has_next %}
+      <a rel="next" href="{% url chronam_language_titles language page.next_page_number %}"><img src="{% memorious 'media/images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a> 
+      {% endif %}
+    </div>
+  </div>
+
+{% endifnotequal %}
+
+
+<br />
+
+<table class="data" width="100%">
+
+  <tr>
+    <th>Titles</th>
+    <th>Number of {{ language_name }} Pages</th>
+  </tr>
+
+{% for title in page.object_list %}
+
+{% if title %}
+  <tr class="{% cycle 'lightGray' 'white' %}">
+    <td><a href="{% url chronam_title title.ocr__page__issue__title %}">{{ title.ocr__page__issue__title }}</a></td>
+    <td>{{ title.count }}</td>
+  </tr>
+{% endif %}
+
+{% endfor %}
+
+</table>
+
+<br />
+
+{% endblock %}
