@@ -69,23 +69,15 @@ class SolrPaginator(Paginator):
         # set up some bits that the Paginator expects to be able to use
         Paginator.__init__(self, None, per_page=rows, orphans=0)
 
-        #self._count = int(solr_response.results.numFound)
-        #self._num_pages = None
         self._cur_page = page_num
+        self._ocr_list = ['ocr', 'ocr_eng', 'ocr_fre', 'ocr_spa', 'ocr_ita', 'ocr_ger']
 
     def _get_count(self):
         "Returns the total number of objects, across all pages."
         if self._count is None:
             solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
-            params = {"hl.snippets": 100, # TODO: make this unlimited
-                "hl.requireFieldMatch": 'true', # limits highlighting slop
-                } 
-            sort_field, sort_order = _get_sort(self.query.get('sort'), in_pages=True)
-            solr_response = solr.query(self._q, 
-                                       fields=['id', 'title', 'date', 'sequence',
-                                               'edition_label', 'section_label'], 
-                                       highlight=['ocr'],
-                                       **params)
+            solr_response = solr.query(self._q,
+                                       fields=['id'])
             self._count = int(solr_response.results.numFound)
         return self._count
     count = property(_get_count)
@@ -108,7 +100,7 @@ class SolrPaginator(Paginator):
         solr_response = solr.query(self._q, 
                                    fields=['id', 'title', 'date', 'sequence',
                                            'edition_label', 'section_label'], 
-                                   highlight=['ocr'],
+                                   highlight=self._ocr_list,
                                    rows=self.per_page,
                                    sort=sort_field,
                                    sort_order=sort_order,
@@ -122,8 +114,9 @@ class SolrPaginator(Paginator):
                 continue
             words = set()
             coords = solr_response.highlighting[result['id']]
-            for s in coords.get('ocr') or []:
-                words.update(find_words(s))
+            for ocr in self._ocr_list:
+                for s in coords.get(ocr) or []:
+                    words.update(find_words(s))
             page.words = "+".join(words)
             pages.append(page)
 
@@ -330,7 +323,7 @@ def page_search(d):
 
     date_filter_type = d.get('dateFilterType', None)
     if date_filter_type == 'year' and d.get('year', None):
-            q.append('+date:[%(year)s0101 TO %(year)s1231]' % d)
+        q.append('+date:[%(year)s0101 TO %(year)s1231]' % d)
     elif date_filter_type in ('range', 'yearRange') and d.get('date1', None) \
         and d.get('date2', None):
         d1 = _solrize_date(d['date1'])
@@ -338,24 +331,56 @@ def page_search(d):
         if d1 and d2:
             q.append('+date:[%i TO %i]' % (d1, d2))
 
+    ocrs = ('ocr_eng', 'ocr_fre', 'ocr_spa', 'ocr_ita', 'ocr_ger')
+    lang = d.get('language', None)
+    ocr_lang = 'ocr_' + lang if lang else 'ocr'
     if d.get('ortext', None):
-        q.append(query_join(solr_escape(d['ortext']).split(' '), 'ocr'))
-
+        q.append('+((' + query_join(solr_escape(d['ortext']).split(' '), "ocr"))
+        if lang:
+            q.append(' AND ' + query_join(solr_escape(d['ortext']).split(' '), ocr_lang))
+            q.append(') OR ' + query_join(solr_escape(d['ortext']).split(' '), ocr_lang))
+        else:
+            q.append(')')
+            for ocr  in ocrs:
+                q.append(' OR ' + query_join(solr_escape(d['ortext']).split(' '), ocr))
+        q.append(')')
     if d.get('andtext', None):
-        q.append(query_join(solr_escape(d['andtext']).split(' '), 'ocr', and_clause=True))
-
+        q.append('+((' + query_join(solr_escape(d['andtext']).split(' '), "ocr", and_clause=True))
+        if lang:
+            q.append(' AND ' + query_join(solr_escape(d['andtext']).split(' '), ocr_lang, and_clause=True))
+            q.append(') OR ' + query_join(solr_escape(d['andtext']).split(' '), ocr_lang, and_clause=True))
+        else:
+            q.append(')')
+            for ocr in ocrs:
+                q.append(' OR ' + query_join(solr_escape(d['andtext']).split(' '), ocr, and_clause=True))
+        q.append(')')
     if d.get('phrasetext', None):
         phrase = solr_escape(d['phrasetext'])
-        q.append('+ocr:"%s"' % phrase)
+        q.append('+((' + 'ocr' + ':"%s"^10000' % (phrase))
+        if lang:
+            q.append(' AND ocr_' + lang + ':"%s"' % (phrase))
+            q.append(') OR ocr_' + lang + ':"%s"' % (phrase))
+        else:
+            q.append(')')
+            for ocr in ocrs:
+                q.append(' OR ' + ocr + ':"%s"' % (phrase))
+        q.append(')')
 
     if d.get('proxtext', None):
         distance = d.get('proxdistance', PROX_DISTANCE_DEFAULT)
-        q.append('+ocr:"%s"~%s' % (solr_escape(d['proxtext']), distance))
-
+        prox = solr_escape(d['proxtext'])
+        q.append('+((' + 'ocr' + ':("%s"~%s)^10000' % (prox, distance))
+        if lang:
+            q.append(' AND ocr_' + lang + ':"%s"~%s' % (prox, distance))
+            q.append(') OR ocr_' + lang + ':"%s"~%s' % (prox, distance))
+        else:
+            q.append(')')
+            for ocr in ocrs:
+                q.append(' OR ocr_eng' + ':"%s"~%s' % (prox, distance))
+        q.append(')')
     if d.get('sequence', None):
         q.append('+sequence:"%s"' % d['sequence'])
     return ' '.join(q)
-
 
 def query_join(values, field, and_clause=False):
     """
@@ -378,7 +403,13 @@ def query_join(values, field, and_clause=False):
         values = ["+%s" % v for v in values]
 
     # return the lucene query chunk
-    return "+%s:(%s)" % (field, ' '.join(values))
+    if field.startswith("ocr"):
+        if field == "ocr":
+            return "%s:(%s)^10000" % (field, ' '.join(values))
+        else:
+            return "%s:(%s)" % (field, ' '.join(values))
+    else:
+        return "+%s:(%s)" % (field, ' '.join(values))
 
 
 def find_words(s):
@@ -467,7 +498,7 @@ def word_matches_for_page(page_id, words):
     q = 'id:%s AND %s' % (page_id, query_join(words, 'ocr'))
     params = {"hl.snippets": 100, "hl.requireFieldMatch": 'true'} 
     response = solr.query(q, fields=['id'], highlight=['ocr'], **params)
-    
+
     if not response.highlighting.has_key(page_id) or \
         not response.highlighting[page_id].has_key('ocr'):
         return []

@@ -75,7 +75,10 @@
             <div class="clear-form"><!-- --></div>
             <p><label for="id_sequence">Limit Search:</label>
             {{ search_form.sequence }} only front page or Specific page {{ adv_search_form.sequence }}</p>
-
+                <span><label for="id_language">Language</label>
+                {{ adv_search_form.language }}
+                </span>
+            </p>
                 <span class="label_alt">Enter Search</span><br />
                 <div class="fl-wrap">
                     <label for="id_ortext" class="norm">...with <strong>any</strong> of the words:</label><br />

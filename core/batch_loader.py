@@ -12,6 +12,7 @@ from solr import SolrConnection
 
 from django.core import management
 from django.db import reset_queries
+from django.db.models import Q
 from django.conf import settings
 from django.core import management
 
@@ -392,10 +393,18 @@ class BatchLoader(object):
         url = urlparse.urljoin(self.current_batch.storage_url,
                                page.ocr_filename)
 
-        text, coords = ocr_extractor(url)
+        lang_text, coords = ocr_extractor(url)
         ocr = OCR()
-        ocr.text, ocr.word_coordinates, ocr.page = text, coords, page
+        ocr.word_coordinates, ocr.page = coords, page
         ocr.save()
+        for lang, text in lang_text.iteritems():
+            try: 
+                language = models.Language.objects.get(Q(code=lang) | Q(lingvoj__iendswith=lang)) 
+            except models.Language.DoesNotExist:
+                # default to english as per requirement 
+                language = models.Language.objects.get(code='eng')  
+            ocr.language_texts.create(language=language, 
+                                      text=text)
         page.ocr = ocr 
         if index:
             _logger.debug("indexing ocr for: %s" % page.url)
