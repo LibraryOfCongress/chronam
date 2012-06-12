@@ -128,6 +128,7 @@ class AdvSearchPagesForm(forms.Form):
     date2 = fields.CharField()
     sequence = fields.CharField()
     proxtext = fields.CharField()
+    language = fields.ChoiceField()
 
     def __init__(self, *args, **kwargs):
         super(AdvSearchPagesForm, self).__init__(*args, **kwargs)
@@ -142,14 +143,19 @@ class AdvSearchPagesForm(forms.Form):
         self.fulltextEndYear = fulltextEndYear
         self.date = self.data.get('date1', '')
 
+        self.fields["lccn"].widget.attrs = {'id': 'id_lccns', 'style': 'width: 350px', 'size': '8'}
+        self.fields["lccn"].choices = titles
         self.fields["state"].choices = states
         self.fields["state"].widget.attrs = {'id': 'id_states', 'style': 'width: 140px', 'size': '8'}
         self.fields["date1"].choices = years
-        self.fields["date1"].widget.attrs = {"class": "txt", "id": "id_datefrom", "style": "width: 70px;", "max_length": 10, }
+        self.fields["date1"].widget.attrs = {"class": "txt", "id": "id_datefrom", "style": "width:70px;", "max_length": 10, }
         self.fields["date2"].choices = years
         self.fields["date2"].widget.attrs = {"class": "txt", "id": "id_dateto", "style": "width:70px;", "max_length": 10, }
         self.fields["sequence"].widget.attrs = {"id": "id_char_sequence", "alt": "char_sequence", "size": "3"}
         self.fields["proxtext"].widget.attrs["id"] = "id_proxtext_adv"
+        lang_choices = [("", "All"), ]
+        lang_choices.extend((l['language__code'], l['language__name']) for l in models.LanguageText.objects.select_related().exclude(language__isnull=True).values('language__code', 'language__name').distinct())
+        self.fields["language"].choices = lang_choices
 
 
 class SearchTitlesForm(forms.Form):
