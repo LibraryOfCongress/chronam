@@ -504,7 +504,7 @@ def language_batches(request, language, page_number=1):
 def language_titles(request, language, page_number=1):
     language_name = models.Language.objects.get(code=language).name
     page_title = 'Titles with %s text' % (language_name)
-    titles = models.LanguageText.objects.filter(language__code=language).values('ocr__page__issue__title').annotate(count=Count('ocr__page__issue__title'))
+    titles = models.LanguageText.objects.filter(language__code=language).values('ocr__page__issue__title__lccn', 'ocr__page__issue__batch__name').annotate(count=Count('ocr__page__issue__title__lccn'))
     paginator = Paginator(titles, 25)
     try:
         page = paginator.page(page_number)
@@ -512,6 +512,26 @@ def language_titles(request, language, page_number=1):
         page = paginator.page(1)
     page_range_short = list(_page_range_short(paginator, page))
     return render_to_response('reports/language_titles.html', dictionary=locals(),
+                              context_instance=RequestContext(request))
+
+
+@cache_page(settings.API_TTL_SECONDS)
+def language_pages(request, language, batch, title=None, page_number=1):
+    language_name = models.Language.objects.get(code=language).name
+    page_title = 'Pages with %s text' % (language_name)
+    if title:
+        pages = models.Page.objects.filter(ocr__language_texts__language__code=language, issue__title__lccn=title).values('reel__number', 'issue__date_issued', 'issue__title__lccn', 'issue__edition', 'sequence', ).order_by('reel__number', 'issue__date_issued', 'sequence')
+        path = 'reports/language_title_pages.html' 
+    else:
+        pages = models.Page.objects.filter(ocr__language_texts__language__code=language, issue__batch__name=batch).values('reel__number', 'issue__date_issued', 'issue__title__lccn', 'issue__edition', 'sequence', ).order_by('reel__number', 'issue__title__lccn', 'issue__date_issued', 'sequence')
+        path = 'reports/language_batch_pages.html' 
+    paginator = Paginator(pages, 25)
+    try:
+        page = paginator.page(page_number)
+    except InvalidPage:
+        page = paginator.page(1)
+    page_range_short = list(_page_range_short(paginator, page))
+    return render_to_response(path, dictionary=locals(),
                               context_instance=RequestContext(request))
 
 
