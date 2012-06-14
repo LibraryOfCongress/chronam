@@ -8,7 +8,8 @@ Below is a list of languages found in newspaper text that are available in Chron
 
 <table class="data">
     <tr>
-        <th style="width: 30%;">Language</th>
+        <th style="width: 20%;">Language</th>
+        <th style="width: 10%;">Code</th>
         <th style="width: 20%;">Batches</th>
         <th style="width: 20%;">Title</th>
         <th style="width: 30%;">Page Count</th>
@@ -17,6 +18,9 @@ Below is a list of languages found in newspaper text that are available in Chron
     <tr class="{% cycle 'lightGray' 'white' %}">
         <td>
             {{ l.language__name }}
+        </td>
+        <td>
+            {{ l.language__code }}
         </td>
         <td>
             <a href="{% url chronam_language_batches l.language__code %}">batches</a>

@@ -372,10 +372,22 @@ urlpatterns += patterns(
  
     # languages 
     url(r'^languages/$', 'languages', name='chronam_languages'),
-    url(r'^languages/batches/(?P<language>.+)/$', 'language_batches', name='chronam_language_batches'),
-    url(r'^languages/batches/(?P<language>.+)/;page=(?P<page_number>\d+)$', 'language_batches', name='chronam_language_batches'),
-    url(r'^languages/titles/(?P<language>.+)/$', 'language_titles', name='chronam_language_titles'),
-    url(r'^languages/titles/(?P<language>.+)/;page=(?P<page_number>\d+)$', 'language_titles', name='chronam_language_titles'),
+    url(r'^languages/(?P<language>.+)/batches/$', 'language_batches',
+        name='chronam_language_batches'),
+    url(r'^languages/(?P<language>.+)/batches/;page=(?P<page_number>\d+)$', 'language_batches',
+        name='chronam_language_batches_page_number'),
+    url(r'^languages/(?P<language>.+)/titles/$', 'language_titles',
+        name='chronam_language_titles'),
+    url(r'^languages/(?P<language>.+)/titles/;page=(?P<page_number>\d+)$', 'language_titles',
+        name='chronam_language_titles_page_number'),
+    url(r'^languages/(?P<language>.+)/(?P<batch>.+)/(?P<title>.+)/$', 'language_pages',
+        name='chronam_language_title_pages'),
+    url(r'^languages/(?P<language>.+)/(?P<batch>.+)/(?P<title>.+)/;page=(?P<page_number>\d+)$', 'language_pages',
+        name='chronam_language_title_pages_page_number'),
+    url(r'^languages/(?P<language>.+)/(?P<batch>.+)/$', 'language_pages',
+        name='chronam_language_batch_pages'),
+    url(r'^languages/(?P<language>.+)/(?P<batch>.+)/;page=(?P<page_number>\d+)$', 'language_pages',
+        name='chronam_language_batch_pages_page_number'),
 
     # reports 
     url(r'^reports/$', 'reports', name='chronam_reports'),
