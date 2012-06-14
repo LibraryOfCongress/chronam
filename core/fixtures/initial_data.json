@@ -163,7 +163,7 @@
     "pk": "oru",
     "model": "core.Awardee", 
     "fields": {
-      "name": "University of Oregon, Knight Library; Eugene, OR", 
+      "name": "University of Oregon Libraries; Eugene, OR", 
       "created": "2010-01-12 21:33:21"
     }
   },
