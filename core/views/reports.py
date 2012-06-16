@@ -445,7 +445,7 @@ def essay(request, essay_id):
                               context_instance=RequestContext(request))
 
 @cache_page(settings.API_TTL_SECONDS)
-def ocr_dumps_atom(request, page_number=1):
+def ocr_atom(request, page_number=1):
     batches = models.Batch.objects.filter(released__isnull=False)
     batches = batches.order_by('-released')
     now = rfc3339(datetime.datetime.now())
@@ -459,10 +459,12 @@ def ocr_dumps_atom(request, page_number=1):
             # use file modified time to indicate when the dump was last modified
             full_path = os.path.join(settings.OCR_DUMP_STORAGE, filename)
             t = os.path.getmtime(full_path)
-            updated= datetime.datetime.fromtimestamp(t)
-            dumpfiles.append({"name": filename, "updated": updated})
+            size = os.path.getsize(full_path)
 
-    return render_to_response('reports/ocr_dumps.xml', dictionary=locals(),
+            updated= datetime.datetime.fromtimestamp(t)
+            dumpfiles.append({"name": filename, "updated": updated, "size": size})
+
+    return render_to_response('reports/ocr.xml', dictionary=locals(),
                               context_instance=RequestContext(request),
                               mimetype='application/atom+xml')
 

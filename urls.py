@@ -371,8 +371,8 @@ urlpatterns += patterns(
     url(r'^reel/(?P<reel_number>\w+)/$', 'reel', name='chronam_reel'),
     url(r'^reports/$', 'reports', name='chronam_reports'),
 
-    # dumps
-    url(r'^dumps/ocr/feed/$', 'ocr_dumps_atom', name='chronam_ocr_dumps_atom'),
+    # ocr data
+    url(r'^ocr/feed/$', 'ocr_atom', name='chronam_ocr_atom'),
     
 )
 
