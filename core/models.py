@@ -1,13 +1,13 @@
 import os
 import re
+import json
+import time
+import hashlib
+import tarfile
 import datetime
 import textwrap
 import urlparse
-
-try:
-    import simplejson as json
-except ImportError:
-    import json
+from cStringIO import StringIO
 
 from rfc3339 import rfc3339
 from lxml import etree
@@ -64,7 +64,6 @@ class Batch(models.Model):
     awardee = models.ForeignKey('Awardee', related_name='batches', null=True)
     released = models.DateTimeField(null=True)
     source = models.CharField(max_length=4096, null=True)
-    ocr_dumped = models.DateTimeField(null=True)
 
     @property
     def storage_url(self):
@@ -127,6 +126,14 @@ class Batch(models.Model):
         for issue in self.issues.all():
             l[issue.title_id] = 1
         return l.keys()
+
+    def delete(self, *args, **kwargs):
+        # manually delete any OcrDump associated with this batch
+        # since a Batch.delete doesn't seem to trigger a OcrDump.delete
+        # and we need OcrDump.delete to clean up the filesystem
+        if self.ocr_dump:
+            self.ocr_dump.delete()
+        super(Batch, self).delete(*args, **kwargs)
  
     def __unicode__(self):
         return self.full_name
@@ -974,3 +981,95 @@ class Reel(models.Model):
     
     def titles(self):
         return Title.objects.filter(issues__pages__reel=self).distinct()
+
+class OcrDump(models.Model):
+    sequence = models.IntegerField(unique=True)
+    name = models.CharField(max_length=25)
+    created = models.DateTimeField(auto_now_add=True)
+    sha1 = models.TextField()
+    size = models.BigIntegerField()
+    batch = models.OneToOneField('Batch', related_name='ocr_dump')
+
+    @classmethod
+    def new_from_batch(klass, batch):
+        """Does the work of creating a new OcrDump based on a Batch
+        """
+        dump = klass.next()
+        dump.batch = batch
+
+        # add each page to a tar ball
+        tar = tarfile.open(dump.path, "w:bz2")
+        for issue in batch.issues.all():
+            for page in issue.pages.all():
+                dump._add_page(page, tar)
+        tar.close()
+
+        dump._calculate_size()
+        dump._calculate_sha1()
+        dump.save()
+
+        return dump
+
+    @classmethod
+    def last(klass):
+        dumps = OcrDump.objects.all().order_by("-sequence")
+        if dumps.count() > 0:
+            return dumps[0]
+        return None
+
+    @classmethod
+    def next(klass):
+        last = OcrDump.last()
+        if last:
+            next_sequence = last.sequence + 1
+        else:
+            next_sequence = 1
+
+        d = OcrDump()
+        d.sequence = next_sequence
+        d.name = "part-%06i.tar.bz2" % next_sequence 
+        return d
+
+    @property
+    def path(self):
+        return os.path.join(settings.OCR_DUMP_STORAGE, self.name)
+
+    def _add_page(self, page, tar):
+        d = page.issue.date_issued
+        relative_dir = "%s/%i/%02i/%02i/ed-%i/seq-%i/" %  (page.issue.title_id, d.year, d.month, d.day, page.issue.edition, page.sequence)
+
+        # add ocr text
+        txt_filename = relative_dir + "ocr.txt"
+        ocr_text = page.ocr.text.encode('utf-8')
+        info = tarfile.TarInfo(name=txt_filename)
+        info.size = len(ocr_text)
+        info.mtime = time.time()
+        tar.addfile(info, StringIO(ocr_text))
+
+        # add ocr xml
+        xml_filename = relative_dir + "ocr.xml"
+        info = tarfile.TarInfo(name=xml_filename)
+        info.size = os.path.getsize(page.ocr_abs_filename)
+        info.mtime = time.time()
+        tar.addfile(info, open(page.ocr_abs_filename))
+
+    def delete(self, *args, **kwargs):
+        # clean up file off of filesystem
+        if os.path.isfile(self.path):
+            os.remove(self.path)
+        return super(OcrDump, self).delete(*args, **kwargs)
+
+    def _calculate_size(self):
+        self.size = os.path.getsize(self.path)
+
+    def _calculate_sha1(self):
+        """looks at the dump file and calculates the sha1 digest and stores it
+        """
+        f = open(self.path)
+        sha1 = hashlib.sha1()
+        while True:
+            buff = f.read(2 ** 16)
+            if not buff: break
+            sha1.update(buff)
+        self.sha1 = sha1.hexdigest()
+        return self.sha1
