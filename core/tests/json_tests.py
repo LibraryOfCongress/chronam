@@ -5,7 +5,6 @@ try:
 except ImportError:
     import json
 
-from chronam.core.models import batch_to_json
 from chronam.core import models as m
 
 class JsonTests(TestCase):
@@ -17,7 +16,7 @@ class JsonTests(TestCase):
 
     def test_batch(self):
         b = m.Batch.objects.get(name='batch_curiv_ahwahnee_ver01')
-        j = batch_to_json(b)
+        j = b.json()
         x = json.loads(j)
         self.assertEqual(x['name'], 'batch_curiv_ahwahnee_ver01')
 

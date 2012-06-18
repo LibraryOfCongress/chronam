@@ -15,11 +15,10 @@ from django.db import connection
 from django.utils import datetime_safe
 
 from chronam.core import index, models
-from chronam.core.models import batch_to_json
 from chronam.core.rdf import batch_to_graph, awardee_to_graph
 from chronam.core.utils.url import unpack_url_path 
 from chronam.core.decorator import cache_page, rdf_view
-from chronam.core.utils.utils import _page_range_short, _rdf_base
+from chronam.core.utils.utils import _page_range_short, _rdf_base, _get_tip
 
 
 @cache_page(settings.API_TTL_SECONDS)
@@ -31,11 +30,7 @@ def reports(request):
 @cache_page(settings.API_TTL_SECONDS)
 def batches(request, page_number=1):
     page_title = 'Batches'
-    if settings.IS_PRODUCTION:
-        batches = models.Batch.objects.filter(released__isnull=False)
-    else:
-        batches = models.Batch.objects.all()
-    batches = batches.order_by('-released')
+    batches = models.Batch.viewable_batches()
     paginator = Paginator(batches, 25)
     page = paginator.page(page_number)
     page_range_short = list(_page_range_short(paginator, page))
@@ -46,7 +41,7 @@ def batches(request, page_number=1):
 
 @cache_page(settings.API_TTL_SECONDS)
 def batches_atom(request, page_number=1):
-    batches = models.Batch.objects.filter(released__isnull=False)
+    batches = models.Batch.viewable_batches()
     batches = batches.order_by('-released')
     now = rfc3339(datetime.datetime.now())
 
@@ -59,22 +54,18 @@ def batches_atom(request, page_number=1):
 
 @cache_page(settings.API_TTL_SECONDS)
 def batches_json(request, page_number=1):
-    batches = models.Batch.objects.filter(released__isnull=False)
-    batches = batches.order_by('-released')
-
+    batches = models.Batch.viewable_batches()
     paginator = Paginator(batches, 25)
     page = paginator.page(page_number)
-    b = [batch_to_json(b, serialize=False) for b in page.object_list]
+    host = request.get_host()
+    b = [batch.json(serialize=False, include_issues=False, host=host) for batch in page.object_list]
     j = {'batches': b}
 
-    host = "http://" + request.get_host()
     if page.has_next():
-        j['next'] = host + urlresolvers.reverse('chronam_batches_json_page', 
-                args=[page.next_page_number()])
+        j['next'] = "http://" + host + urlresolvers.reverse('chronam_batches_json_page', args=[page.next_page_number()])
 
     if page.has_previous():
-        j['previous'] = host + urlresolvers.reverse('chronam_batches_json_page',
-                args=[page.previous_page_number()])
+        j['previous'] = "http://" + host + urlresolvers.reverse('chronam_batches_json_page', args=[page.previous_page_number()])
 
     return HttpResponse(json.dumps(j, indent=2), mimetype='application/json')
 
@@ -133,8 +124,32 @@ def batch_rdf(request, batch_name):
 @cache_page(settings.API_TTL_SECONDS)
 def batch_json(request, batch_name):
     batch = get_object_or_404(models.Batch, name=batch_name)
-    return HttpResponse(batch_to_json(batch), mimetype='application/json')
+    host = request.get_host()
+    return HttpResponse(batch.json(host=host), mimetype='application/json')
 
+@cache_page(settings.API_TTL_SECONDS)
+def title_json(request, lccn):
+    title = get_object_or_404(models.Title, lccn=lccn)
+    host = request.get_host()
+    return HttpResponse(title.json(host=host), mimetype='application/json')
+
+@cache_page(settings.API_TTL_SECONDS)
+def issue_pages_json(request, lccn, date, edition):
+    title, issue, page = _get_tip(lccn, date, edition)
+    host = request.get_host()
+    if issue:
+        return HttpResponse(issue.json(host=host), mimetype='application/json')
+    else:
+        return HttpResponseNotFound()
+
+@cache_page(settings.API_TTL_SECONDS)
+def page_json(request, lccn, date, edition, sequence):
+    title, issue, page = _get_tip(lccn, date, edition, sequence)
+    host = request.get_host()
+    if page:
+        return HttpResponse(page.json(host=host), mimetype='application/json')
+    else:
+        return HttpResponseNotFound()
 
 @cache_page(settings.API_TTL_SECONDS)
 def event(request, event_id):
@@ -446,24 +461,11 @@ def essay(request, essay_id):
 
 @cache_page(settings.API_TTL_SECONDS)
 def ocr_atom(request, page_number=1):
-    batches = models.Batch.objects.filter(released__isnull=False)
-    batches = batches.order_by('-released')
-    now = rfc3339(datetime.datetime.now())
-
-    paginator = Paginator(batches, 25)
-    page = paginator.page(page_number)
-
-    dumpfiles = []
-    for filename in os.listdir(settings.OCR_DUMP_STORAGE):
-        if re.match("^part-\d+.tar.bz2$", filename):
-            # use file modified time to indicate when the dump was last modified
-            full_path = os.path.join(settings.OCR_DUMP_STORAGE, filename)
-            t = os.path.getmtime(full_path)
-            size = os.path.getsize(full_path)
-
-            updated= datetime.datetime.fromtimestamp(t)
-            dumpfiles.append({"name": filename, "updated": updated, "size": size})
-
+    dumps = models.OcrDump.objects.all().order_by("-created")
+    if dumps.count() > 0:
+        last_updated = dumps[0].created
+    else:
+        last_updated = datetime.datetime.now()
     return render_to_response('reports/ocr.xml', dictionary=locals(),
                               context_instance=RequestContext(request),
                               mimetype='application/atom+xml')

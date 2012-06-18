@@ -2,9 +2,8 @@
 {% load memorious %}
 
 {% block extra_link_types %}
-<link rel="alternate" type="application/atom+xml" href="{% url chronam_batches_atom %}" title="Atom Feed" />
-<link rel="alternate" type="application/json" href="{% url chronam_batches_json %}" title="Atom Feed" />
-<link rel="alternate" type="application/rss+xml" href="{% url chronam_batches_atom %}" title="Rss Feed" />
+<link rel="alternate" type="application/atom+xml" href="{% url chronam_batches_atom %}" title="Batches Atom Feed" />
+<link rel="alternate" type="application/json" href="{% url chronam_batches_json %}" title="Batches JSON Feed" />
     
 {% endblock %}
 <a href="{% url chronam_batches_atom %}">Batches</a>
