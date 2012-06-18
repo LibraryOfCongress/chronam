@@ -10,6 +10,7 @@
 {% block extrahead %}
     <link rel="primaryTopic" href="{{ page.abstract_url }}" />
     <link rel="resourcemap" type="application/rdf+xml" href="{% url chronam_page_dot_rdf page.issue.title.lccn, page.issue.date_issued, page.issue.edition, page.sequence %}" />
+    <link rel="alternate" type="application/json" href="{% url chronam_page_dot_json page.issue.title.lccn, page.issue.date_issued, page.issue.edition, page.sequence %}" />
     <link rel="alternate" type="image/jp2" href="{% url chronam_page_jp2 title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
     <link rel="alternate" type="application/pdf" href="{% url chronam_page_pdf title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
     <link rel="alternate" type="application/xml" href="{% url chronam_page_ocr_xml title.lccn, issue.date_issued, issue.edition, page.sequence %}" />

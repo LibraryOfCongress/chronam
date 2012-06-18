@@ -1,9 +1,12 @@
+import os
 import logging
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from chronam.core.models import Batch
+from chronam.core.models import Batch, OcrDump
+
+logging.basicConfig(filename="dump_ocr.log", level=logging.INFO)
 
 class Command(BaseCommand):
     help = "looks for batches that need to have ocr dump files created"

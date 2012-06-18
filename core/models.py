@@ -3,6 +3,7 @@ import re
 import json
 import time
 import hashlib
+import logging
 import tarfile
 import datetime
 import textwrap
@@ -17,18 +18,6 @@ from django.db.models import permalink, Q
 from django.utils import datetime_safe
 from django.conf import settings
 
-
-def batch_to_json(batch, serialize=True):
-    b = {}
-    b['name'] = batch.name
-    b['ingested'] = rfc3339(batch.created)
-    b['page_count'] = batch.page_count
-    b['lccns'] = batch.lccns()
-    b['awardee'] = batch.awardee.name
-    if serialize:
-        return json.dumps(b)
-    else:
-        return b
 
 
 class Awardee(models.Model):
@@ -64,6 +53,14 @@ class Batch(models.Model):
     awardee = models.ForeignKey('Awardee', related_name='batches', null=True)
     released = models.DateTimeField(null=True)
     source = models.CharField(max_length=4096, null=True)
+
+    @classmethod
+    def viewable_batches(klass):
+        if settings.IS_PRODUCTION:
+            batches = Batch.objects.filter(released__isnull=False)
+        else:
+            batches = Batch.objects.all()
+        return batches.order_by("-released")
 
     @property
     def storage_url(self):
@@ -117,6 +114,11 @@ class Batch(models.Model):
         return ('chronam_batch', (), {'batch_name': self.name})
 
     @property
+    @permalink
+    def json_url(self):
+        return ('chronam_batch_dot_json', (), {'batch_name': self.name})
+
+    @property
     def abstract_url(self):
         return self.url.rstrip('/') + '#batch'
 
@@ -134,7 +136,33 @@ class Batch(models.Model):
         if self.ocr_dump:
             self.ocr_dump.delete()
         super(Batch, self).delete(*args, **kwargs)
- 
+
+    def json(self, include_issues=True, serialize=True, host="chroniclingamerica.loc.gov"):
+       b = {}
+       b['name'] = self.name
+       b['ingested'] = rfc3339(self.created)
+       b['page_count'] = self.page_count
+       b['lccns'] = self.lccns()
+       b['awardee'] = self.awardee.name
+       b['url'] = "http://" + host + self.json_url
+       if include_issues:
+           b['issues'] = []
+           for issue in self.issues.all():
+               i = {
+                       "title": {
+                           "name": issue.title.name,
+                           "url": "http://" + host + issue.title.json_url,
+                       },
+                       "date_issued": issue.date_issued.strftime("%Y-%m-%d"), 
+                       "url": "http://" + host + issue.json_url
+                   }
+               b['issues'].append(i)
+       if serialize:
+           return json.dumps(b)
+       else:
+           return b
+
+
     def __unicode__(self):
         return self.full_name
 
@@ -184,6 +212,11 @@ class Title(models.Model):
     @permalink
     def url(self):
         return ('chronam_title', (), {'lccn': self.lccn})
+
+    @property
+    @permalink
+    def json_url(self):
+        return ('chronam_title_dot_json', (), {'lccn': self.lccn})
 
     @property
     def abstract_url(self):
@@ -250,6 +283,23 @@ class Title(models.Model):
 
         return doc
 
+    def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
+        j = {
+                "url": "http://" + host + self.json_url,
+                "lccn": self.lccn,
+                "name": self.name,
+                "place_of_publication": self.place_of_publication,
+                "publisher": self.publisher,
+                "start_year": self.start_year,
+                "end_year": self.end_year,
+                "subject": [s.heading for s in self.subjects.all()],
+                "place": [p.name for p in self.places.all()],
+                "issues": [{"url": "http://" + host + i.json_url, "date_issued": i.date_issued.strftime("%Y-%m-%d")} for i in self.issues.all()]
+            }
+        if serialize:
+            return json.dumps(j, indent=2)
+        return j
+
     def has_non_english_language(self):
         for language in self.languages.all():
             if language.code != 'eng':
@@ -294,6 +344,7 @@ class Title(models.Model):
         if self.end_year == 'current':
             return 9999
         return int(re.sub(r'[?u]', '9', self.end_year))
+
 
     def _lookup_title_links(self, links):
         titles = []
@@ -421,6 +472,15 @@ class Issue(models.Model):
                  'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
                  'edition': self.edition})
 
+    @property
+    @permalink
+    def json_url(self):
+        date = self.date_issued
+        return ('chronam_issue_pages_dot_json', (), 
+                {'lccn': self.title.lccn,
+                 'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
+                 'edition': self.edition})
+
     @property 
     def abstract_url(self):
         return self.url.rstrip('/') + '#issue'
@@ -482,7 +542,21 @@ class Issue(models.Model):
         if self.title.issues.all().count() == 0:
             self.title.has_issues = False
             self.title.save()
-    
+
+    def json(self, serialize=True, include_pages=True, host='chroniclingamerica.loc.gov'):
+       j = {
+               'url': 'http://' + host + self.json_url,
+               'date_issued': self.date_issued.strftime("%Y-%m-%d"),
+               'volume': self.volume,
+               'edition': self.edition,
+               'title': {"name": self.title.name, "url": 'http://' + host + self.title.json_url},
+               'batch': {"name": self.batch.name, "url": 'http://' + host + self.batch.json_url},
+           }
+       j['pages'] = [{"url": "http://" + host + p.json_url, "sequence": p.sequence} for p in self.pages.all()]
+       if serialize:
+           return json.dumps(j, indent=2)
+       return j
+   
     class Meta: 
         ordering = ('date_issued',)
 
@@ -501,6 +575,20 @@ class Page(models.Model):
     reel = models.ForeignKey('Reel', related_name='pages', null=True)
     indexed = models.BooleanField()
     created = models.DateTimeField(auto_now_add=True)
+
+    def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
+        j = {
+                "sequence": self.sequence,
+                "issue": {"date_issued": self.issue.date_issued.strftime("%Y-%m-%d"), "url": "http://" + host + self.issue.json_url},
+                "jp2": "http://" + host + self.jp2_url,
+                "ocr": "http://" + host + self.ocr_url,
+                "text": "http://" + host + self.txt_url,
+                "pdf": "http://" + host + self.pdf_url,
+                "title": {"name": self.issue.title.name, "url": "http://" + host + self.issue.title.json_url}
+            }
+        if serialize:
+            return json.dumps(j, indent=2)
+        return j
 
     @property
     def jp2_abs_filename(self):
@@ -542,6 +630,11 @@ class Page(models.Model):
     @permalink
     def url(self):
         return ('chronam_page', (), self._url_parts())
+
+    @property
+    @permalink
+    def json_url(self):
+        return ('chronam_page_dot_json', (), self._url_parts())
 
     @property
     def abstract_url(self):
@@ -1000,7 +1093,7 @@ class OcrDump(models.Model):
         # add each page to a tar ball
         tar = tarfile.open(dump.path, "w:bz2")
         for issue in batch.issues.all():
-            for page in issue.pages.all():
+            for page in issue.pages.filter(ocr__isnull=False):
                 dump._add_page(page, tar)
         tar.close()
 
@@ -1034,6 +1127,9 @@ class OcrDump(models.Model):
     def path(self):
         return os.path.join(settings.OCR_DUMP_STORAGE, self.name)
 
+    def __unicode__(self):
+        return "path=%s size=%s sha1=%s" % (self.path, self.size, self.sha1)
+
     def _add_page(self, page, tar):
         d = page.issue.date_issued
         relative_dir = "%s/%i/%02i/%02i/ed-%i/seq-%i/" %  (page.issue.title_id, d.year, d.month, d.day, page.issue.edition, page.sequence)
@@ -1052,6 +1148,8 @@ class OcrDump(models.Model):
         info.size = os.path.getsize(page.ocr_abs_filename)
         info.mtime = time.time()
         tar.addfile(info, open(page.ocr_abs_filename))
+
+        logging.info("added %s to %s" % (page, tar.name))
 
     def delete(self, *args, **kwargs):
         # clean up file off of filesystem

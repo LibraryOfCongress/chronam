@@ -4,7 +4,7 @@
 {% block extra_link_types %}
     <link rel="primaryTopic" href="{{ batch.abstract_url }}" />
     <link rel="resourcemap" type="application/rdf+xml" href="{% url chronam_batch_dot_rdf batch.name %}" />
-    <link rel="resourcemap" type="application/json" href="{% url chronam_batch_dot_json batch.name %}" />
+    <link rel="alternate" href="{% url chronam_batch_dot_json batch.name %}" />
 {% endblock %}
 
 {% block content %}

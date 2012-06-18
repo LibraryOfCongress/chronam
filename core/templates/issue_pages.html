@@ -9,6 +9,10 @@
 </h1>
 {% endblock %}
 
+{% block extrahead %}
+<link rel="alternate" href="{% url chronam_issue_pages_dot_json title.lccn, issue.date_issued, issue.edition %}" />
+{% endblock %}
+
 {% block lc_metadata %}
 {% include "includes/lc_metadata.html" %}
 {% endblock %}

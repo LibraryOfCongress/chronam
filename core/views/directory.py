@@ -75,12 +75,13 @@ def newspapers(request, state=None, format='html'):
                                   context_instance=RequestContext(request),
                                   mimetype="text/plain")
     elif format == "json":
-        results = {}
+        host = request.get_host()
+        results = []
         for state, titles in newspapers_by_state:
             for title in titles:
-                results[title.lccn] = title.name
+                results.append({"lccn": title.lccn, "title: ": title.name, "url": "http://" + host + title.json_url, "state": state})
             
-        return HttpResponse(json.dumps(results), mimetype='application/json')
+        return HttpResponse(json.dumps(results, indent=2), mimetype='application/json')
     else:
         return HttpResponseServerError("unsupported format: %s" % format)        
 

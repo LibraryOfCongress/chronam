@@ -311,7 +311,7 @@ urlpatterns += patterns(
 
 )
 
-# linked-data rdf views
+# linked-data rdf/atom/json views
 
 urlpatterns += patterns(
     'chronam.core.views',
@@ -323,13 +323,16 @@ urlpatterns += patterns(
     # title
     url(r'^lccn/(?P<lccn>\w+).rdf$', 'title_rdf', name='chronam_title_dot_rdf'),
     url(r'^lccn/(?P<lccn>\w+)$', 'title_rdf', name='chronam_title_rdf'),
+    url(r'^lccn/(?P<lccn>\w+).json', 'title_json', name='chronam_title_dot_json'),
 
     # issue
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+).rdf$', 'issue_pages_rdf', name='chronam_issue_pages_dot_rdf'),
+    url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+).json$', 'issue_pages_json', name='chronam_issue_pages_dot_json'),
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)$', 'issue_pages_rdf', name='chronam_issue_pages_rdf'),
 
     # page
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+).rdf$', 'page_rdf', name="chronam_page_dot_rdf"),
+    url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+).json$', 'page_json', name="chronam_page_dot_json"),
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)$', 'page_rdf', name="chronam_page_rdf"),
 
     # awardee

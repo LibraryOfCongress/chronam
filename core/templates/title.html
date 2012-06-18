@@ -8,6 +8,10 @@
 {% endwith %}
 {% endblock %}
 
+{% block extra_link_types %}
+<link rel="alternate" href="{% url chronam_title_dot_json title.lccn %}" />
+{% endblock %}
+
 {% block newspaper_content %}
     <div id="col2_about_left">
         <dl class="alt">
