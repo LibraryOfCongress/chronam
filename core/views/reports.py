@@ -17,7 +17,7 @@ from django.utils import datetime_safe
 from chronam.core import index, models
 from chronam.core.rdf import batch_to_graph, awardee_to_graph
 from chronam.core.utils.url import unpack_url_path 
-from chronam.core.decorator import cache_page, rdf_view
+from chronam.core.decorator import cache_page, rdf_view, cors
 from chronam.core.utils.utils import _page_range_short, _rdf_base, _get_tip
 
 
@@ -52,6 +52,7 @@ def batches_atom(request, page_number=1):
                               mimetype='application/atom+xml')
 
 
+@cors
 @cache_page(settings.API_TTL_SECONDS)
 def batches_json(request, page_number=1):
     batches = models.Batch.viewable_batches()
@@ -121,18 +122,21 @@ def batch_rdf(request, batch_name):
     return response
 
 
+@cors
 @cache_page(settings.API_TTL_SECONDS)
 def batch_json(request, batch_name):
     batch = get_object_or_404(models.Batch, name=batch_name)
     host = request.get_host()
     return HttpResponse(batch.json(host=host), mimetype='application/json')
 
+@cors
 @cache_page(settings.API_TTL_SECONDS)
 def title_json(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
     host = request.get_host()
     return HttpResponse(title.json(host=host), mimetype='application/json')
 
+@cors
 @cache_page(settings.API_TTL_SECONDS)
 def issue_pages_json(request, lccn, date, edition):
     title, issue, page = _get_tip(lccn, date, edition)
@@ -142,6 +146,7 @@ def issue_pages_json(request, lccn, date, edition):
     else:
         return HttpResponseNotFound()
 
+@cors
 @cache_page(settings.API_TTL_SECONDS)
 def page_json(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
@@ -158,7 +163,6 @@ def event(request, event_id):
     return render_to_response('reports/event.html', dictionary=locals(),
                              context_instance=RequestContext(request))
 
-
 @cache_page(settings.API_TTL_SECONDS)
 def events(request, page_number=1):
     page_title = 'Events'
@@ -170,7 +174,6 @@ def events(request, page_number=1):
     return render_to_response('reports/events.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
 @cache_page(settings.API_TTL_SECONDS)
 def events_atom(request, page_number=1):
     events = models.LoadBatchEvent.objects.all().order_by('-created')
@@ -180,8 +183,6 @@ def events_atom(request, page_number=1):
     return render_to_response('reports/events.xml', dictionary=locals(),
                               context_instance=RequestContext(request),
                               mimetype='application/atom+xml')
-
-
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def states(request, format='html'):
@@ -201,7 +202,6 @@ WHERE state IS NOT NULL GROUP BY state HAVING count > 10 ORDER BY state")
     states = [n[0] for n in cursor.fetchall()]
     return render_to_response('reports/states.html', dictionary=locals(),
                               context_instance=RequestContext(request))
-
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def counties_in_state(request, state, format='html'):
@@ -223,7 +223,6 @@ def counties_in_state(request, state, format='html'):
     return render_to_response('reports/counties.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def states_counties(request, format='html'):
     page_title = 'Counties by State'
@@ -239,7 +238,6 @@ GROUP BY state, county HAVING total >= 1 ORDER BY state, county")
 
     return render_to_response('reports/states_counties.html', dictionary=locals(),
                               context_instance=RequestContext(request))
-
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def cities_in_county(request, state, county, format='html'):
@@ -259,7 +257,6 @@ def cities_in_county(request, state, county, format='html'):
                             mimetype='application/json')
     return render_to_response('reports/cities.html', dictionary=locals(),
                               context_instance=RequestContext(request))
-
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def cities_in_state(request, state, format='html'):
@@ -293,7 +290,6 @@ def institutions(request, page_number=1):
     return render_to_response('reports/institutions.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
 @cache_page(settings.API_TTL_SECONDS)
 def institution(request, code):
     institution = get_object_or_404(models.Institution, code=code)
@@ -304,7 +300,6 @@ def institution(request, code):
         institution=institution).count()
     return render_to_response('reports/institution.html', dictionary=locals(),
                               context_instance=RequestContext(request))
-
 
 @cache_page(settings.API_TTL_SECONDS)
 def institution_titles(request, code, page_number=1):
@@ -321,7 +316,6 @@ def institution_titles(request, code, page_number=1):
     return render_to_response('reports/institution_titles.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
 @cache_page(10)
 def status(request):
     page_title = 'System Status'
@@ -336,7 +330,6 @@ def status(request):
     return render_to_response('reports/status.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
 @cache_page(settings.API_TTL_SECONDS)
 def awardees(request):
     page_title = 'Awardees'
@@ -344,18 +337,18 @@ def awardees(request):
     return render_to_response('reports/awardees.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+@cors
 @cache_page(settings.API_TTL_SECONDS)
 def awardees_json(request):
-    awardees = []
+    awardees = {"awardees": []}
+    host = request.get_host()
     for awardee in models.Awardee.objects.all().order_by('name'):
-        awardees.append(
-            {
-                'url': awardee.url,
+        a = {
+                'url': 'http://' + host + awardee.json_url,
                 'name': awardee.name,
-                'batch_count': awardee.batch_count,
-                'page_count': awardee.page_count
             }
-        )
+        awardees['awardees'].append(a)
+
     return HttpResponse(json.dumps(awardees, indent=2), 
                         mimetype='application/json')
 
@@ -366,6 +359,17 @@ def awardee(request, institution_code):
     batches = models.Batch.objects.filter(awardee=awardee)
     return render_to_response('reports/awardee.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
+@cors
+@cache_page(settings.API_TTL_SECONDS)
+def awardee_json(request, institution_code):
+    awardee = get_object_or_404(models.Awardee, org_code=institution_code)
+    host = request.get_host()
+    j = awardee.json(serialize=False, host=host)
+    j['batches'] = []
+    for batch in awardee.batches.all():
+        j['batches'].append({"name": batch.name, "url": 'http://' + host + batch.json_url})
+    return HttpResponse(json.dumps(j, indent=2), mimetype='application/json')
 
 
 @cache_page(settings.API_TTL_SECONDS)
@@ -460,7 +464,14 @@ def essay(request, essay_id):
                               context_instance=RequestContext(request))
 
 @cache_page(settings.API_TTL_SECONDS)
-def ocr_atom(request, page_number=1):
+def ocr(request):
+    page_title = "OCR Data"
+    dumps = models.OcrDump.objects.all().order_by('-created')
+    return render_to_response('reports/ocr.html', dictionary=locals(),
+                              context_instance=RequestContext(request))
+
+@cache_page(settings.API_TTL_SECONDS)
+def ocr_atom(request):
     dumps = models.OcrDump.objects.all().order_by("-created")
     if dumps.count() > 0:
         last_updated = dumps[0].created
@@ -469,6 +480,16 @@ def ocr_atom(request, page_number=1):
     return render_to_response('reports/ocr.xml', dictionary=locals(),
                               context_instance=RequestContext(request),
                               mimetype='application/atom+xml')
+
+@cors
+@cache_page(settings.API_TTL_SECONDS)
+def ocr_json(request):
+    j = {"ocr": []}
+    host = request.get_host()
+    for dump in models.OcrDump.objects.all().order_by("-created"):
+        j["ocr"].append(dump.json(host=host, serialize=False))
+    return HttpResponse(json.dumps(j, indent=2), mimetype="application/json")
+
 
 
 def _title_range(reel):
