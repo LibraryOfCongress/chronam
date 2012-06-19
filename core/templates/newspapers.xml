@@ -16,6 +16,7 @@
         <id>info:lc/ndnp/title/{{ title.lccn }}</id>
         <title>Updated content for {{ title.name }} ({{ title.place_of_publication }})</title>
         <link rel="alternate" type="text/html" href="http://{{ host }}{% url chronam_title title.lccn %}" />
+        <link rel="alternate" type="application/json" href="http://{{ host }}{% url chronam_title_dot_json title.lccn %}" />
         <link rel="alternate" type="application/atom+xml" href="http://{{ host }}{% url chronam_title_atom title.lccn %}" />
         <link rel="alternate" type="application/rdf+xml" href="http://{{ host }}{% url chronam_title_dot_rdf title.lccn %}" />
         {% with title.last_issue_released as issue %}

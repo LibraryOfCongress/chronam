@@ -67,7 +67,7 @@ urlpatterns += patterns(
     url(r'^help/$', 'help', name="chronam_help"),
 
     # explainOCR.html
-    url(r'^about/ocr/$', 'ocr', name="chronam_explain_ocr"),
+    url(r'^ocr/$', 'ocr', name="ocr"),
 
     # API docs
     url(r'^about/api/$', 'about_api', name="chronam_about_api"),
@@ -305,6 +305,8 @@ urlpatterns += patterns(
     # awardee
     url(r'^awardees/(?P<institution_code>\w+)/$', 'awardee', 
         name='chronam_awardee'),
+    url(r'^awardees/(?P<institution_code>\w+).json$', 'awardee_json', name='chronam_awardee_json'),
+
 
     url(r'^status', 'status', name='chronam_stats'),
     (r'^media/', include('django_memorious.urls')),
@@ -376,6 +378,7 @@ urlpatterns += patterns(
 
     # ocr data
     url(r'^ocr/feed/$', 'ocr_atom', name='chronam_ocr_atom'),
+    url(r'^ocr.json$', 'ocr_json', name='chronam_ocr_json'),
     
 )
 

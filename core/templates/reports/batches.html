@@ -6,9 +6,24 @@
 <link rel="alternate" type="application/json" href="{% url chronam_batches_json %}" title="Batches JSON Feed" />
     
 {% endblock %}
-<a href="{% url chronam_batches_atom %}">Batches</a>
 
 {% block content %}
+
+<p>
+The Library of Congress regularly receives digitized newspaper content 
+from <a href="{% url chronam_awardees %}">grant awardees</a> in the <a
+    href="http://www.loc.gov/ndnp/">National Digital Newspaper Program</a>.
+Content is delivered in the form of batches, where each batch can contain
+one or issues, from one or more newspapers. As batches are loaded into
+Chronicling America they will appear here. More details about the 
+batch can be discovered by clickin gon the batch name link.
+</p>
+
+<p>
+If you are interested in automated access to this data you may be interested 
+in the <a href="{% url chronam_batches_atom %}">Atom</a> and
+<a href="{% url chronam_batches_json %}">JSON</a> versions of this table.
+</p>
 
   {% ifnotequal paginator.num_pages 1 %}
   <div id="searchnav">

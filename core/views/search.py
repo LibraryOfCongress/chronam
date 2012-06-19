@@ -76,6 +76,8 @@ def search_pages_results(request, view_type='gallery'):
             'itemsPerPage': rows,
             'items': [p.solr_doc for p in page.object_list],
         }
+        for i in results['items']:
+            i['url'] = 'http://' + request.get_host() + i['id'].rstrip('/') + '.json'
         json_text = json.dumps(results, indent=2)
         # jsonp?
         if request.GET.get('callback') != None:

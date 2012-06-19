@@ -523,13 +523,6 @@ def page_ocr_xml(request, lccn, date, edition, sequence):
     return _stream_file(page.ocr_abs_filename, 'application/xml')
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
-def ocr(request):
-    page_title = "OCR in Chronicling America"
-    return render_to_response('ocr.html', dictionary=locals(),
-                              context_instance=RequestContext(request))
-
-
 def page_ocr_txt(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     try:

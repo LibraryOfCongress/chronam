@@ -3,6 +3,11 @@
 {% load memorious %}
 {% load humanize %}
 
+{% block extrahead %}
+<link rel="alternate" title="Newspapers Atom Feed" href="{% url chronam_newspapers_atom %}" />
+<link rel="alternate" title="Newspapers JSON Feed" href="{% url chronam_newspapers_format "json" %}" />
+{% endblock %}
+
 {% block content %}
 {% if titles.count > 0 %}
 <p class="gray nomargin-bottom3">These historical newspapers are available to browse and view issues in this site. {% if number_of_pages %}Pages currently available: {{number_of_pages|intcomma}}{% endif %}</p>

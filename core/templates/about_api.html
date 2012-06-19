@@ -37,11 +37,12 @@ APIs.</p>
 <li><a href="#search">Search</a> the newspaper directory and digitized page contents using OpenSearch.</li> 
 <li><a href="#autosuggest">Auto Suggest</a> API for looking up newspaper
 titles</li>
+<li><a href="#link">Link</a> using our stable URL pattern for Chronicling
+America resources.</li>
+<li><a href="#linked-data">JSON</a> views of Chronicling America resources.</li> 
+<li><a href="#linked-data">Linked Data</a> views of Chronicling American resources.</li> 
 <li><a href="#cors_jsonp">CORS and JSONP</a> support for your JavaScript
 applications.</li>
-<li><a href="#link">Link</a> using our stable URL pattern for titles, issues, editions, and pages.</li> 
-<li><a href="#linked-data">Linked Data</a> views of information about titles, batches, issues, and pages in RDF/XML.</li> 
-<li><a href="#aggregations">Aggregations</a> of items, like all the pages that make one issue, are related using OAI-ORE.</li> 
 </ul> 
  
 <a name="search"></a> 
@@ -83,7 +84,7 @@ search for &quot;michigan&quot;, Atom response
 search for &quot;michigan&quot;, JSON response, starting at page 5
 </li> 
 </ul> 
-<p>There are more than a million <a
+<p>There are millions of <a
 href="/search/pages/"> digitized
 newspaper pages</a> in Chronicling America.  These pages span
 several decades and many U.S. states and territories.  New batches of
@@ -136,96 +137,9 @@ AutoSuggest API to dynamically lookup these newspaper titles. For example:</p>
 
 <p class="backtotop"><a href="#skip_menu">Top</a></p>
 
-<a name="cors_jsonp"></a>
-<h3>CORS and JSONP Support</h3>
-<p>
-To help you integrate Chronicling America into your JavaScript applications, 
-the OpenSearch and AutoSuggest JSON responses support both 
-<a href="http://www.w3.org/TR/cors/">Cross-Origin Resource Sharing (CORS)</a> 
-and <a href="http://en.wikipedia.org/wiki/JSONP">JSON with Padding (JSONP)</a>.
-CORS and JSONP allow your JavaScript applications to talk to services 
-hosted at chroniclingamerica.loc.gov without the need to proxy the requests
-yourself. 
-</p>
 
-<h4>CORS Example</h4>
-
-<pre>
-
-curl -i 'http://chroniclingamerica.loc.gov/suggest/titles/?q=manh'
-
-HTTP/1.1 200 OK
-Date: Mon, 28 Mar 2011 19:45:34 GMT
-Expires: Tue, 29 Mar 2011 19:45:37 GMT
-ETag: "7d786bec2ca003d86009f8ccdfd72912"
-Cache-Control: max-age=86400
-<span style="color: red;">Access-Control-Allow-Origin: *
-Access-Control-Allow-Headers: X-Requested-With</span>
-Content-Length: 7045
-Last-Modified: Mon, 28 Mar 2011 19:45:37 GMT
-Content-Type: application/x-suggestions+json
-
-[
-  "manh",
-    [   
-      "Manhasset life. (Manhasset, N.Y.) 19??-19??",
-      "Manhasset mail. (Manhasset, N.Y.) 1927-1986"
-    ],
-    [
-      "sn97063690",
-      "sn95071148"
-    ],
-    [
-      "http://chroniclingamerica.loc.gov/lccn/sn97063690/",
-      "http://chroniclingamerica.loc.gov/lccn/sn95071148/"
-    ]
-]
-</pre>
-
-<h4>JSONP Example</h4>
-
-<pre>
-
-curl -i 'http://chroniclingamerica.loc.gov/suggest/titles/?q=manh&amp;callback=suggest'
-
-HTTP/1.1 200 OK
-Date: Mon, 28 Mar 2011 19:45:34 GMT
-Expires: Tue, 29 Mar 2011 19:45:37 GMT
-ETag: "7d786bec2ca003d86009f8ccdfd72912"
-Cache-Control: max-age=86400
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Headers: X-Requested-With
-Content-Length: 7045
-Last-Modified: Mon, 28 Mar 2011 19:45:37 GMT
-Content-Type: application/x-suggestions+json
-
-suggest([
-  "manh",
-    [   
-      "Manhasset life. (Manhasset, N.Y.) 19??-19??",
-      "Manhasset mail. (Manhasset, N.Y.) 1927-1986"
-    ],
-    [
-      "sn97063690",
-      "sn95071148"
-    ],
-    [
-      "http://chroniclingamerica.loc.gov/lccn/sn97063690/",
-      "http://chroniclingamerica.loc.gov/lccn/sn95071148/"
-    ]
-]);
-</pre>
-
-<p>
-CORS is arguably a more elegant solution, and is supported by most modern 
-browsers.  However JSONP might be a better option if your application needs 
-legacy browser support.
-</p>
-
-<p class="backtotop"><a href="#skip_menu">Top</a></p>
- 
 <a name="link"></a> 
-<h3>Link to titles, issues, editions, and pages</h3> 
+<h3>Link to Chronicling America Resources</h3> 
 <p>The Chronicling America Web site uses links that follow a
 straightforward pattern.  You can use this pattern to construct links
 into specific newspaper titles, to any of its available issues and
@@ -262,7 +176,52 @@ third available page from first edition, January 5, 1900
 </li> 
 </ul> 
 <p class="backtotop"><a href="#skip_menu">Top</a></p> 
- 
+
+
+<a name="json-views"></a>
+<h3>JSON Views</h3>
+<p>
+In addition to the use of JSON in OpenSearch results, there are also JSON views
+available for various resources in Chronicling America. These JSON views are
+typically linked from their HTML representation using the &lt;link&gt; element.
+For example: 
+<ul> 
+<li><a href="/lccn/sn86069873.json">/lccn/sn86069873.json</a> 
+<br /> 
+title information for LCCN sn 86069873
+</li> 
+<li><a href="/lccn/sn86069873/1900-01-05/ed-1.json">/lccn/sn86069873/1900-01-05/ed-1.json</a> 
+<br />
+first available edition from January 5, 1900
+</li> 
+<li><a href="/lccn/sn86069873/1900-01-05/ed-1/seq-3.json">/lccn/sn86069873/1900-01-05/ed-1/seq-3.json</a> 
+<br />
+third available page from first edition, January 5, 1900
+</li> 
+<li><a href="/batches.json">/batches.json</a>
+<br>
+a list of all batches of content that have been loaded
+</li>
+<li><a href="/batches/batch_dlc_jamaica_ver01.json">/batches/batch_dlc_jamaica_ver01.json</a>
+<br>
+detailed information about a specific batch
+<li><a href="/awardees.json">/awardees.json</a>
+<br>
+a list of all NDNP Awardees as JSON
+</li>
+<li><a href="/awardees/dlc.json">/awardees/dlc.json</a>
+<br>
+detailed information about a specific awardee
+</li>
+</ul>   
+
+You will notice that many of these JSON views link to each other. This allows
+the JSON to stay relatively compact by including only information about a 
+particular entity, while linking to a detail view for a related entity.
+</p>
+<p class="backtotop"><a href="#skip_menu">Top</a></p> 
+
+
 <a name="linked-data"></a> 
 <h3>Linked Data</h3> 
 <p><a href="http://linkeddata.org/">Linked Data</a> allows us to connect the
@@ -354,16 +313,93 @@ vocabulary providers.  Please be aware that how we use these vocabularies
 will likely change over time, as they continue to develop, and as new 
 vocabularies are introduced.</p> 
 <p class="backtotop"><a href="#skip_menu">Top</a></p> 
+
+<a name="cors_jsonp"></a>
+<h3>CORS and JSONP Support</h3>
+<p>
+To help you integrate Chronicling America into your JavaScript applications, 
+the OpenSearch and AutoSuggest JSON responses support both 
+<a href="http://www.w3.org/TR/cors/">Cross-Origin Resource Sharing (CORS)</a> 
+and <a href="http://en.wikipedia.org/wiki/JSONP">JSON with Padding (JSONP)</a>.
+CORS and JSONP allow your JavaScript applications to talk to services 
+hosted at chroniclingamerica.loc.gov without the need to proxy the requests
+yourself. 
+</p>
+
+<h4>CORS Example</h4>
+
+<pre>
+
+curl -i 'http://chroniclingamerica.loc.gov/suggest/titles/?q=manh'
+
+HTTP/1.1 200 OK
+Date: Mon, 28 Mar 2011 19:45:34 GMT
+Expires: Tue, 29 Mar 2011 19:45:37 GMT
+ETag: "7d786bec2ca003d86009f8ccdfd72912"
+Cache-Control: max-age=86400
+<span style="color: red;">Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: X-Requested-With</span>
+Content-Length: 7045
+Last-Modified: Mon, 28 Mar 2011 19:45:37 GMT
+Content-Type: application/x-suggestions+json
+
+[
+  "manh",
+    [   
+      "Manhasset life. (Manhasset, N.Y.) 19??-19??",
+      "Manhasset mail. (Manhasset, N.Y.) 1927-1986"
+    ],
+    [
+      "sn97063690",
+      "sn95071148"
+    ],
+    [
+      "http://chroniclingamerica.loc.gov/lccn/sn97063690/",
+      "http://chroniclingamerica.loc.gov/lccn/sn95071148/"
+    ]
+]
+</pre>
+
+<h4>JSONP Example</h4>
+
+<pre>
+
+curl -i 'http://chroniclingamerica.loc.gov/suggest/titles/?q=manh&amp;callback=suggest'
+
+HTTP/1.1 200 OK
+Date: Mon, 28 Mar 2011 19:45:34 GMT
+Expires: Tue, 29 Mar 2011 19:45:37 GMT
+ETag: "7d786bec2ca003d86009f8ccdfd72912"
+Cache-Control: max-age=86400
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: X-Requested-With
+Content-Length: 7045
+Last-Modified: Mon, 28 Mar 2011 19:45:37 GMT
+Content-Type: application/x-suggestions+json
+
+suggest([
+  "manh",
+    [   
+      "Manhasset life. (Manhasset, N.Y.) 19??-19??",
+      "Manhasset mail. (Manhasset, N.Y.) 1927-1986"
+    ],
+    [
+      "sn97063690",
+      "sn95071148"
+    ],
+    [
+      "http://chroniclingamerica.loc.gov/lccn/sn97063690/",
+      "http://chroniclingamerica.loc.gov/lccn/sn95071148/"
+    ]
+]);
+</pre>
+
+<p>
+CORS is arguably a more elegant solution, and is supported by most modern 
+browsers.  However JSONP might be a better option if your application needs 
+legacy browser support.
+</p>
+
+<p class="backtotop"><a href="#skip_menu">Top</a></p>
  
-<a name="aggregations"></a> 
-<h3>Aggregations</h3> 
-<p>The <a class="external" href="http://www.openarchives.org/ore/">OAI-ORE specification</a> 
-allows us to define aggregations of resources (pages) on our site that
-go together as a single unit.  For example, we use the OAI-ORE vocabulary to 
-link Page resource to the the JPEG2000, PDF, and OCR files that make them up.
-Batch, Title and Issue resources are related to Pages using the OAI-ORE 
-vocabluary. You can &quot;view source&quot; on Title, Issue, Page and Batch HTML views, 
-and see that the referenced RDF/XML file is auto-discoverable in a link element as an OAI-ORE Resource Map.</p> 
-<p class="backtotop"><a href="#skip_menu">Top</a></p> 
-    </div><!-- end id:std_box --> 
 {% endblock %}

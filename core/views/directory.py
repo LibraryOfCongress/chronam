@@ -76,10 +76,10 @@ def newspapers(request, state=None, format='html'):
                                   mimetype="text/plain")
     elif format == "json":
         host = request.get_host()
-        results = []
+        results = {"newspapers": []}
         for state, titles in newspapers_by_state:
             for title in titles:
-                results.append({"lccn": title.lccn, "title: ": title.name, "url": "http://" + host + title.json_url, "state": state})
+                results["newspapers"].append({"lccn": title.lccn, "title: ": title.name, "url": "http://" + host + title.json_url, "state": state})
             
         return HttpResponse(json.dumps(results, indent=2), mimetype='application/json')
     else:
@@ -170,6 +170,9 @@ def search_titles_results(request):
             'itemsPerPage': rows,
             'items': [t.solr_doc for t in page.object_list]
         }
+        # add url for the json view
+        for i in results['items']:
+            i['url'] = 'http://' + request.get_host() + i['id'].rstrip("/") + ".json"
         json_text = json.dumps(results, indent=2)
         # jsonp?
         if request.GET.get('callback') != None:

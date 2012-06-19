@@ -38,9 +38,23 @@ class Awardee(models.Model):
     def url(self):
         return ('chronam_awardee', (), {'institution_code': self.org_code})
 
+    @property 
+    @permalink
+    def json_url(self):
+        return ('chronam_awardee_json', (), {'institution_code': self.org_code})
+
     @property
     def abstract_url(self):
         return self.url.rstrip('/') + '#awardee'
+
+    def json(self, host="chroniclingamerica.loc.gov", serialize=True):
+        j = {
+                "name": self.name,
+                "url": 'http://' + host + self.json_url
+            }
+        if serialize:
+            return json.dumps(j, indent=2)
+        return j
 
     def __unicode__(self):
         return self.name
@@ -1103,6 +1117,11 @@ class OcrDump(models.Model):
 
         return dump
 
+    @property
+    def url(self):
+        path = self.path.replace(settings.STORAGE, settings.STORAGE_URL)
+        return os.path.join(path)
+
     @classmethod
     def last(klass):
         dumps = OcrDump.objects.all().order_by("-sequence")
@@ -1126,6 +1145,18 @@ class OcrDump(models.Model):
     @property
     def path(self):
         return os.path.join(settings.OCR_DUMP_STORAGE, self.name)
+
+    def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
+        j = {
+                "name": self.name,
+                "created": rfc3339(self.created),
+                "size": self.size,
+                "sha1": self.sha1,
+                "url": "http://" + host + self.url
+            }
+        if serialize:
+            return json.dumps(i, indent=2)
+        return j
 
     def __unicode__(self):
         return "path=%s size=%s sha1=%s" % (self.path, self.size, self.sha1)
