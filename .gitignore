@@ -3,4 +3,5 @@ ENV
 data/batches
 data/
 settings.py
+*.log
 
