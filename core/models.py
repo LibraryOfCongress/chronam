@@ -13,7 +13,7 @@ from cStringIO import StringIO
 from rfc3339 import rfc3339
 from lxml import etree
 
-from django.db import models 
+from django.db import models
 from django.db.models import permalink, Q
 from django.utils import datetime_safe
 from django.conf import settings
@@ -25,7 +25,7 @@ class Awardee(models.Model):
     name = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
 
-    @property 
+    @property
     def batch_count(self):
         return Batch.objects.filter(awardee__org_code=self.org_code).count()
 
@@ -95,7 +95,7 @@ class Batch(models.Model):
     @property
     def path(self):
         """Absolute path of batch directory"""
-        return os.path.join(settings.BATCH_STORAGE, self.awardee.org_code, 
+        return os.path.join(settings.BATCH_STORAGE, self.awardee.org_code,
                             self.name, "data")
 
     @property
@@ -109,16 +109,16 @@ class Batch(models.Model):
     def validated_batch_url(self):
         return urlparse.urljoin(self.storage_url, self.validated_batch_file)
 
-    @property 
+    @property
     def validated_batch_file_relative_path(self):
-        return os.path.join(self.awardee.org_code, self.name, 
+        return os.path.join(self.awardee.org_code, self.name,
                             "data", self.validated_batch_file)
 
     @property
     def bag_relative_path(self):
         return os.path.join(self.awardee.org_code, self.name, "")
 
-    @property 
+    @property
     def page_count(self):
         return Page.objects.filter(issue__batch__name=self.name).count()
 
@@ -176,7 +176,6 @@ class Batch(models.Model):
        else:
            return b
 
-
     def __unicode__(self):
         return self.full_name
 
@@ -191,13 +190,13 @@ class LoadBatchEvent(models.Model):
     def get_batch(self):
         """
         get_batch looks up the Batch which an event is associated with
-        in the case of purged batches it's quite possible that the 
+        in the case of purged batches it's quite possible that the
         batch no longer exists, in which case this method returns None
         """
         try:
-            return Batch.objects.get(name=self.batch_name) 
+            return Batch.objects.get(name=self.batch_name)
         except Title.DoesNotExist:
-            return None 
+            return None
 
     def __unicode__(self):
         return self.batch_name
@@ -218,7 +217,7 @@ class Title(models.Model):
     start_year = models.CharField(max_length=10)
     end_year = models.CharField(max_length=10)
     country = models.ForeignKey('Country')
-    version = models.DateTimeField() # http://www.loc.gov/marc/bibliographic/bd005.html
+    version = models.DateTimeField()  # http://www.loc.gov/marc/bibliographic/bd005.html
     created = models.DateTimeField(auto_now_add=True)
     has_issues = models.BooleanField(default=False, db_index=True)
 
@@ -246,13 +245,13 @@ class Title(models.Model):
     def has_essays(self):
         return self.essays.count() > 0
 
-    @property 
+    @property
     def first_essay(self):
-        try: 
+        try:
             return self.essays.all()[0]
         except IndexError, e:
             return None
-    
+
     @property
     def last_issue(self):
         try:
@@ -267,7 +266,7 @@ class Title(models.Model):
         except IndexError, e:
             return None
 
-    @property 
+    @property
     def solr_doc(self):
         doc = {
                 'id': self.url,
@@ -321,11 +320,11 @@ class Title(models.Model):
         return False
 
     # TODO: if we took two passes through the title data during title
-    # loading we could link up the Title objects explictly with each 
+    # loading we could link up the Title objects explictly with each
     # other. This would be 'doing the right thing' from a rdbms perspective
     #
-    # For the time being we just extract and store the links, with their 
-    # associated oclc and lccn numbers, and figure out which ones 
+    # For the time being we just extract and store the links, with their
+    # associated oclc and lccn numbers, and figure out which ones
     # we can find at runtime using the preceeding_titles, succeeding_titles,
     # and related_titles helper methods.
 
@@ -336,7 +335,7 @@ class Title(models.Model):
         return self._lookup_title_links(self.preceeding_title_links.all())
 
     def succeeding_titles(self):
-        """uses the succeeding_title_links to look up referenced 
+        """uses the succeeding_title_links to look up referenced
         titles, and returns them as a list
         """
         return self._lookup_title_links(self.succeeding_title_links.all())
@@ -364,30 +363,29 @@ class Title(models.Model):
         titles = []
         # a title link may have a lccn and/or a oclc number
         for link in links:
-            # first look by lccn 
+            # first look by lccn
             if link.lccn:
                 try:
                     t = Title.objects.get(lccn=link.lccn)
                     titles.append(t)
                     continue
                 except Title.DoesNotExist:
-                    pass # oh well, we tried
-            
+                    pass  # oh well, we tried
+
             # look by OCLC number
             if link.oclc:
                 try:
                     t = Title.objects.get(oclc="ocm" + link.oclc)
                     titles.append(t)
                 except:
-                    pass # oh well, we tried again
+                    pass  # oh well, we tried again
 
         return titles
 
     def __unicode__(self):
         # TODO: should edition info go in here if present?
-        return u'%s (%s) %s-%s' % (self.name, self.place_of_publication, 
+        return u'%s (%s) %s-%s' % (self.name, self.place_of_publication,
                                    self.start_year, self.end_year)
-       
 
     class Meta:
         ordering = ['name_normal']
@@ -462,7 +460,7 @@ class MARC(models.Model):
     @permalink
     def url(self):
         return ('chronam_title_marcxml', (), {'lccn': self.title.lccn})
- 
+
 
 class Issue(models.Model):
     date_issued = models.DateField(db_index=True)
@@ -476,12 +474,12 @@ class Issue(models.Model):
 
     def __unicode__(self):
         return "%s [%s]" % (self.title.name, self.date_issued)
-    
+
     @property
     @permalink
     def url(self):
         date = self.date_issued
-        return ('chronam_issue_pages', (), 
+        return ('chronam_issue_pages', (),
                 {'lccn': self.title.lccn,
                  'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
                  'edition': self.edition})
@@ -498,7 +496,7 @@ class Issue(models.Model):
     @property 
     def abstract_url(self):
         return self.url.rstrip('/') + '#issue'
-    
+
     @property
     def first_page(self):
         try:
@@ -528,15 +526,15 @@ class Issue(models.Model):
     def previous(self):
         """return the previous issue to this one (skipping over 'duplicates')"""
         previous_issue = self._previous
-        while previous_issue is not None and previous_issue.date_issued==self.date_issued and previous_issue.edition==self.edition:
+        while previous_issue is not None and previous_issue.date_issued == self.date_issued and previous_issue.edition == self.edition:
             previous_issue = previous_issue._previous
         return previous_issue
-    
+
     @property
     def next(self):
         """return the next issue to this one (skipping over 'duplicates')"""
         next_issue = self._next
-        while next_issue is not None and next_issue.date_issued==self.date_issued and next_issue.edition==self.edition:
+        while next_issue is not None and next_issue.date_issued == self.date_issued and next_issue.edition == self.edition:
             next_issue = next_issue._next
         return next_issue
 
@@ -612,7 +610,7 @@ class Page(models.Model):
     def tiff_abs_filename(self):
         return self._abs_path(self.tiff_filename)
 
-    @property 
+    @property
     def pdf_abs_filename(self):
         return self._abs_path(self.pdf_filename)
 
@@ -634,12 +632,12 @@ class Page(models.Model):
             return None
 
     def _url_parts(self):
-        date = self.issue.date_issued 
+        date = self.issue.date_issued
         return {'lccn': self.issue.title.lccn,
                 'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
                 'edition': self.issue.edition,
                 'sequence': self.sequence}
- 
+
     @property
     @permalink
     def url(self):
@@ -683,26 +681,29 @@ class Page(models.Model):
     def solr_doc(self):
         date = self.issue.date_issued
         date = "%4i%02i%02i" % (date.year, date.month, date.day)
-        # start with basic title data 
+        # start with basic title data
         doc = self.issue.title.solr_doc
         # no real need to repeat this stuff in pages
         del doc['essay']
         del doc['url']
         del doc['holding_type']
-        try:
-            ocr_text = self.ocr.text
-        except OCR.DoesNotExist:
-            ocr_text = None
         doc.update({
-            'id': self.url, 
-            'type': 'page', 
+            'id': self.url,
+            'type': 'page',
             'batch': self.issue.batch.name,
-            'date': date, 
+            'date': date,
             'page': self.number,
-            'sequence': self.sequence, 
+            'sequence': self.sequence,
             'section_label': self.section_label,
             'edition_label': self.issue.edition_label,
-            'ocr': ocr_text})
+            })
+        try:
+            ocr_texts = self.ocr.language_texts.select_related().values('language__code', 'text')
+        except OCR.DoesNotExist:
+            ocr_texts = None
+        for ocr_text in ocr_texts:
+            doc.update({
+                'ocr_%s' % (ocr_text['language__code']): ocr_text['text']})
         return doc
 
     def previous(self):
@@ -712,9 +713,9 @@ class Page(models.Model):
         previous_page = None
         pages = list(self.issue.pages.all().order_by("-sequence"))
         i = pages.index(self)
-        if i>=0:
-            i+=1
-            if i<len(pages):
+        if i >= 0:
+            i += 1
+            if i < len(pages):
                 previous_page = pages[i]
         return previous_page
 
@@ -725,15 +726,15 @@ class Page(models.Model):
         next_page = None
         pages = list(self.issue.pages.all().order_by("sequence"))
         i = pages.index(self)
-        if i>=0:
-            i+=1
-            if i<len(pages):
+        if i >= 0:
+            i += 1
+            if i < len(pages):
                 next_page = pages[i]
         return next_page
 
     @classmethod
     def lookup(cls, page_id):
-        """ 
+        """
         a quick page lookup using URL path, which happens to be what solr
         uses as its document ID.
         """
@@ -746,9 +747,9 @@ class Page(models.Model):
 
         # unfortunately there can be more than one
         # default to the latest one
-        q = Page.objects.filter(issue__title__lccn=lccn, 
-                                    issue__date_issued=date, 
-                                    issue__edition=edition, 
+        q = Page.objects.filter(issue__title__lccn=lccn,
+                                    issue__date_issued=date,
+                                    issue__edition=edition,
                                     sequence=sequence)
         pages = q.order_by('-issue__date_issued').all()
         if len(pages) == 0:
@@ -783,17 +784,27 @@ class Page(models.Model):
         pass
 
 
-class OCR(models.Model):
+class LanguageText(models.Model):
     text = models.TextField()
+    language = models.ForeignKey('Language', null=True)
+    ocr = models.ForeignKey('OCR', related_name="language_texts")
+
+
+class OCR(models.Model):
     word_coordinates_json = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     page = models.OneToOneField('Page', null=True, related_name='ocr')
 
     def __get_word_coordinates(self):
         return json.loads(self.word_coordinates_json)
+
     def __set_word_coordinates(self, word_coordinates):
         self.word_coordinates_json = json.dumps(word_coordinates)
     word_coordinates = property(__get_word_coordinates, __set_word_coordinates)
+
+    @property
+    def text(self):
+        return (' '.join([obj.text for obj in self.language_texts.all()]))
 
 
 class PublicationDate(models.Model):
@@ -819,7 +830,7 @@ class Place(models.Model):
     def __unicode__(self):
         return u"%s, %s, %s" % (self.city, self.county, self.state)
 
-    class Meta: 
+    class Meta:
         ordering = ('name',)
 
 
@@ -901,18 +912,18 @@ class Holding(models.Model):
     description = models.TextField()
     type = models.CharField(null=True, max_length=25)
     institution = models.ForeignKey('Institution', related_name='holdings')
-    last_updated = models.CharField(null=True, max_length=10) 
+    last_updated = models.CharField(null=True, max_length=10)
     title = models.ForeignKey('Title', related_name='holdings')
     created = models.DateTimeField(auto_now_add=True)
 
     def description_as_list(self):
         l = re.findall(r'<.+?>', self.description)
-        if l: 
+        if l:
             return l
         return [self.description]
 
     def is_summary(self):
-        if self.type == None:
+        if self.type is None:
             return True
         return False
 
@@ -1080,12 +1091,12 @@ class FlickrUrl(models.Model):
 
 class Reel(models.Model):
     number = models.CharField(max_length=50)
-    batch = models.ForeignKey('Batch', related_name='reels') 
+    batch = models.ForeignKey('Batch', related_name='reels')
     created = models.DateTimeField(auto_now_add=True)
 
     # not explicit mentioned in top level batch.xml
-    implicit = models.BooleanField(default=False) 
-    
+    implicit = models.BooleanField(default=False)
+
     def titles(self):
         return Title.objects.filter(issues__pages__reel=self).distinct()
 

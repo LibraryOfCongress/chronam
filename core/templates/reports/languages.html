@@ -1,0 +1,38 @@
+{% extends "reports/reports.html" %}
+
+{% block content %}
+
+<p>
+Below is a list of languages found in newspaper text that are available in Chronicling America.
+</p>
+
+<table class="data">
+    <tr>
+        <th style="width: 20%;">Language</th>
+        <th style="width: 10%;">Code</th>
+        <th style="width: 20%;">Batches</th>
+        <th style="width: 20%;">Title</th>
+        <th style="width: 30%;">Page Count</th>
+    </tr>
+    {% for l in languages %}
+    <tr class="{% cycle 'lightGray' 'white' %}">
+        <td>
+            {{ l.language__name }}
+        </td>
+        <td>
+            {{ l.language__code }}
+        </td>
+        <td>
+            <a href="{% url chronam_language_batches l.language__code %}">batches</a>
+        </td>
+        <td>
+            <a href="{% url chronam_language_titles l.language__code %}">titles</a>
+        </td>
+        <td>
+            {{ l.count }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

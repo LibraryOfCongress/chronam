@@ -1,3 +1,0 @@
-Batch Name, LCCN, Earliest, Latest, Pages
-{% for row in batch_details %}{{ row|join:"," }}
-{% endfor %}

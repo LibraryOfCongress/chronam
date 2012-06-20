@@ -17,5 +17,6 @@ from reports import reports, batches, batches_atom, batches_json, batch_rdf, \
     awardee, awardee_json, essays, essay, events, event, events_atom, \
     pages_on_flickr, status, institutions, institution, states, \
     states_counties, counties_in_state, cities_in_state, cities_in_county, \
-    batch_summary, institution_titles, terms, ocr, ocr_atom, ocr_json, \
-    issue_pages_json, page_json, title_json
+    batch_summary, institution_titles, terms, ocr, ocr_json, ocr_atom, \
+    title_json, issue_pages_json, page_json, languages, language_batches, \
+    language_titles, language_pages
