@@ -67,7 +67,7 @@ urlpatterns += patterns(
     url(r'^help/$', 'help', name="chronam_help"),
 
     # explainOCR.html
-    url(r'^ocr/$', 'ocr', name="ocr"),
+    url(r'^ocr/$', 'ocr', name="chronam_ocr"),
 
     # API docs
     url(r'^about/api/$', 'about_api', name="chronam_about_api"),
