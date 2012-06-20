@@ -147,8 +147,10 @@ class Batch(models.Model):
         # manually delete any OcrDump associated with this batch
         # since a Batch.delete doesn't seem to trigger a OcrDump.delete
         # and we need OcrDump.delete to clean up the filesystem
-        if self.ocr_dump:
+        try:
             self.ocr_dump.delete()
+        except OcrDump.DoesNotExist, e:
+            logging.warn("no OcrDump to delete for %s", self)
         super(Batch, self).delete(*args, **kwargs)
 
     def json(self, include_issues=True, serialize=True, host="chroniclingamerica.loc.gov"):
