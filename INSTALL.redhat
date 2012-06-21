@@ -45,11 +45,14 @@ mv apache-solr-1.4.1/example/ /opt/solr-1.4.1
 cp ${CHRONAM_HOME}/conf/schema.xml /opt/solr-1.4.1/solr/conf/schema.xml
 cp ${CHRONAM_HOME}/conf/solrconfig-centos.xml /opt/solr-1.4.1/solr/conf/solrconfig.xml
 
-useradd -d /opt/solr-1.4.1 -s /sbin/false solr
+useradd -d /opt/solr-1.4.1 -s /bin/bash solr
 chown solr:solr -R /opt/solr-1.4.1
-chown solr:solr -R /var/log/solr # if you use alternative folder for logs
 
-cp ${CHRONAM_HOME}/conf/jetty6.sh /etc/init.d/
+cp ${CHRONAM_HOME}/conf/jetty6.sh /etc/init.d/jetty
+chmod +x /etc/init.d/jetty
+
+cp ${CHRONAM_HOME}/conf/jetty /etc/default/
+cp ${CHRONAM_HOME}/conf/jetty-logging.xml /opt/solr/etc/jetty-logging.xml
 
 sudo service jetty start
 
