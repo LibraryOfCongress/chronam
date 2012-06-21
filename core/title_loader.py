@@ -21,6 +21,7 @@ class TitleLoader(object):
         self.records_updated = 0
         self.records_deleted = 0
         self.missing_lccns = 0
+        self.microform_records = 0
         self.errors = 0
 
     def load_file(self, location, skip=0):
@@ -30,13 +31,17 @@ class TitleLoader(object):
 
         def load_record(record):
             try:
-                self.records_processed += 1
-                if skip > self.records_processed:
-                    _logger.info("skipped %i" % self.records_processed)
-                elif record.leader[5] == 'd':
-                    self.delete_bib(record)
-                elif record.leader[6] == 'a':
-                    self.load_bib(record)
+                # we test to see if it is a record, b/c not
+                # all values returned from OCLC are records.
+                # if it is not a record, we just want to skip it.
+                if record:
+                    self.records_processed += 1
+                    if skip > self.records_processed:
+                        _logger.info("skipped %i" % self.records_processed)
+                    elif record.leader[5] == 'd':
+                        self.delete_bib(record)
+                    elif record.leader[6] == 'a':
+                        self.load_bib(record)
 
             except Exception, e:
                 _logger.error("unable to load: %s" % e)
@@ -47,8 +52,8 @@ class TitleLoader(object):
             times.append(seconds)
 
             if self.records_processed % 1000 == 0:
-            	_logger.info("processed %sk records in %.2f seconds" % 
-                             (self.records_processed/1000, seconds))
+                _logger.info("processed %sk records in %.2f seconds" %
+                             (self.records_processed / 1000, seconds))
 
         map_xml(load_record, urllib2.urlopen(location))
 
@@ -58,40 +63,54 @@ class TitleLoader(object):
         # we must have an lccn, but it's not an error if we don't find one
         lccn_orig = _extract(record, '010', 'a')
         lccn = _normal_lccn(lccn_orig)
+
         if not lccn:
+            #_logger.info("###### LCCN in OCLC pull, \
+            #              but not in database. Missing LCCN. ######")
+            #_logger.info(record)
             self.missing_lccns += 1
             return
-      
-        s = _extract(record, '005')
-        parts = s.split(".")
-        dt = datetime.datetime(*strptime(parts[0], '%Y%m%d%H%M%S')[0:6])
-        dt.replace(microsecond=int(parts[1]))
 
-        # it's remotely possible that a title with the LCCN already exists 
+        # records with 245 $h[microform] or [microfilm]
+        # are "incorrect" for NDNP purposes.
+        # additional formats (microfilm) are described in
+        # holdings rather than in unique records.
+        # so, we skip over these records.
+        micro_value = _extract(record, '245', 'h')
+        micro_check = ('microform', 'microfilm')
+
+        if micro_value:
+            check = [i for i in micro_check if i in micro_value]
+            if check:
+                _logger.warning('Microform/Microfilm invader in data load: %s' % lccn)
+                self.microform_records += 1
+                #return
+
+        # newer marc xml sets pulled from OCLC do not have the 005 control
+        # field. 005 is the date and time of the last transaction.
+        try:
+            s = _extract(record, '005')
+            parts = s.split(".")
+            dt = datetime.datetime(*strptime(parts[0], '%Y%m%d%H%M%S')[0:6])
+        except AttributeError:
+            dt = datetime.datetime.now()
+
+        #dt.replace(microsecond=int(parts[1]))
+
+        # it's remotely possible that a title with the LCCN already exists
         try:
             title = models.Title.objects.get(lccn=lccn)
             _logger.debug("Found another record for lccn: %s" % lccn)
-            if title.version==dt:
+            if title.version == dt:
                 _logger.debug("    with the same timestamp: %s" % title.version)
-                return # skip over this record with same timestamp
+                return  # skip over this record with same timestamp
             elif title.version < dt:
                 _logger.debug("    with newer timestamp: %s vs %s" % (title.version, dt))
-                # TODO: it should be possible to update the title in place
-                # without deleting it. A delete of the Title deletes all
-                # the issues and pages associated with it...which is bad
-                if title.has_issues:
-                    _logger.warn("title %s has issues can't update record without deleting issues!" % title)
-                    batches = models.Batch.objects.filter(issues__title__lccn=title.lccn).distinct()
-                    _logger.warn("  batches containing the title: %s" % list(batches))
-                    return
-
-                title.delete()
-                title = models.Title(lccn=lccn)
                 title.version = dt
                 self.records_updated += 1
             elif title.version > dt:
                 _logger.debug("    with older timestamp: %s vs %s" % (title.version, dt))
-                return # skip over older record
+                return  # skip over older record
             else:
                 _logger.error("Logic error... this should be unreachable.")
         except models.Title.DoesNotExist:
@@ -104,7 +123,7 @@ class TitleLoader(object):
         title.oclc = self._extract_oclc(record)
         title.edition = _extract(record, '250', 'a')
         title.place_of_publication = _extract(record, '260', 'a')
-        title.publisher = _extract(record, '260', 'b') 
+        title.publisher = _extract(record, '260', 'b')
         title.frequency = _extract(record, '310', 'a')
         title.frequency_date = _extract(record, '310', 'b')
         title.issn = _extract(record, '022', 'a')
@@ -126,9 +145,8 @@ class TitleLoader(object):
         self._extract_urls(record, title)
         title.save()
 
-        marc = models.MARC()
+        marc, marc_created = models.MARC.objects.get_or_create(title=title)
         marc.xml = record_to_xml(record)
-        marc.title = title
         marc.save()
 
         # for context see: https://rdc.lctl.gov/trac/ndnp/ticket/375
@@ -147,7 +165,7 @@ class TitleLoader(object):
         _logger.info("trying to delete title record for %s" % lccn)
         try:
             title = models.Title.objects.get(lccn=lccn)
-            # XXX: a safety to avoid deleting issue data that is 
+            # XXX: a safety to avoid deleting issue data that is
             # attached to a title
             if title.issues.count() == 0:
                 _logger.info("deleting title for %s" % lccn)
@@ -211,59 +229,72 @@ class TitleLoader(object):
         title.places = places
 
     def _extract_publication_dates(self, record, title):
-        pubdates = []
         for field in record.get_fields('362'):
             text = field['a']
-            if text == None: 
-              continue
-            pubdate = models.PublicationDate()
-            pubdate.text = text
-            pubdates.append(pubdate)
-        title.publication_dates = pubdates
+            if text == None:
+                continue
+            pubdate = models.PublicationDate.objects.get_or_create(
+                                            text=text,
+                                            titles=title
+                                            )
 
     def _extract_subjects(self, record, title):
         subjects = []
         for field in record.get_fields('650', '651'):
-            heading = '--'.join([v for k,v in field])
+            heading = '--'.join([v for k, v in field])
             if field.tag == '650':
                 type = 't'
             else:
                 type = 'g'
             # many-to-many relationship between titles and subjects
             subject, found = models.Subject.objects.get_or_create(
-                heading = heading, 
-                type    = type
+                heading=heading,
+                type=type
             )
             subjects.append(subject)
         title.subjects = subjects
 
     def _extract_notes(self, record, title):
-        notes = []
         for field in record.fields:
             if field.tag.startswith('5') and field['a']:
-                notes.append(models.Note(text=field['a'], type=field.tag))
-        title.notes = notes
+                note, note_created = models.Note.objects.get_or_create(
+                                        text=field['a'],
+                                        type=field.tag,
+                                        title=title
+                                        )
 
     def _extract_preceeding_titles(self, record, title):
-        links = []
         for f in record.get_fields('780'):
-            links.append(self._unpack_link(models.PreceedingTitleLink, f))
-        title.preceeding_title_links = links
+            link_obj = self._unpack_link(models.PreceedingTitleLink, f)
+            link, link_created = models.PreceedingTitleLink.objects.get_or_create(
+                                        name=link_obj.name,
+                                        lccn=link_obj.lccn,
+                                        oclc=link_obj.oclc,
+                                        title=title
+                                        )
 
     def _extract_succeeding_titles(self, record, title):
-        links = []
         for f in record.get_fields('785'):
-            links.append(self._unpack_link(models.SucceedingTitleLink, f))
-        title.succeeding_title_links = links
+            link_obj = self._unpack_link(models.SucceedingTitleLink, f)
+            link, link_created = models.SucceedingTitleLink.objects.get_or_create(
+                                        name=link_obj.name,
+                                        lccn=link_obj.lccn,
+                                        oclc=link_obj.oclc,
+                                        title=title
+                                        )
 
     def _extract_related_titles(self, record, title):
-        links = []
         for f in record.get_fields('775'):
-            links.append(self._unpack_link(models.RelatedTitleLink, f))
-        title.related_title_links = links
+            link_obj = self._unpack_link(models.RelatedTitleLink, f)
+            link, link_created = models.RelatedTitleLink.objects.get_or_create(
+                                        name=link_obj.name,
+                                        lccn=link_obj.lccn,
+                                        oclc=link_obj.oclc,
+                                        title=title
+                                        )
 
     def _extract_alt_titles(self, record, title):
-        alt_titles= []
+        alt_titles = []
 
         for field in record.get_fields('246'):
             alt = models.AltTitle(name=field['a'])
@@ -271,17 +302,20 @@ class TitleLoader(object):
                 alt.name += field['b']
             if field['f']:
                 alt.date = field['f']
-            alt.title = title
             alt_titles.append(alt)
 
         # also add non-analytic added entries as alternate titles
         for field in record.get_fields('740'):
             if field.indicators[1] == ' ':
                 alt = models.AltTitle(name=field['a'])
-                alt.title = title
                 alt_titles.append(alt)
 
-        title.alt_titles = alt_titles
+        for alt_title in alt_titles:
+            alt_obj, alt_created = models.AltTitle.objects.get_or_create(
+                                        name=alt_title.name,
+                                        date=alt_title.date,
+                                        title=title
+                                        )
 
     def _extract_country(self, record):
         country_code = record['008'].data[15:18]
@@ -309,15 +343,19 @@ class TitleLoader(object):
         # in the 001, and with OCLC numbers in the 035 field
         if oclc and not oclc.startswith('ocm'):
             oclc = _extract(record, '035', 'a')
+
         return _normal_oclc(oclc)
 
     def _extract_urls(self, record, title):
-        urls = []
         for field in record.get_fields('856'):
             i2 = field.indicators[1]
             for url in field.get_subfields('u'):
-                urls.append(models.Url(value=url, type=i2))
-        title.urls = urls
+                url_obj, url_created = models.Url.objects.get_or_create(
+                                            value=url,
+                                            type=i2,
+                                            title=title
+                                            )
+
 
 def _extract(record, field, subfield=None):
     value = None
@@ -332,13 +370,16 @@ def _extract(record, field, subfield=None):
         pass
     return value
 
+
 def _clean(value):
     return sub(r'[ /:,]+$', '', value)
+
 
 def _normal_place(value):
     if value == None:
         return None
     return sub(r'\.$', '', value)
+
 
 def _normal_year(value):
     if value == None:
@@ -347,17 +388,19 @@ def _normal_year(value):
         return 'current'
     return sub(r'u', '?', value)
 
+
 def _normal_lccn(value):
     if value == None:
         return None
     return value.replace(' ', '')
 
+
 def _normal_oclc(value):
-    """attempt to normalize an oclc number that can appear in a variety of 
+    """attempt to normalize an oclc number that can appear in a variety of
     ways in the MARC record. Important to get this right since it is how
     holdings records are attached to the title records
 
-    See: http://info-uri.info/registry/OAIHandler?verb=GetRecord&metadataPrefix=reg&identifier=info:oclcnum/ 
+    See: http://info-uri.info/registry/OAIHandler?verb=GetRecord&metadataPrefix=reg&identifier=info:oclcnum/
     for information about normalizing OCLC numbers.
     """
     value = value.replace(' ', '')
@@ -365,6 +408,7 @@ def _normal_oclc(value):
     value = value.lstrip('ocm')
     value = value.lstrip('0')
     return value
+
 
 def _is_chronam_electronic_resource(title, record):
     # delete the Title if it is for an electronic resource
@@ -379,11 +423,12 @@ def _is_chronam_electronic_resource(title, record):
             return True
     return False
 
+
 def nsplit(s, n):
     """returns a string split up into sequences of length n
     http://mail.python.org/pipermail/python-list/2005-August/335131.html
     """
-    return [s[k:k+n] for k in xrange(0, len(s), n)]
+    return [s[k:k + n] for k in xrange(0, len(s), n)]
 
 
 class TitleLoaderException(RuntimeError):
@@ -401,4 +446,10 @@ def load(location):
     _logger.info("records updated: %i" % loader.records_updated)
     _logger.info("errors: %i" % loader.errors)
     _logger.info("missing lccns: %i" % loader.missing_lccns)
+    _logger.info("microform records: %i" % loader.microform_records)
 
+    return (loader.records_processed,
+            loader.records_created,
+            loader.records_updated,
+            loader.errors,
+            loader.missing_lccns)
