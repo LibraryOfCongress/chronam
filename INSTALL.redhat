@@ -52,7 +52,7 @@ cp ${CHRONAM_HOME}/conf/jetty6.sh /etc/init.d/jetty
 chmod +x /etc/init.d/jetty
 
 cp ${CHRONAM_HOME}/conf/jetty /etc/default/
-cp ${CHRONAM_HOME}/conf/jetty-logging.xml /opt/solr/etc/jetty-logging.xml
+cp ${CHRONAM_HOME}/conf/jetty-logging.xml /opt/solr-1.4.1/etc/jetty-logging.xml
 
 sudo service jetty start
 
