@@ -45,11 +45,13 @@ mv apache-solr-1.4.1/example/ /opt/solr-1.4.1
 cp ${CHRONAM_HOME}/conf/schema.xml /opt/solr-1.4.1/solr/conf/schema.xml
 cp ${CHRONAM_HOME}/conf/solrconfig-centos.xml /opt/solr-1.4.1/solr/conf/solrconfig.xml
 
+useradd -d /opt/solr-1.4.1 -s /sbin/false solr
+chown solr:solr -R /opt/solr-1.4.1
+chown solr:solr -R /var/log/solr # if you use alternative folder for logs
+
 cp ${CHRONAM_HOME}/conf/jetty6.sh /etc/init.d/
-# TODO:
-# sudo ln -s /usr/share/java/lucene-memory.jar /usr/share/solr/WEB-INF/lib/lucene-memory.jar 
-# # edit /etc/default/jetty and change NO_START to 0 
-# sudo service jetty start
+
+sudo service jetty start
 
 
 Configure Aware
