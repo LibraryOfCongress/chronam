@@ -9,7 +9,7 @@ Installation
 System Dependencies
 ===================
 
-sudo yum install mysql-server mysql-devel httpd python-virtualenv gcc libxml2-devel libxslt-devel libjpeg-devel zlib-devel mod_wsgi java-1.6.0-openjdk-devel git # TODO: tomcat6 graphicsmagick libmysqlclient-dev solr-jetty
+sudo yum install mysql-server mysql-devel httpd python-virtualenv gcc libxml2-devel libxslt-devel libjpeg-devel zlib-devel mod_wsgi java-1.6.0-openjdk-devel git
 
 # Note: When you install mysql-server, you will be prompted for a root 
 # password. If you choose one, make a note of what it is. Later you will be 
@@ -27,6 +27,8 @@ cd ${CHRONAM_HOME}
 Create Database
 ===============
 
+cp ${CHRONAM_HOME}/conf/my.cnf /etc/my.cnf
+
 sudo service mysqld start
 
 echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one'; GRANT ALL ON test_chronam.* TO 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root -p
@@ -35,18 +37,44 @@ echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf
 Configure Solr
 ==============
 
-# TODO:
-# sudo cp ${CHRONAM_HOME}/conf/schema.xml /etc/solr/conf/
-# sudo cp ${CHRONAM_HOME}/conf/solrconfig-ubuntu.xml /etc/solr/conf/solrconfig.xml
-# sudo ln -s /usr/share/java/lucene-memory.jar /usr/share/solr/WEB-INF/lib/lucene-memory.jar 
-# # edit /etc/default/jetty and change NO_START to 0 
-# sudo service jetty start
+wget http://www.apache.org/dist/lucene/solr/1.4.1/apache-solr-1.4.1.tgz
+gunzip apache-solr-1.4.1.tgz
+tar xvf apache-solr-1.4.1.tar
+mv apache-solr-1.4.1/example/ /opt/solr-1.4.1
+
+cp ${CHRONAM_HOME}/conf/schema.xml /opt/solr-1.4.1/solr/conf/schema.xml
+cp ${CHRONAM_HOME}/conf/solrconfig-centos.xml /opt/solr-1.4.1/solr/conf/solrconfig.xml
+
+useradd -d /opt/solr-1.4.1 -s /bin/bash solr
+chown solr:solr -R /opt/solr-1.4.1
+
+cp ${CHRONAM_HOME}/conf/jetty6.sh /etc/init.d/jetty
+chmod +x /etc/init.d/jetty
+
+cp ${CHRONAM_HOME}/conf/jetty /etc/default/
+cp ${CHRONAM_HOME}/conf/jetty-logging.xml /opt/solr-1.4.1/etc/jetty-logging.xml
+
+sudo service jetty start
+
+
+Configure Aware
+===============
+
+wget --no-check-certificate --http-user your-username --http-password your-password https://rdc.lctl.gov/svn/ndnp/third-party/j2k-3.18.9-linux-x86-64.tar.gz
+
+tar -zxvf j2k-3.18.9-linux-x86-64.tar.gz
+
+sudo cp j2k-3.18.9-linux-x86-64/include/* /usr/local/include/
+sudo cp j2k-3.18.9-linux-x86-64/lib/libawj2k.so.2.0.1 /usr/local/lib/
+sudo cp j2k-3.18.9-linux-x86-64/lib/libawj2k.so.2.0.1 /usr/local/lib/libawj2k.so
+
+sudo ldconfig -l /usr/local/lib/libawj2k.so
 
 
 Configure Apache
 ================
 
-sudo cp conf/chronam.conf /etc/httpd/conf.d/chronam.conf
+sudo cp ${CHRONAM_HOME}/conf/chronam.conf /etc/httpd/conf.d/chronam.conf
 
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/static
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/.python-eggs
