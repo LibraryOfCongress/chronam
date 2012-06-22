@@ -284,7 +284,15 @@
       "name": "Hmong", 
       "lingvoj": "http://www.lingvoj.org/lang/hmn"
     }
-  }, 
+  },
+  {
+    "pk": "hrv",
+    "model": "core.Language",
+    "fields": {
+      "name": "Croatian",
+      "lingvoj": "http://www.lexvo.org/page/iso639-3/hrv"
+    }
+  },
   {
     "pk": "hun", 
     "model": "core.Language", 
@@ -562,7 +570,15 @@
       "name": "Spanish", 
       "lingvoj": "http://www.lingvoj.org/lang/es"
     }
-  }, 
+  },
+  {
+    "pk": "srp",
+    "model": "core.Language",
+    "fields": {
+      "name": "Serbian",
+      "lingvoj": "http://www.lexvo.org/page/iso639-3/srp"
+    }
+  },
   {
     "pk": "swe", 
     "model": "core.Language", 
