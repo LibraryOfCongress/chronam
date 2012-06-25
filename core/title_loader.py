@@ -30,6 +30,7 @@ class TitleLoader(object):
         times = []
 
         def load_record(record):
+
             try:
                 # we test to see if it is a record, b/c not
                 # all values returned from OCLC are records.
@@ -336,15 +337,38 @@ class TitleLoader(object):
         return link
 
     def _extract_oclc(self, record):
-        # normally the oclc number is in the 001, since we got our data
-        # from OCLC originally
-        oclc = _extract(record, '001')
-        # but somewhere along the way we got records from LC with LCCNs
-        # in the 001, and with OCLC numbers in the 035 field
-        if oclc and not oclc.startswith('ocm'):
-            oclc = _extract(record, '035', 'a')
+        # check for control number identifier of the 001 field
+        cni = _extract(record, '003')
+        
+        # Strip & lower if cni is not NoneType
+        if cni:
+            cni = cni.strip().lower()
+        
+        # Info on codes referred to below: 
+        # http://www.loc.gov/marc/organizations/org-search.php
+        # The first two checks are values found in older version
+        # of title XML. In the third case, the XML is from
+        # OCLC, but has no 003 field, so infer that None means
+        # that the record has an implied 003 field. 
 
+        # dlc = DLC =  Library of Congress
+        if cni == 'dlc':
+            # then the 001 is LCCN, so we want to hit 035 $a.
+            oclc = _extract(record, '035', 'a')
+        
+        # ocolc = OCoLC = OCLC
+        # or
+        # None implies that the 003 should be ocolc, but
+        # it is not explicitly listed.
+        elif (cni == 'ocolc') or (cni == None):
+            oclc = _extract(record, '001')
+        
+        else:
+            # if the script makes it here, we have a problem
+            _logger.info("003 value is not handled by this load script")
+        
         return _normal_oclc(oclc)
+
 
     def _extract_urls(self, record, title):
         for field in record.get_fields('856'):
