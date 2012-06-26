@@ -77,15 +77,15 @@ class TitleLoader(object):
         # additional formats (microfilm) are described in
         # holdings rather than in unique records.
         # so, we skip over these records.
-        micro_value = _extract(record, '245', 'h')
-        micro_check = ('microform', 'microfilm')
+        #micro_value = _extract(record, '245', 'h')
+        #micro_check = ('microform', 'microfilm')
 
-        if micro_value:
-            check = [i for i in micro_check if i in micro_value]
-            if check:
-                _logger.warning('Microform/Microfilm invader in data load: %s' % lccn)
-                self.microform_records += 1
-                #return
+        #if micro_value:
+        #    check = [i for i in micro_check if i in micro_value]
+        #    if check:
+        #        _logger.warning('Microform/Microfilm invader in data load: %s' % lccn)
+        #        self.microform_records += 1
+        #        return
 
         # newer marc xml sets pulled from OCLC do not have the 005 control
         # field. 005 is the date and time of the last transaction.
