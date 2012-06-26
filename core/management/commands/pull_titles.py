@@ -3,8 +3,10 @@ import logging
 from datetime import datetime
 
 from django.core.management.base import BaseCommand
+from django.conf import settings
 
 from chronam.core import title_pull
+
 from chronam.core.management.commands import configure_logging
     
 configure_logging('pull_titles_logging.config', 'pull_titles.log')
@@ -20,7 +22,9 @@ class Command(BaseCommand):
         _logger.info("start time: %s" % start)
 
         search = title_pull.SearchWorldCatTitles()
-        search.run('/opt/chronam/data/oclc/')
+        save_path = '/opt/chronam/data/worldcat_titles/'
+        #save_path = settings.BIB_STORAGE + '/worldcat_titles/'
+        search.run(save_path)
         _logger.info("finished pulling titles from OCLC.")
         
         end = datetime.now()

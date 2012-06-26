@@ -55,17 +55,23 @@ class Command(BaseCommand):
         # only load titles if the BIB_STORAGE is there, not always the case
         # for folks in the opensource world
         if hasattr(settings, "BIB_STORAGE") and os.path.isdir(settings.BIB_STORAGE):
-            # look in BIB_STORAGE for titles to load
+            # look in BIB_STORAGE for original titles to load
             for filename in os.listdir(settings.BIB_STORAGE): 
                 if filename.startswith('titles-') and filename.endswith('.xml'):
                     title_loader.load(os.path.join(settings.BIB_STORAGE, filename))
+
+            # load the most recent pull from worlcat / oclc on top of the
+            # original titles that were loaded
+            worldcat_path = settings.BIB_STORAGE + '/worldcat_titles/'
+            #worldcat_path = '/opt/chronam/data/worldcat_titles/'
+            management.call_command('load_titles', worldcat_path)
 
             # look in BIB_STORAGE for holdings files to load 
             # NOTE: must run after titles are all loaded or else they may 
             # not link up properly
             holding_loader = HoldingLoader()
             for filename in os.listdir(settings.BIB_STORAGE):
-                if filename.startswith('holdings-') and filename.endswith('.xml'):
+                if filename.startswith('holdings-') and filename.endswith('.xml'): 
                     holding_loader.main(
                         os.path.join(settings.BIB_STORAGE, filename))
 
