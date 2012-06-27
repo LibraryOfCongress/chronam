@@ -66,15 +66,20 @@ tar -zxvf j2k-3.18.9-linux-x86-64.tar.gz
 
 sudo cp j2k-3.18.9-linux-x86-64/include/* /usr/local/include/
 sudo cp j2k-3.18.9-linux-x86-64/lib/libawj2k.so.2.0.1 /usr/local/lib/
-sudo cp j2k-3.18.9-linux-x86-64/lib/libawj2k.so.2.0.1 /usr/local/lib/libawj2k.so
+sudo ln -s /usr/local/lib/libawj2k.so.2.0.1 /usr/local/lib/libawj2k.so
 
-sudo ldconfig -l /usr/local/lib/libawj2k.so
+sudo echo "/usr/local/lib" > /etc/ld.so.conf.d/aware.so.conf
+sudo ldconfig /usr/local/lib/
 
 
 Configure Apache
 ================
 
 sudo cp ${CHRONAM_HOME}/conf/chronam.conf /etc/httpd/conf.d/chronam.conf
+
+# The following line is only for the production box which adds the
+# redirect to canonical URL:
+sudo cp ${CHRONAM_HOME}/conf/chronam-canonical.conf /etc/httpd/conf.d/
 
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/static
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/.python-eggs
