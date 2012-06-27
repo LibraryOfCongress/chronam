@@ -1,4 +1,5 @@
 import os
+import os.path
 import re
 import logging
 import urllib2
@@ -83,22 +84,24 @@ class BatchLoader(object):
         #b = urllib2.urlopen(batch.url)
         batch.validated_batch_file = self._find_batch_file(batch)
 
-    def load_batch(self, batch_location, strict=True):
+    def load_batch(self, batch_path, strict=True):
         """Load a batch, and return a Batch instance for the batch
         that was loaded.
 
-          loader.load_batch('batch_curiv_ahwahnee_ver01')
+          loader.load_batch('/path/to/batch_curiv_ahwahnee_ver01')
 
         """
         self.pages_processed = 0
 
-        if re.match(r'batch_\w+_\w+_ver\d\d', batch_location):
-            batch_name = batch_location
+        dirname, batch_name = os.path.split(batch_path)
+        if dirname:
             batch_source = None
+            link_name = os.path.join(settings.BATCH_STORAGE, batch_name)
+            if batch_path != link_name:
+                os.symlink(batch_path, link_name)
         else:
-            batch_name = os.path.basename(batch_location)
             batch_source = urlparse.urljoin(settings.BATCH_STORAGE,
-                                            batch_location)
+                                            batch_name)
             if not batch_source.endswith("/"):
                 batch_source += "/"
 
