@@ -63,7 +63,7 @@ class Command(BaseCommand):
         end = datetime.now()
 
         # Document titles that are not being updated.
-        ts = Title.objects.filter(version__lt=start)
+        ts = Title.objects.filter(version__lt=self.start_time)
         not_updated = ts.count()
         _logger.info("TITLES NOT UPDATED: %i" % not_updated)
 
