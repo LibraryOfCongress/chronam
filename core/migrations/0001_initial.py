@@ -1,13 +1,13 @@
-# encoding: utf-8
+# -*- coding: utf-8 -*-
 import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
+
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
         # Adding model 'Awardee'
         db.create_table('core_awardee', (
             ('org_code', self.gf('django.db.models.fields.CharField')(max_length=50, primary_key=True)),
@@ -23,6 +23,7 @@ class Migration(SchemaMigration):
             ('validated_batch_file', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('awardee', self.gf('django.db.models.fields.related.ForeignKey')(related_name='batches', null=True, to=orm['core.Awardee'])),
             ('released', self.gf('django.db.models.fields.DateTimeField')(null=True)),
+            ('source', self.gf('django.db.models.fields.CharField')(max_length=4096, null=True)),
         ))
         db.send_create_signal('core', ['Batch'])
 
@@ -53,6 +54,7 @@ class Migration(SchemaMigration):
             ('country', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Country'])),
             ('version', self.gf('django.db.models.fields.DateTimeField')()),
             ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('has_issues', self.gf('django.db.models.fields.BooleanField')(default=False, db_index=True)),
         ))
         db.send_create_signal('core', ['Title'])
 
@@ -106,10 +108,18 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('core', ['Page'])
 
+        # Adding model 'LanguageText'
+        db.create_table('core_languagetext', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('text', self.gf('django.db.models.fields.TextField')()),
+            ('language', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Language'], null=True)),
+            ('ocr', self.gf('django.db.models.fields.related.ForeignKey')(related_name='language_texts', to=orm['core.OCR'])),
+        ))
+        db.send_create_signal('core', ['LanguageText'])
+
         # Adding model 'OCR'
         db.create_table('core_ocr', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('text', self.gf('django.db.models.fields.TextField')()),
             ('word_coordinates_json', self.gf('django.db.models.fields.TextField')()),
             ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('page', self.gf('django.db.models.fields.related.OneToOneField')(related_name='ocr', unique=True, null=True, to=orm['core.Page'])),
@@ -196,8 +206,9 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('title', self.gf('django.db.models.fields.TextField')()),
             ('created', self.gf('django.db.models.fields.DateTimeField')()),
+            ('modified', self.gf('django.db.models.fields.DateTimeField')()),
             ('creator', self.gf('django.db.models.fields.related.ForeignKey')(related_name='essays', to=orm['core.Awardee'])),
-            ('filename', self.gf('django.db.models.fields.TextField')()),
+            ('essay_editor_url', self.gf('django.db.models.fields.TextField')()),
             ('html', self.gf('django.db.models.fields.TextField')()),
             ('loaded', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
@@ -353,9 +364,20 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('core', ['Reel'])
 
+        # Adding model 'OcrDump'
+        db.create_table('core_ocrdump', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('sequence', self.gf('django.db.models.fields.IntegerField')(unique=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=25)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('sha1', self.gf('django.db.models.fields.TextField')()),
+            ('size', self.gf('django.db.models.fields.BigIntegerField')()),
+            ('batch', self.gf('django.db.models.fields.related.OneToOneField')(related_name='ocr_dump', unique=True, to=orm['core.Batch'])),
+        ))
+        db.send_create_signal('core', ['OcrDump'])
+
 
     def backwards(self, orm):
-        
         # Deleting model 'Awardee'
         db.delete_table('core_awardee')
 
@@ -379,6 +401,9 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Page'
         db.delete_table('core_page')
+
+        # Deleting model 'LanguageText'
+        db.delete_table('core_languagetext')
 
         # Deleting model 'OCR'
         db.delete_table('core_ocr')
@@ -461,6 +486,9 @@ class Migration(SchemaMigration):
         # Deleting model 'Reel'
         db.delete_table('core_reel')
 
+        # Deleting model 'OcrDump'
+        db.delete_table('core_ocrdump')
+
 
     models = {
         'core.alttitle': {
@@ -482,6 +510,7 @@ class Migration(SchemaMigration):
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '250', 'primary_key': 'True'}),
             'released': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
+            'source': ('django.db.models.fields.CharField', [], {'max_length': '4096', 'null': 'True'}),
             'validated_batch_file': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
         'core.country': {
@@ -494,10 +523,11 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "['title']", 'object_name': 'Essay'},
             'created': ('django.db.models.fields.DateTimeField', [], {}),
             'creator': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'essays'", 'to': "orm['core.Awardee']"}),
-            'filename': ('django.db.models.fields.TextField', [], {}),
+            'essay_editor_url': ('django.db.models.fields.TextField', [], {}),
             'html': ('django.db.models.fields.TextField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'loaded': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'modified': ('django.db.models.fields.DateTimeField', [], {}),
             'title': ('django.db.models.fields.TextField', [], {}),
             'titles': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'essays'", 'symmetrical': 'False', 'to': "orm['core.Title']"})
         },
@@ -570,6 +600,13 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'titles': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'languages'", 'symmetrical': 'False', 'to': "orm['core.Title']"})
         },
+        'core.languagetext': {
+            'Meta': {'object_name': 'LanguageText'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'language': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['core.Language']", 'null': 'True'}),
+            'ocr': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'language_texts'", 'to': "orm['core.OCR']"}),
+            'text': ('django.db.models.fields.TextField', [], {})
+        },
         'core.loadbatchevent': {
             'Meta': {'object_name': 'LoadBatchEvent'},
             'batch_name': ('django.db.models.fields.CharField', [], {'max_length': '250'}),
@@ -599,8 +636,17 @@ class Migration(SchemaMigration):
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'page': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'ocr'", 'unique': 'True', 'null': 'True', 'to': "orm['core.Page']"}),
-            'text': ('django.db.models.fields.TextField', [], {}),
             'word_coordinates_json': ('django.db.models.fields.TextField', [], {})
+        },
+        'core.ocrdump': {
+            'Meta': {'object_name': 'OcrDump'},
+            'batch': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'ocr_dump'", 'unique': 'True', 'to': "orm['core.Batch']"}),
+            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '25'}),
+            'sequence': ('django.db.models.fields.IntegerField', [], {'unique': 'True'}),
+            'sha1': ('django.db.models.fields.TextField', [], {}),
+            'size': ('django.db.models.fields.BigIntegerField', [], {})
         },
         'core.page': {
             'Meta': {'ordering': "('sequence',)", 'object_name': 'Page'},
@@ -700,6 +746,7 @@ class Migration(SchemaMigration):
             'end_year': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
             'frequency': ('django.db.models.fields.CharField', [], {'max_length': '250', 'null': 'True'}),
             'frequency_date': ('django.db.models.fields.CharField', [], {'max_length': '250', 'null': 'True'}),
+            'has_issues': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'db_index': 'True'}),
             'issn': ('django.db.models.fields.CharField', [], {'max_length': '15', 'null': 'True'}),
             'lccn': ('django.db.models.fields.CharField', [], {'max_length': '25', 'primary_key': 'True'}),
             'lccn_orig': ('django.db.models.fields.CharField', [], {'max_length': '25'}),
