@@ -1,6 +1,6 @@
 import os
 import logging
-
+from datetime import datetime
 from optparse import make_option
 
 from django.core import management
@@ -46,6 +46,7 @@ class Command(BaseCommand):
             _logger.warn("Database or index not empty as expected.")
             return
 
+        start = datetime.now()
         management.call_command('loaddata', 'languages.json')
         management.call_command('loaddata', 'institutions.json')
         management.call_command('loaddata', 'ethnicities.json')
@@ -59,12 +60,6 @@ class Command(BaseCommand):
             for filename in os.listdir(settings.BIB_STORAGE): 
                 if filename.startswith('titles-') and filename.endswith('.xml'):
                     title_loader.load(os.path.join(settings.BIB_STORAGE, filename))
-
-            # load the most recent pull from worlcat / oclc on top of the
-            # original titles that were loaded
-            worldcat_path = settings.BIB_STORAGE + '/worldcat_titles/'
-            #worldcat_path = '/opt/chronam/data/worldcat_titles/'
-            management.call_command('load_titles', worldcat_path)
 
             # look in BIB_STORAGE for holdings files to load 
             # NOTE: must run after titles are all loaded or else they may 
@@ -85,6 +80,21 @@ class Command(BaseCommand):
 
         index.index_titles()
 
+        _logger.info('Starting OCLC title update.')
+        # This is placed after the original update, because there are a couple of
+        # bugs to figure out between the two. This will be 
+        # handled in 3.5 or 3.6
+        # load the most recent pull from worlcat / oclc on top of the
+        # original titles that were loaded
+        worldcat_path = settings.BIB_STORAGE + '/worldcat_titles/'
+        #worldcat_path = '/opt/chronam/data/worldcat_titles/'
+        management.call_command('load_titles', worldcat_path)
+        
+        end = datetime.now()
+        total_time = start - end
+        _logger.info('start time: %s' % start)
+        _logger.info('end time: %s' % end)
+        _logger.info('total time: %s' % total_time)
         _logger.info("chronam_sync done.")
 
     def load_place_links(self):

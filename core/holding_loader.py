@@ -341,7 +341,7 @@ class HoldingLoader:
         _logger.info("Desc issues: %i" % loader.desc_error)
         _logger.info("Holdings saved: %i" % loader.holding_created)
         _logger.info("No oclc number: %i" % loader.no_oclc)
-        _logger.info("Strp = 'n': %i" % loader.n)
+        #_logger.info("Strp = 'n': %i" % loader.n)
         _logger.info("Files processed: %i" % loader.files_processed)
 
 
