@@ -20,5 +20,4 @@ django-celery
 django-kombu
 
 # Used in OCLC title pull
-requests
 worldcat
