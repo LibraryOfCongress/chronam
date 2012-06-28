@@ -51,7 +51,7 @@ class Command(BaseCommand):
         self.total_errors += results[3]
         self.total_missing_lccns += results[4]
 
-    def log_stats():
+    def log_stats(self):
         _logger.info("############### TOTAL RESULTS ############")
         _logger.info("TITLE RECORDS PROCESSED: %i" % self.total_processed)
         _logger.info("NEW TITLES CREATED: %i" % self.total_created)
