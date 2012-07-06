@@ -27,15 +27,16 @@ class Command(BaseCommand):
         self.total_missing_lccns = 0
         self.files_processed = 0
         self.start_time = datetime.now()
+        self.xml_start = datetime.now()
 
     def xml_file_handler(self, marc_xml):
-
+        self.xml_start = datetime.now()
         _logger.info("loading marcxml title records from %s" % marc_xml)
         results = title_loader.load(marc_xml)
 
         # need to index any titles that we just created
         _logger.info("indexing new titles")
-        index_titles(since=self.start_time)
+        index_titles(since=self.xml_start)
         _logger.info("finished loading marcxml titles from %s" % marc_xml)
 
         return results
