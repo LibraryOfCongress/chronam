@@ -191,6 +191,14 @@
     }
   }, 
   {
+    "pk": "esk", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Northwest Alaska Inupiatun", 
+      "lingvoj": "http://www.lexvo.org/page/iso639-3/esk"
+    }
+  }, 
+  {
     "pk": "est", 
     "model": "core.Language", 
     "fields": {
@@ -458,7 +466,24 @@
       "name": "Navajo", 
       "lingvoj": "http://www.lingvoj.org/lang/nv"
     }
+  },
+  {
+    "pk": "nch",
+    "model": "core.Language",
+    "fields": {
+      "name": "Central Huasteca Nahuatl",
+      "lingvoj": "http://www.lexvo.org/page/iso639-3/nch"
+    }
+  },
+  {
+    "pk": "neg", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Negidal", 
+      "lingvoj": "http://www.lexvo.org/page/iso639-3/neg"
+    }
   }, 
+ 
   {
     "pk": "nor", 
     "model": "core.Language", 
@@ -497,6 +522,14 @@
     "fields": {
       "name": "Portuguese", 
       "lingvoj": "http://www.lingvoj.org/lang/pt"
+    }
+  }, 
+  {
+    "pk": "psa", 
+    "model": "core.Language", 
+    "fields": {
+      "name": "Asue Awyu", 
+      "lingvoj": "http://www.lexvo.org/page/iso639-3/psa"
     }
   }, 
   {
