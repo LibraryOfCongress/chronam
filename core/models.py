@@ -83,20 +83,13 @@ class Batch(models.Model):
         if source:
             u = urlparse.urljoin(source, "data/")
         else:
-            storage = settings.BATCH_STORAGE
-            if not storage.endswith("/"):
-                storage += "/"
-            u = urlparse.urljoin("file:", storage)
-            u = urlparse.urljoin(u, "%s/" % self.awardee.org_code)
-            u = urlparse.urljoin(u, "%s/" % self.name)
-            u = urlparse.urljoin(u, "data/")
+            u = urlparse.urljoin("file:", self.path)
         return u
 
     @property
     def path(self):
         """Absolute path of batch directory"""
-        return os.path.join(settings.BATCH_STORAGE, self.awardee.org_code,
-                            self.name, "data")
+        return os.path.join(settings.BATCH_STORAGE, self.name, "data/")
 
     @property
     def full_name(self):
