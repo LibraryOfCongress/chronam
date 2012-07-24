@@ -241,10 +241,10 @@ class SearchWorldCatTitles:
 
                 file_location = data_save_path + filename
 
-                file = open(file_location, "w")
+                save_file = open(file_location, "w")
                 decoded_data = bib_resp.data.decode("utf-8")
-                file.write(decoded_data.encode('ascii', 'xmlcharrefreplace'))
-                file.close()
+                save_file.write(decoded_data.encode('ascii', 'xmlcharrefreplace'))
+                save_file.close()
 
                 try:
                     previous_next = next
