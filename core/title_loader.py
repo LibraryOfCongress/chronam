@@ -6,7 +6,7 @@ from re import sub
 from time import time, strptime
 
 from pymarc import map_xml, record_to_xml
-from django.db import transaction, reset_queries
+from django.db import reset_queries
 
 from chronam.core import models
 

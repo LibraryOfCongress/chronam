@@ -22,8 +22,7 @@ class Command(BaseCommand):
         _logger.info("start time: %s" % start)
 
         search = title_pull.SearchWorldCatTitles()
-        save_path = '/opt/chronam/data/worldcat_titles/'
-        #save_path = settings.BIB_STORAGE + '/worldcat_titles/'
+        save_path = settings.BIB_STORAGE + '/worldcat_titles/'
         search.run(save_path)
         _logger.info("finished pulling titles from OCLC.")
         
