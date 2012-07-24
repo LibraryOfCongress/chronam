@@ -2,17 +2,12 @@ import datetime
 import itertools
 import logging
 import os
-import requests
-import StringIO
-import sys
-import time
 import types
-import urllib
 
 from django.conf import settings
 
 from worldcat.request.search import SRURequest
-from worldcat.util.extract import extract_elements, pymarc_extract
+from worldcat.util.extract import extract_elements
 
 WSKEY = settings.WORLDCAT_KEY
 sortkeys = 'Date,,0'
@@ -189,6 +184,7 @@ class SearchWorldCatTitles:
             grab_records = True
             counter = 0
             bib_request, total, cntry, divider, operator = bib_rec
+            previous_next = None
 
             while grab_records:
                 bib_resp = next_record = next = end = start = None
@@ -234,10 +230,10 @@ class SearchWorldCatTitles:
                     os.makedirs(data_save_path)
 
                 filename = '%s_%s_%s_%s_%s_to_%s.xml' % (search_name,
-                                                      cntry.replace(' ', '-'),
-                                                      divider,
-                                                      OPERATOR_MAP[operator],
-                                                      str(start), str(end))
+                                                         cntry.replace(' ', '-'),
+                                                         divider,
+                                                         OPERATOR_MAP[operator],
+                                                         str(start), str(end))
 
                 file_location = data_save_path + filename
 

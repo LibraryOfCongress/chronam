@@ -1,8 +1,5 @@
 import logging
 
-from datetime import datetime
-import os
-
 from django.core.management.base import BaseCommand
 
 from chronam.core.holding_loader import HoldingLoader
