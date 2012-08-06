@@ -125,6 +125,9 @@ class TitleLoader(object):
         title.languages.clear()
         title.places.clear()
 
+        #TODO: Add a check to the title load that deletes all m2m in subjects and 
+        # places, to keep from lonely m2m records hanging out 
+
         # delete fk relationships
         # these will come from the extraction
         title.publication_dates.all().delete()
