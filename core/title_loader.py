@@ -118,7 +118,24 @@ class TitleLoader(object):
             self.records_created += 1
             title = models.Title(lccn=lccn)
             title.version = dt
+        
+        # clear m2m relationships
+        # these will come from the extraction
+        title.subjects.clear()
+        title.languages.clear()
+        title.places.clear()
 
+        # delete fk relationships
+        # these will come from the extraction
+        title.publication_dates.all().delete()
+        title.notes.all().delete()
+        title.alt_titles.all().delete()
+        title.succeeding_title_links.all().delete()
+        title.preceeding_title_links.all().delete()
+        title.related_title_links.all().delete()
+        title.urls.all().delete()
+        
+        # update title fields 
         self._set_name(record, title)
         title.lccn_orig = lccn_orig
         title.oclc = self._extract_oclc(record)
@@ -134,6 +151,7 @@ class TitleLoader(object):
         title.country = self._extract_country(record)
         title.save()
 
+        # update fk relationships with new values
         self._extract_languages(record, title)
         self._extract_places(record, title)
         self._extract_publication_dates(record, title)
@@ -176,6 +194,7 @@ class TitleLoader(object):
                 _logger.warn("not deleting title %s it has issue data" % lccn)
         except models.Title.DoesNotExist:
             _logger.warn("no such title %s to delete" % lccn)
+        return
 
     def _set_name(self, record, title):
         f245 = record['245']
@@ -193,6 +212,7 @@ class TitleLoader(object):
         # strip of leading The, An, A, etc if present
         if f245.indicators[1] != '0':
             title.name_normal = title.name_normal[int(f245.indicators[1]):]
+        return
 
     def _extract_languages(self, record, title):
         code = _extract(record, '008')[35:38]
@@ -207,6 +227,7 @@ class TitleLoader(object):
                     except models.Language.DoesNotExist:
                         _logger.error('missing language for %s' % c)
         title.languages = langs
+        return
 
     def _extract_places(self, record, title):
         places = []
@@ -228,16 +249,18 @@ class TitleLoader(object):
                 place.save()
             places.append(place)
         title.places = places
+        return
 
     def _extract_publication_dates(self, record, title):
         for field in record.get_fields('362'):
             text = field['a']
             if text == None:
                 continue
-            pubdate = models.PublicationDate.objects.get_or_create(
-                                            text=text,
-                                            titles=title
-                                            )
+            pubdate, created = models.PublicationDate.objects.get_or_create(
+                                                        text=text,
+                                                        titles=title
+                                                         )
+        return
 
     def _extract_subjects(self, record, title):
         subjects = []
@@ -254,6 +277,7 @@ class TitleLoader(object):
             )
             subjects.append(subject)
         title.subjects = subjects
+        return
 
     def _extract_notes(self, record, title):
         for field in record.fields:
@@ -263,6 +287,7 @@ class TitleLoader(object):
                                         type=field.tag,
                                         title=title
                                         )
+        return
 
     def _extract_preceeding_titles(self, record, title):
         for f in record.get_fields('780'):
@@ -273,6 +298,7 @@ class TitleLoader(object):
                                         oclc=link_obj.oclc,
                                         title=title
                                         )
+        return
 
     def _extract_succeeding_titles(self, record, title):
         for f in record.get_fields('785'):
@@ -283,6 +309,7 @@ class TitleLoader(object):
                                         oclc=link_obj.oclc,
                                         title=title
                                         )
+        return
 
     def _extract_related_titles(self, record, title):
         for f in record.get_fields('775'):
@@ -293,6 +320,7 @@ class TitleLoader(object):
                                         oclc=link_obj.oclc,
                                         title=title
                                         )
+        return
 
     def _extract_alt_titles(self, record, title):
         alt_titles = []
@@ -310,13 +338,14 @@ class TitleLoader(object):
             if field.indicators[1] == ' ':
                 alt = models.AltTitle(name=field['a'])
                 alt_titles.append(alt)
-
+        
         for alt_title in alt_titles:
             alt_obj, alt_created = models.AltTitle.objects.get_or_create(
                                         name=alt_title.name,
                                         date=alt_title.date,
                                         title=title
                                         )
+        return 
 
     def _extract_country(self, record):
         country_code = record['008'].data[15:18]
@@ -379,7 +408,7 @@ class TitleLoader(object):
                                             type=i2,
                                             title=title
                                             )
-
+        return
 
 def _extract(record, field, subfield=None):
     value = None
