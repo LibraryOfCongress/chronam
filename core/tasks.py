@@ -15,8 +15,6 @@ logger = logging.getLogger(__name__)
 
 @task
 def load_batch(batch_dir, service_request=None):
-    if not(batch_dir.startswith('http:') or batch_dir.startswith('file:')):
-        batch_dir = "file:" + batch_dir
     try:
         batch_loader = BatchLoader()
         batch = batch_loader.load_batch(batch_dir)
