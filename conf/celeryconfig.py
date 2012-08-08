@@ -2,8 +2,7 @@ import os
 import logging
 import datetime
 
-from chronam_core_settings import *
-from chronam_loc.settings_default import *
+from chronam.settings import *
 
 APP_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
