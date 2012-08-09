@@ -20,7 +20,7 @@ CELERYD_CONCURRENCY = 2
 CELERYBEAT_SCHEDULE = {
     "poll_cts": {
         "task": "chronam.core.tasks.poll_cts",
-        "schedule": datetime.timedelta(seconds=30),
+        "schedule": datetime.timedelta(hours=4),
         "args": ()
     },
     # Executes every morning at 2:00 A.M
