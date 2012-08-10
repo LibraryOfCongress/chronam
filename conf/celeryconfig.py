@@ -13,7 +13,7 @@ BROKER_BACKEND = "djkombu.transport.DatabaseTransport"
 INSTALLED_APPS += ("djkombu", "djcelery" )
 
 CELERY_IMPORTS = ("chronam.core.tasks",)
-CELERYD_LOG_FILE = os.path.join(APP_DIR, "logs", "celery.log")
+CELERYD_LOG_FILE = os.path.join("/logs", "celery.log")
 CELERYD_LOG_LEVEL = logging.INFO
 CELERYD_CONCURRENCY = 2
 
@@ -30,5 +30,5 @@ CELERYBEAT_SCHEDULE = {
     }
 }
 
-CELERYBEAT_LOG_FILE = os.path.join(APP_DIR, "logs", "celerybeat.log")
+CELERYBEAT_LOG_FILE = os.path.join("/logs", "celerybeat.log")
 CELERYBEAT_LOG_LEVEL = logging.INFO

@@ -37,13 +37,17 @@ echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf
 Configure Solr
 ==============
 
-wget http://www.apache.org/dist/lucene/solr/1.4.1/apache-solr-1.4.1.tgz
+wget http://archive.apache.org/dist/lucene/solr/1.4.1/apache-solr-1.4.1.tgz
 gunzip apache-solr-1.4.1.tgz
 tar xvf apache-solr-1.4.1.tar
 mv apache-solr-1.4.1/example/ /opt/solr-1.4.1
 
 cp ${CHRONAM_HOME}/conf/schema.xml /opt/solr-1.4.1/solr/conf/schema.xml
+cp ${CHRONAM_HOME}/conf/stopwords_* /opt/solr-1.4.1/solr/conf/
 cp ${CHRONAM_HOME}/conf/solrconfig-centos.xml /opt/solr-1.4.1/solr/conf/solrconfig.xml
+
+# Update the dataDir field in /opt/solr-1.4.1/solr/conf/solrconfig.xml and point to a directory for
+# where the solr index will live.
 
 useradd -d /opt/solr-1.4.1 -s /bin/bash solr
 chown solr:solr -R /opt/solr-1.4.1
@@ -91,7 +95,7 @@ Configure Chronam
 virtualenv --no-site-packages ${CHRONAM_HOME}/ENV
 source ${CHRONAM_HOME}/ENV/bin/activate
 pip install virtualenvwrapper
-source ENV/bin/virtualenvwrapper.sh
+source ${CHRONAM_HOME}/ENV/bin/virtualenvwrapper.sh
 add2virtualenv /opt
 export DJANGO_SETTINGS_MODULE=chronam.settings
 
@@ -104,7 +108,9 @@ mkdir ${CHRONAM_HOME}/data/cache
 mkdir ${CHRONAM_HOME}/data/bib
 
 # create settings file, and set the mysql username/password
-cp ${CHRONAM_HOME}/settings_template.py settings.py
+cp ${CHRONAM_HOME}/settings_template.py ${CHRONAM_HOME}/settings.py
+
+# Update the settings.py file with necessary settings for the machine
 
 # set up the database and load initial data
 django-admin.py syncdb --noinput --migrate
