@@ -21,3 +21,6 @@ django-kombu
 
 # Used in OCLC title pull
 worldcat
+
+# Used for purging batches in CTS
+git+https://rdc.lctl.gov/git/minicts.git#egg=minicts

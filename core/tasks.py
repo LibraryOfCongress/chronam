@@ -1,4 +1,5 @@
 import logging
+import minicts
 import os
 
 from celery.decorators import task
