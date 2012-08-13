@@ -431,6 +431,11 @@ class BatchLoader(object):
             self._purge_batch(batch)
             event = LoadBatchEvent(batch_name=batch_name, message="purged")
             event.save()
+            # clean up symlinks if exists 
+            link_name = os.path.join(settings.BATCH_STORAGE, batch_name)
+            if os.path.islink(link_name):
+                _logger.info("Removing symlink %s", link_name)
+                os.remove(link_name)
         except Exception, e:
             msg = "purge failed: %s" % e
             _logger.error(msg)
