@@ -37,7 +37,8 @@ def purge_batch(batch, service_request=None):
     try:
         optimize = not settings.IS_PRODUCTION
         management.call_command('purge_batch', batch, optimize=optimize)
-        service_request.complete()
+        if service_request:
+            service_request.complete()
     except Exception, e:
         logger.exception("unable to purge batch: %s" % e)
         if service_request:
@@ -49,8 +50,9 @@ def poll_purge():
                       settings.CTS_PASSWORD,
                       settings.CTS_URL)
 
+    queue = "ndnpingestqueue"
     purge_service_type = "purge.NdnpPurge.purge"
-    req = cts.next_service_request(settings.CTS_QUEUE, purge_service_type)
+    req = cts.next_service_request(queue, purge_service_type)
     if req == None:
         logger.info("no purge service requests")
         return 
