@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# celeryd        init file for starting sampler-celeryd
+# celeryd        init file for starting chronam-celeryd
 #
 # chkconfig:   - 20 80
 # description: Starts and stops the celeryd daemon
@@ -15,10 +15,10 @@ user="ndnp"
 virtualenv_dir="$home/ENV"
 source $virtualenv_dir/bin/activate
 
-cd "$sampler_home/sampler"
-lockfile="$home/logs/celeryd.lock"
-logfile="$home/logs/celeryd.log"
-pidfile="$home/logs/celeryd.pid"
+cd "$home"
+lockfile="/logs/celery/celeryd.lock"
+logfile="/logs/celery/celeryd.log"
+pidfile="/logs/celery/celeryd.pid"
 
 
 start() {
