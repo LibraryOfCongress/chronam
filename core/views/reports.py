@@ -410,18 +410,22 @@ def pages_on_flickr(request):
 def batch_summary(request, format='html'):
     page_title = "Batch Summary"
     cursor = connection.cursor()
-    cursor.execute("\
-select batches.name, issues.title_id, min(date_issued), \
-max(date_issued), count(pages.id) \
-from batches, issues, pages \
-where batches.name=issues.batch_id and issues.id=pages.issue_id \
-group by batches.name, issues.title_id order by batches.name;")
+    sql = """
+          select cb.name, ci.title_id, min(date_issued),
+          max(date_issued), count(cp.id)
+          from core_batch cb, core_issue ci, core_page cp
+          where cb.name=ci.batch_id and ci.id=cp.issue_id
+          group by cb.name, ci.title_id order by cb.name;
+          """ 
+
+    cursor = connection.cursor()
+    cursor.execute(sql)
     batch_details = cursor.fetchall()
     if format == 'txt':
-        return render_to_response('batch_summary.txt', dictionary=locals(),
+        return render_to_response('reports/batch_summary.txt', dictionary=locals(),
                                   context_instance=RequestContext(request),
                                   mimetype="text/plain")
-    return render_to_response('batch_summary.html',
+    return render_to_response('reports/batch_summary.html',
                               dictionary=locals(),
                               context_instance=RequestContext(request))
 
