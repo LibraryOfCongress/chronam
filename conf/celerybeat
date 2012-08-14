@@ -15,10 +15,10 @@ user="ndnp"
 virtualenv_dir="$home/ENV"
 source $virtualenv_dir/bin/activate
 
-cd "$home/sampler"
-lockfile="$home/logs/subsys/celerybeat.lock"
-logfile="$home/logs/celerybeat.log"
-pidfile="$home/logs/celerybeat.pid"
+cd "$home"
+lockfile="/logs/celery/subsys/celerybeat.lock"
+logfile="/logs/celery/celerybeat.log"
+pidfile="/logs/celery/celerybeat.pid"
 
 start() {
     echo -n $"Starting $name: "
