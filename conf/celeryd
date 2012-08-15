@@ -25,7 +25,7 @@ pidfile="/logs/celery/celeryd.pid"
 
 start() {
     echo -n $"Starting $name: "
-    daemon --user $user "django-admin.py celeryd_detach --pidfile $pidfile --logfile $logfile --settings=celeryconfig"
+    daemon --user $user "django-admin.py celeryd_detach -c 2 --pidfile $pidfile --logfile $logfile --settings=celeryconfig"
     retval=$?
     echo
     [ $retval -eq 0 ] && touch $lockfile
