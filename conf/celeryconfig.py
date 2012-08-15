@@ -13,7 +13,7 @@ BROKER_BACKEND = "djkombu.transport.DatabaseTransport"
 INSTALLED_APPS += ("djkombu", "djcelery" )
 
 CELERY_IMPORTS = ("chronam.core.tasks",)
-CELERYD_LOG_FILE = os.path.join("/logs", "celery.log")
+CELERYD_LOG_FILE = os.path.join("/logs/celery", "celery.log")
 CELERYD_LOG_LEVEL = logging.INFO
 CELERYD_CONCURRENCY = 2
 
@@ -25,8 +25,7 @@ CELERYBEAT_SCHEDULE = {
     },
     "poll_purge": {
         "task": "chronam.core.tasks.poll_purge",
-        "schedule": datetime.timedelta(hours=8),
-        "args": ()
+        "schedule": crontab(hour=3, minute=0),
     },
     # Executes every morning at 2:00 A.M
     "delete_django_cache": {
@@ -35,5 +34,5 @@ CELERYBEAT_SCHEDULE = {
     }
 }
 
-CELERYBEAT_LOG_FILE = os.path.join("/logs", "celerybeat.log")
+CELERYBEAT_LOG_FILE = os.path.join("/logs/celery", "celerybeat.log")
 CELERYBEAT_LOG_LEVEL = logging.INFO
