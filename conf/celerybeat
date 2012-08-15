@@ -16,13 +16,15 @@ virtualenv_dir="$home/ENV"
 source $virtualenv_dir/bin/activate
 
 cd "$home"
+export PYTHONPATH="$PYTHONPATH:/opt/chronam/conf"
+
 lockfile="/logs/celery/subsys/celerybeat.lock"
 logfile="/logs/celery/celerybeat.log"
 pidfile="/logs/celery/celerybeat.pid"
 
 start() {
     echo -n $"Starting $name: "
-    daemon --user $user "python manage.py celerybeat --pidfile $pidfile --logfile $logfile --detach"
+    daemon --user $user "django-admin.py celerybeat --pidfile $pidfile --logfile $logfile --detach --settings=celeryconfig"
     retval=$?
     echo
     [ $retval -eq 0 ] && touch $lockfile
