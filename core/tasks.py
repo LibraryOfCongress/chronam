@@ -52,27 +52,28 @@ def poll_purge():
 
     queue = "ndnpingestqueue"
     purge_service_type = "purge.NdnpPurge.purge"
-    req = cts.next_service_request(queue, purge_service_type)
-    if req == None:
-        logger.info("no purge service requests")
-        return 
+    while True
+        req = cts.next_service_request(queue, purge_service_type)
+        if req == None:
+            logger.info("no purge service requests")
+            break 
 
-    logger.info('got purge service request: %s' % req.url)
-    bag_instance_key = req.data['requestParameters']['baginstancekey']
-    bag_instance = cts.get_bag_instance(bag_instance_key)
-    batch_name = os.path.basename(bag_instance.data['filepath'])
-    logger.info('purging %s' % batch_name)
+        logger.info('got purge service request: %s' % req.url)
+        bag_instance_key = req.data['requestParameters']['baginstancekey']
+        bag_instance = cts.get_bag_instance(bag_instance_key)
+        batch_name = os.path.basename(bag_instance.data['filepath'])
+        logger.info('purging %s' % batch_name)
 
-    # if the batch isn't there no need to purge
-    try:
-        if Batch.objects.filter(name=batch_name).count() == 0:
-            logger.info('no need to purge %s ; it is not loaded' % batch_name)
-            logger.info('batch %s purged' % batch_name)
-        else:
-            return purge_batch.delay(batch_name, req)
-    except Exception, e:
-        logger.exception("purge of %s failed", batch_name)
-        req.fail("purge of %s failed: %s" % (batch_name, e))
+        # if the batch isn't there no need to purge
+        try:
+            if Batch.objects.filter(name=batch_name).count() == 0:
+                logger.info('no need to purge %s ; it is not loaded' % batch_name)
+                logger.info('batch %s purged' % batch_name)
+            else:
+                return purge_batch.delay(batch_name, req)
+        except Exception, e:
+            logger.exception("purge of %s failed", batch_name)
+            req.fail("purge of %s failed: %s" % (batch_name, e))
 
 @task 
 def poll_cts():
