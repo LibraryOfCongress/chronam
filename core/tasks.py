@@ -52,7 +52,7 @@ def poll_purge():
 
     queue = "ndnpingestqueue"
     purge_service_type = "purge.NdnpPurge.purge"
-    while True
+    while True:
         req = cts.next_service_request(queue, purge_service_type)
         if req == None:
             logger.info("no purge service requests")
