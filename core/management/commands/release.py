@@ -42,7 +42,9 @@ class Command(BaseCommand):
                 _logger.info("unsetting release time for %s" % batch.name)
                 batch.save()
 
-        load_release_times_from_prod()
+        # commenting out for now until we resolve release dates 
+        # https://rdc.lctl.gov/trac/chronam/ticket/1214
+        # load_release_times_from_prod()
         
         # batches that lack a release time are assumed to be released *now*
         now = datetime.now()
