@@ -1,4 +1,5 @@
 import os
+import os.path
 import re
 import json
 import time
@@ -12,6 +13,7 @@ from cStringIO import StringIO
 
 from rfc3339 import rfc3339
 from lxml import etree
+from urllib import url2pathname
 
 from django.db import models
 from django.db.models import permalink, Q
@@ -19,6 +21,7 @@ from django.conf import settings
 
 from chronam.core.utils import strftime
 
+from django.core import urlresolvers
 
 
 class Awardee(models.Model):
@@ -780,16 +783,8 @@ class LanguageText(models.Model):
 
 
 class OCR(models.Model):
-    word_coordinates_json = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     page = models.OneToOneField('Page', null=True, related_name='ocr')
-
-    def __get_word_coordinates(self):
-        return json.loads(self.word_coordinates_json)
-
-    def __set_word_coordinates(self, word_coordinates):
-        self.word_coordinates_json = json.dumps(word_coordinates)
-    word_coordinates = property(__get_word_coordinates, __set_word_coordinates)
 
     @property
     def text(self):
@@ -1202,3 +1197,13 @@ class OcrDump(models.Model):
             sha1.update(buff)
         self.sha1 = sha1.hexdigest()
         return self.sha1
+
+def coordinates_path(url_parts):
+    url = urlresolvers.reverse('chronam_page', kwargs=url_parts)
+    path = url2pathname(url)
+    if path.startswith("/"):
+        path = path[1:]
+    full_path = os.path.join(settings.COORD_STORAGE, path)
+    if not os.path.exists(full_path):
+        os.makedirs(full_path)
+    return os.path.join(full_path, "coordinates.json")
