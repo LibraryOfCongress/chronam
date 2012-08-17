@@ -28,7 +28,7 @@ def load_batch(batch_dir, service_request=None):
     except Exception, e:
         logger.exception("unable to load batch %s" % batch_dir)
         if service_request:
-            logginer.info("marking service request as failed")
+            logger.info("marking service request as failed")
             service_request.fail(str(e))
 
 
@@ -74,6 +74,7 @@ def poll_purge():
         except Exception, e:
             logger.exception("purge of %s failed", batch_name)
             req.fail("purge of %s failed: %s" % (batch_name, e))
+
 
 @task 
 def poll_cts():
