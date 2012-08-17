@@ -140,7 +140,6 @@
     <script type="text/javascript">
         var viewer = null;
         var output = null;
-        var ts = null;
 
         function init() {
             var width = {{page.jp2_width}};
@@ -150,7 +149,7 @@
             var minLevel = 10;
             var maxLevel = Math.ceil(Math.log(Math.max(width, height)) / Math.log(2));
 
-            ts = new OpenSeadragon.TileSource(width, height, tileSize, tileOverlap, minLevel, maxLevel);
+            var ts = new OpenSeadragon.TileSource(width, height, tileSize, tileOverlap, minLevel, maxLevel);
 
             ts.getTileUrl =  function(level, column, row) {
                 var px = 0
@@ -187,48 +186,16 @@
                 return '{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}' + 'image_'+tile_width+'x'+tile_height+'_from_'+x1+','+y1+'_to_'+x2+','+y2+'.jpg';
             }
 
-            var config = {}; 
-    	    config.debugMode = false;
-            config.element = document.getElementById("viewer_container");
-            config.autoHideControls = false;
-            config.navImages = {
-        		zoomIn: {
-        		    REST: "{% memorious 'media/images/zoomin_rest.png' %}",
-        		    GROUP: "{% memorious 'media/images/zoomin_grouphover.png' %}",
-        		    HOVER: "{% memorious 'media/images/zoomin_hover.png' %}",
-        		    DOWN: "{% memorious 'media/images/zoomin_pressed.png' %}"
-        		},
-        		zoomOut: {
-        		    REST: "{% memorious 'media/images/zoomout_rest.png' %}",
-        		    GROUP: "{% memorious 'media/images/zoomout_grouphover.png' %}",
-        		    HOVER: "{% memorious 'media/images/zoomout_hover.png' %}",
-        		    DOWN: "{% memorious 'media/images/zoomout_pressed.png' %}"
-        		},
-        		home: {
-        		    REST: "{% memorious 'media/images/home_rest.png' %}",
-        		    GROUP: "{% memorious 'media/images/home_grouphover.png' %}",
-        		    HOVER: "{% memorious 'media/images/home_hover.png' %}",
-        		    DOWN: "{% memorious 'media/images/home_pressed.png' %}"
-        		},
-        		fullpage: {
-        		    REST: "{% memorious 'media/images/fullpage_rest.png' %}",
-        		    GROUP: "{% memorious 'media/images/fullpage_grouphover.png' %}",
-        		    HOVER: "{% memorious 'media/images/fullpage_hover.png' %}",
-        		    DOWN: "{% memorious 'media/images/fullpage_pressed.png' %}"
-        		}
-    	    };
-    
-            var viewer = new OpenSeadragon.Viewer(config);
-    
-            /*
-            viewer.addControl("full_header", OpenSeadragon.ControlAnchor.NONE);
+            var viewer = new OpenSeadragon.Viewer({
+                id: "viewer_container",
+                toolbar: "item-ctrl",
+                prefixUrl: "{% memorious 'media/' %}",
+                autoHideControls: false,
+                nextButton: "next",
+                previousButton: "previous",
+                tileSources: ts
+            });
 
-    	    var navControl = new OpenSeadragon.ControlDock(viewer);
-    	    viewer.navControl = navControl;
-    	    navControl.id = "nav_control";
-            viewer.addControl(navControl, OpenSeadragon.ControlAnchor.TOP_LEFT);
-            */
-            
     
             output = document.getElementById("outputText");
             viewer.addHandler("open", addOverlays);
@@ -243,13 +210,12 @@
     	    viewer.setFullPage(true);
             {% endifequal %}
     	    fullHeaderVisibility(viewer);
-               
-            viewer.openTileSource(ts);
         };
       
         function fullHeaderVisibility(viewer)
         {
             /* 
+            can this be removed now?
             var elmt = OpenSeadragon.Utils.getElement("full_header");
     	    var i = viewer._getControlIndex(elmt);
     	    if (i >= 0) {
@@ -429,57 +395,6 @@
 {% endblock %}
 
 {% block body %}
-  <div id="full_header" class="{{mode}}">
-   <div id="navigation">
-      <span><strong><a href="{% url chronam_home %}">Chronicling America</a></strong><br />
-      <a id="normal_mode" class="ar-back" href="{% if c_result %}{{c_result}}{% else %}{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}{% endif %}">Back to Normal Screen Mode</a></span>  
-      <ul class="nav">
-	{% if q %}
-	<li class="nav_result">
-	  Search Results<br />
-	  {% if previous_result_full %}<a class="wh" href="{{ previous_result_full }}">Previous</a> | {% endif %}
-	  {{index_count}} of {{total}}
-	  {% if next_result_full %} | <a class="wh" href="{{ next_result_full }}">Next</a>{% endif %}
-	</li>
-	{% endif %}
-
-        <li>
-          Page<br />
-          {% if page.previous %}
-          <a href='{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.previous.sequence %};mode=full'>
-            <img src="{% memorious 'media/images/prev_page.gif' %}" width="17" height="17" alt="Previous Page">
-          </a> 
-          {% endif %}
-          {% if page.next %}
-          <a href='{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.next.sequence %};mode=full'>
-            <img src="{% memorious 'media/images/next_page.gif' %}" width="17" height="17" alt="Next Page">
-          </a>
-          {% endif %}
-        </li>
-        <li>
-          Issues<br />
-           {% if previous_issue_first_page %}
-          <a href="{% url chronam_page title.lccn,previous_issue_first_page.issue.date_issued,previous_issue_first_page.issue.edition,previous_issue_first_page.sequence %};mode=full">
-            <img src="{% memorious 'media/images/prev_page.gif' %}" width="17" height="17" alt="Previous Issue" /></a> 
-          {% endif %}
-          {% if next_issue_first_page %}
-          <a href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %};mode=full">
-            <img src="{% memorious 'media/images/next_page.gif' %}" width="17" height="17" alt="Next Issue" /></a>
-          {% endif %}
-        </li>
-        <li class="bar"></li>
-        <li>
-          <strong>{{ title.name }}</strong><br />
-          {{ issue.date_issued }}, Edition {{issue.edition}}, Image {{page.sequence}}
-        </li>
-        <li class="bar"></li>
-        <li class="last">
-          Image provided by:<br />
-          {{ image_credit }}
-        </li> 
-     </ul>
-   </div><!-- end: n_title id:navigation -->
-  </div>
 {{ block.super }}
 {% endblock %}
 
@@ -490,6 +405,7 @@
   <div id="item-wrapper"> 
     <div id="imageViewer_nav">
       <div id="item-ctrl"> 
+        <div style="padding-left: 160px; padding-top: 10px;">
         <span class="c-images"> 
           <label for="pageNum">Image:</label> 
           <select name="pageNum" id="pageNum">
@@ -515,13 +431,12 @@
           {% endif %}
           <strong>Issues</strong> 
           {% if next_issue_first_page %}
-          <a href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %}"><img src="{% memorious 'media/images/item_btn_next.png' %}" width="17" height="17" alt="Next Issue" /></a> <a class="all" href="{% url chronam_issues title.lccn %}"><small>All Issues</small></a> 
+          <a href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %}"><img src="{% memorious 'media/images/item_btn_next.png' %}" width="17" height="17" alt="Next Issue" /></a><a class="all" href="{% url chronam_issues title.lccn %}"><small>All Issues</small></a> 
           {% endif %}
         </span>
         {% if page.jp2_filename %}
         <span class="c-view"> 
           <!-- view --> 
-          <strong>View:</strong> 
           <a class="text" href="{% url chronam_page_ocr title.lccn,issue.date_issued,issue.edition,page.sequence %}">Text</a> <span>|</span> <a href="{% url chronam_page_pdf title.lccn, issue.date_issued, issue.edition, page.sequence %}">PDF</a> 
         </span> 
         <span class="c-download"> 
@@ -529,9 +444,10 @@
           <strong>Download:</strong> <a href="{% url chronam_page_jp2 title.lccn, issue.date_issued, issue.edition, page.sequence %}">JP2 ({{image_size}})</a> 
         </span>
         <span class="c-clip">
-             <a id="clip" href="#" target="print">Clip Image <img src="{% memorious 'media/images/item_clip_icon.png' %}" width="18" height="17" alt="Clip Image" /></a>
+             <a id="clip" href="#" target="print"><img src="{% memorious 'media/images/item_clip_icon.png' %}" width="18" height="17" alt="Clip Image" /></a>
         </span>
         {% endif %}
+        </div>
       </div><!-- end id:item-ctrl -->
 
       <div id="outputHolder" style="display: none">
