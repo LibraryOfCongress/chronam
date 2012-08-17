@@ -192,7 +192,6 @@
             config.element = document.getElementById("viewer_container");
             config.autoHideControls = false;
             config.navImages = {
-    	                showNavigationControl: false,
         		zoomIn: {
         		    REST: "{% memorious 'media/images/zoomin_rest.png' %}",
         		    GROUP: "{% memorious 'media/images/zoomin_grouphover.png' %}",
@@ -221,14 +220,15 @@
     
             var viewer = new OpenSeadragon.Viewer(config);
     
-    	    viewer.addControl("full_header", OpenSeadragon.ControlAnchor.NONE);
-
             /*
+            viewer.addControl("full_header", OpenSeadragon.ControlAnchor.NONE);
+
     	    var navControl = new OpenSeadragon.ControlDock(viewer);
     	    viewer.navControl = navControl;
-    	    navControl.elmt.id = "nav_control";
-            viewer.addControl(navControl.elmt, OpenSeadragon.ControlAnchor.TOP_LEFT);
+    	    navControl.id = "nav_control";
+            viewer.addControl(navControl, OpenSeadragon.ControlAnchor.TOP_LEFT);
             */
+            
     
             output = document.getElementById("outputText");
             viewer.addHandler("open", addOverlays);
