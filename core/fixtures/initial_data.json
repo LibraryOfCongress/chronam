@@ -208,6 +208,30 @@
     }
   },
   {
+    "pk": "wvu",
+    "model": "core.Awardee",
+    "fields": {
+      "name": "West Virginia University",
+      "created": "2012-02-23 14:04:00"
+    }
+  },
+  {
+    "pk": "ndhi",
+    "model": "core.Awardee",
+    "fields": {
+      "name": "State Historical Society of North Dakota",
+      "created": "2012-02-23 14:04:01"
+    }
+  },
+  {
+    "pk": "in",
+    "model": "core.Awardee",
+    "fields": {
+      "name": "Indiana State Library",
+      "created": "2012-02-23 14:04:02"
+    }
+  },
+  {
     "pk": "Microfilm Service Copy", 
     "model": "core.MaterialType", 
     "fields": {}
