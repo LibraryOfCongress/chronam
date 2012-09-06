@@ -14,5 +14,4 @@ from cts_tests import *
 from ocr_dump_tests import *
 
 
-logging.basicConfig()
-logging.getLogger().setLevel(logging.FATAL)
+logging.basicConfig(filename="test.log", level=logging.DEBUG)
