@@ -376,7 +376,7 @@ def page_search(d):
         else:
             q.append(')')
             for ocr in ocrs:
-                q.append(' OR ocr_eng' + ':"%s"~%s' % (prox, distance))
+                q.append(' OR ' + ocr + ':"%s"~%s' % (prox, distance))
         q.append(')')
     if d.get('sequence', None):
         q.append('+sequence:"%s"' % d['sequence'])
