@@ -165,9 +165,9 @@ class SolrPaginator(Paginator):
         d = self.query
         parts = []
         if d.get('ortext', None):
-            parts.append(' OR '.join(d['ortext'].split(' ')))
+            parts.append('OR '.join(d['ortext'].split(' ')))
         if d.get('andtext', None):
-            parts.append(' AND '.join(d['andtext'].split(' ')))
+            parts.append('AND '.join(d['andtext'].split(' ')))
         if d.get('phrasetext', None):
             parts.append('the phrase "%s"' % d['phrasetext'])
         if d.get('proxtext', None):
@@ -342,28 +342,28 @@ def page_search(d):
         else:
             q.append(')')
             for ocr  in ocrs:
-                q.append(' OR ' + query_join(solr_escape(d['ortext']).split(' '), ocr))
+                q.append('OR ' + query_join(solr_escape(d['ortext']).split(' '), ocr))
         q.append(')')
     if d.get('andtext', None):
         q.append('+((' + query_join(solr_escape(d['andtext']).split(' '), "ocr", and_clause=True))
         if lang:
-            q.append(' AND ' + query_join(solr_escape(d['andtext']).split(' '), ocr_lang, and_clause=True))
+            q.append('AND ' + query_join(solr_escape(d['andtext']).split(' '), ocr_lang, and_clause=True))
             q.append(') OR ' + query_join(solr_escape(d['andtext']).split(' '), ocr_lang, and_clause=True))
         else:
             q.append(')')
             for ocr in ocrs:
-                q.append(' OR ' + query_join(solr_escape(d['andtext']).split(' '), ocr, and_clause=True))
+                q.append('OR ' + query_join(solr_escape(d['andtext']).split(' '), ocr, and_clause=True))
         q.append(')')
     if d.get('phrasetext', None):
         phrase = solr_escape(d['phrasetext'])
         q.append('+((' + 'ocr' + ':"%s"^10000' % (phrase))
         if lang:
-            q.append(' AND ocr_' + lang + ':"%s"' % (phrase))
+            q.append('AND ocr_' + lang + ':"%s"' % (phrase))
             q.append(') OR ocr_' + lang + ':"%s"' % (phrase))
         else:
             q.append(')')
             for ocr in ocrs:
-                q.append(' OR ' + ocr + ':"%s"' % (phrase))
+                q.append('OR ' + ocr + ':"%s"' % (phrase))
         q.append(')')
 
     if d.get('proxtext', None):
@@ -371,12 +371,12 @@ def page_search(d):
         prox = solr_escape(d['proxtext'])
         q.append('+((' + 'ocr' + ':("%s"~%s)^10000' % (prox, distance))
         if lang:
-            q.append(' AND ocr_' + lang + ':"%s"~%s' % (prox, distance))
+            q.append('AND ocr_' + lang + ':"%s"~%s' % (prox, distance))
             q.append(') OR ocr_' + lang + ':"%s"~%s' % (prox, distance))
         else:
             q.append(')')
             for ocr in ocrs:
-                q.append(' OR ' + ocr + ':"%s"~%s' % (prox, distance))
+                q.append('OR ' + ocr + ':"%s"~%s' % (prox, distance))
         q.append(')')
     if d.get('sequence', None):
         q.append('+sequence:"%s"' % d['sequence'])

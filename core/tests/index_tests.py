@@ -33,24 +33,20 @@ class IndexTests(TestCase):
             '+type:page +date:[19011025 TO 19011031]')
 
     def test_page_search_ortext(self):
-        self.assertEqual(page_search(Q('ortext=apples%20oranges')),
-            '+type:page +ocr:("apples" "oranges")')
+        self.assertEqual(page_search(Q('ortext=apples%20oranges')), u'+type:page +((ocr:("apples" "oranges")^10000 ) OR ocr_eng:("apples" "oranges") OR ocr_fre:("apples" "oranges") OR ocr_spa:("apples" "oranges") OR ocr_ita:("apples" "oranges") OR ocr_ger:("apples" "oranges") )')
 
     def test_page_search_andtext(self):
-        self.assertEqual(page_search(Q('andtext=apples%20oranges')),
-            '+type:page +ocr:(+"apples" +"oranges")')
+        self.assertEqual(page_search(Q('andtext=apples%20oranges')), u'+type:page +((ocr:(+"apples" +"oranges")^10000 ) OR ocr_eng:(+"apples" +"oranges") OR ocr_fre:(+"apples" +"oranges") OR ocr_spa:(+"apples" +"oranges") OR ocr_ita:(+"apples" +"oranges") OR ocr_ger:(+"apples" +"oranges") )')
 
     def test_page_search_phrase(self):
-        self.assertEqual(page_search(Q('phrasetext=new%20york%20yankees')),
-            '+type:page +ocr:"new york yankees"')
+        self.assertEqual(page_search(Q('phrasetext=new%20york%20yankees')), u'+type:page +((ocr:"new york yankees"^10000 ) OR ocr_eng:"new york yankees" OR ocr_fre:"new york yankees" OR ocr_spa:"new york yankees" OR ocr_ita:"new york yankees" OR ocr_ger:"new york yankees" )')
 
     def test_page_search_proxtext(self):
-        self.assertEqual(
-            page_search(Q('proxtext=apples%20oranges&proxdistance=10')),
-            '+type:page +ocr:"apples oranges"~10')
-        self.assertEqual(
-            page_search(Q('proxtext=apples%20oranges')),
-            '+type:page +ocr:"apples oranges"~5')
+        self.assertEqual(page_search(Q('proxtext=apples%20oranges&proxdistance=10')), u'+type:page +((ocr:("apples oranges"~10)^10000 ) OR ocr_eng:"apples oranges"~10 OR ocr_fre:"apples oranges"~10 OR ocr_spa:"apples oranges"~10 OR ocr_ita:"apples oranges"~10 OR ocr_ger:"apples oranges"~10 )')
+        self.assertEqual(page_search(Q('proxtext=apples%20oranges')), u'+type:page +((ocr:("apples oranges"~5)^10000 ) OR ocr_eng:"apples oranges"~5 OR ocr_fre:"apples oranges"~5 OR ocr_spa:"apples oranges"~5 OR ocr_ita:"apples oranges"~5 OR ocr_ger:"apples oranges"~5 )')
+
+    def test_page_search_language(self):
+        self.assertEqual(page_search(Q('proxtext=apples%20oranges&language=ger')), '+type:page +((ocr:("apples oranges"~5)^10000 AND ocr_ger:"apples oranges"~5 ) OR ocr_ger:"apples oranges"~5 )')
 
     def test_find_words(self):
         hl = "Today <em>is</em> the <em>greatest</em> day i've <em>ever</em> known\nCan't wait <em>for</em> tomorrow ..."
