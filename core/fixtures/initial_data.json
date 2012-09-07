@@ -265,7 +265,7 @@
     "pk": "Microfiche Master", 
     "model": "core.MaterialType", 
     "fields": {}
-  }
+  },
   {
     "pk": "af", 
     "model": "core.country", 
