@@ -32,7 +32,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'chronam',
         'USER': 'chronam',
-        'PASSWORD': 'pick_one',
+        'PASSWORD': 'chronam',
         }
     }
 
