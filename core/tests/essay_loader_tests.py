@@ -35,7 +35,7 @@ class EssayLoaderTests(TestCase):
         self.assertEqual(essay.url, '/essays/3/')
         self.assertEqual(essay.essay_editor_url, 'http://ndnp-essays.rdc.lctl.gov/essay/3/')
         self.assertEqual(essay.creator.name, 'Library of Congress, Washington, DC')
-        self.assertTrue('<a href="http://chroniclingamerica.loc.gov/lccn/sn82016211"><cite>Indianapolis Freeman</cite></a>' in essay.html)
+        self.assertTrue('<a href="http://chroniclingamerica.loc.gov/lccn/sn82016211/"><cite>Indianapolis Freeman</cite></a>' in essay.html)
 
     def test_purge_essay(self):
         self.assertEqual(Essay.objects.all().count(), 0)
