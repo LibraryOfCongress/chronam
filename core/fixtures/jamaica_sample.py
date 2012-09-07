@@ -19,6 +19,7 @@ j = serializers.get_serializer("json")()
 # the serializer a queryset, which it expects instead of instance data
 data = []
 data.extend(json.loads(j.serialize(Batch.objects.filter(name="batch_dlc_jamaica_ver01"))))
+#data.extend(json.loads(j.serialize(Title.objects.filter(lccn="sn83030214"))))
 data.extend(json.loads(j.serialize(b.issues.filter(id=i.id))))
 data.extend(json.loads(j.serialize(i.pages.all())))
 data.extend(json.loads(j.serialize(OCR.objects.filter(page__issue=i))))
