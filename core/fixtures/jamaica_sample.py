@@ -7,7 +7,7 @@ including all its page and ocr models as a json fixture for testing purposes
 
 import json
 from django.core import serializers
-from chronam.core.models import Batch, Issue, Page, OCR, LanguageText
+from chronam.core.models import Batch, Issue, Page, OCR, Reel, LanguageText
 
 b = Batch.objects.get(name="batch_dlc_jamaica_ver01")
 i = b.issues.all()[0]
@@ -22,6 +22,7 @@ data.extend(json.loads(j.serialize(Batch.objects.filter(name="batch_dlc_jamaica_
 #data.extend(json.loads(j.serialize(Title.objects.filter(lccn="sn83030214"))))
 data.extend(json.loads(j.serialize(b.issues.filter(id=i.id))))
 data.extend(json.loads(j.serialize(i.pages.all())))
+data.extend(json.loads(j.serialize(Reel.objects.filter(pages__issue=i))))
 data.extend(json.loads(j.serialize(OCR.objects.filter(page__issue=i))))
 data.extend(json.loads(j.serialize(LanguageText.objects.filter(ocr__page__issue=i))))
 
