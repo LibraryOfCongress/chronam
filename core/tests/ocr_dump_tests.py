@@ -21,7 +21,7 @@ class OcrDumpTests(TestCase):
         os.mkdir(dumps_dir)
 
         # create symlink if necessary
-        link = "/opt/chronam/data/batches/batch_dlc_jamaica_ver01"
+        link = os.path.join(settings.BATCH_STORAGE, "batch_dlc_jamaica_ver01")
         if not os.path.islink(link): 
             os.symlink("/vol/ndnp/chronam/batches/dlc/batch_dlc_jamaica_ver01", link)
 
