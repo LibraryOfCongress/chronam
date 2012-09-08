@@ -110,8 +110,8 @@ SOLR_LANGUAGES = ("eng", "fre", "ger", "ita", "spa")
 
 DOCUMENT_ROOT = "/opt/chronam/static"
 
-STORAGE = '/opt/chronam/data/'
+STORAGE = '/var/lib/jenkins/jobs/chronam/chronam/data/'
 STORAGE_URL = '/data/'
 BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
-OCR_DUMP_STORAGE = "/opt/chronam/data/ocr"
+OCR_DUMP_STORAGE = os.path.join(STORAGE, "ocr")
