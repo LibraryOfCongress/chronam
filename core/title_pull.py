@@ -18,13 +18,16 @@ frbrgrouping = 'off'
 MAX_RECORDS = 50
 raw_query = 'srw.pc any "y" and srw.mt any "newspaper"'  # and srw.cp exact "united states"
 
+# Texas should not be a country.
+# See ticket #1226 for the reason why it is in this list.
 COUNTRIES = (
     'united states',
     'puerto rico',
-    '*virgin island*',
-    '*guam*',
+    'virgin island*',
+    'guam',
     '*northern mariana*',
     'american samoa',
+    'texas',
 )
 
 # operate map is used in passing the operator to the output file.

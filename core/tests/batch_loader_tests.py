@@ -17,8 +17,10 @@ class BatchLoaderTest(TestCase):
         self.assertEqual(title.name, 'New-York tribune.')
 
     def test_load_batch(self):
+        batch_dir = '/vol/ndnp/chronam/batches/dlc/batch_dlc_jamaica_ver01/'
+        self.assertTrue(os.path.isdir(batch_dir))
         loader = BatchLoader(process_ocr=False)
-        batch = loader.load_batch('batch_dlc_jamaica_ver01')
+        batch = loader.load_batch(batch_dir)
         self.assertTrue(isinstance(batch, Batch))
         self.assertEqual(batch.name, 'batch_dlc_jamaica_ver01')
         self.assertEqual(len(batch.issues.all()), 304)
@@ -82,7 +84,7 @@ class BatchLoaderTest(TestCase):
 
         f = os.path.join(os.path.dirname(chronam.core.__file__), 'test-data', 
             'ocr.txt')
-        self.assertEqual(solr_doc['ocr'], file(f).read().decode('utf-8'))
+        self.assertEqual(solr_doc['ocr_eng'], file(f).read().decode('utf-8'))
 
         # purge the batch and make sure it's gone from the db
         loader.purge_batch('batch_dlc_jamaica_ver01')

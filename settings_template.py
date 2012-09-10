@@ -110,6 +110,7 @@ PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24
 FEED_TTL_SECONDS = 60 * 60 * 24 * 7
 
 SOLR = "http://localhost:8080/solr"
+SOLR_LANGUAGES = ("eng", "fre", "ger", "ita", "spa")
 
 DOCUMENT_ROOT = "/opt/chronam/static"
 
@@ -118,3 +119,4 @@ STORAGE_URL = '/data/'
 BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
 OCR_DUMPS_STORAGE = os.path.join(STORAGE, "dumps", "ocr")
+

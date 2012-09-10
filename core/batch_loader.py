@@ -93,7 +93,8 @@ class BatchLoader(object):
         """
         self.pages_processed = 0
 
-        dirname, batch_name = os.path.split(batch_path)
+        logging.info("loading batch at %s", batch_path)
+        dirname, batch_name = os.path.split(batch_path.rstrip("/"))
         if dirname:
             batch_source = None
             link_name = os.path.join(settings.BATCH_STORAGE, batch_name)
