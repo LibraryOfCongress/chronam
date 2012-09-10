@@ -2,3 +2,4 @@
 ENV
 settings.py
 *.log
+data/batches
