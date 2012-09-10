@@ -697,8 +697,11 @@ class Page(models.Model):
         except OCR.DoesNotExist:
             ocr_texts = None
         for ocr_text in ocr_texts:
-            doc.update({
-                'ocr_%s' % (ocr_text['language__code']): ocr_text['text']})
+            # make sure Solr is configured to handle the language and if it's
+            # not just treat it as English 
+            lang = ocr_text['language__code']
+            if lang not in settings.SOLR_LANGUAGES: lang = "eng"
+            doc['ocr_%s' % lang] = ocr_text['text']
         return doc
 
     def previous(self):

@@ -2060,14 +2060,6 @@
     }
   }, 
   {
-    "pk": 212, 
-    "model": "core.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Baptists", 
-      "ethnicity": "German"
-    }
-  }, 
-  {
     "pk": 213, 
     "model": "core.EthnicitySynonym", 
     "fields": {
