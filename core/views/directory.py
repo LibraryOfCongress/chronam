@@ -60,8 +60,8 @@ def newspapers(request, state=None, format='html'):
     for title in titles:
         for place in title.places.all():
             if place.state:
-                if state == place.state:
-                    _newspapers_by_state.setdefault(state, set()).add(title)
+                if state == "" or state == place.state:
+                    _newspapers_by_state.setdefault(place.state, set()).add(title)
 
     newspapers_by_state = sorted(_newspapers_by_state.iteritems(), key=itemgetter(0,1))
     
