@@ -2,6 +2,7 @@ import datetime
 
 from django import forms
 from django.forms import fields
+from django.conf import settings
 from django.core.cache import cache
 from django.db.models import Min, Max
 
@@ -154,7 +155,7 @@ class AdvSearchPagesForm(forms.Form):
         self.fields["sequence"].widget.attrs = {"id": "id_char_sequence", "alt": "char_sequence", "size": "3"}
         self.fields["proxtext"].widget.attrs["id"] = "id_proxtext_adv"
         lang_choices = [("", "All"), ]
-        lang_choices.extend((l['language__code'], l['language__name']) for l in models.LanguageText.objects.select_related().exclude(language__isnull=True).values('language__code', 'language__name').distinct())
+        lang_choices.extend((l, models.Language.objects.get(code=l).name) for l in settings.SOLR_LANGUAGES)
         self.fields["language"].choices = lang_choices
 
 
