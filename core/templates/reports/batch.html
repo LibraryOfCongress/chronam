@@ -37,11 +37,11 @@
     </tr>
     <tr class="lightGray">
         <td>Bag Location:</td>
-        <td><a href="{% url chronam_batch_files batch.bag_relative_path %}">{{ batch.bag_relative_path }}</a>
+        <td><a href="/data/batches/{{ batch.name }}">{{ batch.name }}</a>
     </tr>
     <tr class="white">
         <td>Validated Batch File:</td>
-        <td><a href="{% url chronam_batch_files batch.validated_batch_file_relative_path %}">{{ batch.validated_batch_file_relative_path }}</td>
+        <td><a href="/data/batches/{{ batch.name }}/data/{{ batch.validated_batch_file }}">data/{{ batch.validated_batch_file }}</a></td>
     </tr>
     <tr class="lightGray">
         <td>LCCNs In Batch:</td>
@@ -101,7 +101,3 @@
 </p>
 
 {% endblock %}
-
-
-
-
