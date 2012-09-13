@@ -103,15 +103,6 @@ class Batch(models.Model):
         return urlparse.urljoin(self.storage_url, self.validated_batch_file)
 
     @property
-    def validated_batch_file_relative_path(self):
-        return os.path.join(self.awardee.org_code, self.name,
-                            "data", self.validated_batch_file)
-
-    @property
-    def bag_relative_path(self):
-        return os.path.join(self.awardee.org_code, self.name, "")
-
-    @property
     def page_count(self):
         return Page.objects.filter(issue__batch__name=self.name).count()
 
@@ -1128,7 +1119,7 @@ class OcrDump(models.Model):
 
     @property
     def url(self):
-        path = self.path.replace(settings.STORAGE, settings.STORAGE_URL)
+        path = self.path.replace(settings.STORAGE, "/data/")
         return os.path.join(path)
 
     @classmethod

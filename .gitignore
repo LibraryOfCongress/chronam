@@ -3,3 +3,4 @@ ENV
 settings.py
 *.log
 data/batches
+data/ocr

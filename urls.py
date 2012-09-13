@@ -414,7 +414,7 @@ urlpatterns += patterns(
     '',
 
     url(r'^data/(?P<path>.*)$', 'django.views.static.serve', 
-        {'document_root': _MEDIA_ROOT}, name="chronam_batch_files"),
+        {'document_root': _MEDIA_ROOT}, name="chronam_data_files"),
 
     url(r'^(?P<path>sitemap.*)$', 'django.views.static.serve',
         {'document_root': _MEDIA_ROOT + '/sitemaps'},
