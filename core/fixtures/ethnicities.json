@@ -716,14 +716,6 @@
     }
   }, 
   {
-    "pk": 42, 
-    "model": "core.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Methodists", 
-      "ethnicity": "Swedish"
-    }
-  }, 
-  {
     "pk": 43, 
     "model": "core.EthnicitySynonym", 
     "fields": {
@@ -808,14 +800,6 @@
     "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Danish Americans", 
-      "ethnicity": "Danish"
-    }
-  }, 
-  {
-    "pk": 54, 
-    "model": "core.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Lutherans", 
       "ethnicity": "Danish"
     }
   }, 
@@ -1988,14 +1972,6 @@
     }
   }, 
   {
-    "pk": 202, 
-    "model": "core.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Baptists", 
-      "ethnicity": "African American"
-    }
-  }, 
-  {
     "pk": 203, 
     "model": "core.EthnicitySynonym", 
     "fields": {
@@ -2096,14 +2072,6 @@
     "model": "core.EthnicitySynonym", 
     "fields": {
       "synonym": "Germans", 
-      "ethnicity": "German"
-    }
-  }, 
-  {
-    "pk": 218, 
-    "model": "core.EthnicitySynonym", 
-    "fields": {
-      "synonym": "Lutherans", 
       "ethnicity": "German"
     }
   }, 
