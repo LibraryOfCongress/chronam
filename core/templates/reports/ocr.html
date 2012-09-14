@@ -3,6 +3,12 @@
 {% load memorious %}
 {% load custom_filters %}
 
+{% block extrahead %}
+        {{ block.super }}
+        <link rel="alternate" type="application/atom+xml" href="{% url chronam_ocr_atom %}" title="Chronicling America OCR Data Feed" />
+        <link rel="alternate" type="application/json" href="{% url chronam_ocr_json %}" title="Chronicling America OCR Data Feed (JSON)" />
+{% endblock %}
+
 {% block box-tabs %}
 {% endblock %}
 
