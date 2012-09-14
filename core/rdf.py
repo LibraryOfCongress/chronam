@@ -155,7 +155,7 @@ def batch_to_graph(b):
                                             datatype=XSD.dateTime)))
     g.add((uri, DCTERMS['title'], Literal(b.name)))
     g.add((uri, DCTERMS['creator'], abstract_uri(b.awardee)))
-    g.add((uri, NDNP['bag'], URIRef('/data/' + b.bag_relative_path)))
+    g.add((uri, NDNP['bag'], URIRef('/data/batches/' + b.name)))
     for issue in b.issues.all():
         g.add((uri, ORE['aggregates'], abstract_uri(issue)))
     add_rem(g, uri, rdf_uri(b))
