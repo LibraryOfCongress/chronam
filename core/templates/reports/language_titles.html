@@ -45,7 +45,7 @@
 
 {% if title %}
   <tr class="{% cycle 'lightGray' 'white' %}">
-    <td><a href="{% url chronam_language_title_pages language title.ocr__page__issue__batch__name title.ocr__page__issue__title__lccn %}">{{ title.ocr__page__issue__title__lccn }}</a></td>
+    <td><a href="{% url chronam_language_title_pages language title.issues__batch__name title.lccn %}">{{ title.lccn }}</a></td>
     <td>{{ title.count }}</td>
   </tr>
 {% endif %}
