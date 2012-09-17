@@ -64,7 +64,7 @@ If you are interested in automated access to this data you may want to use the
     </tr>
     {% for dump in dumps %}
     <tr class="{% cycle 'lightGray' 'white' %}">
-        <td><a href="{{ dump.url }}">{{ dump.name }}</a></td>
+        <td><a rel="nofollow" href="{{ dump.url }}">{{ dump.name }}</a></td>
         <td>{{ dump.created|rfc3339 }}</td>
         <td>{{ dump.size|filesizeformat }}</td>
         <td>{{ dump.sha1 }}</td>
