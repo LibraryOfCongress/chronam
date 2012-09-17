@@ -45,7 +45,7 @@
 
 {% if batch %}
   <tr class="{% cycle 'lightGray' 'white' %}">
-    <td><a href="{% url chronam_language_batch_pages language batch.ocr__page__issue__batch %}">{{ batch.ocr__page__issue__batch }}</a></td>
+    <td><a href="{% url chronam_language_batch_pages language batch.name %}">{{ batch.name }}</a></td>
     <td>{{ batch.count }}</td>
   </tr>
 {% endif %}
