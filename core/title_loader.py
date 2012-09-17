@@ -77,14 +77,15 @@ class TitleLoader(object):
         # additional formats (microfilm) are described in
         # holdings rather than in unique records.
         # so, we skip over these records.
-        #micro_value = _extract(record, '245', 'h')
-        #micro_check = ('microform', 'microfilm')
+        micro_value = _extract(record, '245', 'h')
+        micro_check = ('microform', 'microfilm')
+        micro_results = []
 
-        #if micro_value:
-        #    check = [i for i in micro_check if i in micro_value]
-        #    if check:
-        #        _logger.warning('Microform/Microfilm invader in data load: %s' % lccn)
-        #        self.microform_records += 1
+        if micro_value:
+            micro_results = [i for i in micro_check if i in micro_value]
+            if micro_results:
+                _logger.warning('Micro invader: %s' % lccn)
+                self.microform_records += 1
         #        return
 
         # newer marc xml sets pulled from OCLC do not have the 005 control
@@ -119,6 +120,25 @@ class TitleLoader(object):
             title = models.Title(lccn=lccn)
             title.version = dt
         
+        if micro_results:
+            # Tix #1174
+            # We want to make sure that we aren't deleting anything with important
+            # stuff attached to it.
+            issues = title.issues.all()
+            essays = title.essays.all()
+            
+            if issues:
+                _logger.error("Micro invader has issues: %s" % lccn)
+            if essays:
+                _logger.error("Micro invader has essays: %s" % lccn)
+            if not issues and not essays:
+                _logger.error("Micro invader title being deleted or ignored: %s" % lccn)
+                title.delete()
+                return
+            else:
+                _logger.error("Micro invader title remains, because issues or essays attached %s" % lccn)
+
+
         # clear m2m relationships
         # these will come from the extraction
         title.subjects.clear()
@@ -137,7 +157,7 @@ class TitleLoader(object):
         title.preceeding_title_links.all().delete()
         title.related_title_links.all().delete()
         title.urls.all().delete()
-        
+
         # update title fields 
         self._set_name(record, title)
         title.lccn_orig = lccn_orig
