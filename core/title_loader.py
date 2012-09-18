@@ -218,18 +218,33 @@ class TitleLoader(object):
         return
 
     def _extract_languages(self, record, title):
-        code = _extract(record, '008')[35:38]
-        langs = [models.Language.objects.get(code=code)]
-        for f041 in record.get_fields('041'):
-            for code in f041.get_subfields('a'):
+        
+        def _get_langs(field):
+            '''
+            _get_langs sub-function is to extract/parse
+            subfield values
+            '''
+            field_langs = []
+            for code in field:
                 # kinda odd, but the 041 can contain $a fraengspa
                 # so theye need to be split into fra, eng, spa first
                 for c in nsplit(code, 3):
                     try:
-                        langs.append(models.Language.objects.get(code=c))
+                        field_langs.append(models.Language.objects.get(code=c))
                     except models.Language.DoesNotExist:
                         _logger.error('missing language for %s' % c)
-        title.languages = langs
+            return field_langs
+
+        code = _extract(record, '008')[35:38]
+        langs = [models.Language.objects.get(code=code)]
+        subfields_to_eval = ['a','b']
+        for f041 in record.get_fields('041'):
+            for sf in subfields_to_eval:
+                sf_langs = _get_langs(f041.get_subfields(sf))
+                [langs.append(sf_lang) for sf_lang in sf_langs if sf_lang not in langs]
+        
+        _logger.info(langs)
+        title.languages = list(set(langs))
         return
 
     def _extract_places(self, record, title):
