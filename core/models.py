@@ -758,7 +758,7 @@ class Page(models.Model):
         parts = [u'%s' % self.issue.title]
         # little hack to get django's datetime support for stftime
         # when the year is < 1900
-        parts.append(strftime(dt, '%B %d, %Y'))
+        parts.append(strftime(self.issue.date_issued, '%B %d, %Y'))
         if self.issue.edition_label:
             parts.append(self.issue.edition_label)
         if self.section_label:
