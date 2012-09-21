@@ -15,8 +15,9 @@ from lxml import etree
 
 from django.db import models
 from django.db.models import permalink, Q
-from django.utils import datetime_safe
 from django.conf import settings
+
+from chronam.core.utils import strftime
 
 
 
@@ -153,7 +154,7 @@ class Batch(models.Model):
                            "name": issue.title.name,
                            "url": "http://" + host + issue.title.json_url,
                        },
-                       "date_issued": issue.date_issued.strftime("%Y-%m-%d"), 
+                       "date_issued": strftime(issue.date_issued, "%Y-%m-%d"), 
                        "url": "http://" + host + issue.json_url
                    }
                b['issues'].append(i)
@@ -293,7 +294,7 @@ class Title(models.Model):
                 "end_year": self.end_year,
                 "subject": [s.heading for s in self.subjects.all()],
                 "place": [p.name for p in self.places.all()],
-                "issues": [{"url": "http://" + host + i.json_url, "date_issued": i.date_issued.strftime("%Y-%m-%d")} for i in self.issues.all()]
+                "issues": [{"url": "http://" + host + i.json_url, "date_issued": strftime(i.date_issued, "%Y-%m-%d")} for i in self.issues.all()]
             }
         if serialize:
             return json.dumps(j, indent=2)
@@ -544,7 +545,7 @@ class Issue(models.Model):
     def json(self, serialize=True, include_pages=True, host='chroniclingamerica.loc.gov'):
        j = {
                'url': 'http://' + host + self.json_url,
-               'date_issued': self.date_issued.strftime("%Y-%m-%d"),
+               'date_issued': strftime(self.date_issued, "%Y-%m-%d"),
                'volume': self.volume,
                'edition': self.edition,
                'title': {"name": self.title.name, "url": 'http://' + host + self.title.json_url},
@@ -577,7 +578,7 @@ class Page(models.Model):
     def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
         j = {
                 "sequence": self.sequence,
-                "issue": {"date_issued": self.issue.date_issued.strftime("%Y-%m-%d"), "url": "http://" + host + self.issue.json_url},
+                "issue": {"date_issued": strftime(self.issue.date_issued, "%Y-%m-%d"), "url": "http://" + host + self.issue.json_url},
                 "jp2": "http://" + host + self.jp2_url,
                 "ocr": "http://" + host + self.ocr_url,
                 "text": "http://" + host + self.txt_url,
@@ -757,8 +758,7 @@ class Page(models.Model):
         parts = [u'%s' % self.issue.title]
         # little hack to get django's datetime support for stftime
         # when the year is < 1900
-        dt = datetime_safe.new_datetime(self.issue.date_issued)
-        parts.append(dt.strftime('%B %d, %Y'))
+        parts.append(strftime(dt, '%B %d, %Y'))
         if self.issue.edition_label:
             parts.append(self.issue.edition_label)
         if self.section_label:
