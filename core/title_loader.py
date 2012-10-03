@@ -243,7 +243,6 @@ class TitleLoader(object):
                 sf_langs = _get_langs(f041.get_subfields(sf))
                 [langs.append(sf_lang) for sf_lang in sf_langs if sf_lang not in langs]
         
-        _logger.info(langs)
         title.languages = list(set(langs))
         return
 
