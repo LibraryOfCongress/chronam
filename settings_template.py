@@ -103,7 +103,8 @@ SHARETOOL_URL = "http://cdn.loc.gov/share/sites/dUcuwr5p/share-jquery-min.js"
 OMNITURE_SCRIPT = "http://www.loc.gov:8081/global/s_code.js"
 
 import multiprocessing
-TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
+#TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
+TOO_BUSY_LOAD_AVERAGE = 64 
 
 DEFAULT_TTL_SECONDS = 60 * 60 * 24
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24
@@ -118,5 +119,5 @@ STORAGE = '/opt/chronam/data/'
 STORAGE_URL = '/data/'
 BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
-OCR_DUMPS_STORAGE = os.path.join(STORAGE, "dumps", "ocr")
+OCR_DUMP_STORAGE = os.path.join(STORAGE, "dumps", "ocr")
 
