@@ -5,8 +5,12 @@ import logging
 import urllib2
 import urlparse
 
+import zlib
+
 from time import time
 from datetime import datetime
+
+import simplejson as json
 
 from lxml import etree
 from solr import SolrConnection
@@ -16,6 +20,7 @@ from django.db import reset_queries
 from django.db.models import Q
 from django.conf import settings
 from django.core import management
+from django.core import urlresolvers
 
 try:
     import j2k
@@ -398,8 +403,13 @@ class BatchLoader(object):
                                page.ocr_filename)
 
         lang_text, coords = ocr_extractor(url)
+
+        f = open(models.coordinates_path(page._url_parts()), "w")
+        f.write(zlib.compress(json.dumps(coords)))
+        f.close()
+
         ocr = OCR()
-        ocr.word_coordinates, ocr.page = coords, page
+        ocr.page = page
         ocr.save()
         for lang, text in lang_text.iteritems():
             try: 

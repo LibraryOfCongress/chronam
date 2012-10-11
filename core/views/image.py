@@ -1,11 +1,14 @@
 import logging
+import os.path
 import simplejson as json
 import urlparse
+from urllib import url2pathname
 import urllib2
 from cStringIO import StringIO
 
 from django.conf import settings
 from django.http import Http404, HttpResponse, HttpResponseNotFound, HttpResponseServerError
+from django.core import urlresolvers
 
 from chronam.core import models
 from chronam.core.utils.utils import get_page
@@ -93,24 +96,13 @@ def page_image_tile(request, lccn, date, edition, sequence,
 
 @cors
 def coordinates(request, lccn, date, edition, sequence, words=None):
-    page = get_page(lccn, date, edition, sequence)
-    try:
-        ocr = page.ocr
-    except models.OCR.DoesNotExist, e:
-        ocr = None
-    if ocr is None:
-        r = HttpResponseNotFound()
-        r.write("page has no ocr")
-        return r
-    if words is not None:
-        word_coordinates = ocr.word_coordinates
-        all_coordinates = {}
-        for word in words.split("+"):
-            if word:
-                all_coordinates[word] = word_coordinates.get(word, [])
-        return HttpResponse(json.dumps(all_coordinates),
-                            mimetype='application/json')
-    else:
-        r = HttpResponse(mimetype='application/json')
-        r.write(str(ocr.word_coordinates_json))
-        return r
+    url_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
+    f = open(models.coordinates_path(url_parts))
+    data = f.read()
+
+    r = HttpResponse(mimetype='application/json')
+    r['Content-Encoding'] = 'gzip'
+    r['Content-Length'] = len(data)
+    r.write(data)
+    f.close()
+    return r

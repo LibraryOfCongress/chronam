@@ -41,24 +41,23 @@ function add_highlights(div) {
     var width = image.width();
     var height = image.height();
     if (width>0 && height>0) {
-        $.each(words.split("+"), function(index, word) {
-            // TODO: use % url tag bit
-            $.getJSON('{{script_name}}'+id+'coordinates/;words='+word, function(all_coordinates) {
+        $.getJSON('{{script_name}}'+id+'coordinates/', function(all_coordinates) {
+            var vScale = height / all_coordinates["height"];
+            var hScale = width / all_coordinates["width"];
+            $.each(words.split("+"), function(index, word) {
                     var boxes = [];
-                    for (word in all_coordinates) {
-                        var coordinates = all_coordinates[word];
-                        for (k in coordinates) {
-                            var v = coordinates[k];
-                            div.append("<img class='highlite' src='"+"{% memorious 'media/images/red_60.png' %}" +
-    "' style='TOP: " +  (v["vpos"] * height - padding/2.0 + offset) + 'px;' +
-    " LEFT: " +       (v["hpos"] * width - padding/2.0 + offset) + 'px;' +
-    " HEIGHT: " +     (v["height"] * height + padding) + 'px;' +
-    " WIDTH: " +      (v["width"] * width + padding) + "px;'/>");
+                    var coordinates = all_coordinates["coords"][word];
+                    for (k in coordinates) {
+                        var v = coordinates[k];
+                        div.append("<img class='highlite' src='"+"{% memorious 'media/images/red_60.png' %}" +
+    "' style='TOP: " +  (v[1] * vScale - padding/2.0 + offset) + 'px;' +
+    " LEFT: " +       (v[0] * hScale - padding/2.0 + offset) + 'px;' +
+    " HEIGHT: " +     (v[3] * vScale + padding) + 'px;' +
+    " WIDTH: " +      (v[2] * hScale + padding) + "px;'/>");
 
-                        }
                     }
                 });
-        });
+            });
     }
 }
 

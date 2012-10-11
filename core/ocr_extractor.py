@@ -18,27 +18,26 @@ class OCRHandler(ContentHandler):
     def startElement(self, tag, attrs):
         if tag == 'String':
             content = attrs.get("CONTENT")
-            coord = {
-                'hpos': float(attrs.get('HPOS')) / self.width,
-                'vpos': float(attrs.get('VPOS')) / self.height,
-                'width': float(attrs.get('WIDTH')) / self.width,
-                'height': float(attrs.get('HEIGHT')) / self.height
-                    }
+            coord = (attrs.get('HPOS'), attrs.get('VPOS'),
+                     attrs.get('WIDTH'),attrs.get('HEIGHT'))
+
             self._line.append(content)
 
             # solr's WordDelimiterFilterFactory tokenizes based on punctuation
             # which removes it from highlighting, so it's important to remove
             # it here as well or else we'll look up words that don't match
             word = re.sub(trailing_punctuation, '', content)
-            if word in self._coords:
+            if word == "":
+                pass
+            elif word in self._coords:
                 self._coords[word].append(coord)
             else:
                 self._coords[word] = [coord]
         elif tag == 'Page':
             assert self.width is None
             assert self.height is None
-            self.width = float(attrs.get('WIDTH'))
-            self.height = float(attrs.get('HEIGHT'))
+            self.width = attrs.get('WIDTH')
+            self.height = attrs.get('HEIGHT')
         elif tag == 'TextBlock':
             self._language = attrs.get('language', 'eng')
 
@@ -61,7 +60,8 @@ class OCRHandler(ContentHandler):
         return self._page
 
     def coords(self):
-        return self._coords
+        return {"width": self.width, "height": self.height,
+                "coords": self._coords}
 
 def ocr_extractor(ocr_file):
     """
