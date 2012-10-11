@@ -57,7 +57,6 @@ class BatchLoaderTest(TestCase):
         self.assertEqual(page.pdf_filename, 'sn83030214/00175042143/1903050101/0002.pdf')
         self.assertTrue(page.ocr != None)
         self.assertTrue(len(page.ocr.text) > 0)
-        self.assertTrue(len(page.ocr.word_coordinates_json) > 0)
 
         p = Title.objects.get(lccn='sn83030214').issues.all()[0].pages.all()[0]
         self.assertTrue(p.ocr != None)

@@ -96,9 +96,13 @@ def page_image_tile(request, lccn, date, edition, sequence,
 
 @cors
 def coordinates(request, lccn, date, edition, sequence, words=None):
-    r = HttpResponse(mimetype='application/json')
     url_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
     f = open(models.coordinates_path(url_parts))
-    r.write(f.read())
+    data = f.read()
+
+    r = HttpResponse(mimetype='application/json')
+    r['Content-Encoding'] = 'gzip'
+    r['Content-Length'] = len(data)
+    r.write(data)
     f.close()
     return r

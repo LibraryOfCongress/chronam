@@ -5,6 +5,8 @@ import logging
 import urllib2
 import urlparse
 
+import zlib
+
 from time import time
 from datetime import datetime
 
@@ -403,7 +405,7 @@ class BatchLoader(object):
         lang_text, coords = ocr_extractor(url)
 
         f = open(models.coordinates_path(page._url_parts()), "w")
-        json.dump(coords, f)
+        f.write(zlib.compress(json.dumps(coords)))
         f.close()
 
         ocr = OCR()

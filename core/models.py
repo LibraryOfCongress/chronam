@@ -1206,4 +1206,4 @@ def coordinates_path(url_parts):
     full_path = os.path.join(settings.COORD_STORAGE, path)
     if not os.path.exists(full_path):
         os.makedirs(full_path)
-    return os.path.join(full_path, "coordinates.json")
+    return os.path.join(full_path, "coordinates.json.gz")
