@@ -140,7 +140,6 @@
     <script type="text/javascript">
         var viewer = null;
         var output = null;
-        var ts = null;
 
         function init() {
             var width = {{page.jp2_width}};
@@ -150,7 +149,7 @@
             var minLevel = 10;
             var maxLevel = Math.ceil(Math.log(Math.max(width, height)) / Math.log(2));
 
-            ts = new Seadragon.TileSource(width, height, tileSize, tileOverlap, minLevel, maxLevel);
+            var ts = new OpenSeadragon.TileSource(width, height, tileSize, tileOverlap, minLevel, maxLevel);
 
             ts.getTileUrl =  function(level, column, row) {
                 var px = 0
@@ -187,66 +186,37 @@
                 return '{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}' + 'image_'+tile_width+'x'+tile_height+'_from_'+x1+','+y1+'_to_'+x2+','+y2+'.jpg';
             }
 
-            Seadragon.Config.autoHideControls = false;
-    	    var config = new Seadragon.Config();
-    	    config.debugMode = false;
-    	    config.navImages = {
-        		zoomIn: {
-        		    REST: "{% memorious 'media/images/zoomin_rest.png' %}",
-        		    GROUP: "{% memorious 'media/images/zoomin_grouphover.png' %}",
-        		    HOVER: "{% memorious 'media/images/zoomin_hover.png' %}",
-        		    DOWN: "{% memorious 'media/images/zoomin_pressed.png' %}"
-        		},
-        		zoomOut: {
-        		    REST: "{% memorious 'media/images/zoomout_rest.png' %}",
-        		    GROUP: "{% memorious 'media/images/zoomout_grouphover.png' %}",
-        		    HOVER: "{% memorious 'media/images/zoomout_hover.png' %}",
-        		    DOWN: "{% memorious 'media/images/zoomout_pressed.png' %}"
-        		},
-        		home: {
-        		    REST: "{% memorious 'media/images/home_rest.png' %}",
-        		    GROUP: "{% memorious 'media/images/home_grouphover.png' %}",
-        		    HOVER: "{% memorious 'media/images/home_hover.png' %}",
-        		    DOWN: "{% memorious 'media/images/home_pressed.png' %}"
-        		},
-        		fullpage: {
-        		    REST: "{% memorious 'media/images/fullpage_rest.png' %}",
-        		    GROUP: "{% memorious 'media/images/fullpage_grouphover.png' %}",
-        		    HOVER: "{% memorious 'media/images/fullpage_hover.png' %}",
-        		    DOWN: "{% memorious 'media/images/fullpage_pressed.png' %}"
-        		}
-    	    };
-    	    config.showNavigationControl = false;
-    
-            var viewer = new Seadragon.Viewer("viewer_container", undefined, undefined, undefined, undefined, undefined, config);
-    
-    	    viewer.addControl("full_header", Seadragon.ControlAnchor.NONE);
-    
-    	    var navControl = new Seadragon.NavControl(viewer);
-    	    viewer.navControl = navControl;
-    	    navControl.elmt.id = "nav_control";
-            viewer.addControl(navControl.elmt, Seadragon.ControlAnchor.TOP_LEFT);
+            var viewer = new OpenSeadragon.Viewer({
+                id: "viewer_container",
+                toolbar: "item-ctrl",
+                prefixUrl: "{% memorious 'media/' %}",
+                autoHideControls: false,
+                nextButton: "next",
+                previousButton: "previous",
+                tileSources: ts
+            });
+
     
             output = document.getElementById("outputText");
-            viewer.get_events().addHandler("open", addOverlays);
-            viewer.get_events().addHandler("open", onOpen);
-            viewer.get_events().addHandler("open", resizePrint);
-            viewer.get_events().addHandler("animationfinish", resizePrint);
-            viewer.get_events().addHandler("animationstart", onAnimationStart);
-            viewer.get_events().addHandler("animationfinish", onAnimationFinish);
-            viewer.get_events().addHandler("resize", fullHeaderVisibility);
+            viewer.addHandler("open", addOverlays);
+            viewer.addHandler("open", onOpen);
+            viewer.addHandler("open", resizePrint);
+            viewer.addHandler("animationfinish", resizePrint);
+            viewer.addHandler("animationstart", onAnimationStart);
+            viewer.addHandler("animationfinish", onAnimationFinish);
+            viewer.addHandler("resize", fullHeaderVisibility);
     
             {% ifequal mode "full" %}
     	    viewer.setFullPage(true);
             {% endifequal %}
     	    fullHeaderVisibility(viewer);
-               
-            viewer.openTileSource(ts);
         };
       
         function fullHeaderVisibility(viewer)
         {
-            var elmt = Seadragon.Utils.getElement("full_header");
+            /* 
+            can this be removed now?
+            var elmt = OpenSeadragon.Utils.getElement("full_header");
     	    var i = viewer._getControlIndex(elmt);
     	    if (i >= 0) {
     		  viewer._controls[i].setVisible(viewer.isFullPage());
@@ -256,21 +226,22 @@
     	    } else {
     		    viewer.navControl.elmt.style.margin = "0px";
     	    }
+            */    
         }
         
         function resizePrint(viewer)
         {
             var image = viewer.source;
             var zoom = viewer.viewport.getZoom(); 
-            var size = new Seadragon.Rect(0, 0, image.dimensions.x, image.dimensions.y);
+            var size = new OpenSeadragon.Rect(0, 0, image.dimensions.x, image.dimensions.y);
             var container = viewer.viewport.getContainerSize();
             var fit_source = fitWithinBoundingBox(size, container);
             var total_zoom = fit_source.x/image.dimensions.x;
             var container_zoom = fit_source.x/container.x;
             var level =  (zoom * total_zoom) / container_zoom;
-            var box = getDisplayRegion(viewer, new Seadragon.Point(parseInt(image.dimensions.x*level), parseInt(image.dimensions.y*level)));
-            var scaledBox = new Seadragon.Rect(parseInt(box.x/level), parseInt(box.y/level), parseInt(box.width/level), parseInt(box.height/level));
-            var d = fitWithinBoundingBox(box, new Seadragon.Point(681, 817));
+            var box = getDisplayRegion(viewer, new OpenSeadragon.Point(parseInt(image.dimensions.x*level), parseInt(image.dimensions.y*level)));
+            var scaledBox = new OpenSeadragon.Rect(parseInt(box.x/level), parseInt(box.y/level), parseInt(box.width/level), parseInt(box.height/level));
+            var d = fitWithinBoundingBox(box, new OpenSeadragon.Point(681, 817));
             var dimension = '{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}'+'print/image_'+d.x+'x'+d.y+'_from_'+ scaledBox.x+','+scaledBox.y+'_to_'+scaledBox.getBottomRight().x+','+scaledBox.getBottomRight().y;
             jQuery("#clip").attr('href', dimension);
             jQuery(".locshare-print-button").find('a:first').attr('href', dimension).click(function(event) {
@@ -280,36 +251,36 @@
 
         function fitWithinBoundingBox(d, max) {
             if (d.width/d.height > max.x/max.y) {
-                return new Seadragon.Point(max.x, parseInt(d.height * max.x/d.width));
+                return new OpenSeadragon.Point(max.x, parseInt(d.height * max.x/d.width));
             } else {
-                return new Seadragon.Point(parseInt(d.width * max.y/d.height),max.y);
+                return new OpenSeadragon.Point(parseInt(d.width * max.y/d.height),max.y);
             }
         }
     
         function getDisplayRegion(viewer, source)
         {
             //Determine portion of scaled image that is being displayed
-            var box = new Seadragon.Rect(0, 0, source.x, source.y);
+            var box = new OpenSeadragon.Rect(0, 0, source.x, source.y);
             var container = viewer.viewport.getContainerSize();
             var bounds = viewer.viewport.getBounds();
             //If image is offset to the left
             if (bounds.x > 0){
-                box.x = box.x - viewer.viewport.pixelFromPoint(new Seadragon.Point(0,0)).x;
+                box.x = box.x - viewer.viewport.pixelFromPoint(new OpenSeadragon.Point(0,0)).x;
             }
             //If full image doesn't fit
             if (box.x + source.x > container.x) {
-                box.width = container.x - viewer.viewport.pixelFromPoint(new Seadragon.Point(0,0)).x;
+                box.width = container.x - viewer.viewport.pixelFromPoint(new OpenSeadragon.Point(0,0)).x;
                 if (box.width > container.x) {
                     box.width = container.x;
                 }
             }
             //If image is offset up
             if (bounds.y > 0) {
-                box.y = box.y - viewer.viewport.pixelFromPoint(new Seadragon.Point(0,0)).y;
+                box.y = box.y - viewer.viewport.pixelFromPoint(new OpenSeadragon.Point(0,0)).y;
             }
             //If full image doesn't fit
             if (box.y + source.y > container.y) {
-                box.height = container.y - viewer.viewport.pixelFromPoint(new Seadragon.Point(0,0)).y;
+                box.height = container.y - viewer.viewport.pixelFromPoint(new OpenSeadragon.Point(0,0)).y;
                 if (box.height > container.y) {
                     box.height = container.y;
                 }
@@ -319,10 +290,10 @@
 
         function addOverlay(viewer, x1, y1, x2, y2) {
 		    var img = document.createElement("img");
-		    var placement = Seadragon.OverlayPlacement.BOTTOM;
+		    var placement = OpenSeadragon.OverlayPlacement.BOTTOM;
                 
             var div = document.createElement("div");
-            var rect = new Seadragon.Rect(x1, y1, x2, y2);
+            var rect = new OpenSeadragon.Rect(x1, y1, x2, y2);
 
             div.className = "overlay";
             viewer.drawer.addOverlay(div, rect);
@@ -368,7 +339,7 @@
            show("Animation finished");
        }
 
-       Seadragon.Utils.addEvent(window, "load", init);
+       OpenSeadragon.addEvent(window, "load", init);
     </script>
 
     <script type="text/javascript">
@@ -424,57 +395,6 @@
 {% endblock %}
 
 {% block body %}
-  <div id="full_header" class="{{mode}}">
-   <div id="navigation">
-      <span><strong><a href="{% url chronam_home %}">Chronicling America</a></strong><br />
-      <a id="normal_mode" class="ar-back" href="{% if c_result %}{{c_result}}{% else %}{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}{% endif %}">Back to Normal Screen Mode</a></span>  
-      <ul class="nav">
-	{% if q %}
-	<li class="nav_result">
-	  Search Results<br />
-	  {% if previous_result_full %}<a class="wh" href="{{ previous_result_full }}">Previous</a> | {% endif %}
-	  {{index_count}} of {{total}}
-	  {% if next_result_full %} | <a class="wh" href="{{ next_result_full }}">Next</a>{% endif %}
-	</li>
-	{% endif %}
-
-        <li>
-          Page<br />
-          {% if page.previous %}
-          <a href='{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.previous.sequence %};mode=full'>
-            <img src="{% memorious 'media/images/prev_page.gif' %}" width="17" height="17" alt="Previous Page">
-          </a> 
-          {% endif %}
-          {% if page.next %}
-          <a href='{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.next.sequence %};mode=full'>
-            <img src="{% memorious 'media/images/next_page.gif' %}" width="17" height="17" alt="Next Page">
-          </a>
-          {% endif %}
-        </li>
-        <li>
-          Issues<br />
-           {% if previous_issue_first_page %}
-          <a href="{% url chronam_page title.lccn,previous_issue_first_page.issue.date_issued,previous_issue_first_page.issue.edition,previous_issue_first_page.sequence %};mode=full">
-            <img src="{% memorious 'media/images/prev_page.gif' %}" width="17" height="17" alt="Previous Issue" /></a> 
-          {% endif %}
-          {% if next_issue_first_page %}
-          <a href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %};mode=full">
-            <img src="{% memorious 'media/images/next_page.gif' %}" width="17" height="17" alt="Next Issue" /></a>
-          {% endif %}
-        </li>
-        <li class="bar"></li>
-        <li>
-          <strong>{{ title.name }}</strong><br />
-          {{ issue.date_issued }}, Edition {{issue.edition}}, Image {{page.sequence}}
-        </li>
-        <li class="bar"></li>
-        <li class="last">
-          Image provided by:<br />
-          {{ image_credit }}
-        </li> 
-     </ul>
-   </div><!-- end: n_title id:navigation -->
-  </div>
 {{ block.super }}
 {% endblock %}
 
@@ -485,6 +405,7 @@
   <div id="item-wrapper"> 
     <div id="imageViewer_nav">
       <div id="item-ctrl"> 
+        <div style="padding-left: 160px; padding-top: 10px;">
         <span class="c-images"> 
           <label for="pageNum">Image:</label> 
           <select name="pageNum" id="pageNum">
@@ -510,13 +431,12 @@
           {% endif %}
           <strong>Issues</strong> 
           {% if next_issue_first_page %}
-          <a href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %}"><img src="{% memorious 'media/images/item_btn_next.png' %}" width="17" height="17" alt="Next Issue" /></a> <a class="all" href="{% url chronam_issues title.lccn %}"><small>All Issues</small></a> 
+          <a href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %}"><img src="{% memorious 'media/images/item_btn_next.png' %}" width="17" height="17" alt="Next Issue" /></a><a class="all" href="{% url chronam_issues title.lccn %}"><small>All Issues</small></a> 
           {% endif %}
         </span>
         {% if page.jp2_filename %}
         <span class="c-view"> 
           <!-- view --> 
-          <strong>View:</strong> 
           <a class="text" href="{% url chronam_page_ocr title.lccn,issue.date_issued,issue.edition,page.sequence %}">Text</a> <span>|</span> <a href="{% url chronam_page_pdf title.lccn, issue.date_issued, issue.edition, page.sequence %}">PDF</a> 
         </span> 
         <span class="c-download"> 
@@ -524,9 +444,10 @@
           <strong>Download:</strong> <a href="{% url chronam_page_jp2 title.lccn, issue.date_issued, issue.edition, page.sequence %}">JP2 ({{image_size}})</a> 
         </span>
         <span class="c-clip">
-             <a id="clip" href="#" target="print">Clip Image <img src="{% memorious 'media/images/item_clip_icon.png' %}" width="18" height="17" alt="Clip Image" /></a>
+             <a id="clip" href="#" target="print"><img src="{% memorious 'media/images/item_clip_icon.png' %}" width="18" height="17" alt="Clip Image" /></a>
         </span>
         {% endif %}
+        </div>
       </div><!-- end id:item-ctrl -->
 
       <div id="outputHolder" style="display: none">
