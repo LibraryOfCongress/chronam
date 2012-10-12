@@ -5,7 +5,8 @@ import logging
 import urllib2
 import urlparse
 
-import zlib
+import io
+import gzip
 
 from time import time
 from datetime import datetime
@@ -44,6 +45,14 @@ ns = {
 }
 
 _logger = logging.getLogger(__name__)
+
+def gzip_compress(data):
+    bio = io.BytesIO()
+    f = gzip.GzipFile(mode='wb', fileobj=bio, compresslevel=9)
+    f.write(data)
+    f.close()
+    return bio.getvalue()
+
 
 class BatchLoader(object):
     """This class allows you to load a batch into the database. A loader 
@@ -405,7 +414,7 @@ class BatchLoader(object):
         lang_text, coords = ocr_extractor(url)
 
         f = open(models.coordinates_path(page._url_parts()), "w")
-        f.write(zlib.compress(json.dumps(coords)))
+        f.write(gzip_compress(json.dumps(coords)))
         f.close()
 
         ocr = OCR()
