@@ -120,4 +120,4 @@ STORAGE_URL = '/data/'
 BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
 OCR_DUMP_STORAGE = os.path.join(STORAGE, "dumps", "ocr")
-
+COORD_STORAGE = os.path.join(STORAGE, "word_coordinates")
