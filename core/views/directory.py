@@ -10,8 +10,6 @@ from django.db.models import Count, Max, Min, Q
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from operator import itemgetter
-
 from chronam.core.decorator import cache_page, opensearch_clean, rdf_view, cors
 from chronam.core.utils.utils import _page_range_short, _rdf_base
 from chronam.core import models, index
@@ -65,9 +63,8 @@ def newspapers(request, state=None, format='html'):
                 if place.state:
                     _newspapers_by_state.setdefault(place.state, set()).add(title)
 
+    newspapers_by_state = [(s, sorted(t)) for (s, t) in _newspapers_by_state.iteritems()]
 
-    newspapers_by_state = sorted(_newspapers_by_state.iteritems(), key=itemgetter(0,1))
-    
     if format == "html":
         return render_to_response("newspapers.html",
                                   dictionary=locals(),
