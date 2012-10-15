@@ -169,3 +169,53 @@ def suggest_titles(request):
         json_text = "%s(%s);" % (json.GET.get("callback"), json_text)
     return HttpResponse(json_text, mimetype='application/x-suggestions+json')
 
+
+@cache_page(settings.DEFAULT_TTL_SECONDS)
+def search_pages_navigation(request):
+    search = {}
+    # previous and next search results
+    if 'index' in request.GET:
+        q = request.GET.copy()
+        try:
+            p = int(request.GET.get('page', '1'))
+        except ValueError:
+            p = 1
+        if 'page' in q:
+            del q['page']
+        try:
+            i = int(request.GET.get('index', '0'))
+        except ValueError:
+            i = 0
+        if 'index' in q:
+            del q['index']
+        paginator = index.SolrPaginator(q)
+        search['total'] = total = paginator.count
+        page_index = (p - 1) * paginator.per_page + i  # 0-based
+        search['count'] = page_index + 1  # 1-based
+
+        search['results'] = urlresolvers.reverse('chronam_search_pages_results') + '?' + q.urlencode()
+
+        previous_page_index = page_index - 1
+        next_page_index = page_index + 1
+
+        if 0 <= page_index < total:
+            if previous_page_index >= 0:
+                p_page = previous_page_index / paginator.per_page + 1
+                p_index = previous_page_index % paginator.per_page
+                o = paginator.page(p_page).object_list[p_index]
+                _url_result = o.url
+                #search['words'] = o.words
+                q['words'] = o.words
+                _qs = '#' + q.urlencode() + '&page=' + str(p_page) + '&index=' + str(p_index)
+                search['previous_result'] = _url_result + _qs
+            if next_page_index < total:
+                n_page = next_page_index / paginator.per_page + 1
+                n_index = next_page_index % paginator.per_page
+                o = paginator.page(n_page).object_list[n_index]
+                _url_result = o.url
+                #search['words'] = o.words
+                q['words'] = o.words
+                _qs = '#' + q.urlencode() + '&page=' + str(n_page) + '&index=' + str(n_index)
+                search['next_result'] = _url_result + _qs
+
+    return HttpResponse(json.dumps(search), mimetype="application/json")

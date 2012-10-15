@@ -300,12 +300,14 @@
 	    };
 
         function addOverlays(viewer) {
-            var $ = jQuery; 
+            var $ = jQuery;
+            var params = $.deparam.fragment();
+            var words = params["words"];
             var dimensions = viewer.source.dimensions;
             $.getJSON('{% url chronam_page_coordinates page.issue.title.lccn,page.issue.date_issued,page.issue.edition,page.sequence %}', function(all_coordinates) {
                 var scale = 1 / all_coordinates["width"];
 
-                $.each("{{words|default:""}}".split("+"), function(index, word) {
+                $.each(words.split("+"), function(index, word) {
                     if (word!="") {
                         var boxes = [];
 
@@ -350,18 +352,62 @@
                 });
         });
     </script>
-    
+  <script type="text/javascript">
+      (function() {
+          var params, search_qs;
+
+          params = $.extend($.deparam.querystring(), $.deparam.fragment());
+          search_qs = $.param(params, true);
+
+          var view_type = params.view_type || 'gallery',
+          $nav_result = $(".nav_result");
+
+          function update_search_nav(data) {
+              if (!data) return;
+
+              $nav_result.find("a.backtoresults").attr("href", data.results);
+              $nav_result.find(".count").text(data.count);
+              $nav_result.find(".total").text(data.total);
+
+              if (data.next_result) {
+                  var url = data.next_result;
+                  $nav_result.find(".next")
+                  .removeClass("disabled")
+                  .find("a")
+                  .wrapInner($('<a>').attr('href', url));
+              }
+
+              if (data.previous_result) {
+                  var url = data.previous_result;
+                  $nav_result.find(".previous")
+                  .removeClass("disabled")
+                  .find("a")
+                  .wrapInner($('<a>').attr('href', url));
+              }
+
+              $nav_result.slideDown("fast");
+          }
+
+          if (!search_qs) return;
+
+          $.ajax({
+              url: "{% url chronam_search_pages_navigation %}?" + search_qs,
+              dataType: "json",
+              cache: true,
+              success: update_search_nav
+          });
+      })();
+  </script>
+
 {% endblock %}
 
 {% block sharetool_container_left %}
-{% if q %}
 <div class="nav_result">
-    <a class="ar-back backtoresults" href="{{ results }}">Back to search results</a>
-    {% if previous_result %}<a class="ar-back" href="{{ previous_result }}">Previous</a> | {% endif %}
-    {{index_count}} of {{total}}
-    {% if next_result %} | <a class="ar-more" href="{{ next_result }}">Next</a>{% endif %}
+    <a class="ar-back backtoresults" href="">Back to search results</a>
+    <span class="previous disabled"><a class="ar-back" href="">Previous</a> |</span>
+    <span class="count"></span> of <span class="total"></span>
+    <span class="next disabled">| <a class="ar-more" href="">Next</a></span>
 </div>
-{% endif %}
 {% endblock %}
 
 {% block download_links %}

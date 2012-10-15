@@ -430,6 +430,9 @@ a.ar-back {
     padding: 0 0 0 8px ;
     background: transparent url(./img-std/arrow-dbl-left.gif) left 5px no-repeat;
 }
+.disabled {
+    display: none;
+}
 .backtoresults {margin-right:40px;}
 a.ar-more-gray {
     padding: 0 8px 0 0 ;
@@ -1204,6 +1207,7 @@ float:left;
 clear:left;
 padding: 1px 0 0 0;
 color:#999;
+display: none;
 }
 a.wh:link,
 a.wh:visited {

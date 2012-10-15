@@ -170,6 +170,20 @@ def issue_pages_rdf(request, lccn, date, edition):
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @vary_on_headers('Referer')
 def page(request, lccn, date, edition, sequence, mode='normal', words=None):
+    fragments = []
+    if words:
+        fragments.append("words=" + words)
+    qs = request.META.get('QUERY_STRING')
+    if qs:
+        fragments.append(qs)
+    if fragments:
+        path_parts = dict(lccn=lccn, date=date, edition=edition,
+                          sequence=sequence)
+        url = urlresolvers.reverse('chronam_page',
+                                   kwargs=path_parts)
+        
+        return HttpResponseRedirect(url + "#" + "&".join(fragments))
+
     title, issue, page = _get_tip(lccn, date, edition, sequence)
 
     if not page.jp2_filename:
@@ -239,52 +253,6 @@ def page(request, lccn, date, edition, sequence, mode='normal', words=None):
     image_credit = issue.batch.awardee.name
     host = request.get_host()
     profile_uri = 'http://www.openarchives.org/ore/html/'
-
-    # previous and next search results
-    if 'index' in request.GET:
-        q = request.GET.copy()
-        try:
-            p = int(request.GET.get('page', '1'))
-        except ValueError:
-            p = 1
-        if 'page' in q:
-            del q['page']
-        try:
-            i = int(request.GET.get('index', '0'))
-        except ValueError:
-            i = 0
-        if 'index' in q:
-            del q['index']
-        paginator = SolrPaginator(q)
-        total = paginator.count
-        page_index = (p - 1) * paginator.per_page + i  # 0-based
-        index_count = page_index + 1  # 1-based
-
-        results = urlresolvers.reverse('chronam_search_pages_results') + '?' + q.urlencode()
-
-        previous_page_index = page_index - 1
-        next_page_index = page_index + 1
-
-        if 0 <= page_index < total:
-            if previous_page_index >= 0:
-                p_page = previous_page_index / paginator.per_page + 1
-                p_index = previous_page_index % paginator.per_page
-                _url_result = paginator.page(p_page).object_list[p_index].url + ';words=' + words
-                _qs = '?' + q.urlencode() + '&page=' + str(p_page) + '&index=' + str(p_index)
-                previous_result = _url_result + _qs
-                previous_result_full = _url_result + ';mode=full' + _qs
-            if next_page_index < total:
-                n_page = next_page_index / paginator.per_page + 1
-                n_index = next_page_index % paginator.per_page
-                _url_result = paginator.page(n_page).object_list[n_index].url + ';words=' + words
-                _qs = '?' + q.urlencode() + '&page=' + str(n_page) + '&index=' + str(n_index)
-                next_result = _url_result + _qs
-                next_result_full = _url_result + ';mode=full' + _qs
-            p = page_index / paginator.per_page + 1
-            i = page_index % paginator.per_page
-            c_result = paginator.page(p).object_list[i].url + ';words=' + words + '?' + q.urlencode() + '&page=' + str(p) + '&index=' + str(i)
-        else:
-            q = None
 
     template = "page.html"
     response = render_to_response(template, dictionary=locals(),

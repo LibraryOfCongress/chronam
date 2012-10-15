@@ -4,7 +4,7 @@ from django.conf.urls.defaults import patterns, url, include
 from django.conf import settings
 from django.utils import cache
 
-from chronam.core.views import home, image
+from chronam.core.views import home, image, search
 
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
@@ -199,6 +199,10 @@ urlpatterns += patterns(
         name='chronam_search_titles_results'),
     url(r'^suggest/titles/$', 'suggest_titles',
         name='chronam_suggest_titles'),
+
+    url(r'^search/pages/navigation/$', search.search_pages_navigation,
+        name='chronam_search_pages_navigation'),
+
 
     url(r'^events/$', 'events', name='chronam_events'),
     url(r'^events/(?P<page_number>\d+)/$', 'events',
