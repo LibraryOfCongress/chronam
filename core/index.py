@@ -56,6 +56,10 @@ class SolrPaginator(Paginator):
     def __init__(self, query):
         self.query = query.copy()
 
+        # remove words from query as it's not part of the solr query.
+        if 'words' in self.query:
+            del self.query['words']
+
         self._q = page_search(self.query)
 
         try:
@@ -84,11 +88,40 @@ class SolrPaginator(Paginator):
         "Returns the total number of objects, across all pages."
         if self._count is None:
             solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
-            solr_response = solr.query(self._q,
-                                       fields=['id'])
+            solr_response = solr.query(self._q, fields=['id'])
             self._count = int(solr_response.results.numFound)
         return self._count
     count = property(_get_count)
+
+    def highlight_url(self, url, words, page, index):
+        q = self.query.copy()
+        q["words"] = " ".join(words)
+        q["page"] = page
+        q["index"] = index
+        return url + "#" + q.urlencode()
+
+    def _get_previous(self):
+        previous_overall_index = self.overall_index - 1
+        if previous_overall_index >= 0:
+            p_page = previous_overall_index / self.per_page + 1
+            p_index = previous_overall_index % self.per_page
+            o = self.page(p_page).object_list[p_index]
+            q = self.query.copy()
+            return self.highlight_url(o.url, o.words, p_page, p_index)
+        else:
+            return None
+    previous_result = property(_get_previous)
+
+    def _get_next(self):
+        next_overall_index = self.overall_index + 1
+        if next_overall_index < self.count:
+            n_page = next_overall_index / self.per_page + 1
+            n_index = next_overall_index % self.per_page
+            o = self.page(n_page).object_list[n_index]
+            return self.highlight_url(o.url, o.words, n_page, n_index)
+        else:
+            return None
+    next_result = property(_get_next)
 
     def page(self, number):
         """
@@ -126,11 +159,10 @@ class SolrPaginator(Paginator):
                 for s in coords.get(ocr) or []:
                     words.update(find_words(s))
             page.words = sorted(words, key=lambda v: v.lower())
-            qq = self.query.copy()
-            qq["words"] = " ".join(page.words)
-            qq["page"] = number
-            qq["index"] = len(pages)
-            page.highlight_url = page.url + "#" + qq.urlencode()
+
+            page.highlight_url = self.highlight_url(page.url,
+                                                    page.words,
+                                                    number, len(pages))
             pages.append(page)
 
         return Page(pages, number, self)

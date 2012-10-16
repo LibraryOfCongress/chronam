@@ -366,7 +366,7 @@
               if (!data) return;
 
               $nav_result.find("a.backtoresults").attr("href", data.results);
-              $nav_result.find(".count").text(data.count);
+              $nav_result.find(".current").text(data.current);
               $nav_result.find(".total").text(data.total);
 
               if (data.next_result) {
@@ -405,7 +405,7 @@
 <div class="nav_result">
     <a class="ar-back backtoresults" href="">Back to search results</a>
     <span class="previous disabled"><a class="ar-back" href="">Previous</a> |</span>
-    <span class="count"></span> of <span class="total"></span>
+    <span class="current"></span> of <span class="total"></span>
     <span class="next disabled">| <a class="ar-more" href="">Next</a></span>
 </div>
 {% endblock %}

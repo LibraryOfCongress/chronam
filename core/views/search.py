@@ -181,37 +181,15 @@ def search_pages_navigation(request):
     if not ('page' in request.GET and 'index' in request.GET):
         return HttpResponseNotFound()
 
-    search = {}
-
-    q = request.GET.copy()
-    if 'words' in q:
-        del q['words']
+    search_url = urlresolvers.reverse('chronam_search_pages_results')
 
     paginator = search_pages_paginator(request)
 
+    search = {}
     search['total'] = paginator.count
-    search['count'] = paginator.overall_index + 1  # count is 1-based
-    search['results'] = urlresolvers.reverse('chronam_search_pages_results') + '?' + q.urlencode()
-
-    previous_overall_index = paginator.overall_index - 1
-    next_overall_index = paginator.overall_index + 1
-
-    if 0 <= paginator.overall_index < paginator.count:
-        if previous_overall_index >= 0:
-            p_page = previous_overall_index / paginator.per_page + 1
-            p_index = previous_overall_index % paginator.per_page
-            o = paginator.page(p_page).object_list[p_index]
-            q["words"] = " ".join(o.words)
-            q["page"] = p_page
-            q["index"] = p_index
-            search['previous_result'] = o.url + "#" + q.urlencode()
-        if next_overall_index < paginator.count:
-            n_page = next_overall_index / paginator.per_page + 1
-            n_index = next_overall_index % paginator.per_page
-            o = paginator.page(n_page).object_list[n_index]
-            q["words"] = " ".join(o.words)
-            q["page"] = n_page
-            q["index"] = n_index
-            search['next_result'] = o.url + "#" + q.urlencode()
+    search['current'] = paginator.overall_index + 1  # current is 1-based
+    search['results'] = search_url + '?' + paginator.query.urlencode()
+    search['previous_result'] = paginator.previous_result
+    search['next_result'] = paginator.next_result
 
     return HttpResponse(json.dumps(search), mimetype="application/json")
