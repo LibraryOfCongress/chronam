@@ -57,10 +57,17 @@ class SolrPaginator(Paginator):
         self.query = query.copy()
 
         self._q = page_search(self.query)
+
         try:
-            page_num = int(self.query.get('page'))
+            self._cur_page = int(self.query.get('page'))
         except:
-            page_num = 1
+            self._cur_page = 1  # _cur_page is 1-based
+
+        try:
+            self._cur_index = int(self.query.get('index'))
+        except:
+            self._cur_index = 0
+
         try:
             rows = int(self.query.get('rows'))
         except:
@@ -69,7 +76,8 @@ class SolrPaginator(Paginator):
         # set up some bits that the Paginator expects to be able to use
         Paginator.__init__(self, None, per_page=rows, orphans=0)
 
-        self._cur_page = page_num
+        self.overall_index = (self._cur_page - 1) * self.per_page + self._cur_index
+
         self._ocr_list = ['ocr', 'ocr_eng', 'ocr_fre', 'ocr_spa', 'ocr_ita', 'ocr_ger']
 
     def _get_count(self):
@@ -117,7 +125,12 @@ class SolrPaginator(Paginator):
             for ocr in self._ocr_list:
                 for s in coords.get(ocr) or []:
                     words.update(find_words(s))
-            page.words = "+".join(words)
+            page.words = sorted(words, key=lambda v: v.lower())
+            qq = self.query.copy()
+            qq["words"] = " ".join(page.words)
+            qq["page"] = number
+            qq["index"] = len(pages)
+            page.highlight_url = page.url + "#" + qq.urlencode()
             pages.append(page)
 
         return Page(pages, number, self)

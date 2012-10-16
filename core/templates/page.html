@@ -307,7 +307,7 @@
             $.getJSON('{% url chronam_page_coordinates page.issue.title.lccn,page.issue.date_issued,page.issue.edition,page.sequence %}', function(all_coordinates) {
                 var scale = 1 / all_coordinates["width"];
 
-                $.each(words.split("+"), function(index, word) {
+                $.each(words.split(" "), function(index, word) {
                     if (word!="") {
                         var boxes = [];
 

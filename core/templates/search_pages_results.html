@@ -44,7 +44,7 @@ function add_highlights(div) {
         $.getJSON('{{script_name}}'+id+'coordinates/', function(all_coordinates) {
             var vScale = height / all_coordinates["height"];
             var hScale = width / all_coordinates["width"];
-            $.each(words.split("+"), function(index, word) {
+            $.each(words.split(" "), function(index, word) {
                     var boxes = [];
                     var coordinates = all_coordinates["coords"][word];
                     for (k in coordinates) {
@@ -140,7 +140,7 @@ if ($.browser.msie && $.browser.version < 7) {
             <td>
             {% if object %}
                 <div class="highlite">
-                    <a href="{{ object.url }}#words={{object.words}}&{{q}}&index={{forloop.counter0}}">
+                    <a href="{{ object.highlight_url }}">
                     {% if object.jp2_filename %} 
                     <img class="thumbnail" src="{{ object.thumb_url }}" />
                     {% else %}
@@ -148,12 +148,12 @@ if ($.browser.msie && $.browser.version < 7) {
                     {% endif %}
                     </a><br />
 		    {% with object.issue.title as title %}
-                    <a href="{{ object.url }}#words={{object.words}}&{{q}}&index={{forloop.counter0}}">{{title.name}} ({{title.place_of_publication}}), {{object.issue|label}}, {{object|label}}</a>
+                    <a href="{{ object.highligh_url }}">{{title.name}} ({{title.place_of_publication}}), {{object.issue|label}}, {{object|label}}</a>
 		    {% endwith %}
 
                     {% comment %}The following two hidden input fields are used by the add_highlights javascript{% endcomment %}
                     <input name="id" value="{{object.url}}" type="hidden"/>
-                    <input name="words" value="{{object.words}}" type="hidden"/>
+                    <input name="words" value="{{object.words|join:' '}}" type="hidden"/>
                 </div>
             {% endif %}
             </td>

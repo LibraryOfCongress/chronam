@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core import urlresolvers
 from django.core.paginator import Paginator, InvalidPage
 from django.shortcuts import get_object_or_404, render_to_response
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.template import RequestContext
 from django.template.loader import get_template
 
@@ -15,17 +15,7 @@ from chronam.core import forms
 from chronam.core.decorator import opensearch_clean, cache_page, cors
 from chronam.core.utils.utils import _page_range_short
 
-@cors
-@cache_page(settings.DEFAULT_TTL_SECONDS)
-@opensearch_clean
-def search_pages_results(request, view_type='gallery'):
-    context = RequestContext(request, {})
-    try:
-        curr_page = int(request.REQUEST.get('page', 1))
-    except ValueError, e:
-        curr_page = 1
-
-    page_title = "Search Results"
+def search_pages_paginator(request):
     # front page only
     try:
         sequence = int(request.REQUEST.get('sequence', '0'))
@@ -40,8 +30,18 @@ def search_pages_results(request, view_type='gallery'):
     q['rows'] = rows
     q['sequence'] = sequence
     paginator = index.SolrPaginator(q)
+    return paginator
+
+
+@cors
+@cache_page(settings.DEFAULT_TTL_SECONDS)
+@opensearch_clean
+def search_pages_results(request, view_type='gallery'):
+    page_title = "Search Results"
+    paginator = search_pages_paginator(request)
+    q = paginator.query
     try:
-        page = paginator.page(curr_page)
+        page = paginator.page(paginator._cur_page)
     except InvalidPage:
         url = urlresolvers.reverse('chronam_search_pages_results')
         # Set the page to the first page
@@ -52,11 +52,11 @@ def search_pages_results(request, view_type='gallery'):
     # figure out the next page number
     query = request.GET.copy()
     if page.has_next():
-        query['page'] = curr_page + 1
+        query['page'] = paginator._cur_page + 1
         next_url = '?' + query.urlencode()
         # and the previous page number
     if page.has_previous():
-        query['page'] = curr_page - 1
+        query['page'] = paginator._cur_page - 1
         previous_url = '?' + query.urlencode()
        
     host = request.get_host()
@@ -172,50 +172,46 @@ def suggest_titles(request):
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def search_pages_navigation(request):
+    """Search results navigation data
+
+    This view provides the information needed to add search result
+    navigation to a page.
+
+    """
+    if not ('page' in request.GET and 'index' in request.GET):
+        return HttpResponseNotFound()
+
     search = {}
-    # previous and next search results
-    if 'index' in request.GET:
-        q = request.GET.copy()
-        try:
-            p = int(request.GET.get('page', '1'))
-        except ValueError:
-            p = 1
-        if 'page' in q:
-            del q['page']
-        try:
-            i = int(request.GET.get('index', '0'))
-        except ValueError:
-            i = 0
-        if 'index' in q:
-            del q['index']
-        paginator = index.SolrPaginator(q)
-        search['total'] = total = paginator.count
-        page_index = (p - 1) * paginator.per_page + i  # 0-based
-        search['count'] = page_index + 1  # 1-based
 
-        search['results'] = urlresolvers.reverse('chronam_search_pages_results') + '?' + q.urlencode()
+    q = request.GET.copy()
+    if 'words' in q:
+        del q['words']
 
-        previous_page_index = page_index - 1
-        next_page_index = page_index + 1
+    paginator = search_pages_paginator(request)
 
-        if 0 <= page_index < total:
-            if previous_page_index >= 0:
-                p_page = previous_page_index / paginator.per_page + 1
-                p_index = previous_page_index % paginator.per_page
-                o = paginator.page(p_page).object_list[p_index]
-                _url_result = o.url
-                #search['words'] = o.words
-                q['words'] = o.words
-                _qs = '#' + q.urlencode() + '&page=' + str(p_page) + '&index=' + str(p_index)
-                search['previous_result'] = _url_result + _qs
-            if next_page_index < total:
-                n_page = next_page_index / paginator.per_page + 1
-                n_index = next_page_index % paginator.per_page
-                o = paginator.page(n_page).object_list[n_index]
-                _url_result = o.url
-                #search['words'] = o.words
-                q['words'] = o.words
-                _qs = '#' + q.urlencode() + '&page=' + str(n_page) + '&index=' + str(n_index)
-                search['next_result'] = _url_result + _qs
+    search['total'] = paginator.count
+    search['count'] = paginator.overall_index + 1  # count is 1-based
+    search['results'] = urlresolvers.reverse('chronam_search_pages_results') + '?' + q.urlencode()
+
+    previous_overall_index = paginator.overall_index - 1
+    next_overall_index = paginator.overall_index + 1
+
+    if 0 <= paginator.overall_index < paginator.count:
+        if previous_overall_index >= 0:
+            p_page = previous_overall_index / paginator.per_page + 1
+            p_index = previous_overall_index % paginator.per_page
+            o = paginator.page(p_page).object_list[p_index]
+            q["words"] = " ".join(o.words)
+            q["page"] = p_page
+            q["index"] = p_index
+            search['previous_result'] = o.url + "#" + q.urlencode()
+        if next_overall_index < paginator.count:
+            n_page = next_overall_index / paginator.per_page + 1
+            n_index = next_overall_index % paginator.per_page
+            o = paginator.page(n_page).object_list[n_index]
+            q["words"] = " ".join(o.words)
+            q["page"] = n_page
+            q["index"] = n_index
+            search['next_result'] = o.url + "#" + q.urlencode()
 
     return HttpResponse(json.dumps(search), mimetype="application/json")
