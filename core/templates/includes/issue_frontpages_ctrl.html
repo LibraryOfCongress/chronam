@@ -1,4 +1,4 @@
-{% load memorious %}
+{% load static from staticfiles %}
 
 <div class="search_results_ctrl">
     <span class="nav"><a href="{% url chronam_issues issue.title.lccn %}" class="ar-back">Back to Browse All Available Issues</a> 
@@ -8,7 +8,7 @@
 |
         {% if page.has_previous %}
         <a href="{% url chronam_issues_first_pages_page_number title.lccn,page.previous_page_number %}" class="prev">
-            <img src="{% memorious 'media/images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" />
+            <img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" />
         </a>
         {% endif %}
         {% for page_number in page_range_short %}
@@ -29,7 +29,7 @@
 
         {% if page.has_next %}
         <a href="{% url chronam_issues_first_pages_page_number title.lccn,page.next_page_number %}" class="next">
-        <img src="{% memorious 'media/images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a>
+        <img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a>
         {% endif %}
     </span>
     <form action="" method="GET" class="jumptopage" name="page_number_form">

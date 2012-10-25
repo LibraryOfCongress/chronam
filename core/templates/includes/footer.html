@@ -1,4 +1,4 @@
-{% load memorious %}
+{% load static from staticfiles %}
 <div class="f_container">
     <div class="f_inner_top">
         <h3>Stay Connected with the Library <span><a href="http://www.loc.gov/homepage/connect.html">All ways to connect</a></span></h3>
@@ -7,7 +7,7 @@
         <div class="find_us">
             <h4>Find us on</h4>
 
-            <a href="http://www.facebook.com/libraryofcongress"><img src="{% memorious 'media/img-foot/facebook.gif' %}" alt="Facebook" width="16" height="16" /></a><a href="http://twitter.com/librarycongress"><img src="{% memorious 'media/img-foot/twitter.gif' %}" alt="Twitter" width="16" height="16" /></a><a href="http://www.youtube.com/libraryofcongress"><img src="{% memorious 'media/img-foot/youtube.gif' %}" alt="YouTube" width="16" height="16" /></a><a href="http://www.flickr.com/photos/library_of_congress/"><img src="{% memorious 'media/img-foot/flickr.gif' %}" alt="Flickr" width="16" height="16" /></a>
+            <a href="http://www.facebook.com/libraryofcongress"><img src="{% static 'img-foot/facebook.gif' %}" alt="Facebook" width="16" height="16" /></a><a href="http://twitter.com/librarycongress"><img src="{% static 'img-foot/twitter.gif' %}" alt="Twitter" width="16" height="16" /></a><a href="http://www.youtube.com/libraryofcongress"><img src="{% static 'img-foot/youtube.gif' %}" alt="YouTube" width="16" height="16" /></a><a href="http://www.flickr.com/photos/library_of_congress/"><img src="{% static 'img-foot/flickr.gif' %}" alt="Flickr" width="16" height="16" /></a>
         </div>
         <div class="subscribe">
             <h4>Subscribe &amp; Comment</h4>

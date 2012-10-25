@@ -1,5 +1,5 @@
 {% extends "site_base.html" %}
-{% load memorious %}
+{% load static from staticfiles %}
 
 {% block lc_metadata %}
     {% with page as title_metadata %}
@@ -43,7 +43,7 @@
             padding-top:2px;
 	    width: 100%;
 	    height: 40px;
-            background: #900 url({% memorious 'media/images/line2.gif' %}) top left no-repeat !important;
+            background: #900 url({% static 'images/line2.gif' %}) top left no-repeat !important;
         }
         #navigation {
     	    overflow:hidden;
@@ -134,7 +134,7 @@
 
 {% block javascript %}
     <script type="text/javascript"
-        src="{% memorious 'media/js/openseadragon.js' %}">
+        src="{% static 'js/openseadragon.js' %}">
     </script>
     
     <script type="text/javascript">
@@ -189,7 +189,7 @@
             var viewer = new OpenSeadragon.Viewer({
                 id: "viewer_container",
                 toolbar: "item-ctrl",
-                prefixUrl: "{% memorious 'media/' %}",
+                prefixUrl: "{% static '' %}",
                 autoHideControls: false,
                 nextButton: "next",
                 previousButton: "previous",
@@ -444,7 +444,7 @@
 {{ block.super }}
 {% endblock %}
 
-{% block content %}
+{% block subcontent %}
 
   <div class="clear"></div>
   <p class="gray nomargin-bottom2">Image provided by: {{image_credit}}</p> 
@@ -463,21 +463,21 @@
         </span> 
         <span class="c-pages"> 
           {% if page.previous %}
-          <a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.previous.sequence %}"><img src="{% memorious 'media/images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Page"></a> 
+          <a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.previous.sequence %}"><img src="{% static 'images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Page"></a> 
           {% endif %}
           <strong>Page</strong> 
           {% if page.next %}
-          <a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.next.sequence %}"><img src="{% memorious 'media/images/item_btn_next.png' %}" width="17" height="17" alt="Next Page"></a>
+          <a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.next.sequence %}"><img src="{% static 'images/item_btn_next.png' %}" width="17" height="17" alt="Next Page"></a>
           {% endif %}
           <a class="all" href="{% url chronam_issue_pages title.lccn,issue.date_issued,issue.edition %}"><small>All Pages</small></a> 
         </span> 
         <span class="c-issues"> 
           {% if previous_issue_first_page %}
-          <a href="{% url chronam_page title.lccn,previous_issue_first_page.issue.date_issued,previous_issue_first_page.issue.edition,previous_issue_first_page.sequence %}"><img src="{% memorious 'media/images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Issue" /></a> 
+          <a href="{% url chronam_page title.lccn,previous_issue_first_page.issue.date_issued,previous_issue_first_page.issue.edition,previous_issue_first_page.sequence %}"><img src="{% static 'images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Issue" /></a> 
           {% endif %}
           <strong>Issues</strong> 
           {% if next_issue_first_page %}
-          <a href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %}"><img src="{% memorious 'media/images/item_btn_next.png' %}" width="17" height="17" alt="Next Issue" /></a><a class="all" href="{% url chronam_issues title.lccn %}"><small>All Issues</small></a> 
+          <a href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %}"><img src="{% static 'images/item_btn_next.png' %}" width="17" height="17" alt="Next Issue" /></a><a class="all" href="{% url chronam_issues title.lccn %}"><small>All Issues</small></a> 
           {% endif %}
         </span>
         {% if page.jp2_filename %}
@@ -490,7 +490,7 @@
           <strong>Download:</strong> <a href="{% url chronam_page_jp2 title.lccn, issue.date_issued, issue.edition, page.sequence %}">JP2 ({{image_size}})</a> 
         </span>
         <span class="c-clip">
-             <a id="clip" href="#" target="print"><img src="{% memorious 'media/images/item_clip_icon.png' %}" width="18" height="17" alt="Clip Image" /></a>
+             <a id="clip" href="#" target="print"><img src="{% static 'images/item_clip_icon.png' %}" width="18" height="17" alt="Clip Image" /></a>
         </span>
         {% endif %}
         </div>

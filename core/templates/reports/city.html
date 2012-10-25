@@ -1,5 +1,5 @@
 {% extends "reports/reports.html" %}
-{% load memorious %}
+{% load static from staticfiles %}
 {% load custom_filters %}
 
 {% block extra_link_types %}
@@ -11,13 +11,13 @@
     {% endif %}
 {% endblock %}
 
-{% block content %}
+{% block subcontent %}
 
 {% ifnotequal paginator.num_pages 1 %}
 <div id="searchnav">
   <span class="pagination">
     {% if page.has_previous %}
-      <a rel="prev" href="{% url chronam_city_page_number state|pack_url, county|pack_url, city|pack_url, page.previous_page_number %}"><img src="{% memorious 'media/images/pag_prev_on.gif'%}" width="9" height="9" alt=""/></a>
+      <a rel="prev" href="{% url chronam_city_page_number state|pack_url, county|pack_url, city|pack_url, page.previous_page_number %}"><img src="{% static 'images/pag_prev_on.gif'%}" width="9" height="9" alt=""/></a>
     {% endif %}
     
     {% for page_number in page_range_short %}
@@ -34,7 +34,7 @@
     {% endfor %}
  
     {% if page.has_next %}
-      <a href="{% url chronam_city_page_number state|pack_url, county|pack_url, city|pack_url, page.next_page_number %}"><img src="{% memorious 'media/images/pag_next_on.gif' %}" width="9" height="9" alt=""/></a>
+      <a href="{% url chronam_city_page_number state|pack_url, county|pack_url, city|pack_url, page.next_page_number %}"><img src="{% static 'images/pag_next_on.gif' %}" width="9" height="9" alt=""/></a>
     {% endif %}
   </span>
 </div>

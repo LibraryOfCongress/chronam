@@ -1,5 +1,5 @@
 {% extends "newspaper.html" %}
-{% load memorious %}
+{% load static from staticfiles %}
 {% load custom_filters %}
 
 {% block lc_metadata %}
@@ -20,7 +20,7 @@
                 {{title.name}} : ({{title.place_of_publication}}) {{title.start_year}}-{{title.end_year}}
                 {% if title.essay %}
                 <br/>
-                <img src="{% memorious 'media/img-std/i_arrow_o.gif' %}" width="9" height="9" alt="" />
+                <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt="" />
                 <a href="{% url chronam_essay title.essay.id %}">More About this Newspaper</a>
                 {% endif %}
             </dd>
@@ -196,7 +196,7 @@
         
             <dt>Holdings:</dt>
             <dd>
-                <img src="{% memorious 'media/img-std/i_arrow_o.gif' %}" width="9" height="9" alt="" />
+                <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt="" />
                 <a href="{% url chronam_title_holdings title.lccn %}">
                     View complete holdings information
                 </a>
@@ -206,12 +206,12 @@
             <dt>View</dt>   
             <dd>
                 {% if title.first_issue.first_page.sequence %}
-                <img src="{% memorious 'media/img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
+                <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
                 <a href="{% url chronam_page title.lccn,title.first_issue.date_issued,title.first_issue.edition,title.first_issue.first_page.sequence %}">First Issue</a>
                 {% endif %}
         
                 {% if title.last_issue.first_page.sequence %}
-                <img src="{% memorious 'media/img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
+                <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
                 <a href="{% url chronam_page title.lccn,title.last_issue.date_issued,title.last_issue.edition,title.last_issue.first_page.sequence %}">Last Issue</a>
                 {% endif %}
             </dd>

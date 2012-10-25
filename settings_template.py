@@ -25,6 +25,9 @@ MEDIA_ROOT = ''
 MEDIA_URL = ''
 #ADMIN_MEDIA_PREFIX = '/media/'
 
+STATIC_ROOT = (os.path.join(DIRNAME, '.static'), )
+STATICFILES_DIRS = (os.path.join(DIRNAME, '.static'), )
+
 ROOT_URLCONF = 'chronam.urls'
 
 DATABASES = {
@@ -63,8 +66,10 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'lc',
     'south',
     'django.contrib.humanize',
+    'django.contrib.staticfiles',
     'django_memorious',
     'djcelery',
     'djkombu',

@@ -1,5 +1,5 @@
 {% load custom_filters %}
-{% load memorious %}
+{% load static from staticfiles %}
 {% load humanize %}
 
 <div id="box-tabs" class="ui-tabs-hide">
@@ -9,8 +9,8 @@
         <li><a href="#tab_newspapers"><span>All Digitized Newspapers {{search_form.fulltextStartYear}}-{{search_form.fulltextEndYear}}</span></a></li>
     </ul>
     <span class="btn_directory"><a href="{% url chronam_search_titles %}"><img src=
-            {% ifequal page_name 'directory' %}"{% memorious 'media/images/btn_usnews_sel.png' %}"
-            {% else %}"{% memorious 'media/images/btn_usnews.png' %}"{% endifequal %}
+            {% ifequal page_name 'directory' %}"{% static 'images/btn_usnews_sel.png' %}"
+            {% else %}"{% static 'images/btn_usnews.png' %}"{% endifequal %}
             width="296" height="34" border="0" alt="US Newspaper Directory, 1690-Present" /></a></span>
     <div id="tab_search" class="ui-tabs-hide">
         <form action="{% url chronam_search_pages_results %}" method="get" name="fulltext" id="fulltext" class="search-pages">
@@ -25,7 +25,7 @@
                 {{ search_form.date2 }}
                 <span class="plus">+</span>
                 <!-- search text field -->
-                {{ search_form.proxtext }}<input type="image"  alt="GO" src="{% memorious 'media/images/btn_go.png' %}" class="ortext-btn" />
+                {{ search_form.proxtext }}<input type="image"  alt="GO" src="{% static 'images/btn_go.png' %}" class="ortext-btn" />
                 <input type="hidden" name="dateFilterType" alt="dateFilterType" value="yearRange" />
                 <input type="hidden" name="rows" id="rows" alt="rows" value="20" />
                 <input type="hidden" name="searchType" alt="searchType" value="basic" />

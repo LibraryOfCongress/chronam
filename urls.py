@@ -424,3 +424,8 @@ urlpatterns += patterns(
         {'document_root': _MEDIA_ROOT + '/sitemaps'},
         name="chronam_sitemaps"),
 )
+
+urlpatterns += patterns(
+    'django.contrib.staticfiles.views',
+    url(r'^static/[0-9a-z\.\-]+/(?P<path>.*)$', 'serve'),
+)

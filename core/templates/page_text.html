@@ -1,11 +1,11 @@
-{% load memorious %}
+{% load static from staticfiles %}
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
     <title>{% if page_title %}{{page_title}} - {% endif %}Chronicling America - The Library of Congress</title>
     <style type="text/css">
-        @import url({% memorious 'media/css/ca_print.css' %});
+        @import url({% static 'css/ca_print.css' %});
         .thumbnail {
             float: none;
             padding-right: 1em;

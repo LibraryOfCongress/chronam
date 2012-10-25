@@ -1,5 +1,5 @@
 {% extends "site_base.html" %}
-{% load memorious %}
+{% load static from staticfiles %}
 {% load custom_filters %}
 
 {% block page_head %}
@@ -17,7 +17,7 @@
 {% include "includes/lc_metadata.html" %}
 {% endblock %}
 
-{% block content %}
+{% block subcontent %}
 {% if first_pages %}
 {% include "includes/issue_frontpages_ctrl.html" %}
 {% else %}

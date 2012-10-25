@@ -1,6 +1,6 @@
 {% extends "newspaper.html" %}
 
-{% load memorious %}
+{% load static from staticfiles %}
 
 {% block newspaper_content %}
 
@@ -18,7 +18,7 @@
       <hr/>
       <h3>SUMMARY HOLDING: {{holding.institution.name}}, {{holding.institution.city}}, {{holding.institution.state}}</h3>
       <p>
-        <img src="{% memorious 'media/img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
+        <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
         <a href="{% url chronam_institution_titles holding.institution.code.lower %}" shape="rect">View more titles from this institution</a>
       </p>
       <h4 class="holding">Dates Available:</h4>

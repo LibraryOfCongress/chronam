@@ -1,10 +1,10 @@
-{% load memorious %}
+{% load static from staticfiles %}
 
     <div class="left">
         <span class="results">Results {{ start }} - {{ end }} of {{ paginator.count }}</span>
         <span class="pagination">
             {% if page.has_previous %}
-            <a href="{{previous_url}}" class="prev"><img src="{% memorious 'media/images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" /></a>
+            <a href="{{previous_url}}" class="prev"><img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" /></a>
             {% endif %} 
      
             {% for page_number in page_range_short %}
@@ -23,7 +23,7 @@
              {% endfor %}
             
             {% if page.has_next %} 
-            <a href="{{ next_url }}" class="next"><img src="{% memorious 'media/images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a>
+            <a href="{{ next_url }}" class="next"><img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a>
             {% endif %} 
         </span>
       <form action="" method="GET" style="display: inline;">

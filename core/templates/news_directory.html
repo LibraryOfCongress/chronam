@@ -1,6 +1,6 @@
 {% extends "site_base.html" %}
 
-{% load memorious %}
+{% load static from staticfiles %}
 {% load humanize %}
 
 {% block javascript %}
@@ -72,7 +72,7 @@
 {% endblock %}
 
 {% block page_head_container %}{% endblock %}
-{% block content %}
+{% block subcontent %}
 <div class="browse_collect_ctrl top">
   <h1>{{ page_title }}</h1>
   <p>This directory of newspapers published in the United States since 1690 can help identify what titles exist for a specific place and time, and how to access them. Use the options below to select a particular place and time, using keywords to locate specific titles. Titles currently listed: {{title_count|intcomma}}.</p>

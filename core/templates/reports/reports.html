@@ -1,15 +1,15 @@
 {% extends "site_base.html" %}
-{% load memorious %}
+{% load static from staticfiles %}
 
 {% block extrahead %}
-<link type="text/css" href="{% memorious 'media/css/ca_reports.css' %}" rel="stylesheet" />
+<link type="text/css" href="{% static 'css/ca_reports.css' %}" rel="stylesheet" />
 
 {% block extra_link_types %}
 {% endblock %}
 
 {% endblock %}
 
-{% block content %}
+{% block subcontent %}
 
 <table class="data" width="100%">
     <tr class='lightGray'>

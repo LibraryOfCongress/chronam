@@ -1,9 +1,9 @@
 {% extends "site_base.html" %} 
-{% load memorious %}
+{% load static from staticfiles %}
 {% load custom_filters %}
 
 {% block javascript %}
-<script type="text/javascript" src="{% memorious 'media/js/search_results.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/search_results.js' %}"></script>
 <script type="text/javascript">
 
 jQuery(function($){
@@ -49,7 +49,7 @@ function add_highlights(div) {
                     var coordinates = all_coordinates["coords"][word];
                     for (k in coordinates) {
                         var v = coordinates[k];
-                        div.append("<img class='highlite' src='"+"{% memorious 'media/images/red_60.png' %}" +
+                        div.append("<img class='highlite' src='"+"{% static 'images/red_60.png' %}" +
     "' style='TOP: " +  (v[1] * vScale - padding/2.0 + offset) + 'px;' +
     " LEFT: " +       (v[0] * hScale - padding/2.0 + offset) + 'px;' +
     " HEIGHT: " +     (v[3] * vScale + padding) + 'px;' +
@@ -89,7 +89,7 @@ if ($.browser.msie && $.browser.version < 7) {
 
 {% block page_head_container %}{% endblock %}
 
-{% block content %}
+{% block subcontent %}
 
 {% ifequal paginator.count 0 %}
 

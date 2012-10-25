@@ -1,5 +1,5 @@
 {% extends "reports/reports.html" %}
-{% load memorious %}
+{% load static from staticfiles %}
 
 {% block extra_link_types %}
 <link rel="alternate" type="application/atom+xml" href="{% url chronam_batches_atom %}" title="Batches Atom Feed" />
@@ -7,7 +7,7 @@
     
 {% endblock %}
 
-{% block content %}
+{% block subcontent %}
 
 <p>
 The Library of Congress regularly receives digitized newspaper content 
@@ -30,7 +30,7 @@ in the <a href="{% url chronam_batches_atom %}">Atom</a> and
       <div class="pageNavigator">
       Pages: 
       {% if page.has_previous %}
-      <a rel="prev" href="{% url chronam_batches_page page.previous_page_number %}"><img src="{% memorious 'media/images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" /></a>
+      <a rel="prev" href="{% url chronam_batches_page page.previous_page_number %}"><img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" /></a>
       {% endif %}
       {% for page_number in page_range_short %}
       {% ifequal page_number "..." %}
@@ -46,7 +46,7 @@ in the <a href="{% url chronam_batches_atom %}">Atom</a> and
       {% endifequal %}
       {% endfor %}
       {% if page.has_next %}
-      <a rel="next" href="{% url chronam_batches_page page.next_page_number %}"><img src="{% memorious 'media/images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a> 
+      <a rel="next" href="{% url chronam_batches_page page.next_page_number %}"><img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a> 
       {% endif %}
     </div>
   </div>

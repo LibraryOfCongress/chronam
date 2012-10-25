@@ -1,5 +1,5 @@
 {% extends "site_base.html" %}
-{% load memorious %}
+{% load static from staticfiles %}
 
 {% block extrahead %}
     {% if page.has_previous %}
@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block javascript %}
-    <script type="text/javascript" src="{% memorious 'media/js/search_results.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/search_results.js' %}"></script>
     <script type="text/javascript">
     jQuery( function($){
         $("#sort_select option[value='{{sort}}']").attr("selected", true);
@@ -28,7 +28,7 @@
     </script>
 {% endblock %}
 
-{% block content %}
+{% block subcontent %}
 
 {% ifequal paginator.count 0 %}
 <h2>No Results</h2>
@@ -71,7 +71,7 @@
         </li>
         {% endfor %}
     </ul>
-{% endblock %}
+    {% endblock %}
 
 <div class="txt_wrapper">
     <p class="backtotop">
@@ -84,4 +84,4 @@
     {% include 'includes/titles_results_ctrl.html' %}
 </div><!-- end class:search_results_ctrl -->
 {% endifequal %}
-{% endblock %}
+{% endblock subcontent %}

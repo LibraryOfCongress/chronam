@@ -1,5 +1,5 @@
 {% extends "site_base.html" %}
-{% load memorious %}
+{% load static from staticfiles %}
 {% block extrahead %}
     {% if page.has_previous %}
         {% if start %}
@@ -17,7 +17,7 @@
     {% endif %}
 {% endblock %}
 
-{% block content %}
+{% block subcontent %}
 
 <div id="left">
 

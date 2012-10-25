@@ -1,6 +1,6 @@
 {% extends "newspaper.html" %}
 
-{% load memorious %}
+{% load static from staticfiles %}
 
 {% block extrahead %}
 {{ block.super }}
@@ -20,7 +20,7 @@
  
 <div style="text-align: center;"> 
 <a href="{% url chronam_title_marcxml title.lccn %}">
-    <img src="{% memorious 'media/images/xml.png' %}"></img>
+    <img src="{% static 'images/xml.png' %}"></img>
 </a>
 </div>
 
