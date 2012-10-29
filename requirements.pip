@@ -23,7 +23,7 @@ django-kombu
 worldcat
 
 # Used for purging batches in CTS
-git+https://rdc.lctl.gov/git/minicts.git#egg=minicts
+git+https://git.rdc.lctl.gov/minicts.git#egg=minicts
 
 # django-lc
 django-staticfiles
