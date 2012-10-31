@@ -39,7 +39,7 @@ MEDIA_URL = ''
 #ADMIN_MEDIA_PREFIX = '/media/'
 
 STATIC_URL = '/static/%s/' % SITE_VERSION
-STATIC_ROOT = (os.path.join(DIRNAME, '.static'), )
+STATIC_ROOT = os.path.join(DIRNAME, '.static')
 STATICFILES_DIRS = (os.path.join(DIRNAME, 'media'), )
 
 ROOT_URLCONF = 'chronam.urls'
