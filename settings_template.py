@@ -1,9 +1,22 @@
 import os
+import logging
+import subprocess
 
 def abs_path(path):
     import os
     _root = os.path.abspath(os.path.dirname(__file__))
     return os.path.join(_root, path)
+
+# copied from wdl
+try:
+    SITE_VERSION = subprocess.Popen(
+        ["git", "describe", "--always"],
+        stdout=subprocess.PIPE,
+        cwd=os.path.realpath(os.path.dirname(__file__))
+    ).communicate()[0].strip()
+except Exception, e:
+    logging.error("SITE_VERSION: using timestamp instead of SCM version due to error: %s", e)
+    SITE_VERSION = int(time.time())
 
 DIRNAME = os.path.abspath(os.path.dirname(__file__))
 
@@ -25,8 +38,9 @@ MEDIA_ROOT = ''
 MEDIA_URL = ''
 #ADMIN_MEDIA_PREFIX = '/media/'
 
+STATIC_URL = '/static/%s/' % SITE_VERSION
 STATIC_ROOT = (os.path.join(DIRNAME, '.static'), )
-STATICFILES_DIRS = (os.path.join(DIRNAME, '.static'), )
+STATICFILES_DIRS = (os.path.join(DIRNAME, 'media'), )
 
 ROOT_URLCONF = 'chronam.urls'
 
@@ -67,6 +81,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'lc',
+    'staticfiles',
     'south',
     'django.contrib.humanize',
     'django.contrib.staticfiles',
