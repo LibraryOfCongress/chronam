@@ -3,6 +3,7 @@ import os
 from django.conf.urls.defaults import patterns, url, include
 from django.conf import settings
 from django.utils import cache
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from chronam.core.views import home, image, search
 
@@ -425,7 +426,5 @@ urlpatterns += patterns(
         name="chronam_sitemaps"),
 )
 
-urlpatterns += patterns(
-    'django.contrib.staticfiles.views',
-    url(r'^static/[0-9a-z\.\-]+/(?P<path>.*)$', 'serve'),
-)
+if settings.DEBUG:
+    urlpatterns += staticfiles_urlpatterns()
