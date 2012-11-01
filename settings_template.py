@@ -85,7 +85,6 @@ INSTALLED_APPS = (
     'south',
     'django.contrib.humanize',
     'django.contrib.staticfiles',
-    'django_memorious',
     'djcelery',
     'djkombu',
 
@@ -100,9 +99,6 @@ DEFAULT_TTL_SECONDS = 86400  # 1 day
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24 * 7 * 2  # 2 weeks
 API_TTL_SECONDS = 60 * 60  # 1 hour
 
-MEMORIOUS_REPOSITORIES = {"default": '/opt/chronam/'}
-
-MEMORIOUS_DEBUG = False
 USE_TIFF = False
 
 SOUTH_TESTS_MIGRATE = False

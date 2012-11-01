@@ -314,7 +314,6 @@ urlpatterns += patterns(
 
 
     url(r'^status', 'status', name='chronam_stats'),
-    (r'^media/', include('django_memorious.urls')),
 
 )
 
