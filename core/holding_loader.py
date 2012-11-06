@@ -291,7 +291,7 @@ class HoldingLoader:
             return
 
         # get the holdings type
-        holding_type = _holdings_type(_extract(record, '852', 't'))
+        holding_type = _holdings_type(_extract(record,'007'))
 
         # get the description
         desc = _extract(record, '866', 'a') or _extract(record, '866', 'z')
@@ -346,21 +346,13 @@ class HoldingLoader:
 
 
 def _holdings_type(s):
-    if s == "OR":
+    if s[0] == "t":
         return "Original"
-    elif s == "FM":
-        return "Microfilm Service Copy"
-    elif s == "FMM":
+    elif s[0]  == "h" and s[11] == "a":
         return "Microfilm Master"
-    elif s == "FC":
-        return "Microfiche Service Copy"
-    elif s == "FCM":
-        return "Microfiche Master"
-    elif s == "OP":
-        return "Microopaque Service Copy"
-    elif s == "OPM":
-        return "Microopaque Master"
-    elif s == "RP":
-        return "Eye-Readable Reprint"
+    elif s[0] == "c":
+        return "Electronic Resource"
+    elif s[0] == "z":
+        return "Unspecified"
     else:
         return None
