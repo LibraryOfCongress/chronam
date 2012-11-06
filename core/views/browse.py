@@ -169,7 +169,7 @@ def issue_pages_rdf(request, lccn, date, edition):
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @vary_on_headers('Referer')
-def page(request, lccn, date, edition, sequence, mode='normal', words=None):
+def page(request, lccn, date, edition, sequence, words=None):
     fragments = []
     if words:
         fragments.append("words=" + words)

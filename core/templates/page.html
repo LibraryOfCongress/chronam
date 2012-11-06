@@ -133,10 +133,8 @@
 {% endblock %}
 
 {% block javascript %}
-    <script type="text/javascript"
-        src="{% static 'js/openseadragon.js' %}">
-    </script>
-    
+    <script type="text/javascript" src="{% static 'js/openseadragon.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script> 
     <script type="text/javascript">
         var viewer = null;
         var output = null;
@@ -204,33 +202,47 @@
             viewer.addHandler("animationfinish", resizePrint);
             viewer.addHandler("animationstart", onAnimationStart);
             viewer.addHandler("animationfinish", onAnimationFinish);
-            viewer.addHandler("resize", fullHeaderVisibility);
-    
-            {% ifequal mode "full" %}
-    	    viewer.setFullPage(true);
-            {% endifequal %}
-    	    fullHeaderVisibility(viewer);
+            viewer.addHandler("resize", fullscreen);
+
+            if ($.bbq.getState("fullscreen")) {
+                viewer.setFullPage(true);
+                rewritePagingLinks();
+            }
+
+            $("#pageNum").change(function(event) { 
+                var url = $("#pageNum").val();
+                if (viewer.isFullPage()) {
+                    url += "#fullscreen=true";
+                }
+                document.location = url;
+            });
+
+            $(window).bind("hashchange", rewritePagingLinks);
         };
       
-        function fullHeaderVisibility(viewer)
-        {
-            /* 
-            can this be removed now?
-            var elmt = OpenSeadragon.Utils.getElement("full_header");
-    	    var i = viewer._getControlIndex(elmt);
-    	    if (i >= 0) {
-    		  viewer._controls[i].setVisible(viewer.isFullPage());
+        function fullscreen(viewer) {
+            if (viewer.isFullPage()) { 
+                $.bbq.pushState({"fullscreen": true});
+            } else {
+                $.bbq.removeState("fullscreen");
             }
-    	    if (viewer.isFullPage()) {
-    		    viewer.navControl.elmt.style.margin = "45px 0px 0px 0px";
-    	    } else {
-    		    viewer.navControl.elmt.style.margin = "0px";
-    	    }
-            */    
+        }
+
+        function rewritePagingLinks() {
+            if ($.bbq.getState("fullscreen")) {
+                $("#item-ctrl a[rel]").each(function(i, a) {
+                    var href = $(a).attr("href") + "#fullscreen=true";
+                    $(a).attr({href: href}); 
+                });
+            } else {
+                $("#item-ctrl a[rel]").each(function(i, a) {
+                    var href = $(a).attr("href").replace("#fullscreen=true", "");
+                    $(a).attr({href: href});
+                });
+            }
         }
         
-        function resizePrint(viewer)
-        {
+        function resizePrint(viewer) {
             var image = viewer.source;
             var zoom = viewer.viewport.getZoom(); 
             var size = new OpenSeadragon.Rect(0, 0, image.dimensions.x, image.dimensions.y);
@@ -257,8 +269,7 @@
             }
         }
     
-        function getDisplayRegion(viewer, source)
-        {
+        function getDisplayRegion(viewer, source) {
             //Determine portion of scaled image that is being displayed
             var box = new OpenSeadragon.Rect(0, 0, source.x, source.y);
             var container = viewer.viewport.getContainerSize();
@@ -302,11 +313,11 @@
         function addOverlays(viewer) {
             var $ = jQuery;
             var params = $.deparam.fragment();
-            var words = params["words"];
+            var words = params["words"] || "";
             var dimensions = viewer.source.dimensions;
             $.getJSON('{% url chronam_page_coordinates page.issue.title.lccn,page.issue.date_issued,page.issue.edition,page.sequence %}', function(all_coordinates) {
                 var scale = 1 / all_coordinates["width"];
-
+                
                 $.each(words.split(" "), function(index, word) {
                     if (word!="") {
                         var boxes = [];
@@ -341,17 +352,10 @@
            show("Animation finished");
        }
 
-       OpenSeadragon.addEvent(window, "load", init);
+       //OpenSeadragon.addEvent(window, "load", init);
+       $(document).ready(init);
     </script>
 
-    <script type="text/javascript">
-        jQuery(function($) {
-            $("#pageNum").change(
-                function(event) { 
-                    document.location=$("#pageNum").val(); 
-                });
-        });
-    </script>
   <script type="text/javascript">
       (function() {
           var params, search_qs;
@@ -388,7 +392,7 @@
               $nav_result.slideDown("fast");
           }
 
-          if (!search_qs) return;
+          if (!search_qs || !search_qs.match(/searchType/)) return;
 
           $.ajax({
               url: "{% url chronam_search_pages_navigation %}?" + search_qs,
@@ -455,7 +459,7 @@
         <span class="c-images"> 
           <label for="pageNum">Image:</label> 
           <select name="pageNum" id="pageNum">
-            {% for p in issue.pages.all%}
+            {% for p in issue.pages.all %}
             <option value="{% url chronam_page title.lccn,issue.date_issued,issue.edition,p.sequence %}" {% ifequal p.sequence page.sequence %}selected="selected"{% endifequal %}>{{p.sequence}}</option>
             {% endfor %}
           </select>
@@ -463,21 +467,21 @@
         </span> 
         <span class="c-pages"> 
           {% if page.previous %}
-          <a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.previous.sequence %}"><img src="{% static 'images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Page"></a> 
+          <a rel="previous" href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.previous.sequence %}"><img src="{% static 'images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Page"></a> 
           {% endif %}
           <strong>Page</strong> 
           {% if page.next %}
-          <a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.next.sequence %}"><img src="{% static 'images/item_btn_next.png' %}" width="17" height="17" alt="Next Page"></a>
+          <a rel="next" href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.next.sequence %}"><img src="{% static 'images/item_btn_next.png' %}" width="17" height="17" alt="Next Page"></a>
           {% endif %}
-          <a class="all" href="{% url chronam_issue_pages title.lccn,issue.date_issued,issue.edition %}"><small>All Pages</small></a> 
+          <a rel="up" href="{% url chronam_issue_pages title.lccn,issue.date_issued,issue.edition %}"><small>All Pages</small></a> 
         </span> 
         <span class="c-issues"> 
           {% if previous_issue_first_page %}
-          <a href="{% url chronam_page title.lccn,previous_issue_first_page.issue.date_issued,previous_issue_first_page.issue.edition,previous_issue_first_page.sequence %}"><img src="{% static 'images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Issue" /></a> 
+          <a rel="previous" href="{% url chronam_page title.lccn,previous_issue_first_page.issue.date_issued,previous_issue_first_page.issue.edition,previous_issue_first_page.sequence %}"><img src="{% static 'images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Issue" /></a> 
           {% endif %}
           <strong>Issues</strong> 
           {% if next_issue_first_page %}
-          <a href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %}"><img src="{% static 'images/item_btn_next.png' %}" width="17" height="17" alt="Next Issue" /></a><a class="all" href="{% url chronam_issues title.lccn %}"><small>All Issues</small></a> 
+          <a rel="next" href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %}"><img src="{% static 'images/item_btn_next.png' %}" width="17" height="17" alt="Next Issue" /></a><a class="all" href="{% url chronam_issues title.lccn %}"><small>All Issues</small></a> 
           {% endif %}
         </span>
         {% if page.jp2_filename %}
