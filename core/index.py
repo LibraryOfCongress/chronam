@@ -349,8 +349,8 @@ def title_search(d):
             q.append('+start_year: [0 TO %s]' % d['year2'])
     if d.get('lccn'):
         q.append('+lccn:"%s"' % _normal_lccn(d['lccn']))
-    if d.get('materialType'):
-        q.append('+holding_type:"%s"' % d['materialType'])
+    if d.get('material_type'):
+        q.append('+holding_type:"%s"' % d['material_type'])
     q = ' '.join(q)
     return q
 
