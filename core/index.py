@@ -82,7 +82,8 @@ class SolrPaginator(Paginator):
 
         self.overall_index = (self._cur_page - 1) * self.per_page + self._cur_index
 
-        self._ocr_list = ['ocr', 'ocr_eng', 'ocr_fre', 'ocr_spa', 'ocr_ita', 'ocr_ger']
+        self._ocr_list = ['ocr',]
+        self._ocr_list.extend(['ocr_%s' % l for l in settings.SOLR_LANGUAGES])
 
     def _get_count(self):
         "Returns the total number of objects, across all pages."
@@ -136,6 +137,7 @@ class SolrPaginator(Paginator):
         start = self.per_page * (number - 1)
         params = {"hl.snippets": 100, # TODO: make this unlimited
             "hl.requireFieldMatch": 'true', # limits highlighting slop
+            "hl.maxAnalyzedChars": '102400', # increased from default 51200
             } 
         sort_field, sort_order = _get_sort(self.query.get('sort'), in_pages=True)
         solr_response = solr.query(self._q, 
@@ -376,7 +378,8 @@ def page_search(d):
         if d1 and d2:
             q.append('+date:[%i TO %i]' % (d1, d2))
 
-    ocrs = ('ocr_eng', 'ocr_fre', 'ocr_spa', 'ocr_ita', 'ocr_ger')
+    ocrs = ['ocr_%s' % l for l in settings.SOLR_LANGUAGES]
+
     lang = d.get('language', None)
     ocr_lang = 'ocr_' + lang if lang else 'ocr'
     if d.get('ortext', None):
@@ -540,17 +543,21 @@ def word_matches_for_page(page_id, words):
     if not isinstance(page_id, str):
         page_id = str(page_id)
 
-    q = 'id:%s AND %s' % (page_id, query_join(words, 'ocr'))
-    params = {"hl.snippets": 100, "hl.requireFieldMatch": 'true'} 
-    response = solr.query(q, fields=['id'], highlight=['ocr'], **params)
+    ocr_list = ['ocr',]
+    ocr_list.extend(['ocr_%s' % l for l in settings.SOLR_LANGUAGES])
+    ocrs = ' OR '.join([query_join(words, o) for o in ocr_list])
+    q = 'id:%s AND (%s)' % (page_id, ocrs)
+    params = {"hl.snippets": 100, "hl.requireFieldMatch": 'true', "hl.maxAnalyzedChars": '102400'}
+    response = solr.query(q, fields=['id'], highlight=ocr_list, **params)
 
-    if not response.highlighting.has_key(page_id) or \
-        not response.highlighting[page_id].has_key('ocr'):
+    if not response.highlighting.has_key(page_id):
         return []
 
     words = set()
-    for context in response.highlighting[page_id]['ocr']:
-        words.update(find_words(context))
+    for ocr in ocr_list:
+        if ocr in response.highlighting[page_id]:
+            for context in response.highlighting[page_id][ocr]:
+                words.update(find_words(context))
     return list(words)
 
 def commit():
