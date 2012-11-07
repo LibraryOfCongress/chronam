@@ -6,11 +6,54 @@
 {% block javascript %}
 <!-- jCarousel --> 
 <script type="text/javascript" src="{% static 'js/jquery.jcarousel.js' %}"></script> 
+
 <script type="text/javascript"> 
-jQuery(function($){
-    $('#mycarousel').jcarousel();
-});
+$(document).ready(setupCarousel);
+
+function setupCarousel() {
+    // if the current page location has a date in it use that otherwise 
+    // default to one hundred years ago from the current date
+    var t = window.location.href.match(/(\d{4})-(\d{2})-(\d{2})/);
+    if (t) {
+        t = new Date(t[1], t[2]-1, t[3]);
+    } else {
+        t = new Date();
+        t.setYear(t.getYear() - 100);
+    }
+
+    // lookup frontpages and add them to the carousel
+    var url = "/frontpages/" + t.getFullYear() + "-" + (t.getMonth() + 1) + "-" + t.getDate() + ".json";
+    $.getJSON(url, function(results) {
+        // add some some descriptive text and a canned search to the carousel
+        $("#hundredYears").append(t.toLocaleDateString() + " (" + results.length + " issues)");
+        var tSearch = (t.getMonth() + 1) + "/" + t.getDate() + "/" + t.getFullYear();
+        $("#hundredYears").attr({"href": "/search/pages/results/?dateFilterType=range&date1=" + tSearch + "&date2=" + tSearch}); 
+
+        // add the newspaper images to the carousel
+        shuffle(results);
+        var carousel = $('#mycarousel');
+        for (var i=0; i < results.length; i++) {
+          var img = results[i];
+          carousel.append($('<li><a href="' + img.url + '"><img class="thumbnail" src="' + img.thumbnail_url + '" width="200" height="286" alt="" /></a><br /><span><a href="' + img.url + '"><strong>' + img.label + '</strong> (' + img.pages + 'pp.)</a><br />' + img.place_of_publication + '</span></li>'));
+        }
+        carousel.jcarousel();
+    });
+}
+
+function shuffle(myArray) {
+    var i = myArray.length;
+    if (i == 0) return false;
+    while (--i) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tempi = myArray[i];
+        var tempj = myArray[j];
+        myArray[i] = tempj;
+        myArray[j] = tempi;
+    }
+}
+
 </script> 
+
 {% endblock %}
  
 {% block sub_page_head %}{% endblock %}
@@ -18,12 +61,9 @@ jQuery(function($){
 {% block subcontent %}
   <div class="carousel-body"> 
     <div class="carousel-menu"> 
-        <a href='{% url chronam_search_pages_results %}?dateFilterType=range&date1={{date|date:"m/d/Y" }}&date2={{date|date:"m/d/Y"}}/'><strong>100 Years Ago Today</strong>: {{ date|date:"F j, Y" }} ({{page_count|intcomma}} issues)</a>
+        <a id="hundredYears" href='{% url chronam_search_pages_results %}?dateFilterType=range&date1={{date|date:"m/d/Y" }}&date2={{date|date:"m/d/Y"}}/'><strong>100 Years Ago Today</strong>: {{ date|date:"F j, Y" }} </a>
     </div> 
     <ul id="mycarousel" class="jcarousel-skin-tango"> 
-    {% for result in results %}
-      <li><a href="{{ result.url }}"><img class="thumbnail" src="{{result.thumbnail_url}}" width="200" height="286" alt="" /></a><br /><span><a href="{{ result.url }}"><strong>{{ result.label }}</strong> ({{result.pages}}pp.)</a><br />{{result.place_of_publication}}</span></li> 
-      {% endfor %}
     </ul> 
   </div><!-- end carousel-body --> 
   <div class="clear"><!-- --></div> 

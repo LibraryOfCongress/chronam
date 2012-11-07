@@ -20,17 +20,18 @@ def cache_page(function, ttl):
         return response
     return decorated_function
 
-
 urlpatterns = patterns(
     'chronam.core.views',
 
     url(r'^$',
-        cache_page(home.home, 1),
+        cache_page(home.home, settings.DEFAULT_TTL_SECONDS),
         name="chronam_home"),
-
     url(r'^(?P<date>\d{4}-\d{2}-\d{2})/$', 
         cache_page(home.home, settings.DEFAULT_TTL_SECONDS),
         name="chronam_home_date"),
+    url(r'^frontpages/(?P<date>\d{4}-\d{1,2}-\d{1,2}).json$',
+        cache_page(home.frontpages, settings.DEFAULT_TTL_SECONDS),
+        name="chronam_frontpages_date_json"),
 
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/thumbnail.jpg$',
         cache_page(image.thumbnail, settings.PAGE_IMAGE_TTL_SECONDS),
