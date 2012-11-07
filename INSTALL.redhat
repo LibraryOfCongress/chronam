@@ -88,6 +88,8 @@ sudo cp ${CHRONAM_HOME}/conf/chronam-canonical.conf /etc/httpd/conf.d/
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/static
 sudo install -o `whoami` -g users -d ${CHRONAM_HOME}/.python-eggs
 
+# Update the KeepAlive directive in the apache config from 'Off' to 'On':
+/etc/httpd/conf/httpd.conf # KeepAlive On
 
 Configure Chronam
 =================
