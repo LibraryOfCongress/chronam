@@ -1,7 +1,5 @@
-import csv
 import logging
 import os
-import re
 from time import time
 
 from pymarc import map_xml
@@ -23,7 +21,6 @@ class HoldingLoader:
     def __init__(self):
         self.records_processed = 0
         self.missing_title = 0
-        self.count = 0
         self.errors = 0
         self.skipped = 0
 
@@ -55,45 +52,11 @@ class HoldingLoader:
 
             except Exception, e:
                 _logger.error("unable to load record %s: %s" %
-                                (self.records_processed, e))
+                              (self.records_processed, e))
                 _logger.exception(e)
                 self.errors += 1
 
             _process_time()
-
-        def load_csv_file(file_name):
-            '''
-            Load csv file was created to handle csv holdings.
-            The update file acquired in 2010 was in csv format.
-            However, the new holdings file was in xml format.
-            This code is being left in this file until we have a
-            discussion about future possibilities of formats.
-
-            Instead of map_xml, you would call load_csv_file.
-            Shared functioned between load_xml & load_csv were
-            pulled out.
-            '''
-            self.files_processed += 1
-            for row in csv.DictReader(open(file_name),
-                                        delimiter='\t',
-                                        quotechar='\x07',
-                                        lineterminator='\n',
-                                        quoting=csv.QUOTE_NONE):
-
-                self.records_processed += 1
-                # We only want to pull out records that are newspapers,
-                # hence 'n'.
-                srtp = row['SrTp']
-                if srtp.strip().lower() == 'n':
-                    try:
-                        self.load_csv_holding(row)
-                    except Exception, e:
-                        _logger.error("unable to load record %s: %s" %
-                                    (self.records_processed, e))
-                        _logger.exception(e)
-                        self.errors += 1
-                else:
-                    self.skipped += 1
 
         map_xml(load_xml_record, file(filename, "rb"))
 
@@ -102,11 +65,11 @@ class HoldingLoader:
         Match the title via oclc number or record an error.
         '''
         try:
-            title = models.Title.objects.get(oclc=oclc)
-            return title
+            titles = models.Title.objects.filter(oclc=oclc)
+            return titles
         except models.Title.DoesNotExist:
             _logger.error("Holding missing Title to link: record %s, oclc %s" %
-                            (self.records_processed, oclc))
+                          (self.records_processed, oclc))
             self.missing_title += 1
             self.errors += 1
             return None
@@ -143,134 +106,6 @@ class HoldingLoader:
                 date = "%02i/%i" % (m, y)
         return date
 
-    def load_csv_holding(self, record):
-        '''
-        This function parses and loads a single line from a csv
-        holdings file. This was written to work with holdings that
-        were acquired in 2010, however new data needed to be
-        acquired for better accuracy. As a result, it was never
-        used in production. However, it maybe be of use to someone the
-        next time we load holdings.
-
-        The holdings that this function was based off of are located here:
-        http://sun9.loc.gov:8088/transfer/inventory/bag/2462
-
-        Please note: There are  pending issues with the dataset,
-        which maybe reflected in the function below. One of the pending
-        issues was that the holdings were summary holdings. Another issue
-        with the dataset was that the db requires 866 field, but not all
-        rows had that field. Some had alternate fields, which are noted
-        in the code below.
-        '''
-
-        def _search_marc_str(search_str, subfield_str):
-            '''
-            This function parses out the value that is located between the
-            subfield_str & the following '$'.
-
-            For example...
-            search_str = '852 8  $a LUU$b LUUE$c STACKS$h MICROPRINT 15'
-            subfield_str = 'a'
-            returned value is 'LUU'
-            '''
-            try:
-                # If the value exists, then we look for value in between the
-                # search string & the next '$'.
-                subfield_search = '\$' + subfield_str + ' (.*?)\$'
-                value = re.compile(subfield_search).search(search_str)
-
-                if not value:
-                    # If the value isn't followed by a '$', then it is the last
-                    # value of the string, so we take everything to the end of
-                    # the string
-                    subfield_search_end = '\$' + subfield_str + ' (.*?)$'
-                    value = re.compile(subfield_search_end).search(search_str)
-
-                return value.group(1)
-
-            except AttributeError:
-                return None
-
-        oclc = record['OCLC No.']
-        if not oclc:
-            _logger.error("holding record missing title: record %s, oclc %s" %
-                            (self.records_processed, oclc))
-            self.no_oclc += 1
-            self.errors += 1
-            return
-
-        title = self._get_related_title(oclc)
-        if not title:
-            return
-
-        LHR_852 = record['LHR 852']
-
-        # get the institution to link to
-        inst_code = _search_marc_str(LHR_852, 'a')
-        inst = self._get_related_inst_code(inst_code)
-        if not inst:
-            self.miss_inst_codes.append(inst_code)
-            return
-
-        # get the holdings type
-        holding_type = _search_marc_str(LHR_852, 't')
-
-        # grab all extra fields to look for 866/desc field
-        LHR_misc = []
-        # the header labeled LHR Misc Fields could contain an 866 value
-        LHR_misc.append(record['LHR Miscellaneous Fields'])
-        try:
-            # or any value with no header could contain an 866 value
-            [LHR_misc.append(x) for x in record[None]]
-        except KeyError:
-            self.desc_error += 1
-            _logger.error("missing LHR_misc field: record %s, oclc %s" %
-                            (self.records_processed, oclc))
-            return
-
-        # check if misc field is a desc (866) or not.
-        # other values seen in this field are 853, 863 & 876
-        f866 = desc = None
-        if LHR_misc:
-            f866 = [v for v in LHR_misc if v.startswith('866')]
-            f863 = [v for v in LHR_misc if v.startswith('863')]
-
-        if f866:
-            # possible values for 866 are not stored in separate fields,
-            # so we need to concatinate the string to match other records
-            if f863:
-                _logger.error("missing LHR_misc field: record %s, oclc %s" %
-                            (self.records_processed, oclc))
-                return
-
-            f866_vals = []
-            for f866_item in f866:
-                f866_val = (_search_marc_str(f866_item, 'a') or
-                            _search_marc_str(f866_item, 'z'))
-                f866_vals.append(f866_val)
-            desc = ', '.join(f866_vals)
-
-        if not desc:
-            self.desc_error += 1
-            _logger.error("missing description: record %s, oclc %s" %
-                            (self.records_processed, oclc))
-            return
-
-        # get the last modified date
-        f008 = record['LHR 008 - Complete Field']
-        date = self._parse_date(f008)
-
-        # persist it
-        holding = models.Holding(title=title,
-                                 institution=inst,
-                                 description=desc,
-                                 type=holding_type,
-                                 last_updated=date)
-
-        holding.save()
-        self.holding_created += 1
-        reset_queries()
-
     def load_xml_holding(self, record):
         # get the oclc number to link to
         oclc = _normal_oclc(_extract(record, '004'))
@@ -280,8 +115,8 @@ class HoldingLoader:
             self.errors += 1
             return
 
-        title = self._get_related_title(oclc)
-        if not title:
+        titles = self._get_related_title(oclc)
+        if not titles:
             return
 
         # get the institution to link to
@@ -298,6 +133,7 @@ class HoldingLoader:
         if not desc:
             _logger.error("missing description: record %s, oclc %s" %
                          (self.records_processed, oclc))
+            self.desc_error += 1
             return
 
         # get the last modified date
@@ -305,12 +141,14 @@ class HoldingLoader:
         date = self._parse_date(f008)
 
         # persist it
-        holding = models.Holding(title=title,
-                                 institution=inst,
-                                 description=desc,
-                                 type=holding_type,
-                                 last_updated=date)
-        holding.save()
+        for title in titles:
+            holding = models.Holding(title=title,
+                                     institution=inst,
+                                     description=desc,
+                                     type=holding_type,
+                                     last_updated=date)
+            holding.save()
+            self.holding_created += 1
         reset_queries()
 
     def main(self, holdings_source):
@@ -330,19 +168,18 @@ class HoldingLoader:
             for filename in holdings_dir:
                 holdings_file_path = os.path.join(holdings_source, filename)
                 loader.load_file(holdings_file_path)
+                loader.files_processed += 1
         else:
             loader.load_file(holdings_source)
+            loader.files_processed += 1
 
         _logger.info("records processed: %i" % loader.records_processed)
         _logger.info("missing title: %i" % loader.missing_title)
         _logger.info("skipped: %i" % loader.skipped)
         _logger.info("errors: %i" % loader.errors)
-        _logger.info("Record count: %i" % loader.count)
-        _logger.info("Desc issues: %i" % loader.desc_error)
-        _logger.info("Holdings saved: %i" % loader.holding_created)
-        _logger.info("No oclc number: %i" % loader.no_oclc)
-        #_logger.info("Strp = 'n': %i" % loader.n)
-        _logger.info("Files processed: %i" % loader.files_processed)
+        _logger.info("missing descriptions: %i" % loader.desc_error)
+        _logger.info("holdings saved: %i" % loader.holding_created)
+        _logger.info("files processed: %i" % loader.files_processed)
 
 
 def _holdings_type(s):

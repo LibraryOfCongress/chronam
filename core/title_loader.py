@@ -84,7 +84,7 @@ class TitleLoader(object):
 
         # it's remotely possible that a title with the LCCN already exists
         try:
-            title = models.Title.objects.get(lccn__iendswith=lccn)
+            title = models.Title.objects.get(lccn=lccn)
             _logger.debug("Found another record for lccn: %s" % lccn)
             if title.version == dt:
                 _logger.debug("    with the same timestamp: %s" % title.version)
