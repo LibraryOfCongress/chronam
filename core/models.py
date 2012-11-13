@@ -202,6 +202,7 @@ class Title(models.Model):
     publisher = models.CharField(null=True, max_length=250)
     frequency = models.CharField(null=True, max_length=250)
     frequency_date = models.CharField(null=True, max_length=250)
+    medium = models.CharField(null=True, max_length=50, help_text="245$h field")
     oclc = models.CharField(null=True, max_length=25, db_index=True)
     issn = models.CharField(null=True, max_length=15)
     start_year = models.CharField(max_length=10)
