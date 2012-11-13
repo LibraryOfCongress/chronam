@@ -103,25 +103,6 @@ class TitleLoader(object):
             title = models.Title(lccn=lccn)
             title.version = dt
         
-        if micro_results:
-            # Tix #1174
-            # We want to make sure that we aren't deleting anything with important
-            # stuff attached to it.
-            issues = title.issues.all()
-            essays = title.essays.all()
-            
-            if issues:
-                _logger.error("Micro invader has issues: %s" % lccn)
-            if essays:
-                _logger.error("Micro invader has essays: %s" % lccn)
-            if not issues and not essays:
-                _logger.error("Micro invader title being deleted or ignored: %s" % lccn)
-                title.delete()
-                return
-            else:
-                _logger.error("Micro invader title remains, because issues or essays attached %s" % lccn)
-
-
         # clear m2m relationships
         # these will come from the extraction
         title.subjects.clear()
