@@ -21,7 +21,6 @@ class TitleLoader(object):
         self.records_updated = 0
         self.records_deleted = 0
         self.missing_lccns = 0
-        self.microform_records = 0
         self.errors = 0
 
     def load_file(self, location, skip=0):
@@ -72,22 +71,6 @@ class TitleLoader(object):
             self.missing_lccns += 1
             return
 
-        # records with 245 $h[microform] or [microfilm]
-        # are "incorrect" for NDNP purposes.
-        # additional formats (microfilm) are described in
-        # holdings rather than in unique records.
-        # so, we skip over these records.
-        micro_value = _extract(record, '245', 'h')
-        micro_check = ('microform', 'microfilm')
-        micro_results = []
-
-        if micro_value:
-            micro_results = [i for i in micro_check if i in micro_value]
-            if micro_results:
-                _logger.warning('Micro invader: %s' % lccn)
-                self.microform_records += 1
-        #        return
-
         # newer marc xml sets pulled from OCLC do not have the 005 control
         # field. 005 is the date and time of the last transaction.
         try:
@@ -120,25 +103,6 @@ class TitleLoader(object):
             title = models.Title(lccn=lccn)
             title.version = dt
         
-        if micro_results:
-            # Tix #1174
-            # We want to make sure that we aren't deleting anything with important
-            # stuff attached to it.
-            issues = title.issues.all()
-            essays = title.essays.all()
-            
-            if issues:
-                _logger.error("Micro invader has issues: %s" % lccn)
-            if essays:
-                _logger.error("Micro invader has essays: %s" % lccn)
-            if not issues and not essays:
-                _logger.error("Micro invader title being deleted or ignored: %s" % lccn)
-                title.delete()
-                return
-            else:
-                _logger.error("Micro invader title remains, because issues or essays attached %s" % lccn)
-
-
         # clear m2m relationships
         # these will come from the extraction
         title.subjects.clear()
@@ -160,6 +124,7 @@ class TitleLoader(object):
 
         # update title fields 
         self._set_name(record, title)
+
         title.lccn_orig = lccn_orig
         title.oclc = self._extract_oclc(record)
         title.edition = _extract(record, '250', 'a')
@@ -167,6 +132,10 @@ class TitleLoader(object):
         title.publisher = _extract(record, '260', 'b')
         title.frequency = _extract(record, '310', 'a')
         title.frequency_date = _extract(record, '310', 'b')
+        # the main purpose of this it to look for records 
+        # with 245 $h[microform] or [microfilm]
+        # but we save everything
+        title.medium = _extract(record, '245', 'h')
         title.issn = _extract(record, '022', 'a')
         f008 = record['008'].data
         title.start_year = _normal_year(f008[7:11])
@@ -536,7 +505,6 @@ def load(location):
     _logger.info("records updated: %i" % loader.records_updated)
     _logger.info("errors: %i" % loader.errors)
     _logger.info("missing lccns: %i" % loader.missing_lccns)
-    _logger.info("microform records: %i" % loader.microform_records)
 
     return (loader.records_processed,
             loader.records_created,
