@@ -46,3 +46,9 @@ def frontpages(request, date):
             'pages': issue.pages.count()})
  
     return HttpResponse(json.dumps(results), mimetype="application/json")
+
+
+def tabs(request, date=None):
+    context = RequestContext(request, {})
+    template = get_template("includes/tabs.html")
+    return HttpResponse(content=template.render(context))

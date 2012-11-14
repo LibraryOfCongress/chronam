@@ -55,7 +55,7 @@
 
     {% block main_body %}
     {% block box-tabs %}
-        {% include "includes/tabs.html"%}
+    <div id="tabs-container"></div>
     {% endblock box-tabs %}
     <div class="sharetool_container">
         {% block sharetool_container_left %}
@@ -124,11 +124,13 @@
 <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" ></script>
 
 <script type="text/javascript">
+    $('#tabs-container').load('/tabs', function() {
     var collapse_search_tab = "{{ collapse_search_tab }}";
     var start_year = "{{search_form.fulltextStartYear}}";
     var end_year = "{{search_form.fulltextEndYear}}";
+    $script("{% static 'js/main.js' %}", function() {});
+});
 </script>
-<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 
 {% block javascript %}
 {% endblock %}
