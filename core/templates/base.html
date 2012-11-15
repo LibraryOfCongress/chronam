@@ -27,7 +27,6 @@
 
     <!--[if lte IE 7]><link type="text/css" media="screen" rel="stylesheet"
         href="{% block stylesheet_ie %}{% static 'css/ca_ie.css' %}"{% endblock stylesheet_ie %} /><![endif]-->
-    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 
     {% block extrahead %}{% endblock extrahead %}
 {% endblock head_content %}
@@ -128,26 +127,18 @@
     var collapse_search_tab = "{{ collapse_search_tab }}";
     var start_year = "{{search_form.fulltextStartYear}}";
     var end_year = "{{search_form.fulltextEndYear}}";
-    $script("{% static 'js/main.js' %}", function() {});
+    $.ajax({url: "{% static 'js/main.js' %}",
+            dataType: "script", cache: true});
 });
 </script>
 
 {% block javascript %}
 {% endblock %}
 
-<script type="text/javascript">
-    $script.domReady(function() {
-	    $script("{{omniture_url}}", function() {});
-    });
-</script>
-
 {% if sharetool_url %} 
 <!-- Toolbar -->
 <script type="text/javascript" src="{{ sharetool_url }}"></script>
 {% endif %}
-
-<script>var LOCSuggest = {serviceType: 'jsonp'}</script>
-<script language="javascript" type="text/javascript" src="http://cdn.loc.gov/js/lib/modernizr-1.5.min.js"></script>
 
 {% endblock content %}
 <!-- END Content -->
