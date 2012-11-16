@@ -16,6 +16,7 @@ jQuery(function($){
         return vars;
     }
 
+    $("#tabs-container").on('chronam.tabsloaded', function () {
     $("#box-tabs").tabs({collapsible: true});
     $("#box-tabs").show();
     if ($("#tabs-container").hasClass("collapsed")) {
@@ -43,6 +44,9 @@ jQuery(function($){
     });
 
     // init datepickers
+    var start_year = $('#id_date1').val();
+    var end_year = $('#id_date2').val();
+
     $('#id_datefrom').datepicker({defaultDate: new Date(start_year, 1-1, 1), showOn: "focus", yearRange: start_year+":"+end_year, currentText: '', changeMonth: true, changeYear: true, closeText: 'Done'});
     $('#id_dateto').datepicker({defaultDate: new Date(end_year, 12-1, 31), showOn: "focus", yearRange: start_year+":"+end_year, currentText: '', changeMonth: true, changeYear: true});
 
@@ -112,5 +116,6 @@ jQuery(function($){
         .removeAttr('selected');
         $('#id_radioyear').attr('checked', 'checked');
         $("select#id_date2 option[value='"+end_year+"']").attr("selected", true);
+    });
     });
 }); 

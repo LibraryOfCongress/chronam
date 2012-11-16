@@ -121,13 +121,12 @@
 {{ block.super }}
 <script src="{% static 'js/jquery-ui.min.js' %}" ></script>
 
+<script src="{% static 'js/main.js' %}"></script>
+
 <script type="text/javascript">
 jQuery(function ($) {
     $('#tabs-container').load('/tabs', function() {
-    var start_year = "{{search_form.fulltextStartYear}}";
-    var end_year = "{{search_form.fulltextEndYear}}";
-    $.ajax({url: "{% static 'js/main.js' %}",
-            dataType: "script", cache: true});
+        $("#tabs-container").trigger('chronam.tabsloaded', {});
     });
 });
 </script>
