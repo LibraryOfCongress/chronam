@@ -80,7 +80,7 @@ def issue_to_graph(i, g=None):
 
     uri = abstract_uri(i)
     g.add((uri, RDF.type, BIBO['Issue']))
-    g.add((uri, DCTERMS['title'], Literal('%s - %s' % (i.title.name,
+    g.add((uri, DCTERMS['title'], Literal('%s - %s' % (i.title.display_name,
         i.date_issued)))) 
     g.add((uri, DCTERMS['issued'], Literal(i.date_issued, datatype=XSD.date)))
     g.add((uri, ORE['isAggregatedBy'], abstract_uri(i.title)))
@@ -126,7 +126,7 @@ def page_to_graph(p, g=None):
     g.add((uri, DCTERMS['issued'], Literal(p.issue.date_issued, 
                                            datatype=XSD.date)))
     g.add((uri, DCTERMS['title'], Literal('%s - %s - %s' % 
-        (p.issue.title.name, p.issue.date_issued, p.sequence))))
+        (p.issue.title.display_name, p.issue.date_issued, p.sequence))))
 
     for flickr_url in p.flickr_urls.all():
         g.add((uri, ORE.aggregates, flickr_url.value))

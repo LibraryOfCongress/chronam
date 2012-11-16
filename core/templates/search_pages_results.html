@@ -148,7 +148,7 @@ if ($.browser.msie && $.browser.version < 7) {
                     {% endif %}
                     </a><br />
 		    {% with object.issue.title as title %}
-                    <a href="{{ object.highligh_url }}">{{title.name}} ({{title.place_of_publication}}), {{object.issue|label}}, {{object|label}}</a>
+                    <a href="{{ object.highligh_url }}">{{title.display_name}} ({{title.place_of_publication}}), {{object.issue|label}}, {{object|label}}</a>
 		    {% endwith %}
 
                     {% comment %}The following two hidden input fields are used by the add_highlights javascript{% endcomment %}

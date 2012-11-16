@@ -3,7 +3,7 @@
 {% load custom_filters %}
 
 {% block lc_metadata %}
-{% with title.name as title_metadata %}
+{% with title.display_name as title_metadata %}
 {% include "includes/lc_metadata.html" %}
 {% endwith %}
 {% endblock %}
@@ -17,7 +17,7 @@
         <dl class="alt">
             <dt>Title: </dt>
             <dd>
-                {{title.name}} : ({{title.place_of_publication}}) {{title.start_year}}-{{title.end_year}}
+                {{title.display_name}} : ({{title.place_of_publication}}) {{title.start_year}}-{{title.end_year}}
                 {% if title.essay %}
                 <br/>
                 <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt="" />
@@ -223,7 +223,7 @@
         {% if title.has_issues %}
         <div class="about_issue_right">
           <div class="info">
-            <h3>{{title.name}}&nbsp;{{issue_date|date:"F j, Y"}}, Image {{title.first_issue.first_page.sequence}} </h3>
+            <h3>{{title.display_name}}&nbsp;{{issue_date|date:"F j, Y"}}, Image {{title.first_issue.first_page.sequence}} </h3>
             <h4 class="browse">Browse:</h4>
         
             <p><a href="{% url chronam_issues lccn %}" class="view_cal">Calendar View</a></p>

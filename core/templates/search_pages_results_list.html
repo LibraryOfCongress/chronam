@@ -11,7 +11,7 @@
 <ul class="results_list">
     {% for num, object in page_list %}
       {% with object.issue.title as title %}
-    <li><a href="{{ object.url }};words={{object.words}}?{{q}}&index={{forloop.counter0}}"><strong>{{title.name}}</strong> ({{title.place_of_publication}}), {{object.issue|label}}, {{object|label}}</a></li>
+    <li><a href="{{ object.url }};words={{object.words}}?{{q}}&index={{forloop.counter0}}"><strong>{{title.display_name}}</strong> ({{title.place_of_publication}}), {{object.issue|label}}, {{object|label}}</a></li>
       {% endwith %}
     {% endfor %}
 </ul>

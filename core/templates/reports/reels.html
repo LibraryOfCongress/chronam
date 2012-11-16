@@ -47,7 +47,7 @@
 {% if reel.number %}
   <tr class="{% cycle 'lightGray' 'white' %}">
     <td><a href="{% url chronam_reel reel.number %}">{{ reel.number }}</a></td>
-    <td>{% for title in reel.titles %}<a href="{% url chronam_title title.lccn %}">{{ title.name }}</a>{% endfor %}</td>
+    <td>{% for title in reel.titles %}<a href="{% url chronam_title title.lccn %}">{{ title.display_name }}</a>{% endfor %}</td>
     <td>
         <a href="{% url chronam_batch reel.batch.name %}">
             {{ reel.batch.name }}

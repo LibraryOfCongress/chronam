@@ -27,7 +27,7 @@
         <updated>{% if issue.batch.released %}{{ issue.batch.released|rfc3339 }}{% else %}{{ issue.batch.created|rfc3339 }}{% endif %}</updated>
         <summary type="xhtml">
             <div xmlns="http://www.w3.org/1999/xhtml">
-                Issue {{ issue.date_issued|date:"Y-m-d" }} of the {{ title.name }}
+                Issue {{ issue.date_issued|date:"Y-m-d" }} of the {{ title.display_name }}
                 <br />
                 {% with issue.first_page as page %}
                 <a href="http://{{ host }}{{ page.url }}">

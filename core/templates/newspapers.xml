@@ -14,7 +14,7 @@
     {% for title in titles %}
     <entry>
         <id>info:lc/ndnp/title/{{ title.lccn }}</id>
-        <title>Updated content for {{ title.name }} ({{ title.place_of_publication }})</title>
+        <title>Updated content for {{ title.display_name }} ({{ title.place_of_publication }})</title>
         <link rel="alternate" type="text/html" href="http://{{ host }}{% url chronam_title title.lccn %}" />
         <link rel="alternate" type="application/json" href="http://{{ host }}{% url chronam_title_dot_json title.lccn %}" />
         <link rel="alternate" type="application/atom+xml" href="http://{{ host }}{% url chronam_title_atom title.lccn %}" />
@@ -25,7 +25,7 @@
         <content type="xhtml">
             {% with issue.first_page as page %}
             <div xmlns="http://www.w3.org/1999/xhtml">
-                Issues were added on {{ issue.batch.released|date:"Y-m-d" }} for {{ issue.title.name }}
+                Issues were added on {{ issue.batch.released|date:"Y-m-d" }} for {{ issue.title.display_name }}
                 <br />
                 <a href="http://{{ host }}{{ page.url }}">
                     <img src="http://{{ host }}{{ page.thumb_url }}" />

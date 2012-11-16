@@ -15,7 +15,7 @@
 
     {% for title in page.object_list %}
     <entry>
-        <title>{{title.name}}</title>
+        <title>{{title.display_name}}</title>
         <link href="http://{{host}}{{title.url}}" />
         <id>info:lccn/{{title.lccn}}</id>
         <author><name>Library of Congress</name></author>

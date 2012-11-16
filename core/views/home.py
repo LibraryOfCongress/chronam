@@ -39,7 +39,7 @@ def frontpages(request, date):
         url = urlresolvers.reverse('chronam_page', kwargs=path_parts)
         thumbnail_url = urlresolvers.reverse('chronam_page_thumbnail', kwargs=path_parts)
         results.append({
-            'label': "%s" % issue.title.name,
+            'label': "%s" % issue.title.display_name,
             'url': url,
             'thumbnail_url': thumbnail_url,
             'place_of_publication': issue.title.place_of_publication,

@@ -215,7 +215,7 @@ def _stream_file(path, mimetype):
 
 def label(instance):
     if isinstance(instance, models.Title):
-        return u'%s (%s) %s-%s' % (instance.name, 
+        return u'%s (%s) %s-%s' % (instance.display_name, 
                                    instance.place_of_publication, 
                                    instance.start_year, instance.end_year)
     elif isinstance(instance, models.Issue):

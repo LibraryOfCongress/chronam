@@ -478,7 +478,7 @@
       
       <div class="item-foot"> 
         <ul class="plain"> 
-          <li><i>{{title.name}}</i> ({{title.place_of_publication}}), {{issue.date_issued|date:"d N Y"}}. <i>Chronicling America: Historic American Newspapers</i>. Lib. of Congress.  &lt;<a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}">http://{{host}}{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}</a>&gt;</li> 
+          <li><i>{{title.display_name}}</i> ({{title.place_of_publication}}), {{issue.date_issued|date:"d N Y"}}. <i>Chronicling America: Historic American Newspapers</i>. Lib. of Congress.  &lt;<a href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}">http://{{host}}{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}</a>&gt;</li> 
           {% if page.on_flickr %}
           <li><strong>Flickr Link</strong> <a href="{{ page.first_flickr_url }}">{{ page.first_flickr_url }}</a></li> 
           {% endif %}

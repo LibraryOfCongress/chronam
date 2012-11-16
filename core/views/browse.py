@@ -46,7 +46,7 @@ def issues(request, lccn, year=None):
         year = fields.ChoiceField(choices=((d.year, d.year) for d in dates),
                               initial=_year)
     select_year_form = SelectYearForm()
-    page_title = "Browse Issues: %s" % title.name
+    page_title = "Browse Issues: %s" % title.display_name
     page_name = "issues"
     crumbs = create_crumbs(title)
     return render_to_response('issues.html', dictionary=locals(),
@@ -147,7 +147,7 @@ def issue_pages(request, lccn, date, edition, page_number=1):
             display_label = notes[0].label
             explanation = notes[0].text
     page_title = 'All Pages: %s, %s' % (label(title), label(issue))
-    page_head_heading = "All Pages: %s, %s" % (title.name, label(issue))
+    page_head_heading = "All Pages: %s, %s" % (title.display_name, label(issue))
     page_head_subheading = label(title)
     crumbs = create_crumbs(title, issue, date, edition)
     profile_uri = 'http://www.openarchives.org/ore/html/'
@@ -238,7 +238,7 @@ def page(request, lccn, date, edition, sequence, words=None):
             break
 
     page_title = "%s, %s, %s" % (label(title), label(issue), label(page))
-    page_head_heading = "%s, %s, %s" % (title.name, label(issue), label(page))
+    page_head_heading = "%s, %s, %s" % (title.display_name, label(issue), label(page))
     page_head_subheading = label(title)
     crumbs = create_crumbs(title, issue, date, edition)
 
@@ -530,7 +530,7 @@ def issues_first_pages(request, lccn, page_number=1):
     title = get_object_or_404(models.Title, lccn=lccn)
     issues = title.issues.all()
     if not issues.count() > 0:
-        raise Http404("No issues for %s" % title.name)
+        raise Http404("No issues for %s" % title.display_name)
 
     first_pages = []
     for issue in issues:
@@ -544,7 +544,7 @@ def issues_first_pages(request, lccn, page_number=1):
     page_range_short = list(_page_range_short(paginator, page))
 
     page_title = 'Browse Issues: %s' % label(title)
-    page_head_heading = "Browse Issues: %s" % title.name
+    page_head_heading = "Browse Issues: %s" % title.display_name
     page_head_subheading = label(title)
     crumbs = create_crumbs(title)
     return render_to_response('issue_pages.html', dictionary=locals(),

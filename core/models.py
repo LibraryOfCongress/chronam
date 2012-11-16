@@ -154,7 +154,7 @@ class Batch(models.Model):
            for issue in self.issues.all():
                i = {
                        "title": {
-                           "name": issue.title.name,
+                           "name": issue.title.display_name,
                            "url": "http://" + host + issue.title.json_url,
                        },
                        "date_issued": strftime(issue.date_issued, "%Y-%m-%d"), 
@@ -225,6 +225,13 @@ class Title(models.Model):
     @property
     def abstract_url(self):
         return self.url.rstrip('/') + '#title'
+
+    @property
+    def display_name(self):
+        if self.medium:
+            return ' '.join([self.name, self.medium])
+        else:
+            return self.name
 
     @property
     def first_issue(self):
@@ -464,7 +471,7 @@ class Issue(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return "%s [%s]" % (self.title.name, self.date_issued)
+        return "%s [%s]" % (self.title.display_name, self.date_issued)
 
     @property
     @permalink
@@ -552,8 +559,8 @@ class Issue(models.Model):
                'date_issued': strftime(self.date_issued, "%Y-%m-%d"),
                'volume': self.volume,
                'edition': self.edition,
-               'title': {"name": self.title.name, "url": 'http://' + host + self.title.json_url},
-               'batch': {"name": self.batch.name, "url": 'http://' + host + self.batch.json_url},
+               'title': {"name": self.title.display_name, "url": 'http://' + host + self.title.json_url},
+               'batch': {"name": self.batch.display_name, "url": 'http://' + host + self.batch.json_url},
            }
        j['pages'] = [{"url": "http://" + host + p.json_url, "sequence": p.sequence} for p in self.pages.all()]
        if serialize:
@@ -587,7 +594,7 @@ class Page(models.Model):
                 "ocr": "http://" + host + self.ocr_url,
                 "text": "http://" + host + self.txt_url,
                 "pdf": "http://" + host + self.pdf_url,
-                "title": {"name": self.issue.title.name, "url": "http://" + host + self.issue.title.json_url}
+                "title": {"name": self.issue.title.display_name, "url": "http://" + host + self.issue.title.json_url}
             }
         if serialize:
             return json.dumps(j, indent=2)
