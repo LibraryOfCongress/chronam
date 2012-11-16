@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block javascript %}
+{{ block.super }}
     <script type="text/javascript" src="{% static 'js/search_results.js' %}"></script>
     <script type="text/javascript">
     jQuery( function($){

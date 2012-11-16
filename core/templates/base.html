@@ -114,27 +114,28 @@
     <input type="hidden" id="prop13" value="{{image_credit}}" />
 </div>
 
-<!-- jQuery library -->
-<script type="text/javascript" src="{% static 'js/jquery.min.js' %}" ></script>
-<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" ></script>
+{% endblock content %}
+<!-- END Content -->
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/jquery-ui.min.js' %}" ></script>
 
 <script type="text/javascript">
+jQuery(function ($) {
     $('#tabs-container').load('/tabs', function() {
     var collapse_search_tab = "{{ collapse_search_tab }}";
     var start_year = "{{search_form.fulltextStartYear}}";
     var end_year = "{{search_form.fulltextEndYear}}";
     $.ajax({url: "{% static 'js/main.js' %}",
             dataType: "script", cache: true});
+    });
 });
 </script>
 
-{% block javascript %}
-{% endblock %}
-
-{% if sharetool_url %} 
+{% if sharetool_url %}
 <!-- Toolbar -->
 <script type="text/javascript" src="{{ sharetool_url }}"></script>
 {% endif %}
 
-{% endblock content %}
-<!-- END Content -->
+{% endblock javascript %}

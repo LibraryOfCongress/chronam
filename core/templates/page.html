@@ -2,6 +2,7 @@
 {% load static from staticfiles %}
 
 {% block javascript %}
+{{ block.super }}
     <script type="text/javascript" src="{% static 'js/openseadragon.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script> 
 
