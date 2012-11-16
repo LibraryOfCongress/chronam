@@ -4,8 +4,9 @@
 {% load humanize %}
  
 {% block javascript %}
+{{ block.super }}
 <!-- jCarousel --> 
-<script type="text/javascript" src="{% static 'js/jquery.jcarousel.js' %}"></script> 
+<script type="text/javascript" src="{% static 'js/jquery.jcarousel.min.js' %}"></script>
 
 <script type="text/javascript"> 
 $(document).ready(setupCarousel);

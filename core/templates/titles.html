@@ -54,6 +54,7 @@
   {% endblock %}
 
   {% block javascript %}
+  {{ block.super }}
   <script type="text/javascript">
       jQuery(function($){
           $("[name=jumptopage]").submit(function(e){

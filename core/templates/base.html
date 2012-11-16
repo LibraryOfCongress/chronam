@@ -20,14 +20,9 @@
           href="{% static 'jquery-ui.css' %}" />
     <link type="text/css" rel="styelsheet" href="{% static 'ui_carousel.css' %}" />
     <link type="text/css" rel="stylesheet" href="{% static 'base.css' %}" />
-    <link type="text/css" rel="stylesheet"
-          href="http://cdn.loc.gov/css/lochead.css" />
-    <link type="text/css" rel="stylesheet"
-          href="http://cdn.loc.gov/css/locfoot.css" />    
 
     <!--[if lte IE 7]><link type="text/css" media="screen" rel="stylesheet"
         href="{% block stylesheet_ie %}{% static 'css/ca_ie.css' %}"{% endblock stylesheet_ie %} /><![endif]-->
-    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 
     {% block extrahead %}{% endblock extrahead %}
 {% endblock head_content %}
@@ -55,7 +50,7 @@
 
     {% block main_body %}
     {% block box-tabs %}
-        {% include "includes/tabs.html"%}
+    <div id="tabs-container" {% if collapse_search_tab %}class="collapsed"{% endif %}></div>
     {% endblock box-tabs %}
     <div class="sharetool_container">
         {% block sharetool_container_left %}
@@ -119,33 +114,24 @@
     <input type="hidden" id="prop13" value="{{image_credit}}" />
 </div>
 
-<!-- jQuery library -->
-<script type="text/javascript" src="{% static 'js/jquery.min.js' %}" ></script>
-<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" ></script>
-
-<script type="text/javascript">
-    var collapse_search_tab = "{{ collapse_search_tab }}";
-    var start_year = "{{search_form.fulltextStartYear}}";
-    var end_year = "{{search_form.fulltextEndYear}}";
-</script>
-<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+{% endblock content %}
+<!-- END Content -->
 
 {% block javascript %}
-{% endblock %}
+{{ block.super }}
+<script src="{% static 'js/jquery-ui.min.js' %}" ></script>
 
 <script type="text/javascript">
-    $script.domReady(function() {
-	    $script("{{omniture_url}}", function() {});
+jQuery(function ($) {
+    $('#tabs-container').load('/tabs', function() {
+        $("#tabs-container").trigger('chronam.tabsloaded', {});
     });
+});
 </script>
 
-{% if sharetool_url %} 
+{% if sharetool_url %}
 <!-- Toolbar -->
 <script type="text/javascript" src="{{ sharetool_url }}"></script>
 {% endif %}
 
-<script>var LOCSuggest = {serviceType: 'jsonp'}</script>
-<script language="javascript" type="text/javascript" src="http://cdn.loc.gov/js/lib/modernizr-1.5.min.js"></script>
-
-{% endblock content %}
-<!-- END Content -->
+{% endblock javascript %}
