@@ -18,7 +18,7 @@ jQuery(function($){
 
     $("#box-tabs").tabs({collapsible: true});
     $("#box-tabs").show();
-    if (collapse_search_tab){
+    if ($("#tabs-container").hasClass("collapsed")) {
         $("#box-tabs").tabs('select', '#tab_search');
     };
 

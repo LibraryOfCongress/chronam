@@ -50,7 +50,7 @@
 
     {% block main_body %}
     {% block box-tabs %}
-    <div id="tabs-container"></div>
+    <div id="tabs-container" {% if collapse_search_tab %}class="collapsed"{% endif %}></div>
     {% endblock box-tabs %}
     <div class="sharetool_container">
         {% block sharetool_container_left %}
@@ -124,7 +124,6 @@
 <script type="text/javascript">
 jQuery(function ($) {
     $('#tabs-container').load('/tabs', function() {
-    var collapse_search_tab = "{{ collapse_search_tab }}";
     var start_year = "{{search_form.fulltextStartYear}}";
     var end_year = "{{search_form.fulltextEndYear}}";
     $.ajax({url: "{% static 'js/main.js' %}",
