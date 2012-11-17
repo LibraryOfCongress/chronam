@@ -7,17 +7,6 @@ def abs_path(path):
     _root = os.path.abspath(os.path.dirname(__file__))
     return os.path.join(_root, path)
 
-# copied from wdl
-try:
-    SITE_VERSION = subprocess.Popen(
-        ["git", "describe", "--always"],
-        stdout=subprocess.PIPE,
-        cwd=os.path.realpath(os.path.dirname(__file__))
-    ).communicate()[0].strip()
-except Exception, e:
-    logging.error("SITE_VERSION: using timestamp instead of SCM version due to error: %s", e)
-    SITE_VERSION = int(time.time())
-
 DIRNAME = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = False 
@@ -38,8 +27,10 @@ MEDIA_ROOT = ''
 MEDIA_URL = ''
 #ADMIN_MEDIA_PREFIX = '/media/'
 
-STATIC_URL = '/static/%s/' % SITE_VERSION
-STATIC_ROOT = os.path.join(DIRNAME, '.static')
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+
+STATIC_URL = '/media/'
+STATIC_ROOT = os.path.join(DIRNAME, '.static-media')
 STATICFILES_DIRS = (os.path.join(DIRNAME, 'media'), )
 
 ROOT_URLCONF = 'chronam.urls'
@@ -103,7 +94,14 @@ USE_TIFF = False
 
 SOUTH_TESTS_MIGRATE = False
 ESSAYS_FEED = "http://ndnp-essays.rdc.lctl.gov/feed/"
-CACHE_BACKEND = 'file:///var/tmp/django_cache?timeout=100'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/django_cache',
+        'TIMEOUT': 100,
+    }
+}
 
 IS_PRODUCTION = False
 CTS_USERNAME = 'username'
