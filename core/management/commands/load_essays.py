@@ -1,8 +1,6 @@
-import os
-import re
 import logging
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.conf import settings
 
 from chronam.core.essay_loader import load_essays

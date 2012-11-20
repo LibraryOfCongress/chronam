@@ -1,8 +1,6 @@
 import os
 import logging
 
-from optparse import make_option
-
 from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
 
@@ -29,4 +27,3 @@ class Command(BaseCommand):
         except Exception, e:
             LOGGER.exception(e)
             raise CommandError("unable to queue load batch. check the queue_load_batch log for clues")
-

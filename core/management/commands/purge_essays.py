@@ -1,7 +1,4 @@
-import os
-
-from django.core.management.base import BaseCommand, CommandError
-from django.conf import settings
+from django.core.management.base import BaseCommand
 
 from chronam.core.management.commands import configure_logging
 from chronam.core.models import Essay

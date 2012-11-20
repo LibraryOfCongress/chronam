@@ -1,10 +1,9 @@
 import logging
 import urllib2
 
-from django.core import serializers
 from django.core.management.base import BaseCommand
 from django.db import reset_queries
-from rdflib import Namespace, ConjunctiveGraph, URIRef, RDF
+from rdflib import Namespace, ConjunctiveGraph, URIRef
 try:
     import simplejson as json
 except ImportError:

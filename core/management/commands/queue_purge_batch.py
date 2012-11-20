@@ -1,8 +1,6 @@
 import os
 import logging
 
-from optparse import make_option
-
 from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
 

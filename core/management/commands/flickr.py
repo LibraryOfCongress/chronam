@@ -6,7 +6,6 @@ import logging
 from urlparse import urlparse
 
 from django.core.management.base import BaseCommand
-from django.conf import settings
 
 from chronam.core.management.commands import configure_logging
 from chronam.core.models import Page, FlickrUrl
