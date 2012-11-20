@@ -131,8 +131,6 @@ class HoldingLoader:
         # get the description
         desc = _extract(record, '866', 'a') or _extract(record, '866', 'z')
         if not desc:
-            _logger.error("missing description: record %s, oclc %s" %
-                         (self.records_processed, oclc))
             self.desc_error += 1
             return
 
