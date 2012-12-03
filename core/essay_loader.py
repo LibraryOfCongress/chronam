@@ -1,16 +1,12 @@
-import os
 import re
-import time
 import calendar
 import logging
 import datetime
 
 import feedparser
 
-from django.conf import settings
 from django.core import management
 from rdflib import Graph, Namespace, URIRef
-from rdflib.namespace import RDF
 
 from chronam.core.index import index_title
 from chronam.core.models import Essay, Title, Awardee
@@ -50,7 +46,7 @@ def load_essay(essay_url, index=True):
     g = Graph()
     g.parse(essay_url, format='rdfa', html5=True, encoding='utf-8')
 
-    # create the essay instance 
+    # create the essay instance
     essay_uri = URIRef(essay_url)
     essay_id = _essay_id(essay_uri)
     modified = g.value(essay_uri, DC.modified).toPython()
@@ -62,12 +58,12 @@ def load_essay(essay_url, index=True):
     essay.creator = _lookup_awardee((g.value(essay_uri, DC.creator)))
     essay.html = unicode(g.value(essay_uri, DC.description))
     essay.essay_editor_url = essay_url
-    essay.save() # so we can assign titles
+    essay.save()  # so we can assign titles
 
     # attach any titles that the essay is about
     for title_uri in g.objects(essay_uri, DC.subject):
         lccn = _lccn_from_title_uri(title_uri)
-        
+
         # load titles from web if not available
         try:
             title = Title.objects.get(lccn=lccn)
@@ -77,7 +73,7 @@ def load_essay(essay_url, index=True):
 
         # attach the title to the essay
         essay.titles.add(title)
-   
+
         # index the title in solr if necessary
         if index:
             index_title(title)
@@ -85,7 +81,7 @@ def load_essay(essay_url, index=True):
     logging.info("loaded essay: %s" % essay_url)
     return essay
 
-    
+
 def purge_essay(essay_url, index=True):
     """
     Purge an essay from the database.
@@ -95,7 +91,7 @@ def purge_essay(essay_url, index=True):
         titles = list(essay.titles.all())
         essay.delete()
         logging.info("deleted essay %s" % essay_url)
-        
+
         # reindex titles
         if index:
             for title in titles:
