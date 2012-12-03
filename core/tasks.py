@@ -46,9 +46,9 @@ def purge_batch(batch, service_request=None):
 
 @task 
 def poll_purge():
-    cts = minicts.CTS(settings.CTS_USERNAME,
-                      settings.CTS_PASSWORD,
-                      settings.CTS_URL)
+    cts = minicts.CTS(settings.CTS_URL,
+                      settings.CTS_USERNAME,
+                      settings.CTS_PASSWORD)
 
     queue = "ndnpingestqueue"
     purge_service_type = "purge.NdnpPurge.purge"
