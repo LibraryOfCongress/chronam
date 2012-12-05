@@ -1,6 +1,7 @@
 import logging
 import minicts
 import os
+import time 
 
 from celery.decorators import task
 
@@ -70,7 +71,7 @@ def poll_purge():
                 logger.info('no need to purge %s ; it is not loaded' % batch_name)
                 logger.info('batch %s purged' % batch_name)
             else:
-                purge_batch.delay(batch_name, req)
+                purge_batch(batch_name, req)
         except Exception, e:
             logger.exception("purge of %s failed", batch_name)
             req.fail("purge of %s failed: %s" % (batch_name, e))
