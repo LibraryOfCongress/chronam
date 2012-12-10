@@ -113,9 +113,6 @@ CTS_URL = "https://cts.loc.gov/transfer/"
 
 MAX_BATCHES = 0
 
-SHARETOOL_URL = "http://cdn.loc.gov/share/sites/dUcuwr5p/share-jquery-min.js"
-OMNITURE_SCRIPT = "http://www.loc.gov:8081/global/s_code.js"
-
 import multiprocessing
 #TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
 TOO_BUSY_LOAD_AVERAGE = 64 
