@@ -2,6 +2,19 @@
 
 {% load static from staticfiles %}
 
+      {% block breadcrumbs %}
+      <div id="crumb_nav">
+	{% block crumb_base %}
+	<a href="/">Home</a>
+	{% endblock %}
+	{% for crumb in crumbs %}
+	<span> &gt; </span> <a href="{{crumb.href}}">{{crumb.label}}</a>
+	{% endfor %}
+	{% block crumb_extra %}
+	{% endblock %}
+      </div>
+      {% endblock breadcrumbs %}
+
 {% block crumb_base %}
     <a href="http://www.loc.gov/">The Library of Congress</a>
     <span> &gt; </span>
