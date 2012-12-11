@@ -9,7 +9,7 @@ def abs_path(path):
 
 DIRNAME = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = False 
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -25,13 +25,11 @@ USE_L10N = True
 
 MEDIA_ROOT = ''
 MEDIA_URL = ''
-#ADMIN_MEDIA_PREFIX = '/media/'
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
 STATIC_URL = '/media/'
 STATIC_ROOT = os.path.join(DIRNAME, '.static-media')
-STATICFILES_DIRS = (os.path.join(DIRNAME, 'media'), )
 
 ROOT_URLCONF = 'chronam.urls'
 
