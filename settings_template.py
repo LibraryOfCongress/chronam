@@ -130,3 +130,11 @@ BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
 OCR_DUMPS_STORAGE = os.path.join(STORAGE, "ocr")
 COORD_STORAGE = os.path.join(STORAGE, "word_coordinates")
+
+
+# for loc
+# BASE_CRUMBS = [
+#     {'label': 'The Library of Congress', 'href': 'http://www.loc.gov/'},
+#     {'label':'Chronicling America', 'href': '/'}
+# ]
+BASE_CRUMBS = [{'label':'Home', 'href': '/'}]

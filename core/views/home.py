@@ -2,6 +2,7 @@ import json
 import random
 import datetime
 
+from django.conf import settings
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
 from django.template.loader import get_template
@@ -15,6 +16,7 @@ from chronam.core.decorator import profile
 def home(request, date=None):
     context = RequestContext(request, {})
     context["total_page_count"] = models.Page.objects.all().count()
+    context["crumbs"] = list(settings.BASE_CRUMBS)
     template = get_template("home.html")
     # note the date is handled on the client side in javascript
     return HttpResponse(content=template.render(context))

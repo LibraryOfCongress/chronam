@@ -4,22 +4,12 @@
 
       {% block breadcrumbs %}
       <div id="crumb_nav">
-	{% block crumb_base %}
-	<a href="/">Home</a>
-	{% endblock %}
 	{% for crumb in crumbs %}
-	<span> &gt; </span> <a href="{{crumb.href}}">{{crumb.label}}</a>
+	<a href="{{crumb.href}}">{{crumb.label}}</a>
+	{% if forloop.last %}{% else %} <span> &gt; </span>{% endif %}
 	{% endfor %}
-	{% block crumb_extra %}
-	{% endblock %}
       </div>
       {% endblock breadcrumbs %}
-
-{% block crumb_base %}
-    <a href="http://www.loc.gov/">The Library of Congress</a>
-    <span> &gt; </span>
-    <a href="/">Chronicling America</a>    
-{% endblock crumb_base %}
 
   {% block top_branding %}
     <div id="top_branding">

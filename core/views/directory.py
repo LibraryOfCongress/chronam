@@ -116,10 +116,11 @@ def newspapers_atom(request):
 @opensearch_clean
 def search_titles_results(request):
     page_title = 'US Newspaper Directory Search Results'
-    crumbs = [
+    crumbs = list(settings.BASE_CRUMBS)
+    crumbs.extend([
         {'label':'Search Newspaper Directory',
          'href': urlresolvers.reverse('chronam_search_titles')},
-        ]
+        ])
     try:
         curr_page = int(request.REQUEST.get('page', 1))
     except ValueError, e:
