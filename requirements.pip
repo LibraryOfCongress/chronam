@@ -25,5 +25,4 @@ worldcat
 git+https://git.rdc.lctl.gov/minicts.git#egg=minicts
 
 # django-lc
-django-staticfiles
 git+https://git.rdc.lctl.gov/git/django-lc.git#egg=lc
