@@ -50,9 +50,9 @@
 
       {% block breadcrumbs %}
       <ul class="breadcrumb">
-	<li><a href="#">Home</a> <span class="divider">/</span></li>
+	<li><a href="/">Home</a>{% if crumbs %}<span class="divider">/</span>{% endif %}</li>
 	{% for crumb in crumbs %}
-	<li {% if crumb.active %}class="active"{% endif %}><a href="{{crumb.href}}">{{crumb.label}}</a> <span class="divider">/</span></li>
+	<li {% if crumb.active %}class="active"{% endif %}><a href="{{crumb.href}}">{{crumb.label}}</a>{% if forloop.last %}{% else %} <span class="divider">/</span>{% endif %}</li>
 	{% endfor %}
       </ul>
       {% endblock breadcrumbs %}
