@@ -7,7 +7,6 @@
 {% block head_content %}
     {{ block.super }}
     {% block lc_metadata %}{% endblock lc_metadata %}
-    <link href="{% static 'img-std/fav.ico' %}" rel="shortcut icon"/>
     <link title="NDNP Page Search" href="{% url chronam_search_pages_opensearch %}"
           rel="search" type="application/opensearchdescription+xml" />
     <link title="NDNP Title Search" href="{% url chronam_search_titles_opensearch %}"
@@ -18,7 +17,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link type="text/css" rel="stylesheet"
           href="{% static 'jquery-ui.css' %}" />
-    <link type="text/css" rel="styelsheet" href="{% static 'ui_carousel.css' %}" />
     {% block extrahead %}{% endblock extrahead %}
 {% endblock head_content %}
 
