@@ -27,9 +27,16 @@ def frontpages(request, date):
         date = datetime.date(int(_year), int(_month), int(_day))
     except ValueError, e:
         raise Http404
-    
+   
+    # if there aren't any issues default to the first 20 which 
+    # is useful for testing the homepage when there are no issues
+    # for a given date
+    issues =  models.Issue.objects.filter(date_issued=date)
+    if issues.count() == 0:
+        issues = models.Issue.objects.all()[0:20]
+
     results = []
-    for issue in models.Issue.objects.filter(date_issued=date):
+    for issue in issues:
         first_page = issue.first_page
         if not first_page or not first_page.jp2_filename:
             continue

@@ -5,14 +5,18 @@
 {% block sub_page_head %}{% endblock %}
 
 {% block subcontent %}
-  <h2><a id="hundredYears" href='{% url chronam_search_pages_results %}?dateFilterType=range&date1={{date|date:"m/d/Y" }}&date2={{date|date:"m/d/Y"}}/'><strong>100 Years Ago Today</strong>: {{ date|date:"F j, Y" }} </a></h2>
-
-  <div id="myCarousel" class="carousel slide span8">
-    <div class="carousel-inner">
-    </div>
-    <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-    <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+<div class="row">
+    <div class="span1">&nbsp;</div>
+    <div class="span10">
+        <h2><a id="hundredYears" href='{% url chronam_search_pages_results %}?dateFilterType=range&date1={{date|date:"m/d/Y" }}&date2={{date|date:"m/d/Y"}}/'><strong>100 Years Ago Today</strong>: {{ date|date:"F j, Y" }} </a></h2>
+      <div id="myCarousel" class="carousel slide span8">
+        <div class="carousel-inner">
+        </div>
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+      </div>
   </div>
+</div>
 {% endblock subcontent %}  
 
  
