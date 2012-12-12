@@ -362,11 +362,11 @@
   <p class="gray nomargin-bottom2">Image provided by: {{image_credit}}</p> 
   <div id="item-wrapper"> 
     <div id="imageViewer_nav">
-      <div id="item-ctrl"> 
-        <div style="padding-left: 160px; padding-top: 10px;">
+      <div id="item-ctrl">
+        <div style="padding-left: 160px; padding-top: 10px; border: thin solid red;">
         <span class="c-images"> 
           <label for="pageNum">Image:</label> 
-          <select name="pageNum" id="pageNum">
+          <select name="pageNum" id="pageNum" class="input-small">
             {% for p in issue.pages.all %}
             <option value="{% url chronam_page title.lccn,issue.date_issued,issue.edition,p.sequence %}" {% ifequal p.sequence page.sequence %}selected="selected"{% endifequal %}>{{p.sequence}}</option>
             {% endfor %}
