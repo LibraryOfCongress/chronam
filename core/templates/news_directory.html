@@ -79,11 +79,13 @@
   <p>This directory of newspapers published in the United States since 1690 can help identify what titles exist for a specific place and time, and how to access them. Use the options below to select a particular place and time, using keywords to locate specific titles. Titles currently listed: {{title_count|intcomma}}.</p>
 
     <h3 class="smaller">Browse the Directory by newspaper title:</h3>
+    <div class="pagination pagination-small">
     <ul class="alpha_tags">
     {% for val in browse_val %}
     	<li><a href="{% url chronam_titles_start val %}">{{val}}</a></li>
     {% endfor %}
     </ul>
+    </div>
 </div>
 <div id="wrap_searchdir">
     <form action="{% url chronam_search_titles_results %}" method="get" class="search_directory">
