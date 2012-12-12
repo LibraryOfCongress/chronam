@@ -36,6 +36,8 @@
             <ul class="nav">
               <li class="active"><a href="/">Home</a></li>
               <li><a href="/about/">About</a></li>
+              <li><a href="{% url chronam_newspapers %}">Newspapers</a></li>
+              <li><a href="{% url chronam_reports %}">Reports</a></li>
               <li><a href="/help/">Help</a></li>
             </ul>
 	    <form class="navbar-form pull-right" action="{% url chronam_search_pages_results %}" method="get">
