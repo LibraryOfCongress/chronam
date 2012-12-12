@@ -44,7 +44,7 @@
 	    <form class="navbar-form pull-right" action="{% url chronam_search_pages_results %}" method="get">
               <input type="hidden" name="rows" id="rows" alt="rows" value="20" />
               <input type="hidden" name="searchType" alt="searchType" value="basic" />
-              <input class="span2" type="text" name="proxtext" placeholder="search">
+              <input class="span2" type="text" name="proxtext" placeholder="search words">
 	      <div class="btn-group">
 		<button type="submit" class="btn">Search</button>
 		<button class="btn dropdown-toggle" data-toggle="dropdown">
@@ -52,6 +52,7 @@
 		</button>
 		<ul class="dropdown-menu">
 		  <li><a tabindex="-1" href="#">Advanced Search</a></li>
+		  <li><a tabindex="-1" href="/newspapers/">All Digitized Newspapers</a></li>
 		  <li><a tabindex="-1" href="/search/titles/">U.S. Newspaper Directory</a></li>
 		  <!-- dropdown menu links -->
 		</ul>
