@@ -249,4 +249,5 @@ def create_crumbs(title, issue=None, date=None, edition=None):
                                           kwargs={'lccn': title.lccn,
                                                   'date': date,
                                                   'edition': edition})})
+
     return crumbs
