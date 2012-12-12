@@ -1,0 +1,74 @@
+{% extends "site_base_alt.html" %}
+{% load static from staticfiles %}
+{% load humanize %}
+ 
+{% block sub_page_head %}{% endblock %}
+
+{% block subcontent %}
+  <h2><a id="hundredYears" href='{% url chronam_search_pages_results %}?dateFilterType=range&date1={{date|date:"m/d/Y" }}&date2={{date|date:"m/d/Y"}}/'><strong>100 Years Ago Today</strong>: {{ date|date:"F j, Y" }} </a></h2>
+
+  <div id="myCarousel" class="carousel slide span8">
+    <div class="carousel-inner">
+    </div>
+    <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+    <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+  </div>
+{% endblock subcontent %}  
+
+ 
+{% block javascript %}
+{{ block.super }}
+
+<script type="text/javascript"> 
+$(document).ready(setupCarousel);
+
+function setupCarousel() {
+    // if the current page location has a date in it use that otherwise 
+    // default to one hundred years ago from the current date
+    var t = window.location.href.match(/(\d{4})-(\d{2})-(\d{2})/);
+    if (t) {
+        t = new Date(t[1], t[2]-1, t[3]);
+    } else {
+        t = new Date();
+        t.setYear(t.getYear() - 100);
+    }
+
+    // lookup frontpages and add them to the carousel
+    var url = "/frontpages/" + t.getFullYear() + "-" + (t.getMonth() + 1) + "-" + t.getDate() + ".json";
+    $.getJSON(url, function(results) {
+        // add some some descriptive text and a canned search to the carousel
+        $("#hundredYears").append(t.toLocaleDateString() + " (" + results.length + " issues)");
+        var tSearch = (t.getMonth() + 1) + "/" + t.getDate() + "/" + t.getFullYear();
+        $("#hundredYears").attr({"href": "/search/pages/results/?dateFilterType=range&date1=" + tSearch + "&date2=" + tSearch}); 
+
+        // add the newspaper images to the carousel
+        shuffle(results);
+        var carousel = $('.carousel-inner');
+        var item;
+        for (var i=0; i < results.length; i++) {
+          var img = results[i];
+	  if (i%4 == 0) {
+              item = $('<div class="item"><ul class="thumbnails"></ul></div>')
+              carousel.append(item)
+          }
+          item.find(".thumbnails").append($('<li class="span2"><div><a class="thumbnail" href="' + img.url + '"><img src="' + img.thumbnail_url + '" width="200" height="286" alt="" /></a><h4><a href="' + img.url + '">' + img.label + ' <small>(' + img.pages + 'pp.)</small></a></h4><p>' + img.place_of_publication + '</p></div></li>'));
+        }
+	$('.carousel').carousel();
+        //carousel.jcarousel();
+    });
+}
+
+function shuffle(myArray) {
+    var i = myArray.length;
+    if (i == 0) return false;
+    while (--i) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tempi = myArray[i];
+        var tempj = myArray[j];
+        myArray[i] = tempj;
+        myArray[j] = tempi;
+    }
+}
+
+</script> 
+{% endblock %}
