@@ -240,7 +240,7 @@ def page(request, lccn, date, edition, sequence, words=None):
     page_title = "%s, %s, %s" % (label(title), label(issue), label(page))
     page_head_heading = "%s, %s, %s" % (title.display_name, label(issue), label(page))
     page_head_subheading = label(title)
-    crumbs = create_crumbs(title, issue, date, edition)
+    crumbs = create_crumbs(title, issue, date, edition, page)
 
     filename = page.jp2_abs_filename
     if filename:
@@ -470,7 +470,7 @@ def _search_engine_words(request):
 def page_ocr(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     page_title = "%s, %s, %s" % (label(title), label(issue), label(page))
-    crumbs = create_crumbs(title, issue, date, edition)
+    crumbs = create_crumbs(title, issue, date, edition, page)
     host = request.get_host()
     return render_to_response('page_text.html', dictionary=locals(),
                               context_instance=RequestContext(request))
@@ -518,7 +518,7 @@ def page_print(request, lccn, date, edition, sequence,
     title = get_object_or_404(models.Title, lccn=lccn)
     issue = page.issue
     page_title = "%s, %s, %s" % (label(title), label(issue), label(page))
-    crumbs = create_crumbs(title, issue, date, edition)
+    crumbs = create_crumbs(title, issue, date, edition, page)
     host = request.get_host()
     image_credit = page.issue.batch.awardee.name
     return render_to_response('page_print.html', dictionary=locals(),
