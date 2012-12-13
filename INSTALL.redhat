@@ -118,6 +118,11 @@ cp ${CHRONAM_HOME}/settings_template.py ${CHRONAM_HOME}/settings.py
 django-admin.py syncdb --noinput --migrate
 django-admin.py chronam_sync
 
+# collect that static files where apache can serve them up; needed for
+# the case where DEBUG=False
+
+django-admin.py collectstatic
+
 
 Start Up Chronicling America
 ============================
