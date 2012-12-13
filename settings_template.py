@@ -87,6 +87,7 @@ THUMBNAIL_WIDTH = 200
 DEFAULT_TTL_SECONDS = 86400  # 1 day
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24 * 7 * 2  # 2 weeks
 API_TTL_SECONDS = 60 * 60  # 1 hour
+FEED_TTL_SECONDS = 60 * 60 * 24 * 7
 
 USE_TIFF = False
 
@@ -114,10 +115,6 @@ MAX_BATCHES = 0
 import multiprocessing
 #TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
 TOO_BUSY_LOAD_AVERAGE = 64 
-
-DEFAULT_TTL_SECONDS = 60 * 60 * 24
-PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24
-FEED_TTL_SECONDS = 60 * 60 * 24 * 7
 
 SOLR = "http://localhost:8080/solr"
 SOLR_LANGUAGES = ("eng", "fre", "spa")
