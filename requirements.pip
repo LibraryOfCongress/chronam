@@ -10,11 +10,10 @@ feedparser
 rfc3339
 south
 mimeparse
-https://github.com/eikeon/NativeImaging/tarball/master
+NativeImaging
 html5lib
 requests
 django-celery
 django-kombu
 worldcat
-git+https://git.rdc.lctl.gov/minicts.git#egg=minicts
-git+https://git.rdc.lctl.gov/git/django-lc.git#egg=lc
+
