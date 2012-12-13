@@ -14,7 +14,7 @@ from the NDNP Awardee, {{ awardee }}. Summary information about <a href="{% url 
 
 <h2>Batches</h2>
 
-<table class="data" width="100%">
+<table class="data table table-striped table-hover" width="100%">
     <tr>
     <th>Ingested</th>
     <th>Batch Name</th>
@@ -33,7 +33,7 @@ from the NDNP Awardee, {{ awardee }}. Summary information about <a href="{% url 
 {% if awardee.essays.all.count > 0 %}
 <h2>Essays</h2>
 
-<table class="data" width="100%">
+<table class="data table table-striped table-hover" width="100%">
     <th width="75%">Essay Title</th>
     <th>Created</th>
     {% for essay in awardee.essays.all %}

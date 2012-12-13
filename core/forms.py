@@ -110,14 +110,15 @@ class SearchPagesForm(forms.Form):
 
         self.fields["ortext"].widget.attrs["class"] = "ortext"
         self.fields["proxtext"].widget.attrs["alt"] = "proxtext"
+        self.fields["proxtext"].widget.attrs["class"] = "search-query"
         self.fields["state"].choices = states
-        self.fields["state"].widget.attrs = {'alt': 'id_state', 'style': 'width: 140px'}
+        self.fields["state"].widget.attrs = {"class": "input-small", 'alt': 'id_state', 'style': 'width: 140px'}
         self.fields["date1"].choices = years
         self.fields["date1"].initial = fulltextStartYear
-        self.fields["date1"].widget.attrs["class"] = "norm"
+        self.fields["date1"].widget.attrs["class"] = "norm,input-small"
         self.fields["date2"].choices = years
         self.fields["date2"].initial = fulltextEndYear
-        self.fields["date2"].widget.attrs["class"] = "norm"
+        self.fields["date2"].widget.attrs["class"] = "norm,input-small"
         self.fields["year"].choices = years
         self.fields["sequence"].widget.attrs['value'] = 1
 

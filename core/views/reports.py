@@ -444,10 +444,11 @@ def reels(request, page_number=1):
 
 @cache_page(settings.API_TTL_SECONDS)
 def reel(request, reel_number):
-    crumbs = [
+    crumbs = list(settings.BASE_CRUMBS)
+    crumbs.extend([
         {'label':'Reels',
          'href': urlresolvers.reverse('chronam_reels')},
-        ]
+        ])
     page_title = 'Reel %s' % reel_number
     m_reels = models.Reel.objects.filter(number=reel_number)
     reels = []

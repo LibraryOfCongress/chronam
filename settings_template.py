@@ -9,7 +9,7 @@ def abs_path(path):
 
 DIRNAME = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = False 
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -25,13 +25,11 @@ USE_L10N = True
 
 MEDIA_ROOT = ''
 MEDIA_URL = ''
-#ADMIN_MEDIA_PREFIX = '/media/'
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
 STATIC_URL = '/media/'
 STATIC_ROOT = os.path.join(DIRNAME, '.static-media')
-STATICFILES_DIRS = (os.path.join(DIRNAME, 'media'), )
 
 ROOT_URLCONF = 'chronam.urls'
 
@@ -71,7 +69,8 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'lc',
+    # 'chronam.loc',
+    # 'lc',
     'south',
     'django.contrib.humanize',
     'django.contrib.staticfiles',
@@ -88,6 +87,7 @@ THUMBNAIL_WIDTH = 200
 DEFAULT_TTL_SECONDS = 86400  # 1 day
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24 * 7 * 2  # 2 weeks
 API_TTL_SECONDS = 60 * 60  # 1 hour
+FEED_TTL_SECONDS = 60 * 60 * 24 * 7
 
 USE_TIFF = False
 
@@ -112,16 +112,9 @@ CTS_URL = "https://cts.loc.gov/transfer/"
 
 MAX_BATCHES = 0
 
-SHARETOOL_URL = "http://cdn.loc.gov/share/sites/dUcuwr5p/share-jquery-min.js"
-OMNITURE_SCRIPT = "http://www.loc.gov:8081/global/s_code.js"
-
 import multiprocessing
 #TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
 TOO_BUSY_LOAD_AVERAGE = 64 
-
-DEFAULT_TTL_SECONDS = 60 * 60 * 24
-PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24
-FEED_TTL_SECONDS = 60 * 60 * 24 * 7
 
 SOLR = "http://localhost:8080/solr"
 SOLR_LANGUAGES = ("eng", "fre", "spa")
@@ -134,3 +127,11 @@ BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
 OCR_DUMPS_STORAGE = os.path.join(STORAGE, "ocr")
 COORD_STORAGE = os.path.join(STORAGE, "word_coordinates")
+
+
+# for loc
+# BASE_CRUMBS = [
+#     {'label': 'The Library of Congress', 'href': 'http://www.loc.gov/'},
+#     {'label':'Chronicling America', 'href': '/'}
+# ]
+BASE_CRUMBS = [{'label':'Home', 'href': '/'}]

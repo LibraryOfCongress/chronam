@@ -1,0 +1,153 @@
+{% load custom_filters %}
+{% load static from staticfiles %}
+{% load humanize %}
+
+<div id="box-tabs" class="ui-tabs-hide">
+    <ul>
+        <li><a href="#tab_search"><span>Search Pages</span></a></li>
+        <li><a href="#tab_advanced_search"><span>Advanced Search</span></a></li>
+        <li><a href="#tab_newspapers"><span>All Digitized Newspapers {{search_form.fulltextStartYear}}-{{search_form.fulltextEndYear}}</span></a></li>
+    </ul>
+    <span class="btn_directory"><a href="{% url chronam_search_titles %}">US Newspaper Directory<img src=
+            {% ifequal page_name 'directory' %}"{% static 'images/btn_usnews_sel.png' %}"
+            {% else %}"{% static 'images/btn_usnews.png' %}"{% endifequal %}
+            width="296" height="34" border="0" alt="US Newspaper Directory, 1690-Present" /></a></span>
+    <div id="tab_search" class="ui-tabs-hide">
+        <form action="{% url chronam_search_pages_results %}" method="get" name="fulltext" id="fulltext" class="search-pages">
+            <div class="wrap-tabsearch">
+                <!-- state -->
+                {{ search_form.state}}
+                <span class="plus">+</span>
+                <!-- date -->
+                <label for="id_date1">from</label>
+                {{ search_form.date1 }} 
+                <label for="id_date2">to</label>
+                {{ search_form.date2 }}
+                <span class="plus">+</span>
+                <!-- search text field -->
+                {{ search_form.proxtext }}<input type="image"  alt="GO" src="{% static 'images/btn_go.png' %}" class="ortext-btn" />
+                <input type="hidden" name="dateFilterType" alt="dateFilterType" value="yearRange" />
+                <input type="hidden" name="rows" id="rows" alt="rows" value="20" />
+                <input type="hidden" name="searchType" alt="searchType" value="basic" />
+            </div>
+        </form>
+    </div><!-- end id:tab_search -->
+    <div id="tab_advanced_search" class="ui-tabs-hide">
+        <a href="#" id="id_close_tab_advanced_search">close</a>
+        <form action="{% url chronam_search_pages_results %}" method="get" name="fulltext2" id="fulltext2" class="search_adv">
+        <div class="wrapper-search">
+            <!-- state -->
+            <div class="fl-wrap">
+                <label for="id_states">Select State(s):</label><br />
+                {{ adv_search_form.state }}
+            </div>
+            <!-- newspaper -->
+            <div class="fl-wrap">
+                <label for="id_lccns">Or Select Newspaper(s):</label><br />
+                {{ adv_search_form.lccn }}
+            </div>
+            <!-- date -->
+            <div class="fl-wrap" style="width:320px;">
+                <p class="spec" style="margin-bottom:.5em;"><label>Select Year(s)</label><span class="required">*</span><br />
+                <small>Newspaper pages are available for newspapers published between <strong>{{search_form.fulltextStartYear}}-{{search_form.fulltextEndYear}}</strong><span class="required">*</span></small></p>
+                <!-- date -->
+                <p>
+                <fieldset id="select_years">
+                    <label for="id_radioyear"></label>
+                    <input class="radio" type="radio" id="id_radioyear" name="dateFilterType" value="yearRange">
+                    <label for="id_date1" class="norm">from</label>
+                    {{ search_form.date1 }}
+                    <label for="id_date2" class="norm">to</label>
+                    {{ search_form.date2 }} 
+                </fieldset>
+                </p>
+                <br />
+                <span class="label_alt">Or Date Range</span><br />
+                <fieldset id="select_date">
+                    <label for="id_radiorange"></label>
+                    <input class="radio" type="radio" id="id_radiorange" name="dateFilterType" value="range">
+                    <label for="id_datefrom" class="norm">from</label>
+                    {{ adv_search_form.date1 }}
+                    <label for="id_dateto" class="norm">to</label>
+                    {{ adv_search_form.date2 }}
+                </fieldset>
+            </div>
+            <div class="clear-form"><!-- --></div>
+            <p><label for="id_sequence">Limit Search:</label>
+            {{ search_form.sequence }} only front page or Specific page {{ adv_search_form.sequence }}</p>
+                <span><label for="id_language">Language</label>
+                {{ adv_search_form.language }}
+                </span>
+            </p>
+                <span class="label_alt">Enter Search</span><br />
+                <div class="fl-wrap">
+                    <label for="id_ortext" class="norm">...with <strong>any</strong> of the words:</label><br />
+                    {{ search_form.ortext }}
+                </div>
+                <div class="fl-wrap">
+                    <label for="id_andtext" class="norm">...with <strong>all</strong> of the words:</label><br />
+                    {{ search_form.andtext }}
+                </div>
+                <div class="fl-wrap">
+                    <label for="id_phrasetext" class="norm">...with the <strong>phrase</strong>:</label><br />
+                    {{ search_form.phrasetext }}
+                </div>
+                <div class="clear-form-half"><!-- --></div>
+                <div class="fl-wrap">
+                    <label for="id_proxtext_adv" class="norm">...with the words:</label><br />
+                    {{ adv_search_form.proxtext }}
+                    <label for="id_proxdistance" class="norm">within</label>
+                    {{ search_form.proxdistance}}
+                    <span>words of each other</span>
+                </div>
+                <input type="hidden" name="rows" id="rows" value="20" />
+                <input type="hidden" name="searchType" value="advanced" />
+                <div class="clear-form"><!-- --></div>
+            </div><!-- end class:wrapper-search -->
+            <p class="box-btns" style="margin:0;">
+                <button id="adv_reset" type="reset" value="clear">Clear</button>
+                <button type="submit" value="Submit" class="primary">Search</button> &nbsp;  
+            </p>
+        </form>
+    </div><!-- end id:tab_advanced_search -->
+    <div id="tab_newspapers" class="ui-tabs-hide">
+        <a href="#" id="id_close_tab_newspapers">close</a>
+        <div style="margin:0 20px;padding:15px 0;border-bottom:1px dotted #ccc;">
+            <a href="{% url chronam_newspapers %}">Show All Digitized Papers {{search_form.fulltextStartYear}}-{{search_form.fulltextEndYear}} ({{titles_with_issues_count|intcomma}})</a> | <a href="{% url chronam_newspapers_format 'txt' %}">Download Complete List</a> (also includes LCCN, ISSN)
+        </div>
+        <form action="{% url chronam_newspapers %}" method="get" class="search_adv">
+            <div class="wrapper-search">
+            <p>
+            <label for="state_select">State:</label> 
+            <select class="sel" name="state" id="state_select">
+              <option value="">All States</option>
+              {% for s in states_with_issues %} 
+              <option value="{{s}}" {% ifequal state s %}selected="True"{% endifequal %}>{{s}}</option>
+              {% endfor %}
+            </select>
+            &nbsp; &nbsp;
+            <label for="ethnicity_select">Ethnicity:</label> 
+            <select class="sel" name="ethnicity" id="ethnicity_select">
+                <option value="">All Ethnicities</option>
+            {% for e in ethnicities_with_issues %}
+            <option value="{{e}}" {% ifequal ethnicity e %}selected="True"{% endifequal %}>{{e}}</option>
+            {% endfor %}
+            </select>
+            &nbsp; &nbsp;
+            <label for="language_select">Language:</label> 
+            <select class="sel" name="language" id="language_select">
+              <option value="">All Languages</option>
+              {% for value, lang in languages_with_issues %} 
+              <option value="{{value}}" {% ifequal language value %}selected="True"{% endifequal %}>{{lang}}</option>
+              {% endfor %}
+            </select>
+            </p>          
+            </div><!-- end class:wrapper-search -->
+            <p class="box-btns" style="margin:0;">
+              <button type="submit" value="Submit" class="primary">GO</button>
+            </p>
+        </form>
+    </div>
+</div><!-- end box-tabs -->
+
+<script src="{% static 'js/main.js' %}"></script>

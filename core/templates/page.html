@@ -280,60 +280,6 @@
     <meta property="og:description" content="{{ page_title }}, brought to you by {{ image_credit }}, and the National Digital Newspaper Program." />
 
     <style type="text/css">
-        /* header for full-page view */
-		/* begin IE7 only */
-		* html #full_header,
-		* html #navigation {
-		width:100% !important;
-		}
-		/* end IE7 only */
-        body #full_header.normal {
-	    display: none;
-        }
-        body #full_header.full {
-	    display: block;
-        }
-        #full_header {
-            overflow:hidden;
-            padding-top:2px;
-	    width: 100%;
-	    height: 40px;
-            background: #900 url({% static 'images/line2.gif' %}) top left no-repeat !important;
-        }
-        #navigation {
-    	    overflow:hidden;
-            margin:0;
-            padding:0;
-    		background-color:#2a354a;
-        }
-        #navigation span {
-            font-size:0.8em;
-            float:left;
-            padding: 6px 29px 20px 29px;
-    		background-color:#afb9c7;
-        }
-       ul.nav {
-           display:block;
-           background-color:#2a354a;
-           margin:0 0 0 190px;
-           overflow:hidden;
-           padding-bottom:5px;
-       }
-       ul.nav li {
-	       float: left;
-    	   list-style: none outside none;
-		   padding: 5px 10px 0;
-		   text-align: left;
-		   color: #CCCCCC;
-		   font-size: 0.8em;
-       }
-       ul.nav li.bar {
-           border-right: 1px solid #666;
-           height: 35px;
-       } 
-       ul.nav li.last {
-           clear:right;
-       }
        /* viewer */
        #viewer_container
        {
@@ -363,19 +309,12 @@
           padding: 0px;
           margin: 0px;
       }
-      #main_body {
-          margin: 0px;
-          padding: 0px;
-          width: 100%;
-          float: none;
-          clear: none;
-      }
     </style>  
       
 {% endblock %}
 
 {% block sharetool_container_left %}
-<div class="nav_result">
+<div class="nav_result" style="display: none">
     <a class="ar-back backtoresults" href="">Back to search results</a>
     <span class="previous disabled"><a class="ar-back" href="">Previous</a> |</span>
     <span class="current"></span> of <span class="total"></span>
@@ -423,11 +362,11 @@
   <p class="gray nomargin-bottom2">Image provided by: {{image_credit}}</p> 
   <div id="item-wrapper"> 
     <div id="imageViewer_nav">
-      <div id="item-ctrl"> 
+      <div id="item-ctrl">
         <div style="padding-left: 160px; padding-top: 10px;">
         <span class="c-images"> 
           <label for="pageNum">Image:</label> 
-          <select name="pageNum" id="pageNum">
+          <select name="pageNum" id="pageNum" class="input-small">
             {% for p in issue.pages.all %}
             <option value="{% url chronam_page title.lccn,issue.date_issued,issue.edition,p.sequence %}" {% ifequal p.sequence page.sequence %}selected="selected"{% endifequal %}>{{p.sequence}}</option>
             {% endfor %}

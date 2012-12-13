@@ -1653,9 +1653,12 @@ td.multiple li {
 .about_issue_right {
     margin-bottom:1.25em;
 }
+.about_issue_right .frontpage {
+    float: left;
+}
 .about_issue_right .info {
     width:178px;
-    float:right;
+    float: right;
 }
 .about_issue_right h3 {
     font-size:1em;
@@ -1673,6 +1676,7 @@ h4.browse {
 .about_issue_more {
     clear:both;
     color:#666;
+    padding-top: 10px;
 }
 
 /********************* issues - holding *********************/

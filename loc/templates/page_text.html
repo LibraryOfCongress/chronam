@@ -1,0 +1,50 @@
+{% load static from staticfiles %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>{% if page_title %}{{page_title}} - {% endif %}Chronicling America - The Library of Congress</title>
+    <style type="text/css">
+        @import url({% static 'css/ca_print.css' %});
+        .thumbnail {
+            float: none;
+            padding-right: 1em;
+        }
+        img {
+            height: auto;
+        }
+    </style>
+    <link rel="canonical" href="{% url chronam_page title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
+    <link rel="alternate" type="application/xml" href="{% url chronam_page_ocr_xml title.lccn, issue.date_issued, issue.edition, page.sequence %}" />
+</head>
+
+<body id="chronam_page_print">
+    <div id="head_nav">
+    <h1>OCR Interpretation</h1>
+    <br>
+    <h1>{{page}}</h1>
+    <h3>Image and text provided by {{issue.batch.awardee.name}}</h3>
+    <h3>Persistent link: <a href="{{page.url}}">http://{{host}}{{page.url}}</a></h3>
+    </div> 
+
+    <h2><a href="{% url chronam_ocr %}">What is OCR?</a></h2>
+
+    <div class="thumbnail">
+        <br />
+    <a href="{{url}}">
+        <img src="{% url chronam_page_thumbnail title.lccn,issue.date_issued,issue.edition,page.sequence %}" alt="Thumbnail for {{page.number}}">
+    </a>
+    <br />
+    </div>
+
+    <div>
+    {{page.ocr.text|escape|linebreaks}}
+    </div>
+
+    <p>
+    <a href="{% url chronam_page_ocr_xml title.lccn, issue.date_issued, issue.edition, page.sequence %}">xml</a> | 
+    <a href="{% url chronam_page_ocr_txt title.lccn, issue.date_issued, issue.edition, page.sequence %}">txt</a>
+    </p>
+
+</body>
+</html>

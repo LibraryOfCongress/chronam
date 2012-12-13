@@ -1,0 +1,93 @@
+<!DOCTYPE html>{% load static from staticfiles %}
+<html lang="en">
+  <head profile="http://dublincore.org/documents/2008/08/04/dc-html/">
+    {% block head_content %}
+    <meta charset="utf-8">
+    <title>{% if page_title %}{{page_title}} « {% endif %}{% if site_title %}{{site_title}} « {% endif %}Library of Congress</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'bootstrap/css/bootstrap-responsive.css' %}" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    {% endblock head_content %}
+  </head>
+  <body>
+    {% block body_content %}
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">chronam</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="/">Home</a></li>
+              <li><a href="{% url chronam_newspapers %}">Newspapers</a></li>
+              <li><a href="{% url chronam_about %}">About</a></li>
+              <li><a href="{% url chronam_about_api %}">API</a></li>
+              <li><a href="{% url chronam_reports %}">Reports</a></li>
+              <li><a href="/help/">Help</a></li>
+            </ul>
+	    <form class="navbar-form pull-right" action="{% url chronam_search_pages_results %}" method="get">
+              <input type="hidden" name="rows" id="rows" alt="rows" value="20" />
+              <input type="hidden" name="searchType" alt="searchType" value="basic" />
+              <input class="span2" type="text" name="proxtext" placeholder="search words">
+	      <div class="btn-group">
+		<button type="submit" class="btn">Search</button>
+		<button class="btn dropdown-toggle" data-toggle="dropdown">
+		  <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+		  <li><a tabindex="-1" href="#">Advanced Search</a></li>
+		  <li><a tabindex="-1" href="/newspapers/">All Digitized Newspapers</a></li>
+		  <li><a tabindex="-1" href="/search/titles/">U.S. Newspaper Directory</a></li>
+		  <!-- dropdown menu links -->
+		</ul>
+	      </div>
+            </form>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container"> <!-- twitter bootstrap -->
+
+      <div id="container">
+      </div>
+
+      {% block breadcrumbs %}
+      {% if crumbs|length > 1 %}
+      <ul class="breadcrumb">
+	{% for crumb in crumbs %}
+	<li {% if crumb.active %}class="active"{% endif %}><a href="{{crumb.href}}">{{crumb.label}}</a>{% if forloop.last %}{% else %} <span class="divider">/</span>{% endif %}</li>
+	{% endfor %}
+      </ul>
+      {% endif %}
+      {% endblock breadcrumbs %}
+
+      <div id="content">
+	{% block content %}
+	{% endblock content %}
+      </div>
+
+    </div>
+    {% endblock body_content %}
+    {% block javascript %}
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    {% endblock javascript %}
+  </body>
+</html>

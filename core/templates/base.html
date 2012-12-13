@@ -1,4 +1,4 @@
-{% extends "lc/base.html" %}
+{% extends "site.html" %}
 
 {% load static from staticfiles %}
 {% load humanize %}
@@ -7,7 +7,6 @@
 {% block head_content %}
     {{ block.super }}
     {% block lc_metadata %}{% endblock lc_metadata %}
-    <link href="{% static 'img-std/fav.ico' %}" rel="shortcut icon"/>
     <link title="NDNP Page Search" href="{% url chronam_search_pages_opensearch %}"
           rel="search" type="application/opensearchdescription+xml" />
     <link title="NDNP Title Search" href="{% url chronam_search_titles_opensearch %}"
@@ -18,44 +17,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link type="text/css" rel="stylesheet"
           href="{% static 'jquery-ui.css' %}" />
-    <link type="text/css" rel="styelsheet" href="{% static 'ui_carousel.css' %}" />
-    <link type="text/css" rel="stylesheet" href="{% static 'base.css' %}" />
-
-    <!--[if lte IE 7]><link type="text/css" media="screen" rel="stylesheet"
-        href="{% block stylesheet_ie %}{% static 'css/ca_ie.css' %}"{% endblock stylesheet_ie %} /><![endif]-->
-
     {% block extrahead %}{% endblock extrahead %}
 {% endblock head_content %}
-
-{% block crumb_base %}
-    <span> &gt; </span>
-    <a href="/">Chronicling America</a>
-{% endblock crumb_base %}
-
-{% block crumb_extra %}
-    <!--{% if page_title %}<span> &gt; </span>{{page_title}}{% endif %}-->
-{% endblock crumb_extra %} 
 
 <!-- Content -->
 {% block content %}
 <div id="main_body">
-    <div id="top_branding">
-        <div class="neh_logo"><a href="http://www.neh.gov"><img src="{% static 'images/logo_neh.png' %}" width="186" height="46" alt="National Endowment for the Humanities" /></a></div>
-        <div class="chron_logo"><a href="{% url chronam_home %}"><img src="{% static 'images/logo_chron_top.png' %}" width="179" height="31" alt="" /></a></div>
-        <div class="neh_txt">
-            <p>Search America&#39;s historic newspapers pages from {{search_form.fulltextStartYear}}-{{search_form.fulltextEndYear}} or use the U.S. Newspaper Directory to find information about American newspapers published between 1690-present. Chronicling America is sponsored jointly by the <a href="http://www.neh.gov" class="external">National Endowment for the Humanities<span> external link</span></a> and the Library of Congress. <a href="{% url chronam_about %}" class="ar-more-gray">Learn more</a></p>
-        </div><!-- end id:neh_txt -->
-    </div><!-- end id:top_branding -->
-    <div class="clear"><!-- --></div>
+  {% block top_branding %}
+  {% endblock top_branding %}
 
     {% block main_body %}
-    {% block box-tabs %}
-    <div id="tabs-container" {% if collapse_search_tab %}class="collapsed"{% endif %}></div>
-    {% endblock box-tabs %}
     <div class="sharetool_container">
-        {% block sharetool_container_left %}
-	    <p>Pages Available: {{ total_page_count|intcomma }}</p>
-	    {% endblock sharetool_container_left %}
         <!-- Toolbar -->
         <div class="locshare-this" id='instance_id1001' style='display:none'>
             {% block locshare-code %}
@@ -116,22 +88,3 @@
 
 {% endblock content %}
 <!-- END Content -->
-
-{% block javascript %}
-{{ block.super }}
-<script src="{% static 'js/jquery-ui.js' %}" ></script>
-
-<script type="text/javascript">
-jQuery(function ($) {
-    $('#tabs-container').load('/tabs', function() {
-        $("#tabs-container").trigger('chronam.tabsloaded', {});
-    });
-});
-</script>
-
-{% if sharetool_url %}
-<!-- Toolbar -->
-<script type="text/javascript" src="{{ sharetool_url }}"></script>
-{% endif %}
-
-{% endblock javascript %}

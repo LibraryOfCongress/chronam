@@ -3,6 +3,7 @@ import datetime
 import os
 import wsgiref.util
 
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.core import urlresolvers
 from django.http import HttpResponse, Http404
@@ -236,10 +237,11 @@ def label(instance):
     else:
         return u"%s" % instance
 
-def create_crumbs(title, issue=None, date=None, edition=None):
-    crumbs = [{'label': label(title.name.split(":")[0]), 
+def create_crumbs(title, issue=None, date=None, edition=None, page=None):
+    crumbs = list(settings.BASE_CRUMBS)
+    crumbs.extend([{'label': label(title.name.split(":")[0]),
                'href': urlresolvers.reverse('chronam_title',
-                                            kwargs={'lccn': title.lccn})}]
+                                            kwargs={'lccn': title.lccn})}])
     if date and edition is not None:
         crumbs.append(
             {'label': label(issue),
@@ -247,4 +249,14 @@ def create_crumbs(title, issue=None, date=None, edition=None):
                                           kwargs={'lccn': title.lccn,
                                                   'date': date,
                                                   'edition': edition})})
+
+    if page is not None:
+        crumbs.append(
+            {'label': label(page),
+             'href': urlresolvers.reverse('chronam_page', 
+                                          kwargs={'lccn': title.lccn,
+                                                  'date': date,
+                                                  'edition': edition,
+                                                  'sequence': page.sequence})})
+
     return crumbs
