@@ -19,7 +19,7 @@ Get Chronam
 ===========
 
 mkdir /opt/chronam
-git clone https://rdc.lctl.gov/git/chronam.git /opt/chronam
+git clone https://github.com/LibraryOfCongress/chronam.git /opt/chronam
 export CHRONAM_HOME=/opt/chronam
 cd ${CHRONAM_HOME}
 
