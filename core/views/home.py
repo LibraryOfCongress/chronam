@@ -47,7 +47,7 @@ def _frontpages(request, date):
             'label': "%s" % issue.title.display_name,
             'url': url,
             'thumbnail_url': first_page.thumb_url,
-            'medium_url': first_page.thumb_url, # TODO: medium_url got lost in the shuffle
+            'medium_url': first_page.medium_url,
             'place_of_publication': issue.title.place_of_publication,
             'pages': issue.pages.count()})
     return results

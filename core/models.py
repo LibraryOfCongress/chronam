@@ -657,6 +657,11 @@ class Page(models.Model):
 
     @property
     @permalink
+    def medium_url(self):
+        return ('chronam_page_medium', (), self._url_parts())
+
+    @property
+    @permalink
     def jp2_url(self):
         return ('chronam_page_jp2', (), self._url_parts())
 

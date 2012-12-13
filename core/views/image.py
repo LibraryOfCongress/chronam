@@ -51,21 +51,35 @@ def _get_image(page):
     im = Image.open(stream)
     return im
 
-
-def thumbnail(request, lccn, date, edition, sequence):
-    page = get_page(lccn, date, edition, sequence)
-    response = HttpResponse(mimetype="image/jpeg")
-    thumb_width = settings.THUMBNAIL_WIDTH
+def _get_resized_image(page, width):
     try:
         im = _get_image(page)
     except IOError, e:
+        return HttpResponseServerError("Unable to create image: %s" % e)
+    actual_width, actual_height = im.size
+    height = int(round(width / float(actual_width) * float(actual_height)))
+    im = im.resize((width, height), Image.ANTIALIAS)
+    return im
+
+def thumbnail(request, lccn, date, edition, sequence):
+    page = get_page(lccn, date, edition, sequence)
+    try:
+        im = _get_resized_image(page, settings.THUMBNAIL_WIDTH)
+    except IOError, e:
         return HttpResponseServerError("Unable to create thumbnail: %s" % e)
-    width, height = im.size
-    thumb_height = int(round(thumb_width / float(width) * float(height)))
-    im = im.resize((thumb_width, thumb_height), Image.ANTIALIAS)
+    response = HttpResponse(mimetype="image/jpeg")
     im.save(response, "JPEG")
     return response
 
+def medium(request, lccn, date, edition, sequence):
+    page = get_page(lccn, date, edition, sequence)
+    try:
+        im = _get_resized_image(page, 550)
+    except IOError, e:
+        return HttpResponseServerError("Unable to create thumbnail: %s" % e)
+    response = HttpResponse(mimetype="image/jpeg")
+    im.save(response, "JPEG")
+    return response
 
 def page_image(request, lccn, date, edition, sequence, width, height):
     page = get_page(lccn, date, edition, sequence)

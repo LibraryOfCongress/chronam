@@ -41,6 +41,10 @@ urlpatterns = patterns(
         cache_page(image.thumbnail, settings.PAGE_IMAGE_TTL_SECONDS),
         name="chronam_page_thumbnail"),
 
+    url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/medium.jpg$',
+        cache_page(image.medium, settings.PAGE_IMAGE_TTL_SECONDS),
+        name="chronam_page_medium"),
+
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/image_813x1024_from_0,0_to_6504,8192.jpg
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/image_(?P<width>\d+)x(?P<height>\d+)_from_(?P<x1>\d+),(?P<y1>\d+)_to_(?P<x2>\d+),(?P<y2>\d+).jpg$',
         cache_page(image.page_image_tile, settings.PAGE_IMAGE_TTL_SECONDS),
