@@ -23,6 +23,7 @@
 
   <div class="browse_collect_ctrl titles top">
     <h3 class="smaller">Browse the Directory by newspaper title:</h3>  
+    <div class="pagination pagination-mini">
     <ul class="alpha_tags">
       {% for val in browse_val %}
       {% ifequal val start %}
@@ -32,6 +33,7 @@
       {% endifequal %}
       {% endfor %}
     </ul>
+    </div>
   </div><!-- end class:browse_collect_ctrl --> 
 
   <div class="search_results_ctrl top titles fix-float">
