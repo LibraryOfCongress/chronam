@@ -9,6 +9,7 @@ from django.template.loader import get_template
 from django.core import urlresolvers
 from django.core.cache import cache
 from django.shortcuts import render_to_response
+from django.core.paginator import Paginator
 
 from chronam.core import models
 from chronam.core.decorator import profile
@@ -17,17 +18,13 @@ def home(request, date=None):
     context = RequestContext(request, {})
     context["total_page_count"] = models.Page.objects.all().count()
     context["crumbs"] = list(settings.BASE_CRUMBS)
+    context["date"] = date = datetime.date.today()
+    context["pages"] = pages = _frontpages(request, date)
     template = get_template("home.html")
     # note the date is handled on the client side in javascript
     return HttpResponse(content=template.render(context))
 
-def frontpages(request, date):
-    _year, _month, _day = date.split("-")
-    try:
-        date = datetime.date(int(_year), int(_month), int(_day))
-    except ValueError, e:
-        raise Http404
-   
+def _frontpages(request, date):
     # if there aren't any issues default to the first 20 which 
     # is useful for testing the homepage when there are no issues
     # for a given date
@@ -46,16 +43,23 @@ def frontpages(request, date):
                           edition=issue.edition,
                           sequence=first_page.sequence)
         url = urlresolvers.reverse('chronam_page', kwargs=path_parts)
-        thumbnail_url = urlresolvers.reverse('chronam_page_thumbnail', kwargs=path_parts)
         results.append({
             'label': "%s" % issue.title.display_name,
             'url': url,
-            'thumbnail_url': thumbnail_url,
+            'thumbnail_url': first_page.thumb_url,
+            'medium_url': first_page.thumb_url, # TODO: medium_url got lost in the shuffle
             'place_of_publication': issue.title.place_of_publication,
             'pages': issue.pages.count()})
- 
-    return HttpResponse(json.dumps(results), mimetype="application/json")
+    return results
 
+def frontpages(request, date):
+    _year, _month, _day = date.split("-")
+    try:
+        date = datetime.date(int(_year), int(_month), int(_day))
+    except ValueError, e:
+        raise Http404
+    results = _frontpages(request, date)
+    return HttpResponse(json.dumps(results), mimetype="application/json")
 
 def tabs(request, date=None):
     context = RequestContext(request, {})
