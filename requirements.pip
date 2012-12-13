@@ -9,12 +9,10 @@ simplejson
 feedparser
 rfc3339
 south
-mercurial
 mimeparse
 https://github.com/eikeon/NativeImaging/tarball/master
 html5lib
 requests
-GitPython
 django-celery
 django-kombu
 
@@ -25,5 +23,4 @@ worldcat
 git+https://git.rdc.lctl.gov/minicts.git#egg=minicts
 
 # django-lc
-django-staticfiles
 git+https://git.rdc.lctl.gov/git/django-lc.git#egg=lc

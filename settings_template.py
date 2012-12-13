@@ -72,7 +72,6 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'lc',
-    'staticfiles',
     'south',
     'django.contrib.humanize',
     'django.contrib.staticfiles',
