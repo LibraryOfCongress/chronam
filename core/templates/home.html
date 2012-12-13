@@ -31,7 +31,7 @@
 {{ block.super }}
 
 <script type="text/javascript"> 
-  var j = Math.floor(Math.random() * {{frontpages_panes|length}});
+  var j = Math.floor(Math.random() * {{pages|length}});
   $('.carousel').carousel(j)
 </script> 
 {% endblock %}
