@@ -40,8 +40,8 @@ Install
 To learn more about how to install the software see operating specific 
 instructions:
 
-* ubuntu.md
-* redhat.md
+* [install_ubuntu.txt](https://github.com/LibraryOfCongress/chronam/blob/master/install_ubuntu.txt)
+* [install_redhat.txt](https://github.com/LibraryOfCongress/chronam/blob/master/install_redhat.txt)
 
 Get Data
 --------
