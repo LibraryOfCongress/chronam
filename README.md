@@ -46,12 +46,12 @@ instructions:
 Get Data
 --------
 
-As mentioned above the NDNP data that awardees create and ship to the Library
-of Congress is in the Public Domain and is made available on the Web as 
-"batches". Each batch contains newsaper issues for one or more newspaper 
+As mentioned above, the NDNP data that awardees create and ship to the Library
+of Congress is in the public domain and is made available on the Web as 
+`batches`. Each batch contains newsaper issues for one or more newspaper 
 titles. To use chronam you will need to have some of this batch data to load. If
 you are an awardee you probably have this data on hand already, but if not
-you can use a tool like wget[http://www.gnu.org/software/wget/] to bulk 
+you can use a tool like [wget](http://www.gnu.org/software/wget/) to bulk 
 download the batches. For example
 
     wget --recursive --no-host-directories --cut-dirs 1 --include-directories /data/dlc/batch_dlc_jamaica_ver01 http://chroniclingamerica.loc.gov/data/dlc/batch_dlc_jamaica_ver01
