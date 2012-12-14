@@ -1,7 +1,6 @@
 <!DOCTYPE html>{% load static from staticfiles %}
 <html lang="en">
-  <head profile="http://dublincore.org/documents/2008/08/04/dc-html/">
-    {% block head_content %}
+  <head profile="http://dublincore.org/documents/2008/08/04/dc-html/">{% block head_content %}
     <meta charset="utf-8">
     <title>{% if page_title %}{{page_title}} « {% endif %}{% if site_title %}{{site_title}} « {% endif %}Library of Congress</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,12 +16,9 @@
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    {% endblock head_content %}
+    <![endif]-->{% endblock head_content %}
   </head>
-  <body>
-    {% block body_content %}
-
+  <body>{% block body_content %}
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -54,40 +50,19 @@
 		  <li><a tabindex="-1" href="#">Advanced Search</a></li>
 		  <li><a tabindex="-1" href="/newspapers/">All Digitized Newspapers</a></li>
 		  <li><a tabindex="-1" href="/search/titles/">U.S. Newspaper Directory</a></li>
-		  <!-- dropdown menu links -->
 		</ul>
 	      </div>
             </form>
-          </div><!--/.nav-collapse -->
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="container"> <!-- twitter bootstrap -->
-
-      <div id="container">
-      </div>
-
-      {% block breadcrumbs %}
-      {% if crumbs|length > 1 %}
-      <ul class="breadcrumb">
-	{% for crumb in crumbs %}
-	<li {% if crumb.active %}class="active"{% endif %}><a href="{{crumb.href}}">{{crumb.label}}</a>{% if forloop.last %}{% else %} <span class="divider">/</span>{% endif %}</li>
-	{% endfor %}
-      </ul>
-      {% endif %}
-      {% endblock breadcrumbs %}
-
-      <div id="content">
-	{% block content %}
-	{% endblock content %}
-      </div>
-
-    </div>
-    {% endblock body_content %}
-    {% block javascript %}
+    <div class="container">{% if crumbs|length > 1 %}
+      <ul class="breadcrumb">{% for crumb in crumbs %}
+	<li {% if crumb.active %}class="active"{% endif %}><a href="{{crumb.href}}">{{crumb.label}}</a>{% if forloop.last %}{% else %} <span class="divider">/</span>{% endif %}</li>{% endfor %}
+      </ul>{% endif %}{% block content %}{% endblock content %}
+    </div>{% endblock body_content %}{% block javascript %}
     <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-    {% endblock javascript %}
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>{% endblock javascript %}
   </body>
 </html>

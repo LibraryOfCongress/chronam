@@ -4,87 +4,18 @@
 {% load humanize %}
 {% load custom_tags %}
 
-{% block head_content %}
-    {{ block.super }}
-    {% block lc_metadata %}{% endblock lc_metadata %}
+{% block head_content %}{{ block.super }}{% block lc_metadata %}{% endblock lc_metadata %}
     <link title="NDNP Page Search" href="{% url chronam_search_pages_opensearch %}"
           rel="search" type="application/opensearchdescription+xml" />
     <link title="NDNP Title Search" href="{% url chronam_search_titles_opensearch %}"
           rel="search" type="application/opensearchdescription+xml" />
-    <link rel="alternate" type="application/rss+xml" title="News about Chronicling America - RSS Feed" 
-          href="http://www.loc.gov/rss/ndnp/ndnp.xml" />
+
     <meta http-equiv="Content-Language" content="en-us" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link type="text/css" rel="stylesheet"
-          href="{% static 'jquery-ui.css' %}" />
-    {% block extrahead %}{% endblock extrahead %}
-{% endblock head_content %}
+    <link href="{% static 'jquery-ui.css' %}" rel="stylesheet" />{% block extrahead %}{% endblock extrahead %}{% endblock head_content %}
 
-<!-- Content -->
-{% block content %}
-<div id="main_body">
-  {% block top_branding %}
-  {% endblock top_branding %}
-
-    {% block main_body %}
-    <div class="sharetool_container">
-        <!-- Toolbar -->
-        <div class="locshare-this" id='instance_id1001' style='display:none'>
-            {% block locshare-code %}
-            <code>{
-                  title: '{{ page_title }}',
-                  download_links: [
-                  {
-                   link: 'http://www.loc.gov/rss/ndnp/ndnp.xml',
-                   label: 'application/rss+xml',
-                   meta: 'News about Chronicling America - RSS Feed',
-                  },
-                  {% block download_links %}
-                  {% endblock download_links %}
-                  ]
-                }
-            </code>
-            {% endblock locshare-code %}
-        </div><!-- end id:instance_id1001 -->
-        <div class="clear-share"><!-- --></div>
-    </div>
-    {% block page_head_container %}
-    <div id="page_head">
-        {% block page_head %}
-        <h1 class="oneline">
-            {{ page_title }}
-        </h1>
-        {% endblock page_head%}   
-    </div><!-- end id:page_head -->
-    {% endblock page_head_container %}
-
-    {% block left_bits %}
-    {% endblock left_bits %}
-
-    {% block main %}
-    <div id="main"><span style="width: 100%;"><a name="skip_menu"></a></span>
-        {% block sub_page_head %}
-        {% endblock sub_page_head %}
-
-        {% block main_content %}
-        {% endblock main_content %}
-    </div>
-    {% endblock main %}
-          
-    {% block non_main_content %}
-    <div class="clear"><!-- --></div>
-    {% endblock non_main_content %}
-
-    {% block subcontent %}
-    {% endblock subcontent %}
-
-{% endblock main_body %}
-</div><!-- end id:main_body -->
-
-<div id="omni">
-    <input type="hidden" id="eVar4" value="{{image_credit}}" />
-    <input type="hidden" id="prop13" value="{{image_credit}}" />
-</div>
-
-{% endblock content %}
-<!-- END Content -->
+{% block content %}{% block page_head_container %}{% block page_head %}{% block sub_page_head %}{% if page_title %}
+    <h1>{{ page_title }}</h1>{% endif %}{% endblock sub_page_head %}{% endblock page_head%}{% endblock page_head_container %}
+    <div>
+      <a name="skip_menu"></a>{% block main_content %}{% endblock main_content %}
+    </div>{% block subcontent %}{% endblock subcontent %}{% endblock content %}
