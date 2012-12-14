@@ -1,7 +1,7 @@
 chronam
 =======
 
-chronam is the [Django](http://djangoproject.com] application that the 
+chronam is the [Django](http://djangoproject.com) application that the 
 Library of Congress uses to make its 
 [Chronicling America](http://chroniclingamerica.loc.gov) website.
 The Chronicling America website makes millions of pages of historic American 
