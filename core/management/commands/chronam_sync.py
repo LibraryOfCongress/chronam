@@ -59,7 +59,12 @@ class Command(BaseCommand):
             # look in BIB_STORAGE for original titles to load
             for filename in os.listdir(settings.BIB_STORAGE): 
                 if filename.startswith('titles-') and filename.endswith('.xml'):
-                    title_loader.load(os.path.join(settings.BIB_STORAGE, filename))
+                    filepath = os.path.join(settings.BIB_STORAGE, filename)
+                    title_loader.load(filepath)
+
+            _logger.info('Starting OCLC title update.')
+            worldcat_path = settings.BIB_STORAGE + '/worldcat_titles/'
+            management.call_command('load_titles', worldcat_path)
 
             # look in BIB_STORAGE for holdings files to load 
             # NOTE: must run after titles are all loaded or else they may 
@@ -77,19 +82,10 @@ class Command(BaseCommand):
             _logger.exception(e)
 
         load_essays(settings.ESSAYS_FEED)
-
+       
+        # We wait to index all the titles at the end.
         index.index_titles()
 
-        _logger.info('Starting OCLC title update.')
-        # This is placed after the original update, because there are a couple of
-        # bugs to figure out between the two. This will be 
-        # handled in 3.5 or 3.6
-        # load the most recent pull from worlcat / oclc on top of the
-        # original titles that were loaded
-        worldcat_path = settings.BIB_STORAGE + '/worldcat_titles/'
-        #worldcat_path = '/opt/chronam/data/worldcat_titles/'
-        management.call_command('load_titles', worldcat_path)
-        
         end = datetime.now()
         total_time = start - end
         _logger.info('start time: %s' % start)
