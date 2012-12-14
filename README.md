@@ -29,8 +29,8 @@ available. chronam provides a core set of functionality for loading, modeling
 and indexing NDNP data, while allowing you to customize the look and feel
 of the website to suit the needs of your organization. 
 
-The NDNP data is in the Public Domain and is itself [available
-http://chroniclingamerica.loc.gov/data/batches/] on the Web for anyone to use.
+The NDNP data is in the Public Domain and is itself [available]
+(http://chroniclingamerica.loc.gov/data/batches/) on the Web for anyone to use.
 The hope is that the chronam software can be useful for others who want to 
 work with and/or publish the content.
 
