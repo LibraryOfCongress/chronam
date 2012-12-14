@@ -13,7 +13,7 @@ understand why this software is being made available.
 NDNP is actually a partnership between the Library of Congress, the 
 [National Endowment for the Humanities (NEH)](http://www.neh.gov), and 
 cultural heritage organizations
-([awardees](http://chroniclingamerica.loc.gov/awardees/) across the 
+([awardees](http://chroniclingamerica.loc.gov/awardees/)) across the 
 United States who have applied for grants to help digitize newspapers 
 in their state. Awardees digitize newspaper microfilm according 
 to a set of [specifications](http://www.loc.gov/ndnp/guidelines/)
