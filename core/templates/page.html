@@ -28,7 +28,7 @@
     width: 100%;
 }
 #dummy { /* for specifying aspect ratio of viewer_container */
-    padding-top: 135%;
+    padding-top:{% widthratio page.jp2_length page.jp2_width 100 %}%;
 }
 #viewer_container {
     position: absolute;
