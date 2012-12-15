@@ -5,9 +5,11 @@
  
 {% block content %}
 <div class="row">
-  <div class="span3"></div>
+  <div class="span3">
+    <h2><a href='{% url chronam_search_pages_results %}?dateFilterType=range&date1={{date|date:"m/d/Y" }}&date2={{date|date:"m/d/Y"}}/'>100 Years Ago Today</a></h2>
+    <p>{{ date|date:"F j, Y" }} ({{pages|length}})</p>
+  </div>
   <div id="myCarousel" class="carousel slide span6">
-    <h2><a href='{% url chronam_search_pages_results %}?dateFilterType=range&date1={{date|date:"m/d/Y" }}&date2={{date|date:"m/d/Y"}}/'>100 Years Ago Today <small>{{ date|date:"F j, Y" }} ({{pages|length}})</small></a></h2>
     <div class="carousel-inner">{% for page in pages %}
       <div class="item{% if forloop.first %} active{% endif %}">
           <a class="thumbnail" href="{{page.url}}">

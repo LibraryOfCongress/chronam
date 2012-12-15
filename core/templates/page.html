@@ -79,13 +79,10 @@
 }
     </style>
 
-{% endblock head_content %}      
+{% endblock head_content %}
 
 
-{% block page_head %}<h1>{{ page_head_heading }}</h1>{% endblock %}
-
-
-{% block subcontent %}  
+{% block content %}
     <div>
       <div class="row">
 	<div id="item-ctrl" class="toolbar span3"></div>
@@ -147,7 +144,8 @@
       {% endif %}
     </div>
       
-{% endblock %}
+{% endblock content %}
+
 
 {% block javascript %}
 {{ block.super }}
