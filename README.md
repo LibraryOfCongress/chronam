@@ -24,10 +24,10 @@ Awardee institutions are able to use this data however
 they want, including creating their own websites that highlight their 
 newspaper content in the local context of their own collections. The idea of
 making chronam available here on Github is to provide a technical option to 
-these awardees who want to make their own websites of NDNP newspaper content
-available. chronam provides a core set of functionality for loading, modeling
-and indexing NDNP data, while allowing you to customize the look and feel
-of the website to suit the needs of your organization. 
+these awardees, or other interested parties who want to make their own websites 
+of NDNP newspaper content available. chronam provides a core set of functionality 
+for loading, modeling and indexing NDNP data, while allowing you to customize 
+the look and feel of the website to suit the needs of your organization. 
 
 The NDNP data is in the Public Domain and is itself [available]
 (http://chroniclingamerica.loc.gov/data/batches/) on the Web for anyone to use.
