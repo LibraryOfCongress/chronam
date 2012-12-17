@@ -46,36 +46,29 @@
 {
     border: 1px solid red;
     opacity: 0.4;      
-           -moz-opacity: 0.4;
-           -webkit-opacity: 0.4;
-           background: red;
-       }
-.pagetools > li
-{
-       margin-top: 3px;
-       line-height: 33px;
+    -moz-opacity: 0.4;
+    -webkit-opacity: 0.4;
+    background: red;
 }
 .pagetools a.disabled,
 .pagetools a.disabled:hover {
-  color: #999999;
+    color: #999999;
 }
 
 .toolbar
 {
+    float: left;
     height:     33px;
     border:     none;
     color:      #333;
     padding:    0px;
     background-color: transparent;
-}
-.toolbar.fullpage{
-    width:      100%;
-    border:     none;
-    position:   fixed;
     z-index:    999999;
-    left:       0;
-    top:        0;
-    background-color: transparent;
+}
+
+.toolbar.fullpage
+{
+    height: 0px;
 }
     </style>
 
@@ -85,7 +78,6 @@
 {% block content %}
     <div>
       <div class="row">
-	<div id="item-ctrl" class="toolbar span3"></div>
 	<div class="span9">
 	  <ul class="pagetools inline">
 	    <li>
@@ -141,7 +133,9 @@
       
       <div id="viewer_container_container">
 	<div id="dummy"></div>
-	<div id="viewer_container" class="openseadragon span12"></div>
+	<div id="viewer_container" class="openseadragon span12">
+	  <div id="item-ctrl" class="toolbar span3"></div>
+	</div>
       </div>
 
 
@@ -159,16 +153,17 @@
 {{ block.super }}
     <script src="{% static 'js/openseadragon.js' %}"></script>
     <script src="{% static 'js/jquery.ba-bbq.min.js' %}"></script> 
-    <script src="{% static 'js/page.js' %}"></script>
 
     <div id="page_data"
 	 data-static_url="{% static '' %}",
 	 data-width="{{page.jp2_width}}"
 	 data-height="{{page.jp2_length}}"
-	 data-page_url="/tiles/{{issue.batch.name}}/data/{{page.jp2_filename}}/"
+	 data-page_url="/images/tiles/{{issue.batch.name}}/data/{{page.jp2_filename}}/"
 	 data-coordinates_url="{% url chronam_page_coordinates page.issue.title.lccn,page.issue.date_issued,page.issue.edition,page.sequence %}"
 	 data-navigation_url="{% url chronam_search_pages_navigation %}?"
 	 ></div>
+
+    <script src="{% static 'js/page.js' %}"></script>
 
     <noscript><!-- without javascript the pageviewer does not work; display OCR in this case instead. -->
         <h3>Newspaper Page Text</h3>
