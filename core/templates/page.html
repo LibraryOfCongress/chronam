@@ -90,40 +90,48 @@
 	  <ul class="pagetools inline">
 	    <li>
 	      <a rel="previous"{% if page.previous %} href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.previous.sequence %}"{% else %} class="disabled"{% endif %}>
-		<i class="icon-chevron-left"></i> prev
+                  <i class="icon-chevron-left"></i>
+                  <span class="visible-desktop">prev</span>
 	      </a> 
-	      Page
+              Page
 	      <a rel="next"{% if page.next %} href="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.next.sequence %}"{% else %} class="disabled"{% endif %}>
-		next <i class="icon-chevron-right"></i>
+                  <span class="visible-desktop">next</span>
+                  <i class="icon-chevron-right"></i>
 	      </a>
 	    </li>
 	    <li>
 	      <a rel="previous"{% if previous_issue_first_page %} href="{% url chronam_page title.lccn,previous_issue_first_page.issue.date_issued,previous_issue_first_page.issue.edition,previous_issue_first_page.sequence %}"{% else %} class="disabled"{% endif %}>
-		<i class="icon-chevron-left"></i> prev
+                  <i class="icon-chevron-left"></i>
+                  <span class="visible-desktop">prev</span>
 	      </a>
 	      Issue
 	      <a rel="next"{% if next_issue_first_page %} href="{% url chronam_page title.lccn,next_issue_first_page.issue.date_issued,next_issue_first_page.issue.edition,next_issue_first_page.sequence %}"{% else %} class="disabled"{% endif %}>
-		next <i class="icon-chevron-right"></i>
+                <span class="visible-desktop">next</span>
+                <i class="icon-chevron-right"></i>
 	      </a>
 	    </li>
 	    <li>
 	      <a href="{% url chronam_page_ocr title.lccn,issue.date_issued,issue.edition,page.sequence %}">
-		Text <i class="icon-font"></i>
+                  <span class="visible-desktop">Text</span>
+                  <i class="icon-font"></i>
 	      </a>
 	    </li>
 	    <li>
 	      <a href="{% url chronam_page_pdf title.lccn, issue.date_issued, issue.edition, page.sequence %}">
-		PDF <i class="icon-file"></i>
+                  <span class="visible-desktop">PDF</span>
+                  <i class="icon-file"></i>
 	      </a>
 	    </li>
 	    <li>
 	      <a href="{% url chronam_page_jp2 title.lccn, issue.date_issued, issue.edition, page.sequence %}">
-		JP2 ({{image_size}}) <i class="icon-picture"></i>
+                  <span class="visible-desktop">JP2 ({{image_size}})</span>
+                  <i class="icon-picture"></i>
 	      </a>
 	    </li>
 	    <li>
 	      <a id="clip" href="#" target="print">
-		Clip Image <i class="icon-camera"></i>
+                  <span class="visible-desktop">Clip Image</span>
+                  <i class="icon-camera"></i>
 	      </a>
 	    </li>
           </ul>
