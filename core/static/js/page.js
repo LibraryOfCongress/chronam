@@ -1,4 +1,12 @@
 (function($) {
+
+    var page_url;
+    var coordinates_url;
+    var navigation_url;
+    var width;
+    var height;
+    var static_url;
+
     function fullscreen(viewer) {
         if (viewer.isFullPage()) { 
             $.bbq.pushState({"fullscreen": true});
@@ -35,7 +43,7 @@
         var box = getDisplayRegion(viewer, new OpenSeadragon.Point(parseInt(image.dimensions.x*level), parseInt(image.dimensions.y*level)));
         var scaledBox = new OpenSeadragon.Rect(parseInt(box.x/level), parseInt(box.y/level), parseInt(box.width/level), parseInt(box.height/level));
         var d = fitWithinBoundingBox(box, new OpenSeadragon.Point(681, 817));
-        var dimension = $('#page_data').data("page_url")+'print/image_'+d.x+'x'+d.y+'_from_'+ scaledBox.x+','+scaledBox.y+'_to_'+scaledBox.getBottomRight().x+','+scaledBox.getBottomRight().y;
+        var dimension = page_url+'print/image_'+d.x+'x'+d.y+'_from_'+ scaledBox.x+','+scaledBox.y+'_to_'+scaledBox.getBottomRight().x+','+scaledBox.getBottomRight().y;
         $("#clip").attr('href', dimension);
         $(".locshare-print-button").find('a:first').attr('href', dimension).click(function(event) {
             window.open($(this).attr('href'), "print");
@@ -95,7 +103,7 @@
         var params = $.deparam.fragment();
         var words = params["words"] || "";
         var dimensions = viewer.source.dimensions;
-        $.getJSON($('#page_data').data('coordinates_url'), function(all_coordinates) {
+        $.getJSON(coordinates_url, function(all_coordinates) {
             var scale = 1 / all_coordinates["width"];
             
             $.each(words.split(" "), function(index, word) {
@@ -147,7 +155,7 @@
         var x2 = parseInt((px + sx) / scale);
         var y2 = parseInt((py + sy) / scale);
 
-        return $('#page_data').data("page_url") + 'image_'+tile_width+'x'+tile_height+'_from_'+x1+','+y1+'_to_'+x2+','+y2+'.jpg';
+        return page_url + 'image_'+tile_width+'x'+tile_height+'_from_'+x1+','+y1+'_to_'+x2+','+y2+'.jpg';
     }
 
     function updateSearchNav(data) {
@@ -186,7 +194,7 @@
         if (!search_qs || !search_qs.match(/searchType/)) return;
 
         $.ajax({
-            url: $('#page_data').data("navigation_url") + search_qs,
+            url: navigation_url + search_qs,
             dataType: "json",
             cache: true,
             success: updateSearchNav
@@ -194,11 +202,16 @@
     }
 
     function initPage() {
+	page_url = $('#page_data').data("page_url")
+	coordinates_url = $('#page_data').data("coordinates_url")
+	navigation_url = $('#page_data').data("navigation_url")
+	width = $('#page_data').data("width")
+	height = $('#page_data').data("height")
+	static_url = $('#page_data').data("static_url")
+
         var viewer = null;
         addSearchNav();
 
-	var width = $('#page_data').data("width")
-	var height = $('#page_data').data("height")
         var tileSize = 256;
         var tileOverlap = 1;
         var minLevel = 10;
@@ -210,7 +223,7 @@
         var viewer = new OpenSeadragon.Viewer({
             id: "viewer_container",
             toolbar: "item-ctrl",
-            prefixUrl: $('#page_data').data("static_url"),
+            prefixUrl: static_url,
             autoHideControls: false,
             nextButton: "next",
             previousButton: "previous",
