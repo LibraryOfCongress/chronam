@@ -1,4 +1,6 @@
-import datetime, re, json
+import datetime
+import re
+import json
 from rfc3339 import rfc3339
 
 from django.db.models import Q
@@ -14,6 +16,7 @@ from chronam.core import index, models
 from chronam.core import forms
 from chronam.core.decorator import opensearch_clean, cache_page, cors
 from chronam.core.utils.utils import _page_range_short
+
 
 def search_pages_paginator(request):
     # front page only
@@ -45,10 +48,11 @@ def search_pages_results(request, view_type='gallery'):
     except InvalidPage:
         url = urlresolvers.reverse('chronam_search_pages_results')
         # Set the page to the first page
-        q['page'] = 1 
+        q['page'] = 1
         return HttpResponseRedirect('%s?%s' % (url, q.urlencode()))
     start = page.start_index()
     end = page.end_index()
+
     # figure out the next page number
     query = request.GET.copy()
     if page.has_next():
@@ -58,7 +62,9 @@ def search_pages_results(request, view_type='gallery'):
     if page.has_previous():
         query['page'] = paginator._cur_page - 1
         previous_url = '?' + query.urlencode()
-       
+
+    rows = q["rows"] if "rows" in q else 20
+
     host = request.get_host()
     format = request.GET.get('format', None)
     if format == 'atom':
@@ -70,7 +76,7 @@ def search_pages_results(request, view_type='gallery'):
                                   mimetype='application/atom+xml')
     elif format == 'json':
         results = {
-            'startIndex': start ,
+            'startIndex': start,
             'endIndex': end,
             'totalItems': paginator.count,
             'itemsPerPage': rows,
@@ -80,18 +86,21 @@ def search_pages_results(request, view_type='gallery'):
             i['url'] = 'http://' + request.get_host() + i['id'].rstrip('/') + '.json'
         json_text = json.dumps(results, indent=2)
         # jsonp?
-        if request.GET.get('callback') != None:
+        if request.GET.get('callback') is not None:
             json_text = "%s(%s);" % (request.GET.get('callback'), json_text)
         return HttpResponse(json_text, mimetype='application/json')
     page_range_short = list(_page_range_short(paginator, page))
     # copy the current request query without the page and sort
     # query params so we can construct links with it in the template
     q = request.GET.copy()
+    for i in ('page', 'sort'):
+        if i in q:
+            q.pop(i)
     q = q.urlencode()
-    
+
     # get an pseudo english version of the query
     english_search = paginator.englishify()
-   
+
     # get some stuff from the query string for use in the form
     lccns = query.getlist('lccn')
     states = query.getlist('state')
@@ -100,13 +109,14 @@ def search_pages_results(request, view_type='gallery'):
     sort = query.get('sort', 'relevance')
     if view_type == "list":
         template = "search_pages_results_list.html"
-    else:        
+    else:
         template = "search_pages_results.html"
     page_list = []
     for count in range(len(page.object_list)):
-        page_list.append((count+start, page.object_list[count]))
+        page_list.append((count + start, page.object_list[count]))
     return render_to_response(template, dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def search_titles(request):
@@ -126,16 +136,19 @@ def search_titles(request):
 def search_titles_opensearch(request):
     host = request.get_host()
     return render_to_response('search_titles_opensearch.xml',
-            mimetype='application/opensearchdescription+xml',
-            dictionary=locals(), context_instance=RequestContext(request))
+                              mimetype='application/opensearchdescription+xml',
+                              dictionary=locals(),
+                              context_instance=RequestContext(request))
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def search_pages_opensearch(request):
     host = request.get_host()
     return render_to_response('search_pages_opensearch.xml',
-            mimetype='application/opensearchdescription+xml',
-            dictionary=locals(), context_instance=RequestContext(request))
+                              mimetype='application/opensearchdescription+xml',
+                              dictionary=locals(),
+                              context_instance=RequestContext(request))
+
 
 @cors
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -165,7 +178,7 @@ def suggest_titles(request):
     suggestions = [q, titles, descriptions, urls]
     json_text = json.dumps(suggestions, indent=2)
     # jsonp?
-    if request.GET.get("callback") != None:
+    if request.GET.get("callback") is not None:
         json_text = "%s(%s);" % (json.GET.get("callback"), json_text)
     return HttpResponse(json_text, mimetype='application/x-suggestions+json')
 
