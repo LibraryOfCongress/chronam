@@ -82,7 +82,7 @@ class SearchWorldCatTitles:
         year_and_action[str(end)] = '>='
         return year_and_action
 
-    def add_to_query(self, query, oclc_field, value, relationship):
+    def add_to_query(self, oclc_field, value, relationship, query=None):
         '''
         Add to the query more values.
         For example, this:
@@ -90,9 +90,9 @@ class SearchWorldCatTitles:
         Will add this to the query you pass:
         'and srw.cp exact "united states"'
         '''
-
-        field_query = ' and %s %s "%s"' % (oclc_field, relationship, value)
-        new_query = query + field_query
+        new_query = '%s %s "%s"' % (oclc_field, relationship, value)
+        if query:
+            new_query = '%s and %s' % (query, new_query)
         return new_query
 
     def generate_srurequest(self, query):
@@ -108,7 +108,7 @@ class SearchWorldCatTitles:
 
         return bib_rec
 
-    def generate_requests(self, query=raw_query, countries=COUNTRIES,
+    def generate_requests(self, lccn=None, oclc=None, raw_query=raw_query, countries=COUNTRIES,
                           totals_only=False):
         '''
         TODO: add a description
@@ -116,77 +116,79 @@ class SearchWorldCatTitles:
 
         # create an empty list of bib_recs_to_execute.
         bibs_to_req = []
-        grand_total = 0
 
-        for country in countries:
-            total = 0
-            cntry_query = self.add_to_query(query, 'srw.cp', country, 'exact')
-
-            # Add this point we have something like this for the cntry_query
-            # srw.pc any "y" and srw.mt any "newspaper" and srw.cp exact "united states"
-
-            cntry_req = self.generate_srurequest(cntry_query)
-            cntry_count = self.initial_total_count(cntry_req)
-            request_able = self.check_for_doable_request(cntry_count)
-
-            logging.info("%s request totals: %s" % (country.title(),
-                                                    cntry_count))
-
-            if request_able:
-                # If we can pull the whole country at once, we will
-                # otherwise we break it up into multiple requests.
-                bibs_to_req.append((cntry_req,
-                                    request_able,
-                                    country.strip('*'),
-                                    'all-yrs',
-                                    '='))
-            else:
-                # generate split requests by year
-                # so the responses are small enough for the OCLC API to handle
-                year_list = self.generate_year_list()
+        if lccn:
+            lccn_query = self.add_to_query('srw.dn', lccn, 'exact')
+            query = self.add_to_query('srw.no', oclc, 'exact')
+            request = self.generate_srurequest(query)
+            lccn_count = self.initial_total_count(request) 
+            bibs_to_req.append((request, lccn_count[0], (lccn,))) 
+        else:
+            grand_total = 0
+            for country in countries:
                 total = 0
-                for year in year_list:
+                query = self.add_to_query('srw.cp', country, 'exact', raw_query)
+                # Add this point we have something like this for the cntry_query
+                # srw.pc any "y" and srw.mt any "newspaper" and srw.cp exact "united states"
+                cntry_req = self.generate_srurequest(query)
+                cntry_count = self.initial_total_count(cntry_req)
+                request_able = self.check_for_doable_bulk_request(cntry_count)
 
-                    operator = year_list[year]
+                logging.info("%s request totals: %s" % (country.title(),
+                                                        cntry_count))
 
-                    year_query = self.add_to_query(cntry_query, 'srw.yr',
-                                                   year, operator)
-                    #self.generate_year_query(year, cntry_query, operator)
-                    yr_request = self.generate_srurequest(year_query)
+                if request_able:
+                    # If we can pull the whole country at once, we will
+                    # otherwise we break it up into multiple requests.
+                    bibs_to_req.append((cntry_req, request_able,(
+                                        country.strip('*'), 'all-yrs', '='
+                                        )))
+                    total += request_able
+                else:
+                    # generate split requests by year
+                    # so the responses are small enough for the OCLC API to handle
+                    year_list = self.generate_year_list()
+                    base_query = query
+                    for year in year_list:
 
-                    yr_count = self.initial_total_count(yr_request)
-                    yr_request_able = self.check_for_doable_request(yr_count)
+                        operator = year_list[year]
+                        query = self.add_to_query('srw.yr', year, operator, base_query)
+                        yr_request = self.generate_srurequest(query)
+                        yr_count = self.initial_total_count(yr_request)
+                        yr_request_able = self.check_for_doable_bulk_request(yr_count)
 
-                    logging.info("%s, %s %s total: %s" % (country.title(),
-                                                          operator, year,
-                                                          yr_request_able))
-                    if yr_request_able:
-                        bibs_to_req.append((yr_request, yr_request_able,
-                                            country.strip('*'),
-                                            year, operator))
-                    else:
-                        logging.warning("The request is too large. Break down \
-                                        further.")
-                        return
+                        logging.info("%s, %s %s total: %s" % (country.title(),
+                                                              operator, year,
+                                                              yr_request_able))
+                         
+                        if yr_request_able:
+                            bibs_to_req.append((yr_request, yr_request_able, (
+                                                country.strip('*'), year, operator
+                                                )))
+                        else:
+                            logging.warning("There is a problem with request. Exiting.")
+                            return
 
-                    total += yr_request_able
-            grand_total += total
-
-        logging.info('GRAND TOTAL: %s' % (grand_total))
+                        total += yr_request_able
+                grand_total += total
+            logging.info('GRAND TOTAL: %s' % (grand_total))
 
         return bibs_to_req
 
-    def grab_content(self, data_save_path, bib_requests,
-                     search_name='ndnp'):
+    def grab_content(self, save_path, bib_requests, search_name='ndnp'):
         '''
         TODO: Write a new description. :-(
 
         '''
+        # Create directory if it doesn't exist
+        if not os.path.exists(save_path):
+            os.makedirs(save_path)
+
         # Run each request and save content.
         for bib_rec in bib_requests:
             grab_records = True
             counter = 0
-            bib_request, total, cntry, divider, operator = bib_rec
+            bib_request, total, components = bib_rec
             previous_next = None
 
             while grab_records:
@@ -221,24 +223,23 @@ class SearchWorldCatTitles:
 
                 # print cntry, total, start, end, next, divider, operator
                 if start is None:
-                    # Stop grabbing records
                     grab_records = False
 
-                if counter == 1:
-                    logging.info('Batch: %s %s for %s = %s total' %
-                                 (operator, divider, cntry, total))
+                name_components = []
+                for i in components:
+                    if ' ' in i:
+                        i = i.replace(' ','-')
+                    if i in OPERATOR_MAP:
+                        i = OPERATOR_MAP[i]
+                    name_components.append(i)
 
-                # Create directory if it doesn't exist
-                if not os.path.exists(data_save_path):
-                    os.makedirs(data_save_path)
+                batch_name = '_'.join(name_components)
+                filename = '_'.join((search_name, batch_name, str(start), str(end))) + '.xml'
+                
+                if counter == 1 and len(bib_requests) > 1:
+                    logging.info('Batch: %s = %s total' % (filename, total))
 
-                filename = '%s_%s_%s_%s_%s_to_%s.xml' % (search_name,
-                                                         cntry.replace(' ', '-'),
-                                                         divider,
-                                                         OPERATOR_MAP[operator],
-                                                         str(start), str(end))
-
-                file_location = data_save_path + filename
+                file_location = save_path + filename
 
                 save_file = open(file_location, "w")
                 decoded_data = bib_resp.data.decode("utf-8")
@@ -272,21 +273,21 @@ class SearchWorldCatTitles:
             # Kill function & split request. Chk split requests.
         return totals
 
-    def check_for_doable_request(self, test_totals):
-
+    def check_for_doable_bulk_request(self, test_totals):
         # If all 3 pulls are the same
         if all(map(lambda x: x == test_totals[0], test_totals)):
             # if all are the same, check that the request is managable.
+            # requests over 10000 records will cause failure on the OCLC side
             if int(test_totals[0]) < 10000:
                 return int(test_totals[0])
             else:
                 return None
         else:
-            # If this test_totals do not match, the query broke API
-            # Split needs to occur
+            # if this test_totals do not match, the query broke API
+            # split needs to occur
             return None
 
-    def run(self, data_save_path, query=None):
+    def run(self, save_path, lccn=None, oclc=None, query=None):
         '''
         Function that runs a search against the WorldCat Search API
 
@@ -304,7 +305,7 @@ class SearchWorldCatTitles:
             try:
                 # make sure the query passed is a string
                 assert isinstance(query, types.StringType)
-                self.grab_content(query, data_save_path)
+                self.grab_content(query, save_path)
             except AssertionError:
                 query_type = type(query)
                 # TODO: Turn into warning log error
@@ -312,20 +313,8 @@ class SearchWorldCatTitles:
                         default handling. You provided a %s." % (query_type)
         else:
             # Default runs query at the top of the file.
+            # If lccn, then it pulls only that lccn, otherwise it will do 
+            # a bulk download of titles.
+            bib_requests = self.generate_requests(lccn, oclc)
+            self.grab_content(save_path, bib_requests)
 
-            bib_requests = self.generate_requests()
-            self.grab_content(data_save_path, bib_requests)
-
-
-def main(data_save_path='data/'):
-    logging.basicConfig(filename='worldcat_search.log', level=logging.INFO)
-    logging.info('Starting World Cat title search.')
-
-    search = SearchWorldCatTitles()
-
-    search.run(data_save_path)
-    logging.info('Finished World Cat title search.')
-
-
-if __name__ == '__main__':
-    main()

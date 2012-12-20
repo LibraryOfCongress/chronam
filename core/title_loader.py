@@ -494,17 +494,19 @@ class TitleLoaderException(RuntimeError):
     pass
 
 
-def load(location):
+def load(location, bulk_load=True):
     loader = TitleLoader()
+
     _logger.info("loading titles from: %s" % location)
 
     loader.load_file(location)
-
-    _logger.info("records processed: %i" % loader.records_processed)
-    _logger.info("records created: %i" % loader.records_created)
-    _logger.info("records updated: %i" % loader.records_updated)
-    _logger.info("errors: %i" % loader.errors)
-    _logger.info("missing lccns: %i" % loader.missing_lccns)
+    
+    if not bulk_load:
+        _logger.info("records processed: %i" % loader.records_processed)
+        _logger.info("records created: %i" % loader.records_created)
+        _logger.info("records updated: %i" % loader.records_updated)
+        _logger.info("errors: %i" % loader.errors)
+        _logger.info("missing lccns: %i" % loader.missing_lccns)
 
     return (loader.records_processed,
             loader.records_created,
