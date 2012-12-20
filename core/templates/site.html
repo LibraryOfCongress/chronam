@@ -106,7 +106,7 @@
         </div>
       </div>
     </div>
-    <div class="container">{% if crumbs|length > 1 %}
+    <div class="container">{% if crumbs and crumbs|length > 1 %}
       <ul class="breadcrumb">{% for crumb in crumbs %}
 	<li {% if crumb.active %}class="active"{% endif %}><a href="{{crumb.href}}">{{crumb.label}}</a>{% if forloop.last %}{% else %} <span class="divider">/</span>{% endif %}</li>{% endfor %}
       </ul>{% endif %}{% block content %}{% endblock content %}
