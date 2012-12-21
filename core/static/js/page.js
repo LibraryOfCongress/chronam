@@ -1,6 +1,7 @@
 (function($) {
 
     var page_url;
+    var tile_url;
     var coordinates_url;
     var navigation_url;
     var width;
@@ -155,7 +156,7 @@
         var x2 = parseInt((px + sx) / scale);
         var y2 = parseInt((py + sy) / scale);
 
-        return page_url + 'image_'+tile_width+'x'+tile_height+'_from_'+x1+','+y1+'_to_'+x2+','+y2+'.jpg';
+        return tile_url + 'image_'+tile_width+'x'+tile_height+'_from_'+x1+','+y1+'_to_'+x2+','+y2+'.jpg';
     }
 
     function updateSearchNav(data) {
@@ -203,6 +204,7 @@
 
     function initPage() {
 	page_url = $('#page_data').data("page_url")
+	tile_url = $('#page_data').data("tile_url")
 	coordinates_url = $('#page_data').data("coordinates_url")
 	navigation_url = $('#page_data').data("navigation_url")
 	width = $('#page_data').data("width")
