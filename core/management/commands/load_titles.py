@@ -2,6 +2,7 @@ import logging
 
 from datetime import datetime
 import os
+from optparse import make_option
 
 from django.core.management.base import BaseCommand
 
@@ -17,6 +18,17 @@ _logger = logging.getLogger(__name__)
 class Command(BaseCommand):
     help = "Load a marcxml file of title records"
     args = '<location of marcxml>'
+    option_list = BaseCommand.option_list + (
+        make_option('--skip-index',
+        action='store_true',
+        dest='skip_index',
+        default=False,
+        help="\
+                Skip the index process. Use this if you call this from \
+                another process such as 'chronam_sync'. If you call this \
+                directly, you don't want to use this flag. \
+            "),
+    )
 
     def __init__(self):
         super(BaseCommand, self).__init__()
@@ -29,16 +41,17 @@ class Command(BaseCommand):
         self.start_time = datetime.now()
         self.xml_start = datetime.now()
 
-    def xml_file_handler(self, marc_xml):
+    def xml_file_handler(self, marc_xml, skip_index):
         self.xml_start = datetime.now()
         _logger.info("loading marcxml title records from %s" % marc_xml)
         results = title_loader.load(marc_xml)
 
-        # need to index any titles that we just created
-        _logger.info("indexing new titles")
-        index_titles(since=self.xml_start)
+        if not skip_index:
+            # need to index any titles that we just created
+            _logger.info("indexing new titles")
+            index_titles(since=self.xml_start)
+        
         _logger.info("finished loading marcxml titles from %s" % marc_xml)
-
         return results
 
     def add_results(self, results):
@@ -75,6 +88,7 @@ class Command(BaseCommand):
         _logger.info("TOTAL TIME: %s" % str(total_time))
 
     def handle(self, marc_xml_source, *args, **options):
+        skip_index = options['skip_index']
 
         # check if arg passed is a file or a directory of files
         if os.path.isdir(marc_xml_source):
@@ -83,11 +97,11 @@ class Command(BaseCommand):
             for xml_file in marc_xml_dir:
                 results = None
                 xml_file_path = os.path.join(marc_xml_source, xml_file)
-                results = self.xml_file_handler(xml_file_path)
+                results = self.xml_file_handler(xml_file_path, skip_index)
                 total_results = self.add_results(results)
                 self.files_processed += 1
 
             self.log_stats()
 
         else:
-            results = self.xml_file_handler(marc_xml_source)
+            results = self.xml_file_handler(marc_xml_source, skip_index)
