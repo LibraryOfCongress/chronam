@@ -60,11 +60,11 @@ class Command(BaseCommand):
             for filename in os.listdir(settings.BIB_STORAGE): 
                 if filename.startswith('titles-') and filename.endswith('.xml'):
                     filepath = os.path.join(settings.BIB_STORAGE, filename)
-                    title_loader.load(filepath)
+                    title_loader.load(filepath, skip_index=True)
 
             _logger.info('Starting OCLC title update.')
             worldcat_path = settings.BIB_STORAGE + '/worldcat_titles/'
-            management.call_command('load_titles', worldcat_path)
+            management.call_command('load_titles', worldcat_path, skip_index=True)
 
             # look in BIB_STORAGE for holdings files to load 
             # NOTE: must run after titles are all loaded or else they may 
