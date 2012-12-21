@@ -57,7 +57,7 @@ class Command(BaseCommand):
 
             _logger.info("Starting load of OCLC titles.")
             worldcat_path = bib_storage + '/worldcat_titles/'
-            call_command('load_titles', worldcat_path + 'bulk')
+            call_command('load_titles', worldcat_path + 'bulk', skip_index=True)
 
             _logger.info("Looking for titles not updated in the bulk OCLC pull.")
             titles_not_updated = self.find_titles_not_updated()
@@ -68,7 +68,7 @@ class Command(BaseCommand):
             self.pull_lccn_updates(titles_not_updated)
 
             _logger.info("Loading titles from second title pull.")
-            call_command('load_titles', worldcat_path + 'lccn')
+            call_command('load_titles', worldcat_path + 'lccn', skip_index=True)
 
             _logger.info("Looking for titles that were not found in OCLC updates.")
             tnu = self.find_titles_not_updated(limited=False)
