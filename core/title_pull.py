@@ -116,7 +116,6 @@ class SearchWorldCatTitles:
 
         # create an empty list of bib_recs_to_execute.
         bibs_to_req = []
-
         if lccn:
             lccn_query = self.add_to_query('srw.dn', lccn, 'exact')
             query = self.add_to_query('srw.no', oclc, 'exact')
@@ -157,9 +156,8 @@ class SearchWorldCatTitles:
                         yr_count = self.initial_total_count(yr_request)
                         yr_request_able = self.check_for_doable_bulk_request(yr_count)
 
-                        logging.info("%s, %s %s total: %s" % (country.title(),
-                                                              operator, year,
-                                                              yr_request_able))
+                        logging.info("%s - %s %s total: %s" % (
+                            country.title(), year, operator, yr_request_able))
                          
                         if yr_request_able:
                             bibs_to_req.append((yr_request, yr_request_able, (
@@ -221,7 +219,6 @@ class SearchWorldCatTitles:
                     else:
                         start = previous_next
 
-                # print cntry, total, start, end, next, divider, operator
                 if start is None:
                     grab_records = False
 

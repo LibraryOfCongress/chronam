@@ -57,13 +57,13 @@ class Command(BaseCommand):
 
             _logger.info("Starting load of OCLC titles.")
             worldcat_path = bib_storage + '/worldcat_titles/'
-            call_command('load_titles', worldcat_path + 'bulk', skip_index=True)
+            ###call_command('load_titles', worldcat_path + 'bulk', skip_index=True)
 
             _logger.info("Looking for titles not updated in the bulk OCLC pull.")
             titles_not_updated = self.find_titles_not_updated()
             tnu_count = len(titles_not_updated)
             _logger.info("After bulk OCLC pull: %s not updated." % tnu_count)
-
+            
             _logger.info("Pulling titles from OCLC by individual lccn & oclc num.")
             self.pull_lccn_updates(titles_not_updated)
 
