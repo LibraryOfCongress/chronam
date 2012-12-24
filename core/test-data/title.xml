@@ -1,0 +1,173 @@
+<recordSchema>info:srw/schema/1/marcxml</recordSchema>
+<recordPacking>xml</recordPacking>
+<recordData>
+<record xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>00000cas a22000007a 4500</leader>
+    <controlfield tag="001">9688987</controlfield>
+    <controlfield tag="008">830711d18731887nyuwr ne      0    0
+    <datafield ind1=" " ind2=" " tag="010">
+      <subfield code="a">sn 83030846 </subfield>
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="040">
+      <subfield code="a">NPU</subfield>
+      <subfield code="c">NPU</subfield>
+      <subfield code="d">NPX</subfield>
+      <subfield code="d">NYS</subfield>
+      <subfield code="d">RHN</subfield>
+      <subfield code="d">NYS</subfield>
+      <subfield code="d">CNW</subfield>
+      <subfield code="d">OCLCQ</subfield>
+      <subfield code="d">OCLCG</subfield>
+    </datafield>
+    <datafield ind1="1" ind2=" " tag="029">
+      <subfield code="a">AU@</subfield>
+      <subfield code="b">000025828646</subfield>
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="042">
+      <subfield code="a">msc</subfield>
+    </datafield>
+    <datafield ind1="0" ind2=" " tag="130">
+      <subfield code="a">Living issue (Albany, N.Y.)</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="4" tag="245">
+      <subfield code="a">The living issue.</subfield>
+    </datafield>
+    <datafield ind1="3" ind2="0" tag="246">
+      <subfield code="a">Living issue. Prohibition</subfield>
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="260">
+      <subfield code="a">Albany, N.Y. :</subfield>
+      <subfield code="b">The Living Issue Co.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="300">
+      <subfield code="a">v. :</subfield>
+      <subfield code="b">ill. ;</subfield>
+      <subfield code="c">70 cm.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="310">
+      <subfield code="a">Weekly</subfield>
+    </datafield>
+    <datafield ind1="1" ind2=" " tag="362">
+      <subfield code="a">Began in 1873.</subfield>
+    </datafield>
+    <datafield ind1="1" ind2=" " tag="362">
+      <subfield code="a">Ceased in Mar. 1887.</subfield>
+      <subfield code="z">Cf. Gregory, W. Amer. newspapers.</sub
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="500">
+      <subfield code="a">Published as: Living issue. Prohibitio
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="500">
+      <subfield code="a">Published at New York, N.Y., &lt;1874&
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="500">
+      <subfield code="a">Publishers: Living Issue Co., 1873-187
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="500">
+      <subfield code="a">Supported National Prohibition Ticket,
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="500">
+      <subfield code="a">Description based on: Vol. 1, no. 8 (A
+    </datafield>
+    <datafield ind1=" " ind2="0" tag="650">
+      <subfield code="a">Temperance</subfield>
+      <subfield code="z">New York (State)</subfield>
+      <subfield code="z">New York</subfield>
+      <subfield code="v">Newspapers.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2="0" tag="650">
+      <subfield code="a">Temperance</subfield>
+      <subfield code="z">Connecticut</subfield>
+      <subfield code="v">Newspapers.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2="0" tag="651">
+      <subfield code="a">Utica (N.Y.)</subfield>
+      <subfield code="v">Newspapers.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2="0" tag="651">
+      <subfield code="a">Cooperstown (N.Y.)</subfield>
+      <subfield code="v">Newspapers.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2="0" tag="651">
+      <subfield code="a">New York (N.Y.)</subfield>
+      <subfield code="v">Newspapers.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2="0" tag="651">
+      <subfield code="a">Albany (N.Y.)</subfield>
+      <subfield code="v">Newspapers.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2="0" tag="651">
+      <subfield code="a">New Haven (Conn.)</subfield>
+      <subfield code="v">Newspapers.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2="0" tag="651">
+      <subfield code="a">Hartford (Conn.)</subfield>
+      <subfield code="v">Newspapers.</subfield>
+    </datafield>
+    <datafield ind1="1" ind2=" " tag="700">
+      <subfield code="a">Smith, Green Clay,</subfield>
+      <subfield code="d">1826-1895.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="752">
+      <subfield code="a">United States</subfield>
+      <subfield code="b">Nebraska</subfield>
+      <subfield code="c">Lancaster</subfield>
+      <subfield code="d">Lincoln.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="752">
+      <subfield code="a">United States</subfield>
+      <subfield code="b">New York</subfield>
+      <subfield code="c">Oneida</subfield>
+      <subfield code="d">Utica.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="752">
+      <subfield code="a">United States</subfield>
+      <subfield code="b">New York</subfield>
+      <subfield code="c">Otsego</subfield>
+      <subfield code="d">Cooperstown.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="752">
+      <subfield code="a">United States</subfield>
+      <subfield code="b">Maine</subfield>
+      <subfield code="c">Cumberland</subfield>
+      <subfield code="d">Portland.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="752">
+      <subfield code="a">United States</subfield>
+      <subfield code="b">New York</subfield>
+      <subfield code="c">New York</subfield>
+      <subfield code="d">New York.</subfield>
+    </datafield>
+    <datafield ind1=" " ind2=" " tag="752">
+      <subfield code="a">United States</subfield>
+      <subfield code="b">New York</subfield>
+      <subfield code="c">Albany</subfield>
+      <subfield code="d">Albany.</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="5" tag="780">
+      <subfield code="t">Town and country (Providence, R.I.)</s
+      <subfield code="w">(DLC)sn 83021237</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="5" tag="780">
+      <subfield code="t">Commonwealth (New Haven, Conn.)</subfi
+      <subfield code="g">Dec. 1876</subfield>
+      <subfield code="w">(DLC)sn 84020072</subfield>
+      <subfield code="w">(OCoLC)10316704</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="1" tag="785">
+      <subfield code="t">State temperance journal (Middletown, 
+      <subfield code="g">1879</subfield>
+      <subfield code="w">(DLC)sn 92051309</subfield>
+      <subfield code="w">(OCoLC)26109972</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="7" tag="785">
+      <subfield code="t">New republic (Lincoln, Neb. : 1885)</s
+    </datafield>
+    <datafield ind1="0" ind2="7" tag="785">
+      <subfield code="t">Living issue and the new republic</sub
+      <subfield code="w">(DLC)sn 89071335</subfield>
+    </datafield>
+  </record>
+</recordData>
+</record>
+<record>
