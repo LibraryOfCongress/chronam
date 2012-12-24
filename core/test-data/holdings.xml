@@ -4,7 +4,7 @@
     <leader>00172cy  a22000853n 4500</leader>
     <controlfield tag="004">9688987</controlfield>
     <controlfield tag="007">t|</controlfield>
-    <controlfield tag="008">8307115u    8   0001uu   0830700</c
+    <controlfield tag="008">8307115u    8   0001uu   0830700</controlfield>
     <datafield tag="852" ind1=" " ind2=" ">
       <subfield code="a">NPU</subfield>
       <subfield code="b">NPUA</subfield>
@@ -19,7 +19,7 @@
     <leader>00178ny  a22000853n 4500</leader>
     <controlfield tag="004">9688987</controlfield>
     <controlfield tag="007">t|</controlfield>
-    <controlfield tag="008">8605165u    8   0001uu   0860500</c
+    <controlfield tag="008">8605165u    8   0001uu   0860500</controlfield>
     <datafield tag="852" ind1=" " ind2=" ">
       <subfield code="a">NPX</subfield>
       <subfield code="b">NPXX</subfield>
@@ -34,11 +34,11 @@
     <leader>00218ny  a22000853n 4500</leader>
     <controlfield tag="004">9688987</controlfield>
     <controlfield tag="007">t|</controlfield>
-    <controlfield tag="008">8806155u    8   0001uu   0880600</c
+    <controlfield tag="008">8806155u    8   0001uu   0880600</controlfield>
     <datafield tag="852" ind1=" " ind2=" ">
       <subfield code="a">XFL</subfield>
       <subfield code="b">XFLK</subfield>
-      <subfield code="z">Town of Jefferson Historian, Stamford,
+      <subfield code="z">Town of Jefferson Historian, Stamford, N.Y.</subfield>
     </datafield>
     <datafield tag="866" ind1="3" ind2="7">
       <subfield code="8">0</subfield>
@@ -50,7 +50,7 @@
     <leader>00172ny  a22000853n 4500</leader>
     <controlfield tag="004">9688987</controlfield>
     <controlfield tag="007">t|</controlfield>
-    <controlfield tag="008">9205120u    8   0001uu   0920500</c
+    <controlfield tag="008">9205120u    8   0001uu   0920500</controlfield>
     <datafield tag="852" ind1=" " ind2=" ">
       <subfield code="a">SYB</subfield>
       <subfield code="b">SYBB</subfield>
@@ -65,7 +65,7 @@
     <leader>00172ny  a22000853n 4500</leader>
     <controlfield tag="004">9688987</controlfield>
     <controlfield tag="007">t|</controlfield>
-    <controlfield tag="008">9111260u    8   0001uu   0911100</c
+    <controlfield tag="008">9111260u    8   0001uu   0911100</controlfield>
     <datafield tag="852" ind1=" " ind2=" ">
       <subfield code="a">YTJ</subfield>
       <subfield code="b">YTJU</subfield>
@@ -80,7 +80,7 @@
     <leader>00185ny  a22000853n 4500</leader>
     <controlfield tag="004">9688987</controlfield>
     <controlfield tag="007">hd|b|||||||a|</controlfield>
-    <controlfield tag="008">9111260u    8   0001uu   0911100</c
+    <controlfield tag="008">9111260u    8   0001uu   0911100</controlfield>
     <datafield tag="852" ind1=" " ind2=" ">
       <subfield code="a">YTJ</subfield>
       <subfield code="b">YTJU</subfield>
@@ -95,7 +95,7 @@
     <leader>00201cy  a22000853n 4500</leader>
     <controlfield tag="004">9688987</controlfield>
     <controlfield tag="007">t|</controlfield>
-    <controlfield tag="008">9112160u    8   0001uu   0920100</c
+    <controlfield tag="008">9112160u    8   0001uu   0920100</controlfield>
     <datafield tag="852" ind1=" " ind2=" ">
       <subfield code="a">VVC</subfield>
       <subfield code="b">VVCM</subfield>
@@ -103,18 +103,18 @@
     <datafield tag="866" ind1="3" ind2="7">
       <subfield code="8">0</subfield>
       <subfield code="2">usnp</subfield>
-      <subfield code="a">&lt;1876:5:18&gt; &lt;1884:1:10&gt; &l
+      <subfield code="a">&lt;1876:5:18&gt; &lt;1884:1:10&gt; &lt;1885:9:3&gt;</subfield>
     </datafield>
   </record>
   <record>
     <leader>00215ny  a22000853n 4500</leader>
     <controlfield tag="004">9688987</controlfield>
     <controlfield tag="007">t|</controlfield>
-    <controlfield tag="008">9401175u    8   0001uu   0940100</c
+    <controlfield tag="008">9401175u    8   0001uu   0940100</controlfield>
     <datafield tag="852" ind1=" " ind2=" ">
       <subfield code="a">WC7</subfield>
       <subfield code="b">WC7G</subfield>
-      <subfield code="z">WC7GM02 Sandy Creek Town Historian</su
+      <subfield code="z">WC7GM02 Sandy Creek Town Historian</subfield>
     </datafield>
     <datafield tag="866" ind1="3" ind2="7">
       <subfield code="8">0</subfield>
@@ -126,7 +126,7 @@
     <leader>00185cy  a22000853n 4500</leader>
     <controlfield tag="004">9688987</controlfield>
     <controlfield tag="007">hd|u|||||||c|</controlfield>
-    <controlfield tag="008">9107260u    8   0001uu   0910800</c
+    <controlfield tag="008">9107260u    8   0001uu   0910800</controlfield>
     <datafield tag="852" ind1=" " ind2=" ">
       <subfield code="a">YTJ</subfield>
       <subfield code="b">YTJU</subfield>
@@ -141,11 +141,11 @@
     <leader>00226ny  a22000853n 4500</leader>
     <controlfield tag="004">9688987</controlfield>
     <controlfield tag="007">t|</controlfield>
-    <controlfield tag="008">9108060u    8   0001uu   0910800</c
+    <controlfield tag="008">9108060u    8   0001uu   0910800</controlfield>
     <datafield tag="852" ind1=" " ind2=" ">
       <subfield code="a">SR3</subfield>
       <subfield code="b">SR3E</subfield>
-      <subfield code="z">SR3EH5 Museum Village in Orange County
+      <subfield code="z">SR3EH5 Museum Village in Orange County, Monroe, N.Y.</subfield>
     </datafield>
     <datafield tag="866" ind1="3" ind2="7">
       <subfield code="8">0</subfield>
