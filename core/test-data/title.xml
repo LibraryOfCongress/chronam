@@ -1,10 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="/webservices/catalog/xsl/searchRetrieveResponse.xsl"?>
+
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/" xmlns:oclcterms="http://purl.org/oclc/terms/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:diag="http://www.loc.gov/zing/srw/diagnostic/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<version>1.1</version>
+<numberOfRecords>1</numberOfRecords>
+<records>
+<record>
 <recordSchema>info:srw/schema/1/marcxml</recordSchema>
 <recordPacking>xml</recordPacking>
 <recordData>
 <record xmlns="http://www.loc.gov/MARC21/slim">
     <leader>00000cas a22000007a 4500</leader>
     <controlfield tag="001">9688987</controlfield>
-    <controlfield tag="008">830711d18731887nyuwr ne      0    0
+    <controlfield tag="008">830711d18731887nyuwr ne      0    0eng d</controlfield>
     <datafield ind1=" " ind2=" " tag="010">
       <subfield code="a">sn 83030846 </subfield>
     </datafield>
@@ -52,22 +60,22 @@
     </datafield>
     <datafield ind1="1" ind2=" " tag="362">
       <subfield code="a">Ceased in Mar. 1887.</subfield>
-      <subfield code="z">Cf. Gregory, W. Amer. newspapers.</sub
+      <subfield code="z">Cf. Gregory, W. Amer. newspapers.</subfield>
     </datafield>
     <datafield ind1=" " ind2=" " tag="500">
-      <subfield code="a">Published as: Living issue. Prohibitio
+      <subfield code="a">Published as: Living issue. Prohibition, &lt;Dec. 17, 1874&gt;.</subfield>
     </datafield>
     <datafield ind1=" " ind2=" " tag="500">
-      <subfield code="a">Published at New York, N.Y., &lt;1874&
+      <subfield code="a">Published at New York, N.Y., &lt;1874&gt;-1879; at Portland, Me., 1879-&lt;1880&gt;; at Cooperstown, N.Y., &lt;1881-1882&gt;; at Utica, N.Y., &lt;1883&gt;-Jan. 27, 1887; at Lincoln, Neb., &lt;Feb. 1887&gt;-</subfield>
     </datafield>
     <datafield ind1=" " ind2=" " tag="500">
-      <subfield code="a">Publishers: Living Issue Co., 1873-187
+      <subfield code="a">Publishers: Living Issue Co., 1873-1877; National Prohibition Alliance, 1877-1879; Maine Temperance Alliance, &lt;1879&gt;; Sawyer &amp; Scrambling, &lt;1881&gt;; Scrambling &amp; Jones, &lt;1882&gt;; G.D. Scrambling, &lt;1884-1887&gt;.</subfield>
     </datafield>
     <datafield ind1=" " ind2=" " tag="500">
-      <subfield code="a">Supported National Prohibition Ticket,
+      <subfield code="a">Supported National Prohibition Ticket, 1876; Green Clay Smith for president.</subfield>
     </datafield>
     <datafield ind1=" " ind2=" " tag="500">
-      <subfield code="a">Description based on: Vol. 1, no. 8 (A
+      <subfield code="a">Description based on: Vol. 1, no. 8 (Apr. 12, 1873).</subfield>
     </datafield>
     <datafield ind1=" " ind2="0" tag="650">
       <subfield code="a">Temperance</subfield>
@@ -145,27 +153,30 @@
       <subfield code="d">Albany.</subfield>
     </datafield>
     <datafield ind1="0" ind2="5" tag="780">
-      <subfield code="t">Town and country (Providence, R.I.)</s
+      <subfield code="t">Town and country (Providence, R.I.)</subfield>
       <subfield code="w">(DLC)sn 83021237</subfield>
     </datafield>
     <datafield ind1="0" ind2="5" tag="780">
-      <subfield code="t">Commonwealth (New Haven, Conn.)</subfi
+      <subfield code="t">Commonwealth (New Haven, Conn.)</subfield>
       <subfield code="g">Dec. 1876</subfield>
       <subfield code="w">(DLC)sn 84020072</subfield>
       <subfield code="w">(OCoLC)10316704</subfield>
     </datafield>
     <datafield ind1="0" ind2="1" tag="785">
-      <subfield code="t">State temperance journal (Middletown, 
+      <subfield code="t">State temperance journal (Middletown, Conn.)</subfield>
       <subfield code="g">1879</subfield>
       <subfield code="w">(DLC)sn 92051309</subfield>
       <subfield code="w">(OCoLC)26109972</subfield>
     </datafield>
     <datafield ind1="0" ind2="7" tag="785">
-      <subfield code="t">New republic (Lincoln, Neb. : 1885)</s
+      <subfield code="t">New republic (Lincoln, Neb. : 1885)</subfield>
     </datafield>
     <datafield ind1="0" ind2="7" tag="785">
-      <subfield code="t">Living issue and the new republic</sub
+      <subfield code="t">Living issue and the new republic</subfield>
       <subfield code="w">(DLC)sn 89071335</subfield>
     </datafield>
   </record>
 </recordData>
+</record>
+</records>
+</searchRetrieveResponse>
