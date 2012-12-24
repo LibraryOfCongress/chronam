@@ -18,7 +18,8 @@ def home(request, date=None):
     context = RequestContext(request, {})
     context["total_page_count"] = models.Page.objects.all().count()
     context["crumbs"] = list(settings.BASE_CRUMBS)
-    context["date"] = date = datetime.date.today()
+    today = datetime.date.today()
+    context["date"] = date = today.replace(year=today.year-100)
     context["pages"] = pages = _frontpages(request, date)
     template = get_template("home.html")
     # note the date is handled on the client side in javascript

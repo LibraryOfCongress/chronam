@@ -20,14 +20,47 @@
 	    margin-bottom: 0px;
 	}
     }
-    </style>
-    <style>
-      .breadcrumb {
+    .breadcrumb {
         margin: 0 0 5px;
-      }
-      #myCarousel {
+    }
+    #myCarousel {
         margin-top: 10px;
-      }
+    }
+
+    ul.newspaper_pages li.span4 {
+	height: 450px;
+    }
+    @media (min-width: 1200px) {
+	ul.newspaper_pages li.span4 {
+	    height: 575px;
+	}
+    }
+    @media (max-width: 979px) and (min-width: 768px) {
+	ul.newspaper_pages li.span4 {
+	    height: 350px;
+	}
+    }
+    @media (max-width: 767px) {
+	ul.newspaper_pages li.span4 {
+	    height: auto;
+	}
+    }
+
+    .highlight_words div {
+	margin-top: -3px;
+	padding-top: 3px;
+	margin-bottom: 3px;
+	padding-bottom: 3px;
+	margin-left: -1px;
+	padding-left: 1px;
+	margin-right: 1px;
+	padding-right: 1px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
+	background:transparent; /* fallback for browsers not supporting rgba */
+	background: rgba(255, 0, 0, 0.4);
+    }
     </style>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -73,7 +106,7 @@
         </div>
       </div>
     </div>
-    <div class="container">{% if crumbs|length > 1 %}
+    <div class="container">{% if crumbs and crumbs|length > 1 %}
       <ul class="breadcrumb">{% for crumb in crumbs %}
 	<li {% if crumb.active %}class="active"{% endif %}><a href="{{crumb.href}}">{{crumb.label}}</a>{% if forloop.last %}{% else %} <span class="divider">/</span>{% endif %}</li>{% endfor %}
       </ul>{% endif %}{% block content %}{% endblock content %}

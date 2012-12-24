@@ -82,7 +82,7 @@ INSTALLED_APPS = (
 
 BROKER_TRANSPORT = "django"
 
-THUMBNAIL_WIDTH = 200
+THUMBNAIL_WIDTH = 360
 
 DEFAULT_TTL_SECONDS = 86400  # 1 day
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24 * 7 * 2  # 2 weeks
@@ -129,9 +129,4 @@ OCR_DUMPS_STORAGE = os.path.join(STORAGE, "ocr")
 COORD_STORAGE = os.path.join(STORAGE, "word_coordinates")
 
 
-# for loc
-# BASE_CRUMBS = [
-#     {'label': 'The Library of Congress', 'href': 'http://www.loc.gov/'},
-#     {'label':'Chronicling America', 'href': '/'}
-# ]
 BASE_CRUMBS = [{'label':'Home', 'href': '/'}]

@@ -33,14 +33,16 @@
 
   </div>  
 
-  <ul class="thumbnails clearfix">
+  <ul class="thumbnails newspaper_pages clearfix">
     {% for object in page.object_list %}
-    <li class="span3">
-      <div style="height: 310px;">
+    <li class="span4">
 	<a href="{{ object.highlight_url }}" class="thumbnail" title="{% with object.issue.title as title %}{{title.display_name}} ({{title.place_of_publication}}), {{object.issue|label}}, {{object|label}}{% endwith %}">
-	  <img src="{{ object.thumb_url }}" alt="">
+	  <img src="{{ object.thumb_url }}" alt=""
+	       class="highlight_words"
+	       data-script_name="{{script_name}}"
+	       data-id="{{object.url}}"
+	       data-words="{{object.words|join:' '}}">
 	</a>
-      </div>
     </li>
     {% endfor %}
   </ul>
@@ -48,4 +50,10 @@
 </div>
 
 
+{% endblock %}
+
+
+{% block javascript %}
+{{ block.super }}
+    <script src="{% static 'js/highlight.js' %}"></script>
 {% endblock %}

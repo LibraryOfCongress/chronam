@@ -521,6 +521,13 @@ def page_print(request, lccn, date, edition, sequence,
     crumbs = create_crumbs(title, issue, date, edition, page)
     host = request.get_host()
     image_credit = page.issue.batch.awardee.name
+    path_parts = dict(lccn=lccn, date=date, edition=edition,
+                      sequence=sequence,
+                      width=width, height=height,
+                      x1=x1, y1=y1, x2=x2, y2=y2)
+    url = urlresolvers.reverse('chronam_page_print',
+                               kwargs=path_parts)
+
     return render_to_response('page_print.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 

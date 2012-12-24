@@ -158,7 +158,8 @@
 	 data-static_url="{% static '' %}",
 	 data-width="{{page.jp2_width}}"
 	 data-height="{{page.jp2_length}}"
-	 data-page_url="/images/tiles/{{issue.batch.name}}/data/{{page.jp2_filename}}/"
+	 data-page_url="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}"
+	 data-tile_url="/images/tiles/{{issue.batch.name}}/data/{{page.jp2_filename}}/"
 	 data-coordinates_url="{% url chronam_page_coordinates page.issue.title.lccn,page.issue.date_issued,page.issue.edition,page.sequence %}"
 	 data-navigation_url="{% url chronam_search_pages_navigation %}?"
 	 ></div>
