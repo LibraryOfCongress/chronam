@@ -53,11 +53,11 @@ class Command(BaseCommand):
             #TODO: Add check to make sure that pull_titles
             # destination is empty.
             # Maybe an option to empty it otherwise the process exits?
-            ###call_command('pull_titles')
+            call_command('pull_titles')
 
             _logger.info("Starting load of OCLC titles.")
             worldcat_path = bib_storage + '/worldcat_titles/'
-            ###call_command('load_titles', worldcat_path + 'bulk', skip_index=True)
+            call_command('load_titles', worldcat_path + 'bulk', skip_index=True)
 
             _logger.info("Looking for titles not updated in the bulk OCLC pull.")
             titles_not_updated = self.find_titles_not_updated()

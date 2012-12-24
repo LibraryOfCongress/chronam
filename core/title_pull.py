@@ -9,6 +9,8 @@ from django.conf import settings
 from worldcat.request.search import SRURequest
 from worldcat.util.extract import extract_elements
 
+_logger = logging.getLogger(__name__)
+
 WSKEY = settings.WORLDCAT_KEY
 sortkeys = 'Date,,0'
 recordschema = 'info:srw/schema/1/marcxml'
@@ -178,10 +180,6 @@ class SearchWorldCatTitles:
         TODO: Write a new description. :-(
 
         '''
-        # Create directory if it doesn't exist
-        if not os.path.exists(save_path):
-            os.makedirs(save_path)
-
         # Run each request and save content.
         for bib_rec in bib_requests:
             grab_records = True
@@ -296,6 +294,10 @@ class SearchWorldCatTitles:
         and pull for that query.
         Response is stored in data if no argument is passed.
         '''
+
+        # Create directory if it doesn't exist
+        if not os.path.exists(save_path):
+            os.makedirs(save_path)
 
         if query:
             # Make sure the query is a string
