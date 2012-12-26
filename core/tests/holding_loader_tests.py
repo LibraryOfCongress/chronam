@@ -35,6 +35,6 @@ class HoldingLoaderTests(TestCase):
         h = holdings[1]
         self.assertEqual(h.institution.name, 'Colgate Univ')
         self.assertEqual(h.type, 'Original')
-        self.assertEqual(h.description, 'd 3:2, 9:28-12:21> <1979:1:11, 3:29, 4:12-8:9>')
+        self.assertEqual(h.description, '<1876:5:18> <1884:1:10> <1885:9:3>')
         self.assertEqual(h.description_as_list(), [u'<1876:5:18>', u'<1884:1:10>', u'<1885:9:3>'])
         self.assertEqual(str(h.last_updated), '01/1992')

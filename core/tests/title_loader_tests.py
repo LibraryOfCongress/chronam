@@ -23,9 +23,9 @@ class TitleLoaderTests(TestCase):
         Title.objects.all().delete()
         # load a title
         loader = TitleLoader()
-        marcxml = os.path.join(os.path.dirname(chronam.core.__file__),
-            'test-data', 'bib.xml')
-        loader.load_file(marcxml)
+        titlexml = os.path.join(os.path.dirname(chronam.core.__file__),
+            'test-data', 'title.xml')
+        loader.load_file(titlexml)
 
     def test_title(self):
         t = Title.objects.get(lccn='sn83030846')
@@ -35,17 +35,15 @@ class TitleLoaderTests(TestCase):
         self.assertEqual(t.place_of_publication, 'Albany, N.Y.')
         self.assertEqual(t.publisher, 'The Living Issue Co.')
         self.assertEqual(t.frequency, 'Weekly')
-        self.assertEqual(t.frequency_date, '<Jan. 1, 1941>-')
         self.assertEqual(t.oclc, '9688987')
         self.assertEqual(t.start_year, '1873')
         self.assertEqual(t.end_year, '1887')
-        self.assertEqual(t.issn, '0743-1791')
         # ordering of attributes and namespace prefixes isn't predictable
         # so lets just check that we can parse the xml and get the leader
         rec = etree.fromstring(t.marc.xml)
         self.assertTrue(rec != None)
         self.assertEqual(rec.find('.//leader').text,
-                         '02425cas a22005057a 4500')
+                         '00000cas a22000007a 4500')
         self.assertEqual(t.country.code, 'nyu')
         self.assertEqual(t.country.name, 'New York')
         self.assertEqual(t.country.region, 'North America')
@@ -105,11 +103,8 @@ class TitleLoaderTests(TestCase):
     def test_alt_titles(self):
         t = Title.objects.get(lccn='sn83030846')
         alt_titles = list(t.alt_titles.all())
-        self.assertEqual(len(alt_titles), 2)
-        self.assertEqual(alt_titles[0].name,
-                         'Fake uncontrolled non-analytic title')
-        self.assertEqual(alt_titles[1].name, 'Living issue.  Prohibition')
-        self.assertEqual(alt_titles[1].date, '1873')
+        self.assertEqual(len(alt_titles), 1)
+        self.assertEqual(alt_titles[0].name, 'Living issue. Prohibition')
 
     def test_succeeding_titles(self):
         t = Title.objects.get(lccn='sn83030846')
@@ -127,8 +122,8 @@ class TitleLoaderTests(TestCase):
     def test_marc_html(self):
         t = Title.objects.get(lccn='sn83030846')
         html = t.marc.html
-        self.assertTrue('<td>02425cas a22005057a 4500</td>' in html)
-        self.assertTrue('<td>ocm09688987 </td>' in html)
+        self.assertTrue('<td>00000cas a22000007a 4500</td>' in html)
+        self.assertTrue('<td>9688987</td>' in html)
         self.assertTrue('<span class="marc-subfield-value">NPU</span>' in html)
 
     def test_language(self):
@@ -140,9 +135,7 @@ class TitleLoaderTests(TestCase):
     def test_urls(self):
         t = Title.objects.get(lccn='sn83030846')
         urls = list(t.urls.all())
-        self.assertEqual(len(urls), 2)
-        self.assertEqual(urls[0].value, 'http://bibpurl.oclc.org/web/6424')
-        self.assertEqual(urls[1].value, 'http://www.wisconsinhistory.org/libraryarchives/aanp/freedom/')
+        self.assertEqual(len(urls), 0)
 
     def test_solr_doc(self):
         t = Title.objects.get(lccn='sn83030846')
@@ -166,10 +159,8 @@ class TitleLoaderTests(TestCase):
         self.assertTrue(u'English' in solr['language'])
         self.assertTrue('Description based on: Vol. 1, no. 8 (Apr. 12, 1873).' in solr['note'])
         self.assertTrue('Published as: Living issue. Prohibition, <Dec. 17, 1874>.' in solr['note'])
-        self.assertTrue('Published at New York, N.Y., <1874>-1879; at Portland, Me., 1879-<1880>; at Cooperstown, N.Y., <1881-1882>; at Utica, N.Y., <1883>-Jan. 27, 1887; at Lincoln, Neb., <Feb.  1887>-' in solr['note'])
-        self.assertTrue('Living issue.  Prohibition' in solr['alt_title'])
-        self.assertTrue('http://bibpurl.oclc.org/web/6424' in solr['url'])
-        self.assertTrue('http://www.wisconsinhistory.org/libraryarchives/aanp/freedom/' in solr['url'])
+        self.assertTrue('Published at New York, N.Y., <1874>-1879; at Portland, Me., 1879-<1880>; at Cooperstown, N.Y., <1881-1882>; at Utica, N.Y., <1883>-Jan. 27, 1887; at Lincoln, Neb., <Feb. 1887>-' in solr['note'])
+        self.assertTrue('Living issue. Prohibition' in solr['alt_title'])
         self.assertEqual('New York', solr['country'])
 
     def test_oclc_num(self):
