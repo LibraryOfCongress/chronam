@@ -8,7 +8,7 @@
         <li><a href="#tab_advanced_search"><span>Advanced Search</span></a></li>
         <li><a href="#tab_newspapers"><span>All Digitized Newspapers {{search_form.fulltextStartYear}}-{{search_form.fulltextEndYear}}</span></a></li>
     </ul>
-    <span class="btn_directory"><a href="{% url chronam_search_titles %}">US Newspaper Directory<img src=
+    <span class="btn_directory"><a href="{% url chronam_search_titles %}"><img src=
             {% ifequal page_name 'directory' %}"{% static 'images/btn_usnews_sel.png' %}"
             {% else %}"{% static 'images/btn_usnews.png' %}"{% endifequal %}
             width="296" height="34" border="0" alt="US Newspaper Directory, 1690-Present" /></a></span>
