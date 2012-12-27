@@ -7,7 +7,6 @@ INSTALLED_APPS = (
 
 
 BASE_CRUMBS = [
-    {'label': 'The Library of Congress', 'href': 'http://www.loc.gov/'},
     {'label':'Chronicling America', 'href': '/'}
 ]
 

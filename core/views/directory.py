@@ -64,6 +64,7 @@ def newspapers(request, state=None, format='html'):
                     _newspapers_by_state.setdefault(place.state, set()).add(title)
 
     newspapers_by_state = [(s, sorted(t)) for (s, t) in _newspapers_by_state.iteritems()]
+    crumbs = list(settings.BASE_CRUMBS)
 
     if format == "html":
         return render_to_response("newspapers.html",

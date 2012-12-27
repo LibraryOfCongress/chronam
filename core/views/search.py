@@ -64,6 +64,7 @@ def search_pages_results(request, view_type='gallery'):
         previous_url = '?' + query.urlencode()
 
     rows = q["rows"] if "rows" in q else 20
+    crumbs = list(settings.BASE_CRUMBS)
 
     host = request.get_host()
     format = request.GET.get('format', None)
@@ -128,6 +129,7 @@ def search_titles(request):
     page_title = "Search U.S. Newspaper Directory, 1690-Present"
     template = "news_directory.html"
     collapse_search_tab = True
+    crumbs = list(settings.BASE_CRUMBS)
     return render_to_response(template, dictionary=locals(),
                               context_instance=RequestContext(request))
 

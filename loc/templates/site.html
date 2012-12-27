@@ -2,14 +2,14 @@
 
 {% load static from staticfiles %}
 
-      {% block breadcrumbs %}
-      <div id="crumb_nav">
+    {% block extra_crumbs %}
+    <div id="crumb_nav">
 	{% for crumb in crumbs %}
 	<a href="{{crumb.href}}">{{crumb.label}}</a>
 	{% if forloop.last %}{% else %} <span> &gt; </span>{% endif %}
 	{% endfor %}
-      </div>
-      {% endblock breadcrumbs %}
+    </div>
+    {% endblock extra_crumbs %}
 
   {% block top_branding %}
     <div id="top_branding">

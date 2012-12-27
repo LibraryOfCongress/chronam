@@ -280,6 +280,7 @@ def titles(request, start=None, page_number=1):
     browse_val = [chr(n) for n in range(65, 91)]
     browse_val.extend([str(i) for i in range(10)])
     collapse_search_tab = True
+    crumbs = list(settings.BASE_CRUMBS)
     return render_to_response('titles.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
