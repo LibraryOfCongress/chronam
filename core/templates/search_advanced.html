@@ -3,6 +3,9 @@
 {% load static from staticfiles %}
 {% load humanize %}
 
+{% block head_content %}{{ block.super }}
+<link href="{% static 'bootstrap/css/datepicke.css' %}" rel="stylesheet" media="screen">
+{% endblock head_content %}
 {% block subcontent %}
 <div>
     <form action="{% url chronam_search_pages_results %}" method="get" name="fulltext2" id="fulltext2" class="well">
@@ -23,9 +26,9 @@
             <!-- date -->
             <p class="help-block">Newspaper pages are available for newspapers published between <strong>{{adv_search_form.fulltextStartYear}}-{{adv_search_form.fulltextEndYear}}</strong>*</p>
             <label for="id_date_from" class="control-label">from</label>
-            {{ adv_search_form.date1 }}
+            <input id="id_date_from" name="date1" class="span2" type="text" data-date-format="mm/dd/yyyy" data-date="01-01-{{adv_search_form.fulltextStartYear}}" value="01/01/{{adv_search_form.fulltextStartYear}}">
             <label for="id_date_to" class="control-label">to</label>
-            {{ adv_search_form.date2 }}
+            <input id="id_date_to" name="date2" class="span2" type="text" data-date-format="mm/dd/yyyy" data-date="12-31-{{adv_search_form.fulltextEndYear}}" value="12/31/{{adv_search_form.fulltextEndYear}}">
         </fieldset>
         <fieldset>
             <legend>Enter Search</legend>
@@ -58,4 +61,11 @@
 {% endblock subcontent %}
 {% block javascript %}
 {{ block.super }}
+<script src="{% static 'bootstrap/js/bootstrap-datepicker.js' %}"></script>
+<script type="text/javascript">
+(function($){
+    $('#id_date_from').datepicker();
+    $('#id_date_to').datepicker();
+})(jQuery);
+</script>
 {% endblock javascript %}
