@@ -1003,12 +1003,7 @@ form.search-pages select{
     padding:6px;
     border:1px solid #999;
 }
-form.search-pages input.ortext {
-    border-color:#f90;
-    background-color:#fff;
-    letter-spacing:normal;
-}
-form.search-pages input.ortext-btn {
+form.search-pages input.proxtext-btn {
     padding:0;
     border:none;
     height:26px; 
@@ -1020,6 +1015,9 @@ form.search-pages input#id_proxtext {
 		background-color: white;
 		letter-spacing: normal;
 		margin:0;
+}
+form.search-pages select#id_state {
+    width:140px;
 }
 
 /********************* advanced search forms *********************/
@@ -1061,7 +1059,21 @@ form.search_adv .clear-form-half {
     clear:both;
     height:5px;
 }
-
+form.search_adv input#id_ortext,
+form.search_adv input#id_andtext,
+form.search_adv input#id_phrasetext {
+    width: 250px;
+}
+form.search_adv select#id_lccns {
+    width: 350px;
+}
+form.search_adv select#id_states {
+    width: 140px;
+}
+form.search_adv input#id_date_from,
+form.search_adv input#id_date_to {
+    width: 70px;
+}
 /********************* carousel *********************/
 .carousel-body {
 border:5px solid #666;

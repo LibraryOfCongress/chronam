@@ -58,9 +58,8 @@ def _fulltext_range():
     fulltext_range = cache.get('fulltext_range')
     if not fulltext_range:
         # get the maximum and minimum years that we have content for
-        issue_dates = models.Issue.objects.all().aggregate(
-                min_date=Min('date_issued'),
-                max_date=Max('date_issued'))
+        issue_dates = models.Issue.objects.all().aggregate(min_date=Min('date_issued'),
+                                                           max_date=Max('date_issued'))
 
         # when there is no content these may not be set
         if issue_dates['min_date']:
@@ -103,15 +102,11 @@ class SearchPagesForm(forms.Form):
         self.fulltextStartYear = fulltextStartYear
         self.fulltextEndYear = fulltextEndYear
 
-        self.fields["proxtext"].widget.attrs["alt"] = "proxtext"
         self.fields["state"].choices = self.states
-        self.fields["state"].widget.attrs = {"class": "input-small", 'alt': 'id_state', 'style': 'width: 140px'}
         self.fields["date1"].choices = self.years
         self.fields["date1"].initial = fulltextStartYear
-        self.fields["date1"].widget.attrs["class"] = "norm,input-small"
         self.fields["date2"].choices = self.years
         self.fields["date2"].initial = fulltextEndYear
-        self.fields["date2"].widget.attrs["class"] = "norm,input-small"
         self.fields["sequence"].widget.attrs['value'] = 1
 
 
@@ -121,9 +116,9 @@ class AdvSearchPagesForm(SearchPagesForm):
     date1 = fields.CharField()
     date2 = fields.CharField()
     sequence = fields.CharField()
-    ortext = fields.CharField(widget=forms.widgets.TextInput(attrs={"style": "width: 250px;"}))
-    andtext = fields.CharField(widget=forms.widgets.TextInput(attrs={"style": "width: 250px;"}))
-    phrasetext = fields.CharField(widget=forms.widgets.TextInput(attrs={"style": "width: 250px;"}))
+    ortext = fields.CharField()
+    andtext = fields.CharField()
+    phrasetext = fields.CharField()
     proxtext = fields.CharField()
     proxdistance = fields.ChoiceField(choices=PROX_CHOICES)
     language = fields.ChoiceField()
@@ -133,15 +128,14 @@ class AdvSearchPagesForm(SearchPagesForm):
 
         self.date = self.data.get('date1', '')
 
-        self.fields["ortext"].widget.attrs["class"] = "ortext"
-        self.fields["lccn"].widget.attrs = {'id': 'id_lccns', 'style': 'width: 350px', 'size': '8'}
+        self.fields["lccn"].widget.attrs = {'id': 'id_lccns', 'size': '8'}
         self.fields["lccn"].choices = self.titles
-        self.fields["state"].widget.attrs = {'id': 'id_states', 'style': 'width: 140px', 'size': '8'}
-        self.fields["date1"].widget.attrs = {"class": "txt", "id": "id_date_from", "style": "width:70px;", "max_length": 10, }
+        self.fields["state"].widget.attrs = {'id': 'id_states', 'size': '8'}
+        self.fields["date1"].widget.attrs = {"id": "id_date_from", "max_length": 10}
         self.fields["date1"].initial = ""
-        self.fields["date2"].widget.attrs = {"class": "txt", "id": "id_date_to", "style": "width:70px;", "max_length": 10, }
+        self.fields["date2"].widget.attrs = {"id": "id_date_to", "max_length": 10}
         self.fields["date2"].initial = ""
-        self.fields["sequence"].widget.attrs = {"id": "id_char_sequence", "alt": "char_sequence", "size": "3"}
+        self.fields["sequence"].widget.attrs = {"id": "id_char_sequence", "size": "3"}
         self.fields["proxtext"].widget.attrs["id"] = "id_proxtext_adv"
         lang_choices = [("", "All"), ]
         lang_choices.extend((l, models.Language.objects.get(code=l).name) for l in settings.SOLR_LANGUAGES)
