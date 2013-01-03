@@ -89,70 +89,58 @@ class SearchPagesForm(forms.Form):
     state = fields.ChoiceField(choices=[])
     date1 = fields.ChoiceField(choices=[])
     date2 = fields.ChoiceField(choices=[])
-    ortext = fields.CharField(widget=forms.widgets.TextInput(attrs={"style": "width: 250px;"}))
-    andtext = fields.CharField(widget=forms.widgets.TextInput(attrs={"style": "width: 250px;"}))
-    phrasetext = fields.CharField(widget=forms.widgets.TextInput(attrs={"style": "width: 250px;"}))
     proxtext = fields.CharField()
-    proxdistance = fields.ChoiceField(choices=PROX_CHOICES)
     sequence = fields.BooleanField()
-    year = fields.ChoiceField(choices=[])
 
     def __init__(self, *args, **kwargs):
         super(SearchPagesForm, self).__init__(*args, **kwargs)
 
-        titles, states = _titles_states()
+        self.titles, self.states = _titles_states()
 
         fulltextStartYear, fulltextEndYear = _fulltext_range()
 
-        years = [(year, year) for year in range(fulltextStartYear, fulltextEndYear + 1)]
+        self.years = [(year, year) for year in range(fulltextStartYear, fulltextEndYear + 1)]
         self.fulltextStartYear = fulltextStartYear
         self.fulltextEndYear = fulltextEndYear
 
-        self.fields["ortext"].widget.attrs["class"] = "ortext"
         self.fields["proxtext"].widget.attrs["alt"] = "proxtext"
-        self.fields["proxtext"].widget.attrs["class"] = "search-query"
-        self.fields["state"].choices = states
+        self.fields["state"].choices = self.states
         self.fields["state"].widget.attrs = {"class": "input-small", 'alt': 'id_state', 'style': 'width: 140px'}
-        self.fields["date1"].choices = years
+        self.fields["date1"].choices = self.years
         self.fields["date1"].initial = fulltextStartYear
         self.fields["date1"].widget.attrs["class"] = "norm,input-small"
-        self.fields["date2"].choices = years
+        self.fields["date2"].choices = self.years
         self.fields["date2"].initial = fulltextEndYear
         self.fields["date2"].widget.attrs["class"] = "norm,input-small"
-        self.fields["year"].choices = years
         self.fields["sequence"].widget.attrs['value'] = 1
 
 
-class AdvSearchPagesForm(forms.Form):
+class AdvSearchPagesForm(SearchPagesForm):
     lccn = fields.MultipleChoiceField(choices=[])
     state = fields.MultipleChoiceField(choices=[])
     date1 = fields.CharField()
     date2 = fields.CharField()
     sequence = fields.CharField()
+    ortext = fields.CharField(widget=forms.widgets.TextInput(attrs={"style": "width: 250px;"}))
+    andtext = fields.CharField(widget=forms.widgets.TextInput(attrs={"style": "width: 250px;"}))
+    phrasetext = fields.CharField(widget=forms.widgets.TextInput(attrs={"style": "width: 250px;"}))
     proxtext = fields.CharField()
+    proxdistance = fields.ChoiceField(choices=PROX_CHOICES)
     language = fields.ChoiceField()
 
     def __init__(self, *args, **kwargs):
         super(AdvSearchPagesForm, self).__init__(*args, **kwargs)
 
-        titles, states = _titles_states()
-
-        fulltextStartYear, fulltextEndYear = _fulltext_range()
-
-        years = [(year, year) for year in range(fulltextStartYear, fulltextEndYear + 1)]
-
-        self.fulltextStartYear = fulltextStartYear
-        self.fulltextEndYear = fulltextEndYear
         self.date = self.data.get('date1', '')
 
+        self.fields["ortext"].widget.attrs["class"] = "ortext"
         self.fields["lccn"].widget.attrs = {'id': 'id_lccns', 'style': 'width: 350px', 'size': '8'}
-        self.fields["lccn"].choices = titles
-        self.fields["state"].choices = states
+        self.fields["lccn"].choices = self.titles
         self.fields["state"].widget.attrs = {'id': 'id_states', 'style': 'width: 140px', 'size': '8'}
-        self.fields["date1"].choices = years
-        self.fields["date1"].widget.attrs = {"class": "txt", "id": "id_datefrom", "style": "width:70px;", "max_length": 10, }
-        self.fields["date2"].choices = years
-        self.fields["date2"].widget.attrs = {"class": "txt", "id": "id_dateto", "style": "width:70px;", "max_length": 10, }
+        self.fields["date1"].widget.attrs = {"class": "txt", "id": "id_date_from", "style": "width:70px;", "max_length": 10, }
+        self.fields["date1"].initial = ""
+        self.fields["date2"].widget.attrs = {"class": "txt", "id": "id_date_to", "style": "width:70px;", "max_length": 10, }
+        self.fields["date2"].initial = ""
         self.fields["sequence"].widget.attrs = {"id": "id_char_sequence", "alt": "char_sequence", "size": "3"}
         self.fields["proxtext"].widget.attrs["id"] = "id_proxtext_adv"
         lang_choices = [("", "All"), ]

@@ -1,0 +1,61 @@
+{% extends "site_base.html" %}
+
+{% load static from staticfiles %}
+{% load humanize %}
+
+{% block subcontent %}
+<div>
+    <form action="{% url chronam_search_pages_results %}" method="get" name="fulltext2" id="fulltext2" class="well">
+        <fieldset>
+            <legend>Limit Search</legend>
+            <!-- state -->
+            <label for="id_states" class="control-label">Select State(s):</label>
+            {{ adv_search_form.state }}
+            <!-- newspaper -->
+            <label for="id_lccns" class="control-label">Select Newspaper(s):</label>
+            {{ adv_search_form.lccn }}
+            <!-- page -->
+            <label for="id_sequence" class="control-label">Specific page</label>
+            {{ adv_search_form.sequence }}
+        </fieldset>
+        <fieldset>
+            <legend>Select Date Range</legend>
+            <!-- date -->
+            <p class="help-block">Newspaper pages are available for newspapers published between <strong>{{adv_search_form.fulltextStartYear}}-{{adv_search_form.fulltextEndYear}}</strong>*</p>
+            <label for="id_date_from" class="control-label">from</label>
+            {{ adv_search_form.date1 }}
+            <label for="id_date_to" class="control-label">to</label>
+            {{ adv_search_form.date2 }}
+        </fieldset>
+        <fieldset>
+            <legend>Enter Search</legend>
+            <label for="id_language" class="control-label">Language</label>
+            {{ adv_search_form.language }}
+            <label for="id_ortext" class="control-label">...with <strong>any</strong> of the words:</label>
+            {{ adv_search_form.ortext }}
+            <label for="id_andtext" class="control-label">...with <strong>all</strong> of the words:</label>
+            {{ adv_search_form.andtext }}
+            <label for="id_phrasetext" class="control-label">...with the <strong>phrase</strong>:</label>
+            {{ adv_search_form.phrasetext }}
+            <label for="id_proxtext_adv" class="control-label">...with the words:</label>
+            <div class="form-inline">
+                {{ adv_search_form.proxtext }}
+                <label for="id_proxdistance" class="control-label">within</label>
+                {{ adv_search_form.proxdistance}}
+                <span>words of each other</span>
+            </div>
+        </fieldset>
+        <fieldset>
+            <input type="hidden" name="rows" id="rows" value="20" />
+            <input type="hidden" name="searchType" value="advanced" />
+            <div class="form-actions">
+                <button id="adv_reset" type="reset" value="clear" class="btn">Clear</button>
+                <button type="submit" value="Submit" class="btn btn-primary">Search</button>
+            </div>
+        </fieldset>
+    </form>
+</div><!-- end id:tab_advanced_search -->
+{% endblock subcontent %}
+{% block javascript %}
+{{ block.super }}
+{% endblock javascript %}

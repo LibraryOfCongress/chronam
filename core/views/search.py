@@ -208,3 +208,13 @@ def search_pages_navigation(request):
     search['next_result'] = paginator.next_result
 
     return HttpResponse(json.dumps(search), mimetype="application/json")
+
+
+@cache_page(settings.DEFAULT_TTL_SECONDS)
+def search_advanced(request):
+    adv_search_form = forms.AdvSearchPagesForm()
+    template = "search_advanced.html"
+    crumbs = list(settings.BASE_CRUMBS)
+    page_title = 'Advanced Search'
+    return render_to_response(template, dictionary=locals(),
+                              context_instance=RequestContext(request))

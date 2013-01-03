@@ -2,6 +2,9 @@
 {% load static from staticfiles %}
 {% load humanize %}
 
+{% block extrahead %}
+
+{% endblock extrahead %}
 <div id="box-tabs" class="ui-tabs-hide">
     <ul>
         <li><a href="#tab_search"><span>Search Pages</span></a></li>
@@ -66,9 +69,9 @@
                 <fieldset id="select_date">
                     <label for="id_radiorange"></label>
                     <input class="radio" type="radio" id="id_radiorange" name="dateFilterType" value="range">
-                    <label for="id_datefrom" class="norm">from</label>
+                    <label for="id_date_from" class="norm">from</label>
                     {{ adv_search_form.date1 }}
-                    <label for="id_dateto" class="norm">to</label>
+                    <label for="id_date_to" class="norm">to</label>
                     {{ adv_search_form.date2 }}
                 </fieldset>
             </div>
@@ -82,22 +85,22 @@
                 <span class="label_alt">Enter Search</span><br />
                 <div class="fl-wrap">
                     <label for="id_ortext" class="norm">...with <strong>any</strong> of the words:</label><br />
-                    {{ search_form.ortext }}
+                    {{ adv_search_form.ortext }}
                 </div>
                 <div class="fl-wrap">
                     <label for="id_andtext" class="norm">...with <strong>all</strong> of the words:</label><br />
-                    {{ search_form.andtext }}
+                    {{ adv_search_form.andtext }}
                 </div>
                 <div class="fl-wrap">
                     <label for="id_phrasetext" class="norm">...with the <strong>phrase</strong>:</label><br />
-                    {{ search_form.phrasetext }}
+                    {{ adv_search_form.phrasetext }}
                 </div>
                 <div class="clear-form-half"><!-- --></div>
                 <div class="fl-wrap">
                     <label for="id_proxtext_adv" class="norm">...with the words:</label><br />
                     {{ adv_search_form.proxtext }}
                     <label for="id_proxdistance" class="norm">within</label>
-                    {{ search_form.proxdistance}}
+                    {{ adv_search_form.proxdistance}}
                     <span>words of each other</span>
                 </div>
                 <input type="hidden" name="rows" id="rows" value="20" />

@@ -47,17 +47,17 @@ jQuery(function($){
     var start_year = $('#id_date1').val();
     var end_year = $('#id_date2').val();
 
-    $('#id_datefrom').datepicker({defaultDate: new Date(start_year, 1-1, 1), showOn: "focus", yearRange: start_year+":"+end_year, currentText: '', changeMonth: true, changeYear: true, closeText: 'Done'});
-    $('#id_dateto').datepicker({defaultDate: new Date(end_year, 12-1, 31), showOn: "focus", yearRange: start_year+":"+end_year, currentText: '', changeMonth: true, changeYear: true});
+    $('#id_date_from').datepicker({defaultDate: new Date(start_year, 1-1, 1), showOn: "focus", yearRange: start_year+":"+end_year, currentText: '', changeMonth: true, changeYear: true, closeText: 'Done'});
+    $('#id_date_to').datepicker({defaultDate: new Date(end_year, 12-1, 31), showOn: "focus", yearRange: start_year+":"+end_year, currentText: '', changeMonth: true, changeYear: true});
 
     // bind form field .click's
-    $('#id_datefrom, #id_dateto').click( function() {
+    $('#id_date_from, #id_date_to').click( function() {
         $('#id_radiorange').attr('checked', 'checked');});
     $('#id_radioyear').click( function() {
-        $('#id_dateto, #id_datefrom').val('');});
+        $('#id_date_to, #id_date_from').val('');});
     $('#id_radiorange').click( function() {
-        $('#id_datefrom').val('01/01/'+start_year); 
-        $('#id_dateto').val('12/31/'+end_year);
+        $('#id_date_from').val('01/01/'+start_year); 
+        $('#id_date_to').val('12/31/'+end_year);
     });
 
     $("input#id_sequence").val(1);
@@ -73,7 +73,7 @@ jQuery(function($){
         $("select#id_date2 option[value='"+end_year+"']").attr("selected", true);
     } else if (getUrlVars()["dateFilterType"]=="yearRange"){
         $('#id_radioyear').attr('checked', 'checked');
-        $('#id_dateto, #id_datefrom').val('');
+        $('#id_date_to, #id_date_from').val('');
     } else {
         $('#id_radioyear').attr('checked', 'checked');
         $("select#id_date2 option[value='"+end_year+"']").attr("selected", true);
@@ -94,7 +94,7 @@ jQuery(function($){
     $("form#fulltext2").submit(function(event){
         event.preventDefault();
         if ($("#fulltext2 input[type=radio]:checked").attr('id')=='id_radioyear'){
-            $("input#id_datefrom, input#id_dateto").attr('disabled', 'disabled');
+            $("input#id_date_from, input#id_date_to").attr('disabled', 'disabled');
         }else{
             $("select#id_date1, select#id_date2").attr('disabled', 'disabled');};
         if (isNaN(parseInt($("input#id_char_sequence").val()))){

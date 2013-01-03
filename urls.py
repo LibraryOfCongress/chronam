@@ -210,6 +210,8 @@ urlpatterns += patterns(
     url(r'^search/pages/navigation/$', search.search_pages_navigation,
         name='chronam_search_pages_navigation'),
 
+    url(r'^search/advanced/$', search.search_advanced,
+        name='chronam_search_advanced'),
 
     url(r'^events/$', 'events', name='chronam_events'),
     url(r'^events/(?P<page_number>\d+)/$', 'events',
