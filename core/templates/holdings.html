@@ -10,39 +10,34 @@
 
   {% endif %}
 
-  {% for holding in holdings %}
-      <br/>
+    {% regroup holdings|dictsort:"institution" by institution as inst_holdings %}
+    {% for inst_holding in inst_holdings %}
 
-      {% if holding.is_summary %}
-
+      {% if not forloop.first %}
       <hr/>
-      <h3>SUMMARY HOLDING: {{holding.institution.name}}, {{holding.institution.city}}, {{holding.institution.state}}</h3>
+      {% endif %}
+      <br/>
+      <h3>HOLDING: {{inst_holding.grouper.name}}, {{inst_holding.grouper.city}}, {{inst_holding.group.state}}</h3>
+
       <p>
         <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
-        <a href="{% url chronam_institution_titles holding.institution.code.lower %}" shape="rect">View more titles from this institution</a>
+        <a href="{% url chronam_institution_titles inst_holding.grouper.code.lower %}" shape="rect">View more titles from this institution</a>
       </p>
-      <h4 class="holding">Dates Available:</h4>
+
+      {% for holding in inst_holding.list %}
+        <h4 class="holding">Available as: {{ holding.type }}</h4>
+        <p class="holding">Dates:</p>
       <ul class="holding">
           {% for description in holding.description_as_list %}
             <li>{{ description }}</li>
           {% endfor %}
       </ul>
       <p class="holding">Last updated: {{ holding.last_updated }}</p>
-
-      {% else %}
-
-      <h4 class="holding">Available as: {{ holding.type }}</h4>
-      <p class="holding">Dates:</p>
-      <ul class="holding">
-          {% for description in holding.description_as_list %}
-            <li>{{ description }}</li>
-          {% endfor %}
-      </ul>
-      <p class="holding">Last updated: {{ holding.last_updated }}</p>
-
-      {% endif %}
-
+      {% endfor %}
+    <br/>
   {% endfor %}
+      
+
   <div class="txt_wrapper">
       <p class="backtotop">
       <a href="#skip_menu">Top</a>
