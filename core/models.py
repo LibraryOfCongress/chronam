@@ -919,11 +919,6 @@ class Holding(models.Model):
             return l
         return [self.description]
 
-    def is_summary(self):
-        if self.type is None:
-            return True
-        return False
-
     def __unicode__(self):
         return u"%s - %s - %s" % (self.institution.name, self.type, self.description)
 
