@@ -25,7 +25,7 @@
       </p>
 
       {% for holding in inst_holding.list %}
-        <h4 class="holding">Available as: {{ holding.type }}</h4>
+        <h4 class="holding">Available as: {% if holding.type %}{{ holding.type }}{% else %}Unspecified{% endif %}</h4>
         <p class="holding">Dates:</p>
       <ul class="holding">
           {% for description in holding.description_as_list %}
