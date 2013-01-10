@@ -5,8 +5,9 @@
 {% block newspaper_content %}
 
   {% if not holdings %}
+    <p>No holding information available.</p>
 
-      <p>No summary holding information available.</p>
+    <p>Check OCLC WorldCat for more information on <a class="external" href="http://www.worldcat.org/search?qt=worldcat_org_all&q='{{ title.lccn_orig }}'">this title</a>.</p>
 
   {% endif %}
 
