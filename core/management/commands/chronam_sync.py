@@ -15,7 +15,6 @@ except ImportError:
 from chronam import core
 from chronam.core import models
 from chronam.core import index
-from chronam.core import title_loader
 from chronam.core.essay_loader import load_essays
 from chronam.core.holding_loader import HoldingLoader
 from chronam.core.management.commands import configure_logging
@@ -60,7 +59,7 @@ class Command(BaseCommand):
             for filename in os.listdir(settings.BIB_STORAGE): 
                 if filename.startswith('titles-') and filename.endswith('.xml'):
                     filepath = os.path.join(settings.BIB_STORAGE, filename)
-                    title_loader.load(filepath, skip_index=True)
+                    management.call_command('load_titles', filepath, skip_index=True)
 
             _logger.info('Starting OCLC title update.')
             worldcat_path = settings.BIB_STORAGE + '/worldcat_titles/'
