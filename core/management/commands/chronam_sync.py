@@ -68,11 +68,8 @@ class Command(BaseCommand):
             # look in BIB_STORAGE for holdings files to load 
             # NOTE: must run after titles are all loaded or else they may 
             # not link up properly
-            holding_loader = HoldingLoader()
-            for filename in os.listdir(settings.BIB_STORAGE):
-                if filename.startswith('holdings-') and filename.endswith('.xml'): 
-                    holding_loader.main(
-                        os.path.join(settings.BIB_STORAGE, filename))
+            holdings_dir = settings.BIB_STORAGE + '/holdings'
+            management.call_command('load_holdings', holdings_dir) 
 
         # overlay place info harvested from dbpedia onto the places table
         try:
