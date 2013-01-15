@@ -18,7 +18,8 @@ sudo apt-get install python-dev python-virtualenv mysql-server libmysqlclient-de
 Get Chronam
 ===========
 
-mkdir /opt/chronam
+sudo mkdir /opt/chronam
+sudo chown username:group # substitute your username and group here
 git clone https://github.com/LibraryOfCongress/chronam.git /opt/chronam
 export CHRONAM_HOME=/opt/chronam
 cd ${CHRONAM_HOME}
@@ -29,14 +30,11 @@ Create Database
 
 echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one'; GRANT ALL ON test_chronam.* TO 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root -p
 
-
-Configure Solr
 ==============
 
 sudo cp ${CHRONAM_HOME}/conf/schema.xml /etc/solr/conf/
 sudo cp ${CHRONAM_HOME}/conf/solrconfig-ubuntu.xml /etc/solr/conf/solrconfig.xml
-sudo ln -s /usr/share/java/lucene-memory.jar /usr/share/solr/WEB-INF/lib/lucene-memory.jar 
-# edit /etc/default/jetty and change NO_START to 0 
+sudo cp ${CHRONAM_HOME}/conf/jetty /etc/default/jetty
 sudo service jetty start
 
 
