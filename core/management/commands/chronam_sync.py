@@ -29,7 +29,14 @@ class Command(BaseCommand):
         dest = 'verbose',
         default = False,
         help = '')
-    option_list = BaseCommand.option_list + (verbose, )
+
+    skip_essays = make_option('--skip-essays',
+        action = 'store_true',
+        dest = 'skip_essays',
+        default = False,
+        help = 'Skip essay loading in the chronam process.')
+    
+    option_list = BaseCommand.option_list + (verbose, skip_essays)
     help = ''
     args = ''
 
@@ -77,7 +84,8 @@ class Command(BaseCommand):
         except Exception, e:
             _logger.exception(e)
 
-        load_essays(settings.ESSAYS_FEED)
+        if not options['skip_essays']:
+            load_essays(settings.ESSAYS_FEED)
        
         # We wait to index all the titles at the end.
         index.index_titles()
