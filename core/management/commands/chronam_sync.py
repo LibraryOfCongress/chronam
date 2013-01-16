@@ -83,7 +83,7 @@ class Command(BaseCommand):
         index.index_titles()
 
         end = datetime.now()
-        total_time = start - end
+        total_time = end - start
         _logger.info('start time: %s' % start)
         _logger.info('end time: %s' % end)
         _logger.info('total time: %s' % total_time)
