@@ -54,7 +54,7 @@ you are an awardee you probably have this data on hand already, but if not
 you can use a tool like [wget](http://www.gnu.org/software/wget/) to bulk 
 download the batches. For example
 
-    wget --recursive --no-host-directories --cut-dirs 1 --include-directories /data/dlc/batch_dlc_jamaica_ver01 http://chroniclingamerica.loc.gov/data/dlc/batch_dlc_jamaica_ver01
+    wget --recursive --no-host-directories --cut-dirs 1 --include-directories /data/batches/batch_dlc_jamaica_ver01/ http://chroniclingamerica.loc.gov/data/batches/batch_dlc_jamaica_ver01/
 
 License
 -------
