@@ -33,6 +33,7 @@ echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf
 ==============
 
 sudo cp ${CHRONAM_HOME}/conf/schema.xml /etc/solr/conf/
+sudo cp ${CHRONAM_HOME}/conf/stopwords_* /etc/solr/conf/
 sudo cp ${CHRONAM_HOME}/conf/solrconfig-ubuntu.xml /etc/solr/conf/solrconfig.xml
 sudo cp ${CHRONAM_HOME}/conf/jetty /etc/default/jetty
 sudo service jetty start
@@ -71,6 +72,7 @@ cp ${CHRONAM_HOME}/settings_template.py settings.py
 # set up the database and load initial data
 django-admin.py syncdb --noinput --migrate
 django-admin.py chronam_sync
+django-admin.py collectstatic --noinput
 
 
 Start Up Chronicling America

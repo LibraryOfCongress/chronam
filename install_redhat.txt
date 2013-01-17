@@ -120,7 +120,7 @@ django-admin.py chronam_sync
 # collect that static files where apache can serve them up; needed for
 # the case where DEBUG=False
 
-django-admin.py collectstatic
+django-admin.py collectstatic --noinput
 
 
 Start Up Chronicling America
