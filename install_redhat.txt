@@ -97,9 +97,7 @@ Configure Chronam
 
 virtualenv --no-site-packages ${CHRONAM_HOME}/ENV
 source ${CHRONAM_HOME}/ENV/bin/activate
-pip install virtualenvwrapper
-source ${CHRONAM_HOME}/ENV/bin/virtualenvwrapper.sh
-add2virtualenv /opt
+cp conf/chronam.pth ENV/lib/python2.7/site-packages/chronam.pth
 export DJANGO_SETTINGS_MODULE=chronam.settings
 
 # install python dependencies
