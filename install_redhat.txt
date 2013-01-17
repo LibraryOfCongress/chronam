@@ -19,6 +19,7 @@ Get Chronam
 ===========
 
 mkdir /opt/chronam
+sudo chown username:group /opt/chronam # substitute your username and group here
 git clone https://github.com/LibraryOfCongress/chronam.git /opt/chronam
 export CHRONAM_HOME=/opt/chronam
 cd ${CHRONAM_HOME}
