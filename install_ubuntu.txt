@@ -53,7 +53,9 @@ Configure Chronam
 =================
 
 virtualenv --no-site-packages ${CHRONAM_HOME}/ENV
-source ${CHRONAM_HOME}/ENV/bin/activate
+source /opt/chronam/ENV/bin/activate
+# you may want to add that line to the end of your .profile so your 
+# path is set up correctly when you log in again
 cp conf/chronam.pth ENV/lib/python2.7/site-packages/chronam.pth
 export DJANGO_SETTINGS_MODULE=chronam.settings
 
