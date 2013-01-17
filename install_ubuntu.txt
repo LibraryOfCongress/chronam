@@ -94,7 +94,7 @@ wget --recursive --no-host-directories --cut-dirs 1 --include-directories /data/
 # Beware this will pull down 60G of data, which could take hours to days to download depending on your connection speed.
 # Make sure you have a stable connection and enough room on your harddrive.
 cd ${CHRONAM_HOME}/data/batches
-wget --recursive --no-host-directories --cut-dirs 1 --include-directories /data/dlc/batch_dlc_jamaica_ver01 http://chroniclingamerica.loc.gov/data/dlc/batch_dlc_jamaica_ver01
+wget --recursive --no-host-directories --cut-dirs 1 --include-directories /data/batches/batch_dlc_jamaica_ver01 http://chroniclingamerica.loc.gov/data/batches/batch_dlc_jamaica_ver01
 
 
 Run Unit Tests
