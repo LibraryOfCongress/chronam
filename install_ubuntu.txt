@@ -87,7 +87,7 @@ Get Sample Data / Run Unit Tests
 # Sample data set 1: batch_vi_affirmed_ver01
 # The first dataset is provided to be a quick and easy download in order for you to understand how the project works.
 cd ${CHRONAM_HOME}/data/batches
-wget --recursive --no-host-directories --cut-dirs 1 --include-directories /data/vi/batch_vi_affirmed_ver01 http://chroniclingamerica.loc.gov/data/vi/batch_vi_affirmed_ver01
+wget --recursive --no-host-directories --cut-dirs 1 --include-directories /data/batches/batch_vi_affirmed_ver01 http://chroniclingamerica.loc.gov/data/batches/batch_vi_affirmed_ver01
 
 # Sample data set 2: batch_dlc_jamaica_ver01
 # The second dataset is provided to run tests against.
