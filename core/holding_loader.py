@@ -75,9 +75,7 @@ class HoldingLoader:
             return None
 
     def _get_related_inst_code(self, inst_code):
-        '''
-        Match the institutional code or record an error.
-        '''
+        ''' Match the institutional code or record an error.'''
         try:
             inst = models.Institution.objects.get(code=inst_code)
             return inst
@@ -86,6 +84,15 @@ class HoldingLoader:
                           inst_code)
             self.errors += 1
             return None
+
+    def _extract_holdings_type(self, record):
+        ''' Extract holdings type from 007 field & 856 $u field. '''
+        h856u = _extract(record, '856', 'u')
+        if h865u and h865u.startswith('http://'):
+            h_type = 'Electronic Resource'
+        else:
+            h_type = _holdings_type(_extract(record,'007'))
+        return h_type
 
     def _parse_date(self, f008):
         '''
@@ -126,7 +133,7 @@ class HoldingLoader:
             return
 
         # get the holdings type
-        holding_type = _holdings_type(_extract(record,'007'))
+        holding_type = self._extract_holdings_type(record)
 
         # get the description
         desc = _extract(record, '866', 'a') or _extract(record, '866', 'z')
@@ -152,7 +159,6 @@ class HoldingLoader:
     def main(self, holdings_source):
 
         # first we delete any existing holdings
-        # TODO: Add some transaction management
         holdings = models.Holding.objects.all()
         [h.delete() for h in holdings]
 
