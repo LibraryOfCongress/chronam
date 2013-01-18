@@ -41,6 +41,12 @@ OPERATOR_MAP = {
     '<': 'lt',
 }
 
+def str_value(value):
+    ''' Turn the value into at least a 4 digit string. '''
+    str_value = str(value)
+    while len(str_value) < 4:
+        str_value = '0' + str_value
+    return str_value
 
 class SearchWorldCatTitles:
 
@@ -51,7 +57,7 @@ class SearchWorldCatTitles:
     def __iter__(self):
         return self
 
-    def generate_year_list(self, start=None, end=None):
+    def generate_year_dict(self, start=None, end=None):
         '''
         Generate a list of years to break up the query. OCLC API queries
         between 1000 and 2030 if not defined. Since we break up our requests
@@ -148,11 +154,10 @@ class SearchWorldCatTitles:
                 else:
                     # generate split requests by year
                     # so the responses are small enough for the OCLC API to handle
-                    year_list = self.generate_year_list()
+                    year_dict = self.generate_year_dict()
                     base_query = query
-                    for year in year_list:
-
-                        operator = year_list[year]
+                    for year in sorted(year_dict.iterkeys()):
+                        operator = year_dict[year]
                         query = self.add_to_query('srw.yr', year, operator, base_query)
                         yr_request = self.generate_srurequest(query)
                         yr_count = self.initial_total_count(yr_request)
@@ -160,8 +165,8 @@ class SearchWorldCatTitles:
 
                         logging.info("%s - %s %s total: %s" % (
                             country.title(), year, operator, yr_request_able))
-                         
-                        if yr_request_able:
+                        
+                        if yr_request_able or year == str(datetime.datetime.now().year):
                             bibs_to_req.append((yr_request, yr_request_able, (
                                                 country.strip('*'), year, operator
                                                 )))
@@ -181,6 +186,9 @@ class SearchWorldCatTitles:
 
         '''
         # Run each request and save content.
+        if not bib_requests:
+            return
+
         for bib_rec in bib_requests:
             grab_records = True
             counter = 0
@@ -229,7 +237,8 @@ class SearchWorldCatTitles:
                     name_components.append(i)
 
                 batch_name = '_'.join(name_components)
-                filename = '_'.join((search_name, batch_name, str(start), str(end))) + '.xml'
+
+                filename = '_'.join((search_name, batch_name, str_value(start), str_value(end))) + '.xml'
                 
                 if counter == 1 and len(bib_requests) > 1:
                     logging.info('Batch: %s = %s total' % (filename, total))
@@ -270,6 +279,7 @@ class SearchWorldCatTitles:
 
     def check_for_doable_bulk_request(self, test_totals):
         # If all 3 pulls are the same
+
         if all(map(lambda x: x == test_totals[0], test_totals)):
             # if all are the same, check that the request is managable.
             # requests over 10000 records will cause failure on the OCLC side
