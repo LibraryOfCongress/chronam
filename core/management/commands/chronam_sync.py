@@ -16,7 +16,6 @@ from chronam import core
 from chronam.core import models
 from chronam.core import index
 from chronam.core.essay_loader import load_essays
-from chronam.core.holding_loader import HoldingLoader
 from chronam.core.management.commands import configure_logging
 
 configure_logging("chronam_sync_logging.config", "chronam_sync.log")
@@ -59,8 +58,6 @@ class Command(BaseCommand):
         management.call_command('loaddata', 'labor_presses.json')
         management.call_command('loaddata', 'countries.json')
 
-        # only load titles if the BIB_STORAGE is there, not always the case
-        # for folks in the opensource world
         if hasattr(settings, "BIB_STORAGE") and os.path.isdir(settings.BIB_STORAGE):
             # look in BIB_STORAGE for original titles to load
             for filename in os.listdir(settings.BIB_STORAGE): 
@@ -68,15 +65,7 @@ class Command(BaseCommand):
                     filepath = os.path.join(settings.BIB_STORAGE, filename)
                     management.call_command('load_titles', filepath, skip_index=True)
 
-            _logger.info('Starting OCLC title update.')
-            worldcat_path = settings.BIB_STORAGE + '/worldcat_titles/'
-            management.call_command('load_titles', worldcat_path, skip_index=True)
-
-            # look in BIB_STORAGE for holdings files to load 
-            # NOTE: must run after titles are all loaded or else they may 
-            # not link up properly
-            holdings_dir = settings.BIB_STORAGE + '/holdings'
-            management.call_command('load_holdings', holdings_dir) 
+        management.call_command('title_sync')
 
         # overlay place info harvested from dbpedia onto the places table
         try:

@@ -7,6 +7,7 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
 from chronam.core import index
+from chronam.core.essay_loader import load_essays
 from chronam.core.holding_loader import HoldingLoader
 from chronam.core.management.commands import configure_logging
 from chronam.core.models import Title
@@ -44,10 +45,17 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         start = datetime.now()
 
-        #TODO: Reassess after we make pull_titles work
-        # with states more cleanly.
+        _logger.info("Starting title sync process.") 
+        # only load titles if the BIB_STORAGE is there, not always the case
+        # for folks in the opensource world
         if hasattr(settings, "BIB_STORAGE") and os.path.isdir(settings.BIB_STORAGE):
             bib_storage = settings.BIB_STORAGE
+
+            # look in BIB_STORAGE for original titles to load
+            for filename in os.listdir(settings.BIB_STORAGE): 
+                if filename.startswith('titles-') and filename.endswith('.xml'):
+                    filepath = os.path.join(settings.BIB_STORAGE, filename)
+                    call_command('load_titles', filepath, skip_index=True)
 
             _logger.info("Starting OCLC pull.")
             #TODO: Add check to make sure that pull_titles
@@ -75,6 +83,11 @@ class Command(BaseCommand):
             _logger.info("%s titles not in OCLC updates." % len(tnu))
             _logger.info("Running pre-deletion checks for these titles.")
 
+        # Make sure that our essays are up to date
+        load_essays(settings.ESSAYS_FEED)
+       
+        if hasattr(settings, "BIB_STORAGE") and os.path.isdir(settings.BIB_STORAGE):
+
             for title in tnu:
                 essays = title.essays.all()
                 issues = title.issues.all()
@@ -91,16 +104,9 @@ class Command(BaseCommand):
                     _logger.info(error + ' issues ' + error_end)
                     continue
 
-            #TDOD: After archive & update process is updated, remove this
-            # next section & add the stuff below it.
-            holding_loader = HoldingLoader()
-            for filename in os.listdir(bib_storage):
-                if filename.startswith('holdings-') and filename.endswith('.xml'):
-                    holding_loader.main(os.path.join(bib_storage, filename))
-
             #Add the following, make sure the directory is correct
-            #holdings_dir = settings.BIB_STORAGE + '/oclcMarcHoldings/data'
-            #call_command('load_holdings', holdings_dir)
+            holdings_dir = settings.BIB_STORAGE + '/holdings'
+            call_command('load_holdings', holdings_dir)
 
         index.index_titles()
 

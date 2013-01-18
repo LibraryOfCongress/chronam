@@ -225,7 +225,12 @@ class TitleLoader(object):
             return field_langs
 
         code = _extract(record, '008')[35:38]
-        langs = [models.Language.objects.get(code=code)]
+        try: 
+            langs = [models.Language.objects.get(code=code)]
+        except DoesNotExist:
+            langs = []
+            _logger.error("Code %s, not found in language table." % code)
+
         subfields_to_eval = ['a','b']
         for f041 in record.get_fields('041'):
             for sf in subfields_to_eval:
