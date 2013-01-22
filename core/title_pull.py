@@ -141,7 +141,7 @@ class SearchWorldCatTitles:
                 cntry_count = self.initial_total_count(cntry_req)
                 request_able = self.check_for_doable_bulk_request(cntry_count)
 
-                logging.info("%s request totals: %s" % (country.title(),
+                _logger.info("%s request totals: %s" % (country.title(),
                                                         cntry_count))
 
                 if request_able:
@@ -163,7 +163,7 @@ class SearchWorldCatTitles:
                         yr_count = self.initial_total_count(yr_request)
                         yr_request_able = self.check_for_doable_bulk_request(yr_count)
 
-                        logging.info("%s - %s %s total: %s" % (
+                        _logger.info("%s - %s %s total: %s" % (
                             country.title(), year, operator, yr_request_able))
                         
                         if yr_request_able or year == str(datetime.datetime.now().year):
@@ -171,19 +171,19 @@ class SearchWorldCatTitles:
                                                 country.strip('*'), year, operator
                                                 )))
                         else:
-                            logging.warning("There is a problem with request. Exiting.")
+                            _logger.warning("There is a problem with request. Exiting.")
                             return
 
                         total += yr_request_able
                 grand_total += total
-            logging.info('GRAND TOTAL: %s' % (grand_total))
+            _logger.info('GRAND TOTAL: %s' % (grand_total))
 
         return bibs_to_req
 
     def grab_content(self, save_path, bib_requests, search_name='ndnp'):
-        '''
-        TODO: Write a new description. :-(
-
+        ''' 
+        Loops over all requests, executes request & saves response
+        to the designated 'save_path'.
         '''
         # Run each request and save content.
         if not bib_requests:
@@ -241,7 +241,7 @@ class SearchWorldCatTitles:
                 filename = '_'.join((search_name, batch_name, str_value(start), str_value(end))) + '.xml'
                 
                 if counter == 1 and len(bib_requests) > 1:
-                    logging.info('Batch: %s = %s total' % (filename, total))
+                    _logger.info('Batch: %s = %s total' % (filename, total))
 
                 file_location = save_path + filename
 
@@ -304,7 +304,6 @@ class SearchWorldCatTitles:
         and pull for that query.
         Response is stored in data if no argument is passed.
         '''
-
         # Create directory if it doesn't exist
         if not os.path.exists(save_path):
             os.makedirs(save_path)
