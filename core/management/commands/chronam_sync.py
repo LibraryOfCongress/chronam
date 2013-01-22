@@ -7,7 +7,6 @@ from django.core import management
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from chronam import core
 from chronam.core import models
 from chronam.core import index
 from chronam.core.management.commands import configure_logging
@@ -18,30 +17,30 @@ _logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     verbose = make_option('--verbose',
-        action = 'store_true',
-        dest = 'verbose',
-        default = False,
-        help = '')
+                          action='store_true',
+                          dest='verbose',
+                          default=False,
+                          help='')
 
     skip_essays = make_option('--skip-essays',
-        action = 'store_true',
-        dest = 'skip_essays',
-        default = False,
-        help = 'Skip essay loading in the chronam sync process.')
-    
+                              action='store_true',
+                              dest='skip_essays',
+                              default=False,
+                              help='Skip essay loading.')
+
     option_list = BaseCommand.option_list + (verbose, skip_essays)
     help = ''
     args = ''
 
     def handle(self, **options):
-        if not (models.Title.objects.all().count()==0 and \
-                models.Holding.objects.all().count()==0 and \
-                models.Essay.objects.all().count()==0 and \
-                models.Batch.objects.all().count()==0 and \
-                models.Issue.objects.all().count()==0 and \
-                models.Page.objects.all().count()==0 and \
-                index.page_count()==0 and \
-                index.title_count()==0):
+        if not (models.Title.objects.all().count() == 0 and
+                models.Holding.objects.all().count() == 0 and
+                models.Essay.objects.all().count() == 0 and
+                models.Batch.objects.all().count() == 0 and
+                models.Issue.objects.all().count() == 0 and
+                models.Page.objects.all().count() == 0 and
+                index.page_count() == 0 and
+                index.title_count() == 0):
             _logger.warn("Database or index not empty as expected.")
             return
 
@@ -54,7 +53,7 @@ class Command(BaseCommand):
 
         if hasattr(settings, "BIB_STORAGE") and os.path.isdir(settings.BIB_STORAGE):
             # look in BIB_STORAGE for original titles to load
-            for filename in os.listdir(settings.BIB_STORAGE): 
+            for filename in os.listdir(settings.BIB_STORAGE):
                 if filename.startswith('titles-') and filename.endswith('.xml'):
                     filepath = os.path.join(settings.BIB_STORAGE, filename)
                     management.call_command('load_titles', filepath, skip_index=True)
