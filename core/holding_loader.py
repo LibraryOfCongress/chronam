@@ -88,7 +88,7 @@ class HoldingLoader:
     def _extract_holdings_type(self, record):
         ''' Extract holdings type from 007 field & 856 $u field. '''
         h856u = _extract(record, '856', 'u')
-        if h865u and h865u.startswith('http://'):
+        if h856u and h856u.startswith('http://'):
             h_type = 'Electronic Resource'
         else:
             h_type = _holdings_type(_extract(record,'007'))

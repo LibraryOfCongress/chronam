@@ -15,7 +15,6 @@ except ImportError:
 from chronam import core
 from chronam.core import models
 from chronam.core import index
-from chronam.core.essay_loader import load_essays
 from chronam.core.management.commands import configure_logging
 
 configure_logging("chronam_sync_logging.config", "chronam_sync.log")
@@ -33,7 +32,7 @@ class Command(BaseCommand):
         action = 'store_true',
         dest = 'skip_essays',
         default = False,
-        help = 'Skip essay loading in the chronam process.')
+        help = 'Skip essay loading in the chronam sync process.')
     
     option_list = BaseCommand.option_list + (verbose, skip_essays)
     help = ''
@@ -64,20 +63,7 @@ class Command(BaseCommand):
                 if filename.startswith('titles-') and filename.endswith('.xml'):
                     filepath = os.path.join(settings.BIB_STORAGE, filename)
                     management.call_command('load_titles', filepath, skip_index=True)
-
-        management.call_command('title_sync')
-
-        # overlay place info harvested from dbpedia onto the places table
-        try:
-            self.load_place_links()
-        except Exception, e:
-            _logger.exception(e)
-
-        if not options['skip_essays']:
-            load_essays(settings.ESSAYS_FEED)
-       
-        # We wait to index all the titles at the end.
-        index.index_titles()
+        management.call_command('title_sync', skip_essays=options['skip_essays'])
 
         end = datetime.now()
         total_time = end - start
@@ -85,17 +71,3 @@ class Command(BaseCommand):
         _logger.info('end time: %s' % end)
         _logger.info('total time: %s' % total_time)
         _logger.info("chronam_sync done.")
-
-    def load_place_links(self):
-        _logger.info('loading place links')
-        _CORE_ROOT = os.path.abspath(os.path.dirname(core.__file__))
-        filename= os.path.join(_CORE_ROOT, './fixtures/place_links.json')
-        for p in json.load(file(filename)):
-            place = models.Place.objects.get(name=p['name'])
-            place.longitude = p['longitude']
-            place.latitude = p['latitude']
-            place.geonames = p['geonames']
-            place.dbpedia = p['dbpedia']
-            place.save()
-        _logger.info('finished loading place links')
-
