@@ -7,11 +7,16 @@ from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
+try:
+    import simplejson as json
+except ImportError:
+    import json
+
+from chronam import core
 from chronam.core import index
 from chronam.core.essay_loader import load_essays
-from chronam.core.holding_loader import HoldingLoader
 from chronam.core.management.commands import configure_logging
-from chronam.core.models import Title
+from chronam.core.models import Place, Title
 
 
 configure_logging("title_sync_logging.config", "title_sync.log")
@@ -20,12 +25,12 @@ _logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     skip_essays = make_option('--skip-essays',
-        action = 'store_true',
-        dest = 'skip_essays',
-        default = False,
-        help = 'Skip essay loading in the title sync process.')
+                              action='store_true',
+                              dest='skip_essays',
+                              default=False,
+                              help='Skip essay loading.')
     option_list = BaseCommand.option_list + (skip_essays,)
-    
+
     help = 'Runs title pull and title load for a complete title refresh.'
     args = ''
 
@@ -54,7 +59,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         start = datetime.now()
 
-        _logger.info("Starting title sync process.") 
+        _logger.info("Starting title sync process.")
         # only load titles if the BIB_STORAGE is there, not always the case
         # for folks in the opensource world
         bib_isdir = os.path.isdir(settings.BIB_STORAGE)
@@ -62,7 +67,7 @@ class Command(BaseCommand):
         bib_settings = bool(bib_hasattr and bib_isdir)
         if bib_settings:
             bib_storage = settings.BIB_STORAGE
-            ##call_command('pull_titles',)           
+            ##call_command('pull_titles',)
 
             _logger.info("Starting load of OCLC titles.")
             worldcat_path = bib_storage + '/worldcat_titles/'
@@ -70,9 +75,9 @@ class Command(BaseCommand):
 
             _logger.info("Looking for titles not updated in the bulk OCLC pull.")
             tnu = self.find_titles_not_updated()
-            _logger.info("After bulk OCLC pull: %s not updated." % len(tnu))
-            
-            if len(tnu):            
+            _logger.info("After bulk OCLC pull and load: %s not updated." % len(tnu))
+
+            if len(tnu):
                 _logger.info("Pulling titles from OCLC by individual lccn & oclc num.")
                 self.pull_lccn_updates(tnu)
 
@@ -83,7 +88,7 @@ class Command(BaseCommand):
                 tnu = self.find_titles_not_updated(limited=False)
                 _logger.info("%s titles not in OCLC updates." % len(tnu))
                 _logger.info("Running pre-deletion checks for these titles.")
-        
+
         # Make sure that our essays are up to date
         if not options['skip_essays']:
             load_essays(settings.ESSAYS_FEED)
@@ -95,18 +100,18 @@ class Command(BaseCommand):
                     essays = title.essays.all()
                     issues = title.issues.all()
 
-                    error = "DELETION ERROR: Title %s has" % title
+                    error = "DELETION ERROR: Title %s has " % title
                     error_end = "It will not be deleted."
 
                     if not essays or not issues:
                         delete_txt = (str(title), title.lccn, title.oclc)
-                        _logger.info('TITLE DELETE: %s, %s, %s' % delet_txt)
+                        _logger.info('DELETE TITLE: %s, lccn: %s, oclc: %s' % delete_txt)
                         title.delete()
                     elif essays:
-                        _logger.warning(error + ' essays ' + error_end)
+                        _logger.warning(error + 'essays.' + error_end)
                         continue
                     elif issues:
-                        _logger.warning(error + ' issues ' + error_end)
+                        _logger.warning(error + 'issues.' + error_end)
                         continue
 
             # Load holdings for all remaining titles.
@@ -132,9 +137,9 @@ class Command(BaseCommand):
     def load_place_links(self):
         _logger.info('loading place links')
         _CORE_ROOT = os.path.abspath(os.path.dirname(core.__file__))
-        filename= os.path.join(_CORE_ROOT, './fixtures/place_links.json')
+        filename = os.path.join(_CORE_ROOT, './fixtures/place_links.json')
         for p in json.load(file(filename)):
-            place = models.Place.objects.get(name=p['name'])
+            place = Place.objects.get(name=p['name'])
             place.longitude = p['longitude']
             place.latitude = p['latitude']
             place.geonames = p['geonames']

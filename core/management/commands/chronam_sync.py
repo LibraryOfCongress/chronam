@@ -7,11 +7,6 @@ from django.core import management
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-try:
-    import simplejson as json
-except ImportError:
-    import json
-
 from chronam import core
 from chronam.core import models
 from chronam.core import index
@@ -63,6 +58,7 @@ class Command(BaseCommand):
                 if filename.startswith('titles-') and filename.endswith('.xml'):
                     filepath = os.path.join(settings.BIB_STORAGE, filename)
                     management.call_command('load_titles', filepath, skip_index=True)
+
         management.call_command('title_sync', skip_essays=options['skip_essays'])
 
         end = datetime.now()
