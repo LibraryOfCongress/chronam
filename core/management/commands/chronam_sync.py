@@ -28,7 +28,13 @@ class Command(BaseCommand):
                               default=False,
                               help='Skip essay loading.')
 
-    option_list = BaseCommand.option_list + (verbose, skip_essays)
+    pull_title_updates = make_option('--pull-title-updates',
+                                     action='store_true',
+                                     dest='pull_title_updates',
+                                     default=False,
+                                     help='Pull down a new set of titles.')
+
+    option_list = BaseCommand.option_list + (verbose, skip_essays, skip_titlepull)
     help = ''
     args = ''
 
@@ -58,7 +64,10 @@ class Command(BaseCommand):
                     filepath = os.path.join(settings.BIB_STORAGE, filename)
                     management.call_command('load_titles', filepath, skip_index=True)
 
-        management.call_command('title_sync', skip_essays=options['skip_essays'])
+        management.call_command('title_sync', 
+                                skip_essays=options['skip_essays']
+                                skip_titlepull=options['skip_titlepul']
+                                )
 
         end = datetime.now()
         total_time = end - start

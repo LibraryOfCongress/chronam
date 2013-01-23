@@ -29,12 +29,21 @@ class Command(BaseCommand):
                               dest='skip_essays',
                               default=False,
                               help='Skip essay loading.')
-    option_list = BaseCommand.option_list + (skip_essays,)
+    
+    pull_title_updates = make_option('--pull-title-updates',
+                              action='store_true',
+                              dest='pull_title_updates',
+                              default=False,
+                              help='Pull down a new set of titles.')
+
+    option_list = BaseCommand.option_list + (skip_essays, pull_title_updates)
 
     help = 'Runs title pull and title load for a complete title refresh.'
     args = ''
 
     def find_titles_not_updated(self, limited=True):
+        _logger.info("Looking for titles not yet updated.")
+        
         if limited:
             titles = Title.objects.order_by('-version').values(
                 'lccn_orig', 'oclc', 'version')
@@ -43,8 +52,10 @@ class Command(BaseCommand):
             titles = Title.objects.order_by('-version')
             end = titles[0].version
 
-        start = end - timedelta(weeks=1)
+        start = end - timedelta(weeks=2)
         titles = titles.exclude(version__range=(start, end))
+        
+        _logger.info("Total number of titles not updated: %s" % len(titles))
         return titles
 
     def pull_lccn_updates(self, titles):
@@ -67,27 +78,31 @@ class Command(BaseCommand):
         bib_settings = bool(bib_hasattr and bib_isdir)
         if bib_settings:
             bib_storage = settings.BIB_STORAGE
-            ##call_command('pull_titles',)
+            worldcat_dir = bib_storage + '/worldcat_titles/'
+
+            pull_titles = bool(options['pull_title_updates'] and hasattr(settings, "WORLDCAT_KEY")
+            if pull_titles:
+                call_command('pull_titles',)    
 
             _logger.info("Starting load of OCLC titles.")
-            worldcat_path = bib_storage + '/worldcat_titles/'
-            call_command('load_titles', worldcat_path + 'bulk', skip_index=True)
+            bulk_dir = worldcat_dir + 'bulk' 
+            if os.path.isdir(bulk_dir):      
+                call_command('load_titles', bulk_dir, skip_index=True)
 
-            _logger.info("Looking for titles not updated in the bulk OCLC pull.")
             tnu = self.find_titles_not_updated()
-            _logger.info("After bulk OCLC pull and load: %s not updated." % len(tnu))
 
-            if len(tnu):
+                # Only update by individual lccn if there are records that need updating.
+            if pull_titles and len(tnu):
                 _logger.info("Pulling titles from OCLC by individual lccn & oclc num.")
                 self.pull_lccn_updates(tnu)
 
-                _logger.info("Loading titles from second title pull.")
-                call_command('load_titles', worldcat_path + 'lccn', skip_index=True)
+            _logger.info("Loading titles from second title pull.")
+            lccn_dir = worldcat_dir + 'lccn'
+            if os.path.isdir(lccn_dir):
+                call_command('load_titles', lccn_dir, skip_index=True)
 
-                _logger.info("Looking for titles that were not found in OCLC updates.")
-                tnu = self.find_titles_not_updated(limited=False)
-                _logger.info("%s titles not in OCLC updates." % len(tnu))
-                _logger.info("Running pre-deletion checks for these titles.")
+            tnu = self.find_titles_not_updated(limited=False)
+            _logger.info("Running pre-deletion checks for these titles.")
 
         # Make sure that our essays are up to date
         if not options['skip_essays']:
@@ -104,7 +119,7 @@ class Command(BaseCommand):
                     error_end = "It will not be deleted."
 
                     if not essays or not issues:
-                        delete_txt = (str(title), title.lccn, title.oclc)
+                        delete_txt = (title.name, title.lccn, title.oclc)
                         _logger.info('DELETE TITLE: %s, lccn: %s, oclc: %s' % delete_txt)
                         title.delete()
                     elif essays:

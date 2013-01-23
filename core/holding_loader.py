@@ -189,8 +189,11 @@ class HoldingLoader:
 def _holdings_type(s):
     if s[0] == "t":
         return "Original"
-    elif s[0]  == "h" and s[11] == "a":
-        return "Microfilm Master"
+    elif s[0]  == "h" and len(s) > 11:
+        if s[11] == "a":
+            return "Microfilm Master"
+        else:
+            return None
     elif s[0] == "c":
         return "Electronic Resource"
     elif s[0] == "z":
