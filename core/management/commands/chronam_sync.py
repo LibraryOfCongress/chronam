@@ -34,7 +34,7 @@ class Command(BaseCommand):
                                      default=False,
                                      help='Pull down a new set of titles.')
 
-    option_list = BaseCommand.option_list + (verbose, skip_essays, skip_titlepull)
+    option_list = BaseCommand.option_list + (verbose, skip_essays, pull_title_updates)
     help = ''
     args = ''
 
@@ -65,9 +65,8 @@ class Command(BaseCommand):
                     management.call_command('load_titles', filepath, skip_index=True)
 
         management.call_command('title_sync', 
-                                skip_essays=options['skip_essays']
-                                skip_titlepull=options['skip_titlepul']
-                                )
+                                skip_essays=options['skip_essays'],
+                                pull_title_updates=options['pull_title_updates'])
 
         end = datetime.now()
         total_time = end - start

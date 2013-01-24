@@ -29,12 +29,12 @@ class Command(BaseCommand):
                               dest='skip_essays',
                               default=False,
                               help='Skip essay loading.')
-    
+
     pull_title_updates = make_option('--pull-title-updates',
-                              action='store_true',
-                              dest='pull_title_updates',
-                              default=False,
-                              help='Pull down a new set of titles.')
+                                     action='store_true',
+                                     dest='pull_title_updates',
+                                     default=False,
+                                     help='Pull down a new set of titles.')
 
     option_list = BaseCommand.option_list + (skip_essays, pull_title_updates)
 
@@ -43,7 +43,7 @@ class Command(BaseCommand):
 
     def find_titles_not_updated(self, limited=True):
         _logger.info("Looking for titles not yet updated.")
-        
+
         if limited:
             titles = Title.objects.order_by('-version').values(
                 'lccn_orig', 'oclc', 'version')
@@ -54,7 +54,7 @@ class Command(BaseCommand):
 
         start = end - timedelta(weeks=2)
         titles = titles.exclude(version__range=(start, end))
-        
+
         _logger.info("Total number of titles not updated: %s" % len(titles))
         return titles
 
@@ -80,13 +80,13 @@ class Command(BaseCommand):
             bib_storage = settings.BIB_STORAGE
             worldcat_dir = bib_storage + '/worldcat_titles/'
 
-            pull_titles = bool(options['pull_title_updates'] and hasattr(settings, "WORLDCAT_KEY")
+            pull_titles = bool(options['pull_title_updates'] and hasattr(settings, "WORLDCAT_KEY"))
             if pull_titles:
-                call_command('pull_titles',)    
+                call_command('pull_titles',)
 
             _logger.info("Starting load of OCLC titles.")
-            bulk_dir = worldcat_dir + 'bulk' 
-            if os.path.isdir(bulk_dir):      
+            bulk_dir = worldcat_dir + 'bulk'
+            if os.path.isdir(bulk_dir):
                 call_command('load_titles', bulk_dir, skip_index=True)
 
             tnu = self.find_titles_not_updated()
@@ -120,7 +120,7 @@ class Command(BaseCommand):
 
                     if not essays or not issues:
                         delete_txt = (title.name, title.lccn, title.oclc)
-                        _logger.info('DELETE TITLE: %s, lccn: %s, oclc: %s' % delete_txt)
+                        _logger.info('TITLE DELETED: %s, lccn: %s, oclc: %s' % delete_txt)
                         title.delete()
                     elif essays:
                         _logger.warning(error + 'essays.' + error_end)

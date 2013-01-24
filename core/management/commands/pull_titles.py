@@ -57,7 +57,7 @@ class Command(BaseCommand):
                 _logger.info("lccn: %s, oclc: %s" % (lccn, oclc))
         else:
             _logger.info("started pulling titles from OCLC.")
-            start, end = self.run_pull(path + '/bulk/') 
+            start, end = self.run_pull(path + 'bulk/') 
             _logger.info("finished pulling titles from OCLC.")
             _logger.info("start time: %s" % start)
             _logger.info("end time: %s" % end)

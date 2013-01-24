@@ -1,7 +1,8 @@
 import datetime
 import itertools
 import logging
-import os
+import os, os.path
+import sys
 import types
 
 from django.conf import settings
@@ -306,7 +307,16 @@ class SearchWorldCatTitles:
         '''
         # Create directory if it doesn't exist
         if not os.path.exists(save_path):
-            os.makedirs(save_path)
+            try:
+                os.makedirs(save_path)
+            except OSError:
+                _logger.exception('Issue creating the directory %s.' % save_path)
+                sys.exit()
+        else:
+            # Make sure the directory is empty
+            if len([name for name in os.listdir(save_path) if os.path.isfile(name)]):
+                 _logger.exception('Destination directory %s is not empty.' % save_path)
+                 sys.exit()
 
         if query:
             # Make sure the query is a string
