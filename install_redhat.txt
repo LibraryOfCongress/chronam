@@ -44,7 +44,7 @@ tar xvf apache-solr-1.4.1.tar
 mv apache-solr-1.4.1/example/ /opt/solr-1.4.1
 
 cp ${CHRONAM_HOME}/conf/schema.xml /opt/solr-1.4.1/solr/conf/schema.xml
-cp ${CHRONAM_HOME}/conf/stopwords_* /opt/solr-1.4.1/solr/conf/
+cp ${CHRONAM_HOME}/conf/stopwords* /opt/solr-1.4.1/solr/conf/
 cp ${CHRONAM_HOME}/conf/solrconfig-centos.xml /opt/solr-1.4.1/solr/conf/solrconfig.xml
 
 # Update the dataDir field in /opt/solr-1.4.1/solr/conf/solrconfig.xml and point to a directory for
