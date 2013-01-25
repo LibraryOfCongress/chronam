@@ -158,6 +158,7 @@ class SearchWorldCatTitles:
                     year_dict = self.generate_year_dict()
                     base_query = query
                     for year in sorted(year_dict.iterkeys()):
+                        
                         operator = year_dict[year]
                         query = self.add_to_query('srw.yr', year, operator, base_query)
                         yr_request = self.generate_srurequest(query)
@@ -173,7 +174,13 @@ class SearchWorldCatTitles:
                                                 )))
                         else:
                             _logger.warning("There is a problem with request. Exiting.")
-                            return
+                            _logger.warning('yr_request: %s' % yr_request)
+                            _logger.warning('yr_request_able: %s' % yr_request_able)
+                            _logger.warning('country: %s' % country.strip('*'))
+                            _logger.warning('year: %s' % year)
+                            _logger.warning('operator: %s' % operator)
+                             
+                            continue
 
                         total += yr_request_able
                 grand_total += total

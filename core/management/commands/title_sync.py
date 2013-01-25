@@ -91,7 +91,7 @@ class Command(BaseCommand):
 
             tnu = self.find_titles_not_updated()
 
-                # Only update by individual lccn if there are records that need updating.
+            # Only update by individual lccn if there are records that need updating.
             if pull_titles and len(tnu):
                 _logger.info("Pulling titles from OCLC by individual lccn & oclc num.")
                 self.pull_lccn_updates(tnu)
