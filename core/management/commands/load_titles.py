@@ -43,7 +43,6 @@ class Command(BaseCommand):
 
     def xml_file_handler(self, marc_xml, skip_index):
         self.xml_start = datetime.now()
-        _logger.info("loading marcxml title records from %s" % marc_xml)
         results = title_loader.load(marc_xml)
 
         if not skip_index:
@@ -51,7 +50,6 @@ class Command(BaseCommand):
             _logger.info("indexing new titles")
             index_titles(since=self.xml_start)
         
-        _logger.info("finished loading marcxml titles from %s" % marc_xml)
         return results
 
     def add_results(self, results):
