@@ -91,7 +91,7 @@ class HoldingLoader:
         if h856u and h856u.startswith('http://'):
             h_type = 'Electronic Resource'
         else:
-            h_type = _holdings_type(_extract(record,'007'))
+            htype = _holdings_type(_extract(record, '007'))
         return h_type
 
     def _parse_date(self, f008):
@@ -189,7 +189,7 @@ class HoldingLoader:
 def _holdings_type(s):
     if s[0] == "t":
         return "Original"
-    elif s[0]  == "h" and len(s) > 11:
+    elif s[0] == "h" and len(s) > 11:
         if s[11] == "a":
             return "Microfilm Master"
         else:

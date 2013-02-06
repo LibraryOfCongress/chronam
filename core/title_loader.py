@@ -102,15 +102,15 @@ class TitleLoader(object):
             self.records_created += 1
             title = models.Title(lccn=lccn)
             title.version = dt
-        
+
         # clear m2m relationships
         # these will come from the extraction
         title.subjects.clear()
         title.languages.clear()
         title.places.clear()
 
-        #TODO: Add a check to the title load that deletes all m2m in subjects and 
-        # places, to keep from lonely m2m records hanging out 
+        #TODO: Add a check to the title load that deletes all m2m in subjects and
+        # places, to keep from lonely m2m records hanging out
 
         # delete fk relationships
         # these will come from the extraction
@@ -122,7 +122,7 @@ class TitleLoader(object):
         title.related_title_links.all().delete()
         title.urls.all().delete()
 
-        # update title fields 
+        # update title fields
         self._set_name(record, title)
 
         title.lccn_orig = lccn_orig
@@ -132,7 +132,7 @@ class TitleLoader(object):
         title.publisher = _extract(record, '260', 'b')
         title.frequency = _extract(record, '310', 'a')
         title.frequency_date = _extract(record, '310', 'b')
-        # the main purpose of this it to look for records 
+        # the main purpose of this it to look for records
         # with 245 $h[microform] or [microfilm]
         # but we save everything
         title.medium = _extract(record, '245', 'h')
@@ -162,7 +162,7 @@ class TitleLoader(object):
 
         # for context see: https://rdc.lctl.gov/trac/ndnp/ticket/375
         if _is_chronam_electronic_resource(title, record):
-            _logger.info("deleting title record for chronicling america electronic resource: %s" % title)
+            _logger.info("deleting title record for chronam electronic resource: %s" % title)
             title.delete()
 
         # this is for long running processes so the query cache
@@ -207,7 +207,7 @@ class TitleLoader(object):
         return
 
     def _extract_languages(self, record, title):
-        
+
         def _get_langs(field):
             '''
             _get_langs sub-function is to extract/parse
@@ -225,18 +225,18 @@ class TitleLoader(object):
             return field_langs
 
         code = _extract(record, '008')[35:38]
-        try: 
+        try:
             langs = [models.Language.objects.get(code=code)]
         except models.Language.DoesNotExist:
             langs = []
             _logger.error("Code %s, not found in language table." % code)
 
-        subfields_to_eval = ['a','b']
+        subfields_to_eval = ['a', 'b']
         for f041 in record.get_fields('041'):
             for sf in subfields_to_eval:
                 sf_langs = _get_langs(f041.get_subfields(sf))
                 [langs.append(sf_lang) for sf_lang in sf_langs if sf_lang not in langs]
-        
+
         title.languages = list(set(langs))
         return
 
@@ -265,12 +265,10 @@ class TitleLoader(object):
     def _extract_publication_dates(self, record, title):
         for field in record.get_fields('362'):
             text = field['a']
-            if text == None:
+            if text is None:
                 continue
             pubdate, created = models.PublicationDate.objects.get_or_create(
-                                                        text=text,
-                                                        titles=title
-                                                         )
+                text=text, titles=title)
         return
 
     def _extract_subjects(self, record, title):
@@ -294,43 +292,43 @@ class TitleLoader(object):
         for field in record.fields:
             if field.tag.startswith('5') and field['a']:
                 note, note_created = models.Note.objects.get_or_create(
-                                        text=field['a'],
-                                        type=field.tag,
-                                        title=title
-                                        )
+                    text=field['a'],
+                    type=field.tag,
+                    title=title
+                )
         return
 
     def _extract_preceeding_titles(self, record, title):
         for f in record.get_fields('780'):
             link_obj = self._unpack_link(models.PreceedingTitleLink, f)
             link, link_created = models.PreceedingTitleLink.objects.get_or_create(
-                                        name=link_obj.name,
-                                        lccn=link_obj.lccn,
-                                        oclc=link_obj.oclc,
-                                        title=title
-                                        )
+                name=link_obj.name,
+                lccn=link_obj.lccn,
+                oclc=link_obj.oclc,
+                title=title
+            )
         return
 
     def _extract_succeeding_titles(self, record, title):
         for f in record.get_fields('785'):
             link_obj = self._unpack_link(models.SucceedingTitleLink, f)
             link, link_created = models.SucceedingTitleLink.objects.get_or_create(
-                                        name=link_obj.name,
-                                        lccn=link_obj.lccn,
-                                        oclc=link_obj.oclc,
-                                        title=title
-                                        )
+                name=link_obj.name,
+                lccn=link_obj.lccn,
+                oclc=link_obj.oclc,
+                title=title
+            )
         return
 
     def _extract_related_titles(self, record, title):
         for f in record.get_fields('775'):
             link_obj = self._unpack_link(models.RelatedTitleLink, f)
             link, link_created = models.RelatedTitleLink.objects.get_or_create(
-                                        name=link_obj.name,
-                                        lccn=link_obj.lccn,
-                                        oclc=link_obj.oclc,
-                                        title=title
-                                        )
+                name=link_obj.name,
+                lccn=link_obj.lccn,
+                oclc=link_obj.oclc,
+                title=title
+            )
         return
 
     def _extract_alt_titles(self, record, title):
@@ -349,14 +347,14 @@ class TitleLoader(object):
             if field.indicators[1] == ' ':
                 alt = models.AltTitle(name=field['a'])
                 alt_titles.append(alt)
-        
+
         for alt_title in alt_titles:
             alt_obj, alt_created = models.AltTitle.objects.get_or_create(
-                                        name=alt_title.name,
-                                        date=alt_title.date,
-                                        title=title
-                                        )
-        return 
+                name=alt_title.name,
+                date=alt_title.date,
+                title=title
+            )
+        return
 
     def _extract_country(self, record):
         country_code = record['008'].data[15:18]
@@ -379,47 +377,44 @@ class TitleLoader(object):
     def _extract_oclc(self, record):
         # check for control number identifier of the 001 field
         cni = _extract(record, '003')
-        
+
         # Strip & lower if cni is not NoneType
         if cni:
             cni = cni.strip().lower()
-        
-        # Info on codes referred to below: 
+
+        # Info on codes referred to below:
         # http://www.loc.gov/marc/organizations/org-search.php
         # The first two checks are values found in older version
         # of title XML. In the third case, the XML is from
         # OCLC, but has no 003 field, so infer that None means
-        # that the record has an implied 003 field. 
+        # that the record has an implied 003 field.
 
         # dlc = DLC =  Library of Congress
         if cni == 'dlc':
             # then the 001 is LCCN, so we want to hit 035 $a.
             oclc = _extract(record, '035', 'a')
-        
+
         # ocolc = OCoLC = OCLC
         # or
         # None implies that the 003 should be ocolc, but
         # it is not explicitly listed.
-        elif (cni == 'ocolc') or (cni == None):
+        elif (cni == 'ocolc') or (cni is None):
             oclc = _extract(record, '001')
-        
+
         else:
             # if the script makes it here, we have a problem
             _logger.info("003 value is not handled by this load script")
-        
-        return _normal_oclc(oclc)
 
+        return _normal_oclc(oclc)
 
     def _extract_urls(self, record, title):
         for field in record.get_fields('856'):
             i2 = field.indicators[1]
             for url in field.get_subfields('u'):
                 url_obj, url_created = models.Url.objects.get_or_create(
-                                            value=url,
-                                            type=i2,
-                                            title=title
-                                            )
+                    value=url, type=i2, title=title)
         return
+
 
 def _extract(record, field, subfield=None):
     value = None
@@ -440,13 +435,13 @@ def _clean(value):
 
 
 def _normal_place(value):
-    if value == None:
+    if value is None:
         return None
     return sub(r'\.$', '', value)
 
 
 def _normal_year(value):
-    if value == None:
+    if value is None:
         return None
     elif value == '9999':
         return 'current'
@@ -454,7 +449,7 @@ def _normal_year(value):
 
 
 def _normal_lccn(value):
-    if value == None:
+    if value is None:
         return None
     return value.replace(' ', '')
 
@@ -505,7 +500,7 @@ def load(location, bulk_load=True):
     _logger.info("loading titles from: %s" % location)
 
     loader.load_file(location)
-    
+
     if not bulk_load:
         _logger.info("records processed: %i" % loader.records_processed)
         _logger.info("records created: %i" % loader.records_created)
