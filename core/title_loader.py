@@ -9,7 +9,9 @@ from pymarc import map_xml, record_to_xml
 from django.db import reset_queries
 
 from chronam.core import models
+from chronam.core.management.commands import configure_logging
 
+configure_logging('load_titles_logging.config', 'load_titles.log')
 _logger = logging.getLogger(__name__)
 
 

@@ -7,7 +7,9 @@ from django.db import reset_queries
 
 from chronam.core.title_loader import _normal_oclc, _extract
 from chronam.core import models
+from chronam.core.management.commands import configure_logging
 
+configure_logging('load_holdings_logging.config', 'load_holdings.log')
 _logger = logging.getLogger(__name__)
 
 
