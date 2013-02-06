@@ -21,7 +21,7 @@ def process_coordinates(batch_dir):
     try:
         batch_loader = BatchLoader()
         batch_loader.process_coordinates(batch_dir)
-        logger.info("processed batch %s", batch)
+        logger.info("processed batch %s", batch_dir)
     except Exception, e:
         logger.exception("unable to process batch %s" % batch_dir)
         
