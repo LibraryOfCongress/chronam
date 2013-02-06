@@ -93,7 +93,7 @@ class HoldingLoader:
         if h856u and h856u.startswith('http://'):
             h_type = 'Electronic Resource'
         else:
-            htype = _holdings_type(_extract(record, '007'))
+            h_type = _holdings_type(_extract(record, '007'))
         return h_type
 
     def _parse_date(self, f008):
