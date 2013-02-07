@@ -505,6 +505,9 @@ class BatchLoader(object):
         for issue in batch.issues.all():
             for page in issue.pages.all():
                 page.delete()
+                # remove coordinates
+                if os.path.exists(models.coordinates_path(page._url_parts())):
+                    os.remove(models.coordinates_path(page._url_parts()))
                 reset_queries()
             issue.delete()
         batch.delete()
