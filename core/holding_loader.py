@@ -1,5 +1,6 @@
 import logging
 import os
+from datetime import datetime
 from time import time
 
 from pymarc import map_xml
@@ -104,9 +105,10 @@ class HoldingLoader:
         if f008:
             y = int(f008[26:28])
             m = int(f008[28:30])
-            # TODO: should this handle 2 digit years better?
             if y and m:
-                if y < 10:
+                # Possibly when we hit 2080, if we are still using
+                # this approach, then it maybe buggy -- 1980 or 2080.
+                if y <= int(datetime.strftime(datetime.today(), '%y')):
                     y = 2000 + y
                 else:
                     y = 1900 + y
