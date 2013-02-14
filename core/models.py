@@ -914,10 +914,27 @@ class Holding(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def description_as_list(self):
-        l = re.findall(r'<.+?>', self.description)
+        desc_list = []
+        desc_txt = self.description
+        # To protect the records that start w/ things like "s="
+        # We pull those out first & remove those from the desc_txt
+        # Sample record: 's=<1959:6:2-1962:11:15> <1966:11:23-12:29>'
+        for d in desc_txt.split():
+            try:
+                if d[1] == '=' and d.endswith('>'):
+                    desc_list.append(d)
+                    desc_txt = desc_txt.replace(d, '')
+            except IndexError:
+                continue
+
+        l = re.findall(r'<.+?>', desc_txt)
         if l:
-            return l
-        return [self.description]
+            [desc_list.append(d) for d in l]     
+        
+        if desc_list:
+            return desc_list
+        else:
+            return [self.description]
 
     def __unicode__(self):
         return u"%s - %s - %s" % (self.institution.name, self.type, self.description)
