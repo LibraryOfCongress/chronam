@@ -194,6 +194,16 @@ def _holdings_type(s):
     elif s[0] == "h" and len(s) > 11:
         if s[11] == "a":
             return "Microfilm Master"
+        elif s[11] == "b":
+            return "Microfilm Print Master"
+        elif s[11] == "c":
+            return "Microfilm Service Copy"
+        #other values are classified as generic microform
+        #m - Mixed generation
+        #u - Unknown
+        #| - No attempt to code
+        elif s[11] in ["m", "u", "|"]:
+            return "Microform"
         else:
             return None
     elif s[0] == "c":
