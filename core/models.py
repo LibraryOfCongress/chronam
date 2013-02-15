@@ -269,7 +269,7 @@ class Title(models.Model):
         doc = {
                 'id': self.url,
                 'type': 'title',
-                'title': self.name,
+                'title': self.display_name,
                 'title_normal': self.name_normal,
                 'lccn': self.lccn,
                 'edition': self.edition,
@@ -298,7 +298,7 @@ class Title(models.Model):
         j = {
                 "url": "http://" + host + self.json_url,
                 "lccn": self.lccn,
-                "name": self.name,
+                "name": self.display_name,
                 "place_of_publication": self.place_of_publication,
                 "publisher": self.publisher,
                 "start_year": self.start_year,
@@ -382,7 +382,7 @@ class Title(models.Model):
 
     def __unicode__(self):
         # TODO: should edition info go in here if present?
-        return u'%s (%s) %s-%s' % (self.name, self.place_of_publication,
+        return u'%s (%s) %s-%s' % (self.display_name, self.place_of_publication,
                                    self.start_year, self.end_year)
 
     class Meta:
