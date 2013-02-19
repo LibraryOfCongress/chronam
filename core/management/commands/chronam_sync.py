@@ -10,6 +10,7 @@ from django.conf import settings
 from chronam.core import models
 from chronam.core import index
 from chronam.core.management.commands import configure_logging
+from chronam.core.utils.utils import validate_bib_dir
 
 configure_logging("chronam_sync_logging.config", "chronam_sync.log")
 _logger = logging.getLogger(__name__)
@@ -57,11 +58,12 @@ class Command(BaseCommand):
         management.call_command('loaddata', 'labor_presses.json')
         management.call_command('loaddata', 'countries.json')
 
-        if hasattr(settings, "BIB_STORAGE") and os.path.isdir(settings.BIB_STORAGE):
+        bib_in_settings = validate_bib_dir()
+        if bib_in_settings:
             # look in BIB_STORAGE for original titles to load
-            for filename in os.listdir(settings.BIB_STORAGE):
+            for filename in os.listdir(bib_in_settings):
                 if filename.startswith('titles-') and filename.endswith('.xml'):
-                    filepath = os.path.join(settings.BIB_STORAGE, filename)
+                    filepath = os.path.join(bib_in_settings, filename)
                     management.call_command('load_titles', filepath, skip_index=True)
 
         management.call_command('title_sync', 

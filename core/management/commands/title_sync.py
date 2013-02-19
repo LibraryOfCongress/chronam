@@ -17,7 +17,7 @@ from chronam.core import index
 from chronam.core.essay_loader import load_essays
 from chronam.core.management.commands import configure_logging
 from chronam.core.models import Place, Title
-
+from chronam.core.utils.utils import validate_bib_dir
 
 configure_logging("title_sync_logging.config", "title_sync.log")
 _logger = logging.getLogger(__name__)
@@ -73,12 +73,9 @@ class Command(BaseCommand):
         _logger.info("Starting title sync process.")
         # only load titles if the BIB_STORAGE is there, not always the case
         # for folks in the opensource world
-        bib_isdir = os.path.isdir(settings.BIB_STORAGE)
-        bib_hasattr = hasattr(settings, "BIB_STORAGE")
-        bib_settings = bool(bib_hasattr and bib_isdir)
-        if bib_settings:
-            bib_storage = settings.BIB_STORAGE
-            worldcat_dir = bib_storage + '/worldcat_titles/'
+        bib_in_settings = validate_bib_dir()
+        if bib_in_settings:
+            worldcat_dir = bib_in_settings + '/worldcat_titles/'
 
             pull_titles = bool(options['pull_title_updates'] and hasattr(settings, "WORLDCAT_KEY"))
             if pull_titles:
@@ -108,7 +105,7 @@ class Command(BaseCommand):
         if not options['skip_essays']:
             load_essays(settings.ESSAYS_FEED)
 
-        if bib_settings:
+        if bib_in_settings:
             if len(tnu):
                 # Delete titles haven't been update & do not have essays or issues attached.
                 for title in tnu:
@@ -130,7 +127,7 @@ class Command(BaseCommand):
                         continue
 
             # Load holdings for all remaining titles.
-            holdings_dir = settings.BIB_STORAGE + '/holdings'
+            holdings_dir = bib_in_settings + '/holdings'
             call_command('load_holdings', holdings_dir)
 
         # overlay place info harvested from dbpedia onto the places table
