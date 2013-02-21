@@ -52,6 +52,7 @@ Python dependencies:
     virtualenv --no-site-packages ${CHRONAM_HOME}/ENV
     source /opt/chronam/ENV/bin/activate
     cp conf/chronam.pth ENV/lib/python2.7/site-packages/chronam.pth
+    pip install -U distribute
     pip install -r requirements.pip
 
 Next you need to create some directories for data:
