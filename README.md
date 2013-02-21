@@ -72,12 +72,12 @@ Add your database password to the settings.py file:
     cp /opt/chronam/settings_template.py /opt/chronam/settings.py
 
 For Django management commands to work you will need to have the
-DJANGO_SETTINGS_MODULE environment variable set:
+DJANGO_SETTINGS_MODULE environment variable set. You may want to add 
+this to your ~/.profile so you do not need to remember to do it 
+everytime you log in.
 
     export DJANGO_SETTINGS_MODULE=chronam.settings
 
-You may want to add this to your ~/.profile so you do not need to remember
-to do it everytime you log in.
 
 Next you will need to initialize database schema and load some initial data:
 
