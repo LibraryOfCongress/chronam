@@ -61,6 +61,7 @@ cp conf/chronam.pth ENV/lib/python2.7/site-packages/chronam.pth
 export DJANGO_SETTINGS_MODULE=chronam.settings
 
 # install python dependencies
+pip install -U distribute
 pip install -r requirements.pip
 
 # create directories for data
