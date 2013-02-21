@@ -130,7 +130,10 @@ def image_tile(request, path, width, height, x1, y1, x2, y2):
 @cors
 def coordinates(request, lccn, date, edition, sequence, words=None):
     url_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
-    f = open(models.coordinates_path(url_parts))
+    try:
+        f = open(models.coordinates_path(url_parts))
+    except IOError:
+        return HttpResponse()
     data = f.read()
 
     r = HttpResponse(mimetype='application/json')

@@ -193,13 +193,17 @@ def states(request, format='html'):
     # custom SQL to eliminate spelling errors and the like in cataloging data
     # TODO: maybe use Django ORM once the data is cleaned more on import
     cursor = connection.cursor()
-    cursor.execute(
-"SELECT state, COUNT(*) AS count FROM core_place \
-WHERE state IS NOT NULL GROUP BY state HAVING count > 10 ORDER BY state")
+    non_states = ("----------------", "American Samoa", 
+        "Mariana Islands", "Puerto Rico", "Virgin Islands") 
+    sql = ('SELECT state, COUNT(*) AS count FROM core_place',
+           'WHERE state IS NOT NULL',
+           'AND state NOT IN %s' % (non_states,),
+           'GROUP BY state HAVING count > 10',
+           'ORDER BY state')
+    cursor.execute(' '.join(sql))
     if format == 'json' or request.META['HTTP_ACCEPT'] == 'application/json':
         states = [n[0] for n in cursor.fetchall()]
-        states.extend(["----------------", "American Samoa",
-                       "Mariana Islands", "Puerto Rico", "Virgin Islands"])
+        states.extend(non_states)
         return HttpResponse(json.dumps(states),
                             mimetype='application/json')
     states = [n[0] for n in cursor.fetchall()]

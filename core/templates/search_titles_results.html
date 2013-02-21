@@ -65,8 +65,7 @@
         <li><span class="order">{{number}}.</span>
             <a href="{% url chronam_title object_list.lccn %}">{{object_list}}</a>
                 {% if object_list.has_non_english_language %}
-                <br />
-                Languages:
+                | Languages:
                 {{ object_list.languages.all|join:", " }}
                 {% endif %}
         </li>

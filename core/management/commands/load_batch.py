@@ -21,6 +21,10 @@ class Command(BaseCommand):
                     action='store_false', 
                     dest='process_ocr', default=True,
                     help='Do not generate ocr, and index'),
+        make_option('--skip-coordinates', 
+                    action='store_false', 
+                    dest='process_coordinates', default=True,
+                    help='Do not out word coordinates'),
     )
     help = "Load a batch"
     args = '<batch name>'
@@ -29,7 +33,8 @@ class Command(BaseCommand):
         if len(args)!=0:
             raise CommandError('Usage is load_batch %s' % self.args)
 
-        loader = BatchLoader(process_ocr=options['process_ocr'])
+        loader = BatchLoader(process_ocr=options['process_ocr'],
+                             process_coordinates=options['process_coordinates'])
         try:
             batch = loader.load_batch(batch_name)
         except BatchLoaderException, e:

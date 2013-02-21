@@ -59,15 +59,16 @@ class BatchLoader(object):
     object serves as a context for a particular batch loading job.
     """
 
-    def __init__(self, process_ocr=True):
+    def __init__(self, process_ocr=True, process_coordinates=True):
         """Create a BatchLoader.
 
         The process_ocr parameter is used (mainly in testing) when we don't 
         want to spend time actually extracting ocr text and indexing.
         """
         self.PROCESS_OCR = process_ocr
-        if self.PROCESS_OCR: 
+        if self.PROCESS_OCR:
             self.solr = SolrConnection(settings.SOLR)
+        self.PROCESS_COORDINATES = process_coordinates
 
     def _find_batch_file(self, batch):
         """
@@ -413,9 +414,8 @@ class BatchLoader(object):
 
         lang_text, coords = ocr_extractor(url)
 
-        f = open(models.coordinates_path(page._url_parts()), "w")
-        f.write(gzip_compress(json.dumps(coords)))
-        f.close()
+        if self.PROCESS_COORDINATES:
+            self._process_coordinates(page, coords)
 
         ocr = OCR()
         ocr.page = page
@@ -434,6 +434,40 @@ class BatchLoader(object):
             self.solr.add(**page.solr_doc)
             page.indexed = True
         page.save()
+
+    def _process_coordinates(self, page, coords):
+        _logger.debug("writing out word coords for %s" %
+            page.url)
+         
+        f = open(models.coordinates_path(page._url_parts()), "w")
+        f.write(gzip_compress(json.dumps(coords)))
+        f.close()
+
+    def process_coordinates(self, batch_path):
+        logging.info("process word coordinates for batch at %s", batch_path)
+        dirname, batch_name = os.path.split(batch_path.rstrip("/"))
+        if dirname:
+            batch_source = None
+        else:
+            batch_source = urlparse.urljoin(settings.BATCH_STORAGE, batch_name)
+            if not batch_source.endswith("/"):
+                batch_source += "/"
+        batch_name = _normalize_batch_name(batch_name)
+        try:
+            batch = self._get_batch(batch_name, batch_source, create=False)
+            self.current_batch = batch 
+            for issue in batch.issues.all():
+                for page in issue.pages.all():
+                    url = urlparse.urljoin(self.current_batch.storage_url,
+                                           page.ocr_filename)
+
+                    lang_text, coords = ocr_extractor(url)
+                    self._process_coordinates(page, coords)
+        except Exception, e:
+            msg = "unable to process coordinates for batch: %s" % e
+            _logger.error(msg)
+            _logger.exception(e)
+            raise BatchLoaderException(msg)
 
     def storage_relative_path(self, path):
         """returns a relative path for a given file path within a batch, so 
@@ -471,6 +505,9 @@ class BatchLoader(object):
         for issue in batch.issues.all():
             for page in issue.pages.all():
                 page.delete()
+                # remove coordinates
+                if os.path.exists(models.coordinates_path(page._url_parts())):
+                    os.remove(models.coordinates_path(page._url_parts()))
                 reset_queries()
             issue.delete()
         batch.delete()

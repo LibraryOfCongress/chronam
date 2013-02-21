@@ -10,6 +10,9 @@ When you install mysql-server, you will be prompted for a root password. If
 you choose one, make a note of what it is. Later you will be asked to enter 
 the password when you create the database for the project.
 
+Get chronam
+-----------
+
 Next you need to get the chronam code:
 
     sudo mkdir /opt/chronam
@@ -31,7 +34,6 @@ Configure Apache
     sudo a2enmod cache expires rewrite disk_cache
     sudo cp conf/chronam.conf /etc/apache2/sites-available/chronam
     sudo a2ensite chronam
-
     sudo install -o $USER -g users -d /opt/chronam/static
     sudo install -o $USER -g users -d /opt/chronam/.python-eggs
 

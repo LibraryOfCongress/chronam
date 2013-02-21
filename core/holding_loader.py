@@ -1,5 +1,6 @@
 import logging
 import os
+from datetime import datetime
 from time import time
 
 from pymarc import map_xml
@@ -91,7 +92,7 @@ class HoldingLoader:
         if h856u and h856u.startswith('http://'):
             h_type = 'Electronic Resource'
         else:
-            h_type = _holdings_type(_extract(record,'007'))
+            h_type = _holdings_type(_extract(record, '007'))
         return h_type
 
     def _parse_date(self, f008):
@@ -104,9 +105,10 @@ class HoldingLoader:
         if f008:
             y = int(f008[26:28])
             m = int(f008[28:30])
-            # TODO: should this handle 2 digit years better?
             if y and m:
-                if y < 10:
+                # Possibly when we hit 2080, if we are still using
+                # this approach, then it maybe buggy -- 1980 or 2080.
+                if y <= int(datetime.strftime(datetime.today(), '%y')):
                     y = 2000 + y
                 else:
                     y = 1900 + y
@@ -189,9 +191,19 @@ class HoldingLoader:
 def _holdings_type(s):
     if s[0] == "t":
         return "Original"
-    elif s[0]  == "h" and len(s) > 11:
+    elif s[0] == "h" and len(s) > 11:
         if s[11] == "a":
             return "Microfilm Master"
+        elif s[11] == "b":
+            return "Microfilm Print Master"
+        elif s[11] == "c":
+            return "Microfilm Service Copy"
+        #other values are classified as generic microform
+        #m - Mixed generation
+        #u - Unknown
+        #| - No attempt to code
+        elif s[11] in ["m", "u", "|"]:
+            return "Microform"
         else:
             return None
     elif s[0] == "c":

@@ -17,9 +17,18 @@ logger = logging.getLogger(__name__)
 
 
 @task
-def load_batch(batch_dir, service_request=None):
+def process_coordinates(batch_dir):
     try:
         batch_loader = BatchLoader()
+        batch_loader.process_coordinates(batch_dir)
+        logger.info("processed batch %s", batch_dir)
+    except Exception, e:
+        logger.exception("unable to process batch %s" % batch_dir)
+        
+@task
+def load_batch(batch_dir, service_request=None, process_coordinates=True):
+    try:
+        batch_loader = BatchLoader(process_coordinates=process_coordinates)
         batch = batch_loader.load_batch(batch_dir)
         logger.info("loaded batch %s", batch)
         if service_request:
