@@ -73,4 +73,4 @@ URLs that used by the Chronicling America application at the Library of Congress
 Continue
 --------
 
-* You can now return to the Install section in README.md
+* You can now return to the Install section in [README.md](https://github.com/LibraryOfCongress/chronam/blob/master/README.md#install)

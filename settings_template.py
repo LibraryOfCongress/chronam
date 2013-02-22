@@ -59,7 +59,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'chronam.core.context_processors.get_search_form',
     'chronam.core.context_processors.extra_request_info',
     'chronam.core.context_processors.newspaper_info',
 )
