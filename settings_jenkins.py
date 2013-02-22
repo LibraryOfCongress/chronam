@@ -64,7 +64,6 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'south',
     'django.contrib.humanize',
-    'django_memorious',
     'djcelery',
     'djkombu',
 
