@@ -44,7 +44,10 @@ class Command(BaseCommand):
     def find_titles_not_updated(self, limited=True):
         _logger.info("Looking for titles not yet updated.")
 
-        if limited:
+        if Title.objects.count() == 0:
+            _logger.info("Total number of titles not updated: 0")
+            return Title.objects.values()
+        elif limited:
             titles = Title.objects.order_by('-version').values(
                 'lccn_orig', 'oclc', 'version')
             end = titles[0]['version']
