@@ -130,8 +130,7 @@ class Command(BaseCommand):
                         continue
 
             # Load holdings for all remaining titles.
-            holdings_dir = bib_in_settings + '/holdings'
-            call_command('load_holdings', holdings_dir)
+            call_command('load_holdings')
 
         # overlay place info harvested from dbpedia onto the places table
         try:
