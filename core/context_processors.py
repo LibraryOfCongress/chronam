@@ -24,13 +24,6 @@ def cors(request):
     pass
 
 
-def get_search_form (request):
-    params = request.GET if request.GET else None
-    form = forms.SearchPagesForm(params)
-    adv_form = forms.AdvSearchPagesForm(params)
-    return {'search_form': form, 'adv_search_form': adv_form,}
-
-
 def newspaper_info(request):
     info = cache.get("newspaper_info")
     if info is None:

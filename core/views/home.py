@@ -12,7 +12,9 @@ from django.shortcuts import render_to_response
 from django.core.paginator import Paginator
 
 from chronam.core import models
+from chronam.core import forms
 from chronam.core.decorator import profile
+
 
 def home(request, date=None):
     context = RequestContext(request, {})
@@ -25,11 +27,12 @@ def home(request, date=None):
     # note the date is handled on the client side in javascript
     return HttpResponse(content=template.render(context))
 
+
 def _frontpages(request, date):
-    # if there aren't any issues default to the first 20 which 
+    # if there aren't any issues default to the first 20 which
     # is useful for testing the homepage when there are no issues
     # for a given date
-    issues =  models.Issue.objects.filter(date_issued=date)
+    issues = models.Issue.objects.filter(date_issued=date)
     if issues.count() == 0:
         issues = models.Issue.objects.all()[0:20]
 
@@ -53,6 +56,7 @@ def _frontpages(request, date):
             'pages': issue.pages.count()})
     return results
 
+
 def frontpages(request, date):
     _year, _month, _day = date.split("-")
     try:
@@ -62,7 +66,12 @@ def frontpages(request, date):
     results = _frontpages(request, date)
     return HttpResponse(json.dumps(results), mimetype="application/json")
 
+
 def tabs(request, date=None):
-    context = RequestContext(request, {})
+    params = request.GET if request.GET else None
+    form = forms.SearchPagesForm(params)
+    adv_form = forms.AdvSearchPagesForm(params)
+    context = RequestContext(request, {'search_form': form,
+                                       'adv_search_form': adv_form})
     template = get_template("includes/tabs.html")
     return HttpResponse(content=template.render(context))

@@ -4,18 +4,22 @@ function normalize(s) {
     return parts.join('_');
 }
 
-jQuery(function($){
-    function getUrlVars(){
-        var vars = [], hash;
-        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-        for(var i = 0; i < hashes.length; i++){
-            hash = hashes[i].split('=');
-            vars.push(hash[0]);
-            vars[hash[0]] = hash[1];
-        }
-        return vars;
+function getUrlVars(){
+    var searchString = window.location.search.substring(1);
+    var vars = {};
+    if (searchString) {
+       var hash,
+       hashes = searchString.split('&');
+       for(var i=0; i<hashes.length; i++){
+           hash = hashes[i].split('=');
+           vars[unescape(hash[0])] = unescape(hash[1]);
+       }
     }
+    return vars;
+}
 
+jQuery(function($){
+    var vars = getUrlVars();
     $("#tabs-container").on('chronam.tabsloaded', function () {
     $("#box-tabs").tabs({collapsible: true});
     $("#box-tabs").show();
@@ -61,17 +65,17 @@ jQuery(function($){
     });
 
     $("input#id_sequence").val(1);
-    if (getUrlVars()["sequence"]==1){
+    if (vars["sequence"]==1){
         $("input#id_sequence").attr('checked', 'checked');
         $("input#id_char_sequence").val('');
     } else {
         $("input#id_sequence").attr('checked', false);
     }
 
-    if (getUrlVars()["dateFilterType"]=="range"){ 
+    if (vars["dateFilterType"]=="range"){ 
         $('#id_radiorange').attr('checked', 'checked');
         $("select#id_date2 option[value='"+end_year+"']").attr("selected", true);
-    } else if (getUrlVars()["dateFilterType"]=="yearRange"){
+    } else if (vars["dateFilterType"]=="yearRange"){
         $('#id_radioyear').attr('checked', 'checked');
         $('#id_date_to, #id_date_from').val('');
     } else {

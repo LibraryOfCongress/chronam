@@ -37,13 +37,59 @@ work with and/or publish the content.
 Install
 -------
 
-To learn more about how to install the software see operating specific 
-instructions:
+System level dependencies can be installed by following these operating system 
+specific instructions:
 
-* [install_ubuntu.txt](https://github.com/LibraryOfCongress/chronam/blob/master/install_ubuntu.txt)
-* [install_redhat.txt](https://github.com/LibraryOfCongress/chronam/blob/master/install_redhat.txt)
+* [install_ubuntu.md](https://github.com/LibraryOfCongress/chronam/blob/master/install_ubuntu.md)
+* [install_redhat.md](https://github.com/LibraryOfCongress/chronam/blob/master/install_redhat.md)
 
-Get Data
+After you have installed the system level dependencies you will need to 
+install some application specific dependencies, and configure the application.
+
+First you will need to set up the local Python environment and install some
+Python dependencies:
+
+    virtualenv --no-site-packages ${CHRONAM_HOME}/ENV
+    source /opt/chronam/ENV/bin/activate
+    cp conf/chronam.pth ENV/lib/python2.7/site-packages/chronam.pth
+    pip install -U distribute
+    pip install -r requirements.pip
+
+Next you need to create some directories for data:
+
+    mkdir /opt/chronam/data/batches
+    mkdir /opt/chronam/data/cache
+    mkdir /opt/chronam/data/bib
+
+And you will need a MySQL database. You will probably want to change the 
+password 'pick_one' in the example below to something else:
+
+    echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one'; GRANT ALL ON test_chronam.* TO 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root -p
+
+You will need to use the settings template to create your application settings.
+Add your database password to the settings.py file:
+
+    cp /opt/chronam/settings_template.py /opt/chronam/settings.py
+
+For Django management commands to work you will need to have the
+DJANGO_SETTINGS_MODULE environment variable set. You may want to add 
+this to your ~/.profile so you do not need to remember to do it 
+everytime you log in.
+
+    export DJANGO_SETTINGS_MODULE=chronam.settings
+
+
+Next you will need to initialize database schema and load some initial data:
+
+    django-admin.py syncdb --noinput --migrate
+    django-admin.py chronam_sync
+
+And finally you will need to collect static files (stylesheets, images) 
+for serving up by Apache in production settings:
+
+    django-admin.py collectstatic --noinput
+
+Load Data
 --------
 
 As mentioned above, the NDNP data that awardees create and ship to the Library
@@ -52,9 +98,31 @@ of Congress is in the public domain and is made available on the Web as
 titles. To use chronam you will need to have some of this batch data to load. If
 you are an awardee you probably have this data on hand already, but if not
 you can use a tool like [wget](http://www.gnu.org/software/wget/) to bulk 
-download the batches. For example
+download the batches. For example:
 
-    wget --recursive --no-host-directories --cut-dirs 1 --include-directories /data/batches/batch_dlc_jamaica_ver01/ http://chroniclingamerica.loc.gov/data/batches/batch_dlc_jamaica_ver01/
+    cd /opt/chronam/data/
+    wget --recursive --no-host-directories --cut-dirs 1 --reject index.html* --include-directories /data/batches/batch_dlc_jamaica_ver01/ http://chroniclingamerica.loc.gov/data/batches/batch_dlc_jamaica_ver01/
+
+In order to load data you will need to run the load_batch management command by
+passing it the full path to the batch directory. So assuming you have downloaded
+batch_dlc_jamaica_ver01 you will want to:
+
+    django-admin.py load_batch /opt/chronam/data/batches/batch_dlc_jamaica_ver01
+
+After this completes you should be able to view the batch in the batches report
+via the Web:
+
+    http://www.example.org/batches/
+
+Run Unit Tests
+--------------
+
+For the unit tests to work you will need to have the batch_dlc_jamaica_ver01
+available. You can use the wget command in the previous section to get get it.
+After that you should be able to:
+
+    cd /opt/chronam/
+    django-admin.py test core
 
 License
 -------
