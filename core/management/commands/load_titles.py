@@ -8,7 +8,7 @@ from django.core.management.base import BaseCommand
 
 from chronam.core import title_loader
 from chronam.core.index import index_titles
-from chronam.core.models import Title
+from chronam.core.models import Language, Title
 from chronam.core.management.commands import configure_logging
 
 configure_logging('load_titles_logging.config', 'load_titles.log')
@@ -103,3 +103,6 @@ class Command(BaseCommand):
 
         else:
             results = self.xml_file_handler(marc_xml_source, skip_index)
+
+        # Cleaning up languages that no longer have titles associated with them.
+        [l.delete() for l in Language.objects.all() if len(l.titles.all()) == 0]
