@@ -16,9 +16,10 @@ from chronam.core import models, index
 from chronam.core.rdf import titles_to_graph
 from chronam.core.utils.url import unpack_url_path
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def newspapers(request, state=None, format='html'):
-    if state and state != "all_states":        
+    if state and state != "all_states":
         state = unpack_url_path(state)
         if state is None:
             raise Http404
@@ -63,7 +64,7 @@ def newspapers(request, state=None, format='html'):
                 if place.state:
                     _newspapers_by_state.setdefault(place.state, set()).add(title)
 
-    newspapers_by_state = [(s, sorted(t)) for (s, t) in _newspapers_by_state.iteritems()]
+    newspapers_by_state = [(s, sorted(t, key=lambda title: title.name)) for s, t in sorted(_newspapers_by_state.iteritems())]
     crumbs = list(settings.BASE_CRUMBS)
 
     if format == "html":
@@ -82,10 +83,10 @@ def newspapers(request, state=None, format='html'):
         for state, titles in newspapers_by_state:
             for title in titles:
                 results["newspapers"].append({"lccn": title.lccn, "title: ": title.display_name, "url": "http://" + host + title.json_url, "state": state})
-            
+
         return HttpResponse(json.dumps(results, indent=2), mimetype='application/json')
     else:
-        return HttpResponseServerError("unsupported format: %s" % format)        
+        return HttpResponseServerError("unsupported format: %s" % format)
 
 
 @cache_page(settings.API_TTL_SECONDS)
@@ -112,16 +113,16 @@ def newspapers_atom(request):
                               mimetype="application/atom+xml",
                               context_instance=RequestContext(request))
 
+
 @cors
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @opensearch_clean
 def search_titles_results(request):
     page_title = 'US Newspaper Directory Search Results'
     crumbs = list(settings.BASE_CRUMBS)
-    crumbs.extend([
-        {'label':'Search Newspaper Directory',
-         'href': urlresolvers.reverse('chronam_search_titles')},
-        ])
+    crumbs.extend([{'label': 'Search Newspaper Directory',
+                    'href': urlresolvers.reverse('chronam_search_titles')},
+                   ])
     try:
         curr_page = int(request.REQUEST.get('page', 1))
     except ValueError, e:
@@ -167,7 +168,7 @@ def search_titles_results(request):
 
     elif format == 'json':
         results = {
-            'startIndex': start ,
+            'startIndex': start,
             'endIndex': end,
             'totalItems': paginator.count,
             'itemsPerPage': rows,
@@ -178,7 +179,7 @@ def search_titles_results(request):
             i['url'] = 'http://' + request.get_host() + i['id'].rstrip("/") + ".json"
         json_text = json.dumps(results, indent=2)
         # jsonp?
-        if request.GET.get('callback') != None:
+        if request.GET.get('callback') is not None:
             json_text = "%s(%s);" % (request.GET.get('callback'), json_text)
         return HttpResponse(json_text, mimetype='application/json')
 
@@ -190,10 +191,11 @@ def search_titles_results(request):
     if 'sort' in q:
         del q['sort']
     q = q.urlencode()
-    collapse_search_tab = True 
+    collapse_search_tab = True
     return render_to_response('search_titles_results.html',
                               dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @rdf_view
