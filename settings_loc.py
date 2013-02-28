@@ -12,3 +12,5 @@ BASE_CRUMBS = [
 
 THUMBNAIL_WIDTH = 200
 SEARCH_RESULTS_PER_PAGE = 20
+
+SHARETOOL_URL = "http://cdn.loc.gov/sites/chronicling-america.js"
