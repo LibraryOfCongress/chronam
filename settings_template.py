@@ -68,8 +68,8 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    # 'chronam.loc',
     # 'lc',
+    # 'chronam.loc',
     'south',
     'django.contrib.humanize',
     'django.contrib.staticfiles',
