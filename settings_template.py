@@ -124,7 +124,7 @@ STORAGE = '/opt/chronam/data/'
 STORAGE_URL = '/data/'
 BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
-OCR_DUMPS_STORAGE = os.path.join(STORAGE, "ocr")
+OCR_DUMP_STORAGE = os.path.join(STORAGE, "ocr")
 COORD_STORAGE = os.path.join(STORAGE, "word_coordinates")
 
 

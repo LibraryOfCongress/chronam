@@ -43,10 +43,11 @@ def _titles_states():
             title_name = "%s (%s)" % (short_name,
                                       title.place_of_publication)
             titles.append((title.lccn, title_name))
-            countries.add(title.country)
+            for p in title.places.all():
+                countries.add(p.state)
         states = [("", "All states")]
         for country in countries:
-            states.append((country.name, country.name))
+            states.append((country, country))
         states = sorted(states)
         cache.set("titles_states", (titles, states))
     else:
