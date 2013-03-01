@@ -151,11 +151,11 @@
 
 {% block javascript %}
 {{ block.super }}
-    <script src="{% static 'js/openseadragon.js' %}"></script>
+    <script src="{% static 'js/openseadragon.min.js' %}"></script>
     <script src="{% static 'js/jquery.ba-bbq.min.js' %}"></script> 
 
     <div id="page_data"
-	 data-static_url="{% static '' %}",
+	 data-static_url="{% static '' %}images/",
 	 data-width="{{page.jp2_width}}"
 	 data-height="{{page.jp2_length}}"
 	 data-page_url="{% url chronam_page title.lccn,issue.date_issued,issue.edition,page.sequence %}"

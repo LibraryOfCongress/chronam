@@ -1,5 +1,4 @@
 (function($) {
-
     var page_url;
     var tile_url;
     var coordinates_url;
