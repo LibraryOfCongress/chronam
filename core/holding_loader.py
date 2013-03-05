@@ -25,7 +25,6 @@ class HoldingLoader:
         self.errors = 0
         self.skipped = 0
 
-        self.desc_error = 0
         self.holding_created = 0
         self.no_oclc = 0
         self.files_processed = 0
@@ -139,9 +138,6 @@ class HoldingLoader:
 
         # get the description
         desc = _extract(record, '866', 'a') or _extract(record, '866', 'z')
-        if not desc:
-            self.desc_error += 1
-            return
 
         # get the last modified date
         f008 = _extract(record, '008')
@@ -183,7 +179,6 @@ class HoldingLoader:
         _logger.info("missing title: %i" % loader.missing_title)
         _logger.info("skipped: %i" % loader.skipped)
         _logger.info("errors: %i" % loader.errors)
-        _logger.info("missing descriptions: %i" % loader.desc_error)
         _logger.info("holdings saved: %i" % loader.holding_created)
         _logger.info("files processed: %i" % loader.files_processed)
 

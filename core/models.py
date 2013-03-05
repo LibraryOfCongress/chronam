@@ -906,7 +906,7 @@ class Essay(models.Model):
 
 
 class Holding(models.Model):
-    description = models.TextField()
+    description = models.TextField(null=True)
     type = models.CharField(null=True, max_length=25)
     institution = models.ForeignKey('Institution', related_name='holdings')
     last_updated = models.CharField(null=True, max_length=10)
