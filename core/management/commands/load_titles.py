@@ -14,7 +14,7 @@ from chronam.core.management.commands import configure_logging
 configure_logging('load_titles_logging.config', 'load_titles.log')
 _logger = logging.getLogger(__name__)
 
-def _clean_unused():
+def clean_unused():
     """
     Cleans up lanaguages, places, and subjects that no longer have titles
     """
@@ -112,4 +112,4 @@ class Command(BaseCommand):
         else:
             results = self.xml_file_handler(marc_xml_source, skip_index)
 
-        _clean_used()
+        clean_unused()
