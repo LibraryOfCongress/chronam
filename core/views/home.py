@@ -18,7 +18,6 @@ from chronam.core.decorator import profile
 
 def home(request, date=None):
     context = RequestContext(request, {})
-    context["total_page_count"] = models.Page.objects.all().count()
     context["crumbs"] = list(settings.BASE_CRUMBS)
     today = datetime.date.today()
     context["date"] = date = today.replace(year=today.year-100)
