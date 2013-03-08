@@ -59,7 +59,8 @@ def title_holdings(request, lccn):
     page_title = "Libraries that Have It: %s" % label(title)
     page_name = "holdings"
     crumbs = create_crumbs(title)
-    holdings = title.holdings.select_related('institution')
+
+    holdings = title.holdings.select_related('institution').order_by('institution__name')
 
     return render_to_response('holdings.html', dictionary=locals(),
                               context_instance=RequestContext(request))

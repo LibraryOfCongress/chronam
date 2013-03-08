@@ -11,9 +11,9 @@
 
   {% endif %}
 
-    {% regroup holdings|dictsort:"institution" by institution as inst_holdings %}
-    {% for inst_holding in inst_holdings %}
+    {% regroup holdings by institution as inst_holdings %}
 
+    {% for inst_holding in inst_holdings %}
       {% if not forloop.first %}
       <hr/>
       {% endif %}
