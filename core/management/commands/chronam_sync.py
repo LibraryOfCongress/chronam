@@ -9,12 +9,21 @@ from django.conf import settings
 
 from chronam.core import models
 from chronam.core import index
+from chronam.core.models import Language, Place, Subject
 from chronam.core.management.commands import configure_logging
 from chronam.core.utils.utils import validate_bib_dir
 
 configure_logging("chronam_sync_logging.config", "chronam_sync.log")
 _logger = logging.getLogger(__name__)
 
+def clean_unused():
+    """
+    Cleans up lanaguages, places, and subjects that no longer have titles
+    """
+    [l.delete() for l in Language.objects.all() if not len(l.titles.all())]
+    [p.delete() for p in Place.objects.all() if not len(p.titles.all())]
+    [s.delete() for s in Subject.objects.all() if not len(s.titles.all())]
+    return
 
 class Command(BaseCommand):
     verbose = make_option('--verbose',
@@ -69,6 +78,8 @@ class Command(BaseCommand):
         management.call_command('title_sync', 
                                 skip_essays=options['skip_essays'],
                                 pull_title_updates=options['pull_title_updates'])
+
+        clean_unused() 
 
         end = datetime.now()
         total_time = end - start

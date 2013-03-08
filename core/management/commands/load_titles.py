@@ -8,20 +8,11 @@ from django.core.management.base import BaseCommand
 
 from chronam.core import title_loader
 from chronam.core.index import index_titles
-from chronam.core.models import Language, Place, Subject, Title
+from chronam.core.models import Title
 from chronam.core.management.commands import configure_logging
 
 configure_logging('load_titles_logging.config', 'load_titles.log')
 _logger = logging.getLogger(__name__)
-
-def clean_unused():
-    """
-    Cleans up lanaguages, places, and subjects that no longer have titles
-    """
-    [l.delete() for l in Language.objects.all() if not len(l.titles.all())]
-    [p.delete() for p in Place.objects.all() if not len(p.titles.all())]
-    [s.delete() for s in Subject.objects.all() if not len(s.titles.all())]
-    return
 
 class Command(BaseCommand):
     help = "Load a marcxml file of title records"
@@ -111,5 +102,3 @@ class Command(BaseCommand):
 
         else:
             results = self.xml_file_handler(marc_xml_source, skip_index)
-
-        clean_unused()
