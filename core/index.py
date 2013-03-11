@@ -212,9 +212,9 @@ class SolrPaginator(Paginator):
         d = self.query
         parts = []
         if d.get('ortext', None):
-            parts.append('OR '.join(d['ortext'].split(' ')))
+            parts.append(' OR '.join(d['ortext'].split(' ')))
         if d.get('andtext', None):
-            parts.append('AND '.join(d['andtext'].split(' ')))
+            parts.append(' AND '.join(d['andtext'].split(' ')))
         if d.get('phrasetext', None):
             parts.append('the phrase "%s"' % d['phrasetext'])
         if d.get('proxtext', None):
