@@ -35,8 +35,8 @@ class OcrDumpTests(TestCase):
         t0 = datetime.datetime.now()
         dump = OcrDump.new_from_batch(batch)
         self.assertEqual(dump.batch.name, "batch_dlc_jamaica_ver01")
-        self.assertEqual(dump.name, "part-000001.tar.bz2")
-        self.assertEqual(dump.path, os.path.join(dumps_dir, "part-000001.tar.bz2"))
+        self.assertEqual(dump.name, "batch_dlc_jamaica_ver01.tar.bz2")
+        self.assertEqual(dump.path, os.path.join(dumps_dir, "batch_dlc_jamaica_ver01.tar.bz2"))
         # size can actually vary based on the compression of the different dates
         # that are in the tarfile
         self.assertTrue(dump.size > 2000000) 

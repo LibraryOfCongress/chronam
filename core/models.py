@@ -1110,8 +1110,6 @@ class Reel(models.Model):
         return Title.objects.filter(issues__pages__reel=self).distinct()
 
 class OcrDump(models.Model):
-    sequence = models.IntegerField(unique=True)
-    name = models.CharField(max_length=25)
     created = models.DateTimeField(auto_now_add=True)
     sha1 = models.TextField()
     size = models.BigIntegerField()
@@ -1121,8 +1119,7 @@ class OcrDump(models.Model):
     def new_from_batch(klass, batch):
         """Does the work of creating a new OcrDump based on a Batch
         """
-        dump = klass.next()
-        dump.batch = batch
+        dump = OcrDump(batch=batch)
 
         # add each page to a tar ball
         tar = tarfile.open(dump.path, "w:bz2")
@@ -1138,6 +1135,10 @@ class OcrDump(models.Model):
         return dump
 
     @property
+    def name(self):
+        return self.batch.name + ".tar.bz2"
+
+    @property
     def url(self):
         path = self.path.replace(settings.STORAGE, "/data/")
         return os.path.join(path)
@@ -1148,19 +1149,6 @@ class OcrDump(models.Model):
         if dumps.count() > 0:
             return dumps[0]
         return None
-
-    @classmethod
-    def next(klass):
-        last = OcrDump.last()
-        if last:
-            next_sequence = last.sequence + 1
-        else:
-            next_sequence = 1
-
-        d = OcrDump()
-        d.sequence = next_sequence
-        d.name = "part-%06i.tar.bz2" % next_sequence 
-        return d
 
     @property
     def path(self):

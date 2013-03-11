@@ -58,6 +58,7 @@ If you are interested in automated access to this data you may want to use the
 <table class="data table table-striped table-hover">
     <tr>
         <th>Filename</th>
+        <th>Batch</th>
         <th>Created</th>
         <th>Size</th>
         <th>SHA-1 Checksum</th>
@@ -65,6 +66,7 @@ If you are interested in automated access to this data you may want to use the
     {% for dump in dumps %}
     <tr class="{% cycle 'lightGray' 'white' %}">
         <td><a rel="nofollow" href="{{ dump.url }}">{{ dump.name }}</a></td>
+        <td><a href="{% url chronam_batch batch.name %}">{{ batch.name }}</a></td>
         <td>{{ dump.created|rfc3339 }}</td>
         <td>{{ dump.size|filesizeformat }}</td>
         <td>{{ dump.sha1 }}</td>
