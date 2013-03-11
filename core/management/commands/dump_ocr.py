@@ -1,12 +1,10 @@
 import os
-import logging
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from chronam.core.models import Batch, OcrDump
-
-logging.basicConfig(filename="dump_ocr.log", level=logging.INFO)
+from chronam.core.models import Batch
+from chronam.core.tasks import dump_ocr
 
 class Command(BaseCommand):
     help = "looks for batches that need to have ocr dump files created"
@@ -16,5 +14,5 @@ class Command(BaseCommand):
             os.makedirs(settings.OCR_DUMP_STORAGE)
 
         for batch in Batch.objects.filter(ocr_dump__isnull=True):
-            dump = OcrDump.new_from_batch(batch)
-            logging.info("created ocr dump file: %s" % dump)
+            print "queueing %s for ocr dump" % batch
+            dump_ocr.delay(batch.name)

@@ -10,7 +10,7 @@ from django.core import management
 from django.core.cache import cache
 
 from chronam.core import cts 
-from chronam.core.models import Batch
+from chronam.core.models import Batch, OcrDump
 from chronam.core.batch_loader import BatchLoader
 
 logger = logging.getLogger(__name__)
@@ -127,3 +127,18 @@ def delete_django_cache():
 
     logger.info("deleting titles_states")
     cache.delete('titles_states')
+
+@task
+def dump_ocr(batch_name):
+    batch = Batch.objects.get(name=batch_name)
+    try: 
+        if batch.ocr_dump:
+            logger.info("ocr already generated for %s", batch)
+        return
+    except OcrDump.DoesNotExist:
+        # as expected 
+        pass
+
+    logger.info("starting to dump ocr for %s", batch)
+    dump = OcrDump.new_from_batch(batch)
+    logger.info("created ocr dump %s for %s", dump, batch)
