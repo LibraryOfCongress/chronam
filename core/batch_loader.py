@@ -187,6 +187,11 @@ class BatchLoader(object):
             _logger.exception(e)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
+            try:
+                self.purge_batch(batch_name)
+            except Exception, pbe:
+                _logger.error("purge batch failed for failed load batch: %s" % pbe)
+                _logger.exception(pbe)
             raise BatchLoaderException(msg)
 
         if settings.IS_PRODUCTION:
