@@ -215,7 +215,7 @@
 
         var tileSize = 256;
         var tileOverlap = 1;
-        var minLevel = 10;
+        var minLevel = 8;
         var maxLevel = Math.ceil(Math.log(Math.max(width, height)) / Math.log(2));
 
         var ts = new OpenSeadragon.TileSource(width, height, tileSize, tileOverlap, minLevel, maxLevel);
