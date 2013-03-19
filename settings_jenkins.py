@@ -21,6 +21,9 @@ SITE_ID = 1
 USE_I18N = True
 USE_L10N = True
 
+STATIC_URL = '/media/'
+STATIC_ROOT = os.path.join(DIRNAME, '.static-media')
+
 MEDIA_ROOT = ''
 MEDIA_URL = ''
 #ADMIN_MEDIA_PREFIX = '/media/'
@@ -32,7 +35,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'chronam',
         'USER': 'chronam',
-        'PASSWORD': 'chronam',
+        'PASSWORD': 'pick_one',
         }
     }
 
@@ -64,6 +67,7 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'south',
     'django.contrib.humanize',
+    'django.contrib.staticfiles',
     'djcelery',
     'djkombu',
 
@@ -115,3 +119,5 @@ BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
 OCR_DUMP_STORAGE = os.path.join(STORAGE, "ocr")
 COORD_STORAGE = os.path.join(STORAGE, "word_coordinates")
+
+BASE_CRUMBS = [{'label':'Home', 'href': '/'}]
