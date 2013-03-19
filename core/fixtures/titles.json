@@ -14,7 +14,8 @@
       "end_year"              : "1924",
       "created"               : "2009-02-09 06:44:45",
       "version"               : "2004-10-11 13:00:00",
-      "country"               : "nyu"
+      "country"               : "nyu",
+      "has_issues"            : true
     }
   },
   {

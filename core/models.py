@@ -142,29 +142,32 @@ class Batch(models.Model):
         super(Batch, self).delete(*args, **kwargs)
 
     def json(self, include_issues=True, serialize=True, host="chroniclingamerica.loc.gov"):
-       b = {}
-       b['name'] = self.name
-       b['ingested'] = rfc3339(self.created)
-       b['page_count'] = self.page_count
-       b['lccns'] = self.lccns()
-       b['awardee'] = self.awardee.name
-       b['url'] = "http://" + host + self.json_url
-       if include_issues:
-           b['issues'] = []
-           for issue in self.issues.all():
-               i = {
-                       "title": {
-                           "name": issue.title.display_name,
-                           "url": "http://" + host + issue.title.json_url,
-                       },
-                       "date_issued": strftime(issue.date_issued, "%Y-%m-%d"), 
-                       "url": "http://" + host + issue.json_url
-                   }
-               b['issues'].append(i)
-       if serialize:
-           return json.dumps(b)
-       else:
-           return b
+        b = {}
+        b['name'] = self.name
+        b['ingested'] = rfc3339(self.created)
+        b['page_count'] = self.page_count
+        b['lccns'] = self.lccns()
+        b['awardee'] = {
+            "name": self.awardee.name, 
+            "url": "http://" + host + self.awardee.json_url
+        }
+        b['url'] = "http://" + host + self.json_url
+        if include_issues:
+            b['issues'] = []
+            for issue in self.issues.all():
+                i = {
+                    "title": {
+                        "name": issue.title.display_name,
+                        "url": "http://" + host + issue.title.json_url,
+                    },
+                    "date_issued": strftime(issue.date_issued, "%Y-%m-%d"), 
+                    "url": "http://" + host + issue.json_url
+                }
+                b['issues'].append(i)
+        if serialize:
+            return json.dumps(b)
+        else:
+            return b
 
     def __unicode__(self):
         return self.full_name
@@ -558,6 +561,7 @@ class Issue(models.Model):
                'url': 'http://' + host + self.json_url,
                'date_issued': strftime(self.date_issued, "%Y-%m-%d"),
                'volume': self.volume,
+               'number': self.number,
                'edition': self.edition,
                'title': {"name": self.title.display_name, "url": 'http://' + host + self.title.json_url},
                'batch': {"name": self.batch.name, "url": 'http://' + host + self.batch.json_url},
