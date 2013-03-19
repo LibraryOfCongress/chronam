@@ -560,7 +560,7 @@ class Issue(models.Model):
                'volume': self.volume,
                'edition': self.edition,
                'title': {"name": self.title.display_name, "url": 'http://' + host + self.title.json_url},
-               'batch': {"name": self.batch.display_name, "url": 'http://' + host + self.batch.json_url},
+               'batch': {"name": self.batch.name, "url": 'http://' + host + self.batch.json_url},
            }
        j['pages'] = [{"url": "http://" + host + p.json_url, "sequence": p.sequence} for p in self.pages.all()]
        if serialize:
