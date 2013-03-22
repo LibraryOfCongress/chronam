@@ -916,6 +916,7 @@ class Holding(models.Model):
     last_updated = models.CharField(null=True, max_length=10)
     title = models.ForeignKey('Title', related_name='holdings')
     created = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(null=True, help_text="852$z")
 
     def description_as_list(self):
         desc_list = []

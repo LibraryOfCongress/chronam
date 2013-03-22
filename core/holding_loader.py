@@ -138,6 +138,7 @@ class HoldingLoader:
 
         # get the description
         desc = _extract(record, '866', 'a') or _extract(record, '866', 'z')
+        notes = _extract(record, '852', 'z')
 
         # get the last modified date
         f008 = _extract(record, '008')
@@ -149,7 +150,8 @@ class HoldingLoader:
                                      institution=inst,
                                      description=desc,
                                      type=holding_type,
-                                     last_updated=date)
+                                     last_updated=date,
+                                     notes=notes)
             holding.save()
             self.holding_created += 1
         reset_queries()
