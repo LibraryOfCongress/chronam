@@ -214,6 +214,7 @@ class Title(models.Model):
     version = models.DateTimeField()  # http://www.loc.gov/marc/bibliographic/bd005.html
     created = models.DateTimeField(auto_now_add=True)
     has_issues = models.BooleanField(default=False, db_index=True)
+    uri = models.URLField(null=True, max_length=500, help_text="856$u")
 
     @property
     @permalink
@@ -266,6 +267,15 @@ class Title(models.Model):
             return self.issues.order_by("-batch__released")[0]
         except IndexError, e:
             return None
+    
+    @property
+    def holding_types(self):
+        # This was added to take into consideration the 856$u field
+        # values when electronic resource is selected in search.
+        ht = [h.type for h in self.holdings.all()]
+        if self.uri and not 'Electronic Resource' in ht:
+            ht.append('Electronic Resource')
+        return ht
 
     @property
     def solr_doc(self):
@@ -290,7 +300,7 @@ class Title(models.Model):
                 'country': self.country.name,
                 'state': [p.state for p in self.places.all()],
                 'place': [p.name for p in self.places.all()],
-                'holding_type': [h.type for h in self.holdings.all()],
+                'holding_type': self.holding_types,
                 'url': [u.value for u in self.urls.all()],
                 'essay': [e.html for e in self.essays.all()],
               }

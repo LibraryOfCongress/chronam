@@ -129,6 +129,7 @@ class TitleLoader(object):
         title.publisher = _extract(record, '260', 'b')
         title.frequency = _extract(record, '310', 'a')
         title.frequency_date = _extract(record, '310', 'b')
+        title.uri = _extract(record, '856', 'u')
         # the main purpose of this it to look for records
         # with 245 $h[microform] or [microfilm]
         # but we save everything
