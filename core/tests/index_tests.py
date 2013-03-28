@@ -63,7 +63,7 @@ class IndexTests(TestCase):
     def test_title_search(self):
         self.assertEqual(
             title_search(Q('terms=bloody')), 
-            '+type:title +(title:"bloody" OR essay:"bloody" OR note:"bloody" OR edition:"bloody" OR place_of_publication:"bloody" OR url:"bloody")')
+            '+type:title +(title:"bloody" OR essay:"bloody" OR note:"bloody" OR edition:"bloody" OR place_of_publication:"bloody" OR url:"bloody" OR publisher:"bloody")')
 
     def test_ethnicity_query(self):
         self.assertEqual(title_search(Q('ethnicity=Anabaptist')), 
