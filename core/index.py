@@ -330,7 +330,7 @@ def title_search(d):
     if d.get('city'):
         q.append('+city:"%s"' % d['city'])
     for term in d.get('terms', '').replace('"', '').split():
-        q.append('+(title:"%s" OR essay:"%s" OR note:"%s" OR edition:"%s" OR place_of_publication:"%s" OR url:"%s")' % (term, term, term, term, term, term))
+        q.append('+(title:"%s" OR essay:"%s" OR note:"%s" OR edition:"%s" OR place_of_publication:"%s" OR url:"%s" OR publisher:"%s")' % (term, term, term, term, term, term, term))
     if d.get('frequency'):
         q.append('+frequency:"%s"' % d['frequency'])
     if d.get('language'):
