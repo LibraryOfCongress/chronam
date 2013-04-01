@@ -9,6 +9,7 @@ class Migration(DataMigration):
     def forwards(self, orm):
         """ Updates Electronic Resources to Online Resources """
         updated_records = 0
+        print "Updating all 'Electronic Resource' holdings to 'Online Resource'."
         for h in orm['core.Holding'].objects.all():
             if h.type == 'Electronic Resource':
                 h.type = 'Online Resource'
@@ -16,8 +17,12 @@ class Migration(DataMigration):
                 updated_records += 1
         print "%s holdings records were updated." % updated_records
 
-        m = orm['core.MaterialType'].objects.get(name='Electronic Resource')
-        m.delete()
+        try:
+            m = orm['core.MaterialType'].objects.get(name='Electronic Resource')
+            m.delete()
+        except:
+            pass
+
         m_new = orm['core.MaterialType'](name = 'Online Resource')
         m_new.save()
 
