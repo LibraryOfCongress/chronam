@@ -54,7 +54,7 @@
 
 
 {% block javascript %}{{ block.super }}
-<script type="text/javascript" src="http://tablesorter.com/__jquery.tablesorter.js"></script>
+<script type="text/javascript" src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function() { 
     $("#newspapers").tablesorter({ 
