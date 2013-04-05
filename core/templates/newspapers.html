@@ -6,6 +6,7 @@
 {% block extrahead %}
 <link rel="alternate" title="Newspapers Atom Feed" href="{% url chronam_newspapers_atom %}" />
 <link rel="alternate" title="Newspapers JSON Feed" href="{% url chronam_newspapers_format "json" %}" />
+<link type="text/css" href="{% static 'css/tablesort.css' %}" rel="stylesheet" />
 {% endblock %}
 
 {% block subcontent %}
@@ -13,9 +14,10 @@
 <p class="gray nomargin-bottom3">These historical newspapers are available to browse and view issues in this site. {% if number_of_pages %}Pages currently available: {{number_of_pages|intcomma}}{% endif %}</p>
 
 <div class="browse_collect_body">
-    <table class="table table-striped table-hover browse_collect" cellspacing="0" summary="">
+    <table id="newspapers" class="table table-striped table-hover browse_collect tablesorter" cellspacing="0" summary="">
+        <thead>
         <tr>
-            <th>State</th>
+            <th class="headerSortDown">State</th>
             <th>Newspaper</th>
             <th>Browse Issues</th>
             <th>No. of Issues</th>
@@ -23,10 +25,12 @@
             <th>Latest Issue</th>
             <th>More Info</th>
         </tr>
+        </thead>
+        <tbody>
         {% for state, titles in newspapers_by_state %}
         {% for title in titles %}
             {% with title.lccn as lccn %}
-            <tr class="{% cycle '' 'alt' %}">
+            <tr>
                 <td class="first"><a {% ifchanged state %}name="{{state}}" {% endifchanged %}href="{% url chronam_newspapers_state state|pack_url %}">{{state}}</a></td>
                 <td><a href="{% url chronam_title lccn %}"><strong>{{title.display_name}}</strong></a><br />{{title.place_of_publication}}, {{title.start_year}}-{{title.end_year}}</td>
                 <td><a href="{% url chronam_issues lccn %}" shape="rect"><img src="{% static 'images/calendar_icon.gif' %}" alt="calendar"/></a></td>
@@ -46,4 +50,21 @@
 {% else %}
 <h2>No Results</h2>
 {% endif %}
+{% endblock %}
+
+
+{% block javascript %}{{ block.super }}
+<script type="text/javascript" src="http://tablesorter.com/__jquery.tablesorter.js"></script>
+<script type="text/javascript">
+$(document).ready(function() { 
+    $("#newspapers").tablesorter({ 
+        headers: { 
+            2: { sorter: false }, 
+            6: { sorter: false } 
+        }, 
+        widgets: ['zebra']
+    }); 
+});
+</script>
+
 {% endblock %}
