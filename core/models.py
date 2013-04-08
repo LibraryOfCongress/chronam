@@ -136,7 +136,7 @@ class Batch(models.Model):
         # and we need OcrDump.delete to clean up the filesystem
         try:
             self.ocr_dump.delete()
-        except OcrDump.DoesNotExist, e:
+        except OcrDump.DoesNotExist:
             logging.warn("no OcrDump to delete for %s", self)
         super(Batch, self).delete(*args, **kwargs)
 
@@ -240,7 +240,7 @@ class Title(models.Model):
     def first_issue(self):
         try:
             return self.issues.order_by("date_issued")[0]
-        except IndexError, e:
+        except IndexError:
             return None
 
     def has_essays(self):
@@ -250,21 +250,21 @@ class Title(models.Model):
     def first_essay(self):
         try:
             return self.essays.all()[0]
-        except IndexError, e:
+        except IndexError:
             return None
 
     @property
     def last_issue(self):
         try:
             return self.issues.order_by("-date_issued")[0]
-        except IndexError, e:
+        except IndexError:
             return None
 
     @property
     def last_issue_released(self):
         try:
             return self.issues.order_by("-batch__released")[0]
-        except IndexError, e:
+        except IndexError:
             return None
 
     @property
@@ -513,7 +513,7 @@ class Issue(models.Model):
     def first_page(self):
         try:
             return self.pages.all()[0]
-        except Exception, e:
+        except Exception:
             return None
 
     @property
@@ -521,7 +521,7 @@ class Issue(models.Model):
         """return the previous issue to this one (including 'duplicates')."""
         try:
             previous_issue = self.get_previous_by_date_issued(title=self.title)
-        except Issue.DoesNotExist, e:
+        except Issue.DoesNotExist:
             previous_issue = None
         return previous_issue
 
@@ -530,7 +530,7 @@ class Issue(models.Model):
         """return the next issue to this one (including 'duplicates')."""
         try:
             next_issue = self.get_next_by_date_issued(title=self.title)
-        except Issue.DoesNotExist, e:
+        except Issue.DoesNotExist:
             next_issue = None
         return next_issue
 
@@ -579,7 +579,7 @@ class Issue(models.Model):
         }
 
         j['pages'] = [{
-            "url": "http://" + host + p.json_url, 
+            "url": "http://" + host + p.json_url,
             "sequence": p.sequence
         } for p in self.pages.all()]
 
@@ -608,14 +608,18 @@ class Page(models.Model):
 
     def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
         j = {
-                "sequence": self.sequence,
-                "issue": {"date_issued": strftime(self.issue.date_issued, "%Y-%m-%d"), "url": "http://" + host + self.issue.json_url},
-                "jp2": "http://" + host + self.jp2_url,
-                "ocr": "http://" + host + self.ocr_url,
-                "text": "http://" + host + self.txt_url,
-                "pdf": "http://" + host + self.pdf_url,
-                "title": {"name": self.issue.title.display_name, "url": "http://" + host + self.issue.title.json_url}
-            }
+            "sequence": self.sequence,
+            "issue": {
+                "date_issued": strftime(self.issue.date_issued, "%Y-%m-%d"),
+                "url": "http://" + host + self.issue.json_url},
+            "jp2": "http://" + host + self.jp2_url,
+            "ocr": "http://" + host + self.ocr_url,
+            "text": "http://" + host + self.txt_url,
+            "pdf": "http://" + host + self.pdf_url,
+            "title": {
+                "name": self.issue.title.display_name,
+                "url": "http://" + host + self.issue.title.json_url}
+        }
         if serialize:
             return json.dumps(j, indent=2)
         return j
@@ -719,7 +723,7 @@ class Page(models.Model):
             'sequence': self.sequence,
             'section_label': self.section_label,
             'edition_label': self.issue.edition_label,
-            })
+        })
         try:
             ocr_texts = self.ocr.language_texts.select_related().values('language__code', 'text')
         except OCR.DoesNotExist:
@@ -728,7 +732,8 @@ class Page(models.Model):
             # make sure Solr is configured to handle the language and if it's
             # not just treat it as English
             lang = ocr_text['language__code']
-            if lang not in settings.SOLR_LANGUAGES: lang = "eng"
+            if lang not in settings.SOLR_LANGUAGES:
+                lang = "eng"
             doc['ocr_%s' % lang] = ocr_text['text']
         return doc
 
@@ -774,9 +779,9 @@ class Page(models.Model):
         # unfortunately there can be more than one
         # default to the latest one
         q = Page.objects.filter(issue__title__lccn=lccn,
-                                    issue__date_issued=date,
-                                    issue__edition=edition,
-                                    sequence=sequence)
+                                issue__date_issued=date,
+                                issue__edition=edition,
+                                sequence=sequence)
         pages = q.order_by('-issue__date_issued').all()
         if len(pages) == 0:
             return None
@@ -1130,6 +1135,7 @@ class Reel(models.Model):
     def titles(self):
         return Title.objects.filter(issues__pages__reel=self).distinct()
 
+
 class OcrDump(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     sha1 = models.TextField()
@@ -1177,12 +1183,12 @@ class OcrDump(models.Model):
 
     def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
         j = {
-                "name": self.name,
-                "created": rfc3339(self.created),
-                "size": self.size,
-                "sha1": self.sha1,
-                "url": "http://" + host + self.url
-            }
+            "name": self.name,
+            "created": rfc3339(self.created),
+            "size": self.size,
+            "sha1": self.sha1,
+            "url": "http://" + host + self.url
+        }
         if serialize:
             return json.dumps(i, indent=2)
         return j
@@ -1192,7 +1198,7 @@ class OcrDump(models.Model):
 
     def _add_page(self, page, tar):
         d = page.issue.date_issued
-        relative_dir = "%s/%i/%02i/%02i/ed-%i/seq-%i/" %  (page.issue.title_id, d.year, d.month, d.day, page.issue.edition, page.sequence)
+        relative_dir = "%s/%i/%02i/%02i/ed-%i/seq-%i/" % (page.issue.title_id, d.year, d.month, d.day, page.issue.edition, page.sequence)
 
         # add ocr text
         txt_filename = relative_dir + "ocr.txt"
@@ -1227,10 +1233,12 @@ class OcrDump(models.Model):
         sha1 = hashlib.sha1()
         while True:
             buff = f.read(2 ** 16)
-            if not buff: break
+            if not buff:
+                break
             sha1.update(buff)
         self.sha1 = sha1.hexdigest()
         return self.sha1
+
 
 def coordinates_path(url_parts):
     url = urlresolvers.reverse('chronam_page', kwargs=url_parts)
