@@ -10,7 +10,7 @@ table.tablesorter tbody tr.odd td {
 table.tablesorter thead tr .header {
     background-image: url(../images/bg.gif);
     background-repeat: no-repeat;
-    background-position: center right;
+    background-position: left center;
     cursor: pointer;
     padding-left: 20px;
 }
