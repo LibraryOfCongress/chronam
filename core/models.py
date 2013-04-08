@@ -6,7 +6,6 @@ import time
 import hashlib
 import logging
 import tarfile
-import datetime
 import textwrap
 import urlparse
 from cStringIO import StringIO
@@ -42,7 +41,7 @@ class Awardee(models.Model):
     def url(self):
         return ('chronam_awardee', (), {'institution_code': self.org_code})
 
-    @property 
+    @property
     @permalink
     def json_url(self):
         return ('chronam_awardee_json', (), {'institution_code': self.org_code})
@@ -53,9 +52,9 @@ class Awardee(models.Model):
 
     def json(self, host="chroniclingamerica.loc.gov", serialize=True):
         j = {
-                "name": self.name,
-                "url": 'http://' + host + self.json_url
-            }
+            "name": self.name,
+            "url": 'http://' + host + self.json_url
+        }
         if serialize:
             return json.dumps(j, indent=2)
         return j
@@ -148,7 +147,7 @@ class Batch(models.Model):
         b['page_count'] = self.page_count
         b['lccns'] = self.lccns()
         b['awardee'] = {
-            "name": self.awardee.name, 
+            "name": self.awardee.name,
             "url": "http://" + host + self.awardee.json_url
         }
         b['url'] = "http://" + host + self.json_url
@@ -160,7 +159,7 @@ class Batch(models.Model):
                         "name": issue.title.display_name,
                         "url": "http://" + host + issue.title.json_url,
                     },
-                    "date_issued": strftime(issue.date_issued, "%Y-%m-%d"), 
+                    "date_issued": strftime(issue.date_issued, "%Y-%m-%d"),
                     "url": "http://" + host + issue.json_url
                 }
                 b['issues'].append(i)
@@ -267,7 +266,7 @@ class Title(models.Model):
             return self.issues.order_by("-batch__released")[0]
         except IndexError, e:
             return None
-    
+
     @property
     def holding_types(self):
         # This was added to take into consideration the 856$u field
@@ -280,46 +279,50 @@ class Title(models.Model):
     @property
     def solr_doc(self):
         doc = {
-                'id': self.url,
-                'type': 'title',
-                'title': self.display_name,
-                'title_normal': self.name_normal,
-                'lccn': self.lccn,
-                'edition': self.edition,
-                'place_of_publication': self.place_of_publication,
-                'frequency': self.frequency,
-                'publisher': self.publisher,
-                'start_year': self.start_year_int,
-                'end_year': self.end_year_int,
-                'language': [l.name for l in self.languages.all()],
-                'alt_title': [t.name for t in self.alt_titles.all()],
-                'subject': [s.heading for s in self.subjects.all()],
-                'note': [n.text for n in self.notes.all()],
-                'city': [p.city for p in self.places.all()],
-                'county': [p.county for p in self.places.all()],
-                'country': self.country.name,
-                'state': [p.state for p in self.places.all()],
-                'place': [p.name for p in self.places.all()],
-                'holding_type': self.holding_types,
-                'url': [u.value for u in self.urls.all()],
-                'essay': [e.html for e in self.essays.all()],
-              }
+            'id': self.url,
+            'type': 'title',
+            'title': self.display_name,
+            'title_normal': self.name_normal,
+            'lccn': self.lccn,
+            'edition': self.edition,
+            'place_of_publication': self.place_of_publication,
+            'frequency': self.frequency,
+            'publisher': self.publisher,
+            'start_year': self.start_year_int,
+            'end_year': self.end_year_int,
+            'language': [l.name for l in self.languages.all()],
+            'alt_title': [t.name for t in self.alt_titles.all()],
+            'subject': [s.heading for s in self.subjects.all()],
+            'note': [n.text for n in self.notes.all()],
+            'city': [p.city for p in self.places.all()],
+            'county': [p.county for p in self.places.all()],
+            'country': self.country.name,
+            'state': [p.state for p in self.places.all()],
+            'place': [p.name for p in self.places.all()],
+            'holding_type': self.holding_types,
+            'url': [u.value for u in self.urls.all()],
+            'essay': [e.html for e in self.essays.all()],
+        }
 
         return doc
 
     def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
         j = {
-                "url": "http://" + host + self.json_url,
-                "lccn": self.lccn,
-                "name": self.display_name,
-                "place_of_publication": self.place_of_publication,
-                "publisher": self.publisher,
-                "start_year": self.start_year,
-                "end_year": self.end_year,
-                "subject": [s.heading for s in self.subjects.all()],
-                "place": [p.name for p in self.places.all()],
-                "issues": [{"url": "http://" + host + i.json_url, "date_issued": strftime(i.date_issued, "%Y-%m-%d")} for i in self.issues.all()]
-            }
+            "url": "http://" + host + self.json_url,
+            "lccn": self.lccn,
+            "name": self.display_name,
+            "place_of_publication": self.place_of_publication,
+            "publisher": self.publisher,
+            "start_year": self.start_year,
+            "end_year": self.end_year,
+            "subject": [s.heading for s in self.subjects.all()],
+            "place": [p.name for p in self.places.all()],
+            "issues": [{
+                "url": "http://" + host + i.json_url,
+                "date_issued": strftime(i.date_issued, "%Y-%m-%d")
+            } for i in self.issues.all()]
+        }
+
         if serialize:
             return json.dumps(j, indent=2)
         return j
@@ -368,7 +371,6 @@ class Title(models.Model):
         if self.end_year == 'current':
             return 9999
         return int(re.sub(r'[?u]', '9', self.end_year))
-
 
     def _lookup_title_links(self, links):
         titles = []
@@ -457,8 +459,7 @@ class MARC(models.Model):
                 value = etree.SubElement(td, 'span')
                 value.attrib['class'] = 'marc-subfield-value'
 
-                if field.attrib['tag'] == '856' \
-                    and subfield.attrib['code'] == 'u':
+                if field.attrib['tag'] == '856' and subfield.attrib['code'] == 'u':
                     a = etree.SubElement(value, 'a')
                     a.attrib['href'] = subfield.text
                     a.text = ' '.join(textwrap.wrap(subfield.text, 45))
@@ -499,12 +500,12 @@ class Issue(models.Model):
     @permalink
     def json_url(self):
         date = self.date_issued
-        return ('chronam_issue_pages_dot_json', (), 
+        return ('chronam_issue_pages_dot_json', (),
                 {'lccn': self.title.lccn,
                  'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
                  'edition': self.edition})
 
-    @property 
+    @property
     def abstract_url(self):
         return self.url.rstrip('/') + '#issue'
 
@@ -567,21 +568,26 @@ class Issue(models.Model):
             self.title.save()
 
     def json(self, serialize=True, include_pages=True, host='chroniclingamerica.loc.gov'):
-       j = {
-               'url': 'http://' + host + self.json_url,
-               'date_issued': strftime(self.date_issued, "%Y-%m-%d"),
-               'volume': self.volume,
-               'number': self.number,
-               'edition': self.edition,
-               'title': {"name": self.title.display_name, "url": 'http://' + host + self.title.json_url},
-               'batch': {"name": self.batch.name, "url": 'http://' + host + self.batch.json_url},
-           }
-       j['pages'] = [{"url": "http://" + host + p.json_url, "sequence": p.sequence} for p in self.pages.all()]
-       if serialize:
-           return json.dumps(j, indent=2)
-       return j
-   
-    class Meta: 
+        j = {
+            'url': 'http://' + host + self.json_url,
+            'date_issued': strftime(self.date_issued, "%Y-%m-%d"),
+            'volume': self.volume,
+            'number': self.number,
+            'edition': self.edition,
+            'title': {"name": self.title.display_name, "url": 'http://' + host + self.title.json_url},
+            'batch': {"name": self.batch.name, "url": 'http://' + host + self.batch.json_url},
+        }
+
+        j['pages'] = [{
+            "url": "http://" + host + p.json_url, 
+            "sequence": p.sequence
+        } for p in self.pages.all()]
+
+        if serialize:
+            return json.dumps(j, indent=2)
+        return j
+
+    class Meta:
         ordering = ('date_issued',)
 
 
@@ -720,7 +726,7 @@ class Page(models.Model):
             ocr_texts = None
         for ocr_text in ocr_texts:
             # make sure Solr is configured to handle the language and if it's
-            # not just treat it as English 
+            # not just treat it as English
             lang = ocr_text['language__code']
             if lang not in settings.SOLR_LANGUAGES: lang = "eng"
             doc['ocr_%s' % lang] = ocr_text['text']
@@ -944,8 +950,8 @@ class Holding(models.Model):
 
         l = re.findall(r'<.+?>', desc_txt)
         if l:
-            [desc_list.append(d) for d in l]     
-        
+            [desc_list.append(d) for d in l]
+
         if desc_list:
             return desc_list
         else:
