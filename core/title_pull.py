@@ -55,9 +55,6 @@ class TitlePuller(object):
 
     year_breaks = []
 
-    def __iter__(self):
-        return self
-
     def generate_year_dict(self, start=None, end=None):
         '''
         Generate a list of years to break up the query. OCLC API queries
