@@ -43,7 +43,10 @@ OPERATOR_MAP = {
 }
 
 def str_value(value):
-    ''' Turn the value into at least a 4 digit string. '''
+    ''' 
+    Turn the value into at least a 4 digit string. 
+    This is used in the naming of files. 
+    '''
     str_value = str(value)
     while len(str_value) < 4:
         str_value = '0' + str_value
