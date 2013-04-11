@@ -40,7 +40,7 @@ class Command(BaseCommand):
 
     def run_pull(self, path, lccn=None, oclc=None, query=None):
         start = datetime.now()
-        search = title_pull.SearchWorldCatTitles()
+        search = title_pull.TitlePuller()
         save_path = settings.BIB_STORAGE + path
         search.run(save_path, lccn, oclc, query)
         end = datetime.now()

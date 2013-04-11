@@ -49,7 +49,7 @@ def str_value(value):
         str_value = '0' + str_value
     return str_value
 
-class SearchWorldCatTitles:
+class TitlePuller(object):
 
     # TODO: add class description
 
