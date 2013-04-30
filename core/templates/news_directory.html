@@ -7,8 +7,14 @@
 {{ block.super }}
 <script type="text/javascript">    
 (function($){
-        setup_states();
-    
+    setup_states();
+
+    function normalize(s) {
+        s = s.toLowerCase();
+        var parts = s.split(' ');
+        return parts.join('_');
+    }
+
     function setup_states() {
         var select = $("select#id_nd_state");
         $.getJSON('{% url chronam_home %}' + 'states.json', function(states){
@@ -19,7 +25,7 @@
         select.change(load_counties);
         select.change(load_all_cities);
     }
-    
+
     function load_counties() {
         // clear out pre-existing counties and cities
         var county_select = $('select#id_nd_county');
@@ -36,7 +42,7 @@
             county_select.change(load_cities);
         });
     }
-    
+
     function load_all_cities() {
         var state = $('select#id_nd_state').find('option:selected').text();
         var select = $('select#id_nd_city');

@@ -1,9 +1,3 @@
-function normalize(s) {
-    s = s.toLowerCase();
-    var parts = s.split(' ');
-    return parts.join('_');
-}
-
 function getUrlVars(){
     var searchString = window.location.search.substring(1);
     var vars = {};
