@@ -228,7 +228,8 @@
             autoHideControls: false,
             nextButton: "next",
             previousButton: "previous",
-            tileSources: ts
+            tileSources: ts,
+            timeout: 60000
         });
 
         viewer.addHandler("open", addOverlays);
