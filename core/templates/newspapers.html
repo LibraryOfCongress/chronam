@@ -42,6 +42,7 @@
             {% endwith %}
         {% endfor %}
         {% endfor %}
+        </tbody>
     </table>
     <div class="txt_wrapper">
         <p class="backtotop"><a href="#skip_menu">Top</a></p>
@@ -56,15 +57,48 @@
 {% block javascript %}{{ block.super }}
 <script type="text/javascript" src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
 <script type="text/javascript">
-$(document).ready(function() { 
-    $("#newspapers").tablesorter({ 
-        headers: { 
-            2: { sorter: false }, 
-            6: { sorter: false } 
+    $(document).ready(function() { 
+        $("#newspapers").tablesorter({ 
+            headers: { 
+                1: { sorter: 'newspapers' },
+                2: { sorter: false }, 
+                6: { sorter: false } 
+            }, 
+            widgets: ['zebra']
+        }); 
+    });
+
+    // add parser through the tablesorter addParser method 
+    $.tablesorter.addParser({ 
+        // set a unique id 
+        id: 'newspapers', 
+        is: function(s) { 
+            // return false so this parser is not auto detected 
+            return false; 
         }, 
-        widgets: ['zebra']
+        format: function(s) { 
+            // format your data for normalization
+            s = s.trim()  //Make sure there are no leading spaces
+            
+            if (s.indexOf('The ') === 0)
+                { 
+                s = s.replace("The ", ''); 
+                console.log(s)
+                } 
+            else if (s.indexOf("A ") === 0)
+                { 
+                s = s.replace("A ", '');
+                }   
+            else if (s.indexOf("An ") === 0)
+                {
+                s = s.replace("An ", '');
+                } 
+            return s; 
+        }, 
+        type: 'text' 
     }); 
-});
+
+
 </script>
 
 {% endblock %}
