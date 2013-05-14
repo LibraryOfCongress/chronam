@@ -23,10 +23,14 @@ def newspapers(request, state=None, format='html'):
         state = unpack_url_path(state)
         if state is None:
             raise Http404
+        else:
+            state = state.title()
     else:
         state = request.REQUEST.get('state', None)
 
     language = request.REQUEST.get('language', None)
+    if language:
+        language_display = models.Language.objects.get(code__contains=language).name
     ethnicity = request.REQUEST.get('ethnicity', None)
 
     if not state and not language:

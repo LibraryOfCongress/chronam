@@ -1,6 +1,11 @@
 table.tablesorter { border-collapse:collapse; }
+
 table.tablesorter td, table.tablesorter th { 
     border-left: 1px solid #ccc
+}
+
+table.tablesorter .left_no_border {
+    border-left: None
 }
 
 table.tablesorter tbody tr.odd td {
