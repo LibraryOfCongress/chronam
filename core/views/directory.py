@@ -33,12 +33,12 @@ def newspapers(request, state=None, format='html'):
         language_display = models.Language.objects.get(code__contains=language).name
     ethnicity = request.REQUEST.get('ethnicity', None)
 
-    if not state and not language:
+    if not state and not language and not ethnicity:
         page_title = 'All Digitized Newspapers'
+        number_of_pages = index.page_count()
     else:
         page_title = 'Results: Digitized Newspapers'
-        number_of_pages = index.page_count()
-
+        
     titles = models.Title.objects.filter(has_issues=True)
     titles = titles.annotate(first=Min('issues__date_issued'))
     titles = titles.annotate(last=Max('issues__date_issued'))
