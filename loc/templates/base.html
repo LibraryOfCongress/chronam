@@ -104,6 +104,7 @@
 <script src="{% static 'js/jquery-ui.js' %}" ></script>
 
 <script type="text/javascript">
+
 jQuery(function ($) {
     var searchString = window.location.search.substring(1);
     if (searchString) {
@@ -116,6 +117,9 @@ jQuery(function ($) {
     });
 });
 </script>
+
+<script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 
 {% if sharetool_url %}
 <!-- Toolbar -->
