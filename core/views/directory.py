@@ -35,7 +35,6 @@ def newspapers(request, state=None, format='html'):
 
     if not state and not language and not ethnicity:
         page_title = 'All Digitized Newspapers'
-        number_of_pages = index.page_count()
     else:
         page_title = 'Results: Digitized Newspapers'
         

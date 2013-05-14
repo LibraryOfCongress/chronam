@@ -16,7 +16,6 @@
     {% if state %}from <strong>{{ state }}</strong>{% endif %}
     {% if language_display %}in the <strong>{{ language_display }}</strong> language{% endif %}
     {% if titles.count == 1 %}is{% else %}are{% endif %} available to browse and view in this site. 
-    {% if number_of_pages %}Pages currently available: {{number_of_pages|intcomma}}.{% endif %}
 </p>
 <div class="browse_collect_body">
     <table id="newspapers" class="table table-striped table-hover browse_collect tablesorter" cellspacing="0" summary="">
