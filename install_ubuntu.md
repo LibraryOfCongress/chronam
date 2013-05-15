@@ -32,10 +32,11 @@ Configure Apache
 ----------------
 
     sudo a2enmod cache expires rewrite disk_cache
-    sudo cp conf/chronam.conf /etc/apache2/sites-available/chronam
+    sudo cp /opt/chronam/conf/chronam.conf /etc/apache2/sites-available/chronam
     sudo a2ensite chronam
     sudo install -o $USER -g users -d /opt/chronam/static
     sudo install -o $USER -g users -d /opt/chronam/.python-eggs
+    sudo service apache2 reload
 
 Continue
 --------
