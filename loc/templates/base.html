@@ -104,26 +104,22 @@
 <script src="{% static 'js/jquery-ui.js' %}" ></script>
 
 <script type="text/javascript">
+
 jQuery(function ($) {
     var searchString = window.location.search.substring(1);
     if (searchString) {
-        var vars = {}, hash,
-        hashes = searchString.split("&");
-        for(var i=0; i<hashes.length; i++){
-            hash = hashes[i].split('=');
-            vars[unescape(hash[0])] = unescape(hash[1]);
-        }
-    }
-    if (typeof vars === "undefined"){
-        tab_url = '/tabs';
+        tab_url = '/tabs?' + searchString;
     } else {
-        tab_url = '/tabs?' + $.param(vars);
+        tab_url = '/tabs';
     }
     $('#tabs-container').load(tab_url, function() {
         $("#tabs-container").trigger('chronam.tabsloaded', {});
     });
 });
 </script>
+
+<script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 
 {% if sharetool_url %}
 <!-- Toolbar -->

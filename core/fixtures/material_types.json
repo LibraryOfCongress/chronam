@@ -1,6 +1,6 @@
 [
   {
-    "pk": "Electronic Resource",
+    "pk": "Online Resource",
     "model": "core.materialtype",
     "fields": {}
   },

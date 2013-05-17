@@ -23,18 +23,21 @@ def newspapers(request, state=None, format='html'):
         state = unpack_url_path(state)
         if state is None:
             raise Http404
+        else:
+            state = state.title()
     else:
         state = request.REQUEST.get('state', None)
 
     language = request.REQUEST.get('language', None)
+    if language:
+        language_display = models.Language.objects.get(code__contains=language).name
     ethnicity = request.REQUEST.get('ethnicity', None)
 
-    if not state and not language:
+    if not state and not language and not ethnicity:
         page_title = 'All Digitized Newspapers'
     else:
         page_title = 'Results: Digitized Newspapers'
-        number_of_pages = index.page_count()
-
+        
     titles = models.Title.objects.filter(has_issues=True)
     titles = titles.annotate(first=Min('issues__date_issued'))
     titles = titles.annotate(last=Max('issues__date_issued'))

@@ -6,7 +6,6 @@ import time
 import hashlib
 import logging
 import tarfile
-import datetime
 import textwrap
 import urlparse
 from cStringIO import StringIO
@@ -42,7 +41,7 @@ class Awardee(models.Model):
     def url(self):
         return ('chronam_awardee', (), {'institution_code': self.org_code})
 
-    @property 
+    @property
     @permalink
     def json_url(self):
         return ('chronam_awardee_json', (), {'institution_code': self.org_code})
@@ -53,9 +52,9 @@ class Awardee(models.Model):
 
     def json(self, host="chroniclingamerica.loc.gov", serialize=True):
         j = {
-                "name": self.name,
-                "url": 'http://' + host + self.json_url
-            }
+            "name": self.name,
+            "url": 'http://' + host + self.json_url
+        }
         if serialize:
             return json.dumps(j, indent=2)
         return j
@@ -137,7 +136,7 @@ class Batch(models.Model):
         # and we need OcrDump.delete to clean up the filesystem
         try:
             self.ocr_dump.delete()
-        except OcrDump.DoesNotExist, e:
+        except OcrDump.DoesNotExist:
             logging.warn("no OcrDump to delete for %s", self)
         super(Batch, self).delete(*args, **kwargs)
 
@@ -148,7 +147,7 @@ class Batch(models.Model):
         b['page_count'] = self.page_count
         b['lccns'] = self.lccns()
         b['awardee'] = {
-            "name": self.awardee.name, 
+            "name": self.awardee.name,
             "url": "http://" + host + self.awardee.json_url
         }
         b['url'] = "http://" + host + self.json_url
@@ -160,7 +159,7 @@ class Batch(models.Model):
                         "name": issue.title.display_name,
                         "url": "http://" + host + issue.title.json_url,
                     },
-                    "date_issued": strftime(issue.date_issued, "%Y-%m-%d"), 
+                    "date_issued": strftime(issue.date_issued, "%Y-%m-%d"),
                     "url": "http://" + host + issue.json_url
                 }
                 b['issues'].append(i)
@@ -214,6 +213,7 @@ class Title(models.Model):
     version = models.DateTimeField()  # http://www.loc.gov/marc/bibliographic/bd005.html
     created = models.DateTimeField(auto_now_add=True)
     has_issues = models.BooleanField(default=False, db_index=True)
+    uri = models.URLField(null=True, max_length=500, help_text="856$u")
 
     @property
     @permalink
@@ -240,7 +240,7 @@ class Title(models.Model):
     def first_issue(self):
         try:
             return self.issues.order_by("date_issued")[0]
-        except IndexError, e:
+        except IndexError:
             return None
 
     def has_essays(self):
@@ -250,66 +250,79 @@ class Title(models.Model):
     def first_essay(self):
         try:
             return self.essays.all()[0]
-        except IndexError, e:
+        except IndexError:
             return None
 
     @property
     def last_issue(self):
         try:
             return self.issues.order_by("-date_issued")[0]
-        except IndexError, e:
+        except IndexError:
             return None
 
     @property
     def last_issue_released(self):
         try:
             return self.issues.order_by("-batch__released")[0]
-        except IndexError, e:
+        except IndexError:
             return None
+
+    @property
+    def holding_types(self):
+        # This was added to take into consideration the 856$u field
+        # values when electronic resource (online resource) is selected in search.
+        ht = [h.type for h in self.holdings.all()]
+        if self.uri and not 'Online Resource' in ht:
+            ht.append('Online Resource')
+        return ht
 
     @property
     def solr_doc(self):
         doc = {
-                'id': self.url,
-                'type': 'title',
-                'title': self.display_name,
-                'title_normal': self.name_normal,
-                'lccn': self.lccn,
-                'edition': self.edition,
-                'place_of_publication': self.place_of_publication,
-                'frequency': self.frequency,
-                'publisher': self.publisher,
-                'start_year': self.start_year_int,
-                'end_year': self.end_year_int,
-                'language': [l.name for l in self.languages.all()],
-                'alt_title': [t.name for t in self.alt_titles.all()],
-                'subject': [s.heading for s in self.subjects.all()],
-                'note': [n.text for n in self.notes.all()],
-                'city': [p.city for p in self.places.all()],
-                'county': [p.county for p in self.places.all()],
-                'country': self.country.name,
-                'state': [p.state for p in self.places.all()],
-                'place': [p.name for p in self.places.all()],
-                'holding_type': [h.type for h in self.holdings.all()],
-                'url': [u.value for u in self.urls.all()],
-                'essay': [e.html for e in self.essays.all()],
-              }
+            'id': self.url,
+            'type': 'title',
+            'title': self.display_name,
+            'title_normal': self.name_normal,
+            'lccn': self.lccn,
+            'edition': self.edition,
+            'place_of_publication': self.place_of_publication,
+            'frequency': self.frequency,
+            'publisher': self.publisher,
+            'start_year': self.start_year_int,
+            'end_year': self.end_year_int,
+            'language': [l.name for l in self.languages.all()],
+            'alt_title': [t.name for t in self.alt_titles.all()],
+            'subject': [s.heading for s in self.subjects.all()],
+            'note': [n.text for n in self.notes.all()],
+            'city': [p.city for p in self.places.all()],
+            'county': [p.county for p in self.places.all()],
+            'country': self.country.name,
+            'state': [p.state for p in self.places.all()],
+            'place': [p.name for p in self.places.all()],
+            'holding_type': self.holding_types,
+            'url': [u.value for u in self.urls.all()],
+            'essay': [e.html for e in self.essays.all()],
+        }
 
         return doc
 
     def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
         j = {
-                "url": "http://" + host + self.json_url,
-                "lccn": self.lccn,
-                "name": self.display_name,
-                "place_of_publication": self.place_of_publication,
-                "publisher": self.publisher,
-                "start_year": self.start_year,
-                "end_year": self.end_year,
-                "subject": [s.heading for s in self.subjects.all()],
-                "place": [p.name for p in self.places.all()],
-                "issues": [{"url": "http://" + host + i.json_url, "date_issued": strftime(i.date_issued, "%Y-%m-%d")} for i in self.issues.all()]
-            }
+            "url": "http://" + host + self.json_url,
+            "lccn": self.lccn,
+            "name": self.display_name,
+            "place_of_publication": self.place_of_publication,
+            "publisher": self.publisher,
+            "start_year": self.start_year,
+            "end_year": self.end_year,
+            "subject": [s.heading for s in self.subjects.all()],
+            "place": [p.name for p in self.places.all()],
+            "issues": [{
+                "url": "http://" + host + i.json_url,
+                "date_issued": strftime(i.date_issued, "%Y-%m-%d")
+            } for i in self.issues.all()]
+        }
+
         if serialize:
             return json.dumps(j, indent=2)
         return j
@@ -358,7 +371,6 @@ class Title(models.Model):
         if self.end_year == 'current':
             return 9999
         return int(re.sub(r'[?u]', '9', self.end_year))
-
 
     def _lookup_title_links(self, links):
         titles = []
@@ -447,8 +459,7 @@ class MARC(models.Model):
                 value = etree.SubElement(td, 'span')
                 value.attrib['class'] = 'marc-subfield-value'
 
-                if field.attrib['tag'] == '856' \
-                    and subfield.attrib['code'] == 'u':
+                if field.attrib['tag'] == '856' and subfield.attrib['code'] == 'u':
                     a = etree.SubElement(value, 'a')
                     a.attrib['href'] = subfield.text
                     a.text = ' '.join(textwrap.wrap(subfield.text, 45))
@@ -489,12 +500,12 @@ class Issue(models.Model):
     @permalink
     def json_url(self):
         date = self.date_issued
-        return ('chronam_issue_pages_dot_json', (), 
+        return ('chronam_issue_pages_dot_json', (),
                 {'lccn': self.title.lccn,
                  'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
                  'edition': self.edition})
 
-    @property 
+    @property
     def abstract_url(self):
         return self.url.rstrip('/') + '#issue'
 
@@ -502,7 +513,7 @@ class Issue(models.Model):
     def first_page(self):
         try:
             return self.pages.all()[0]
-        except Exception, e:
+        except Exception:
             return None
 
     @property
@@ -510,7 +521,7 @@ class Issue(models.Model):
         """return the previous issue to this one (including 'duplicates')."""
         try:
             previous_issue = self.get_previous_by_date_issued(title=self.title)
-        except Issue.DoesNotExist, e:
+        except Issue.DoesNotExist:
             previous_issue = None
         return previous_issue
 
@@ -519,7 +530,7 @@ class Issue(models.Model):
         """return the next issue to this one (including 'duplicates')."""
         try:
             next_issue = self.get_next_by_date_issued(title=self.title)
-        except Issue.DoesNotExist, e:
+        except Issue.DoesNotExist:
             next_issue = None
         return next_issue
 
@@ -557,21 +568,26 @@ class Issue(models.Model):
             self.title.save()
 
     def json(self, serialize=True, include_pages=True, host='chroniclingamerica.loc.gov'):
-       j = {
-               'url': 'http://' + host + self.json_url,
-               'date_issued': strftime(self.date_issued, "%Y-%m-%d"),
-               'volume': self.volume,
-               'number': self.number,
-               'edition': self.edition,
-               'title': {"name": self.title.display_name, "url": 'http://' + host + self.title.json_url},
-               'batch': {"name": self.batch.name, "url": 'http://' + host + self.batch.json_url},
-           }
-       j['pages'] = [{"url": "http://" + host + p.json_url, "sequence": p.sequence} for p in self.pages.all()]
-       if serialize:
-           return json.dumps(j, indent=2)
-       return j
-   
-    class Meta: 
+        j = {
+            'url': 'http://' + host + self.json_url,
+            'date_issued': strftime(self.date_issued, "%Y-%m-%d"),
+            'volume': self.volume,
+            'number': self.number,
+            'edition': self.edition,
+            'title': {"name": self.title.display_name, "url": 'http://' + host + self.title.json_url},
+            'batch': {"name": self.batch.name, "url": 'http://' + host + self.batch.json_url},
+        }
+
+        j['pages'] = [{
+            "url": "http://" + host + p.json_url,
+            "sequence": p.sequence
+        } for p in self.pages.all()]
+
+        if serialize:
+            return json.dumps(j, indent=2)
+        return j
+
+    class Meta:
         ordering = ('date_issued',)
 
 
@@ -592,14 +608,18 @@ class Page(models.Model):
 
     def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
         j = {
-                "sequence": self.sequence,
-                "issue": {"date_issued": strftime(self.issue.date_issued, "%Y-%m-%d"), "url": "http://" + host + self.issue.json_url},
-                "jp2": "http://" + host + self.jp2_url,
-                "ocr": "http://" + host + self.ocr_url,
-                "text": "http://" + host + self.txt_url,
-                "pdf": "http://" + host + self.pdf_url,
-                "title": {"name": self.issue.title.display_name, "url": "http://" + host + self.issue.title.json_url}
-            }
+            "sequence": self.sequence,
+            "issue": {
+                "date_issued": strftime(self.issue.date_issued, "%Y-%m-%d"),
+                "url": "http://" + host + self.issue.json_url},
+            "jp2": "http://" + host + self.jp2_url,
+            "ocr": "http://" + host + self.ocr_url,
+            "text": "http://" + host + self.txt_url,
+            "pdf": "http://" + host + self.pdf_url,
+            "title": {
+                "name": self.issue.title.display_name,
+                "url": "http://" + host + self.issue.title.json_url}
+        }
         if serialize:
             return json.dumps(j, indent=2)
         return j
@@ -703,16 +723,17 @@ class Page(models.Model):
             'sequence': self.sequence,
             'section_label': self.section_label,
             'edition_label': self.issue.edition_label,
-            })
+        })
         try:
             ocr_texts = self.ocr.language_texts.select_related().values('language__code', 'text')
         except OCR.DoesNotExist:
             ocr_texts = None
         for ocr_text in ocr_texts:
             # make sure Solr is configured to handle the language and if it's
-            # not just treat it as English 
+            # not just treat it as English
             lang = ocr_text['language__code']
-            if lang not in settings.SOLR_LANGUAGES: lang = "eng"
+            if lang not in settings.SOLR_LANGUAGES:
+                lang = "eng"
             doc['ocr_%s' % lang] = ocr_text['text']
         return doc
 
@@ -758,9 +779,9 @@ class Page(models.Model):
         # unfortunately there can be more than one
         # default to the latest one
         q = Page.objects.filter(issue__title__lccn=lccn,
-                                    issue__date_issued=date,
-                                    issue__edition=edition,
-                                    sequence=sequence)
+                                issue__date_issued=date,
+                                issue__edition=edition,
+                                sequence=sequence)
         pages = q.order_by('-issue__date_issued').all()
         if len(pages) == 0:
             return None
@@ -916,6 +937,7 @@ class Holding(models.Model):
     last_updated = models.CharField(null=True, max_length=10)
     title = models.ForeignKey('Title', related_name='holdings')
     created = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(null=True, help_text="852$z")
 
     def description_as_list(self):
         desc_list = []
@@ -933,8 +955,8 @@ class Holding(models.Model):
 
         l = re.findall(r'<.+?>', desc_txt)
         if l:
-            [desc_list.append(d) for d in l]     
-        
+            [desc_list.append(d) for d in l]
+
         if desc_list:
             return desc_list
         else:
@@ -1113,6 +1135,7 @@ class Reel(models.Model):
     def titles(self):
         return Title.objects.filter(issues__pages__reel=self).distinct()
 
+
 class OcrDump(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     sha1 = models.TextField()
@@ -1160,12 +1183,12 @@ class OcrDump(models.Model):
 
     def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
         j = {
-                "name": self.name,
-                "created": rfc3339(self.created),
-                "size": self.size,
-                "sha1": self.sha1,
-                "url": "http://" + host + self.url
-            }
+            "name": self.name,
+            "created": rfc3339(self.created),
+            "size": self.size,
+            "sha1": self.sha1,
+            "url": "http://" + host + self.url
+        }
         if serialize:
             return json.dumps(i, indent=2)
         return j
@@ -1175,7 +1198,7 @@ class OcrDump(models.Model):
 
     def _add_page(self, page, tar):
         d = page.issue.date_issued
-        relative_dir = "%s/%i/%02i/%02i/ed-%i/seq-%i/" %  (page.issue.title_id, d.year, d.month, d.day, page.issue.edition, page.sequence)
+        relative_dir = "%s/%i/%02i/%02i/ed-%i/seq-%i/" % (page.issue.title_id, d.year, d.month, d.day, page.issue.edition, page.sequence)
 
         # add ocr text
         txt_filename = relative_dir + "ocr.txt"
@@ -1210,10 +1233,12 @@ class OcrDump(models.Model):
         sha1 = hashlib.sha1()
         while True:
             buff = f.read(2 ** 16)
-            if not buff: break
+            if not buff:
+                break
             sha1.update(buff)
         self.sha1 = sha1.hexdigest()
         return self.sha1
+
 
 def coordinates_path(url_parts):
     url = urlresolvers.reverse('chronam_page', kwargs=url_parts)

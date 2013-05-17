@@ -264,38 +264,38 @@
     }
   },
   {
-    "pk": "Microfilm Service Copy", 
-    "model": "core.MaterialType", 
+    "pk": "Online Resource",
+    "model": "core.materialtype",
     "fields": {}
-  }, 
+  },
   {
-    "pk": "Original", 
-    "model": "core.MaterialType", 
+    "pk": "Microfilm Master",
+    "model": "core.materialtype",
     "fields": {}
-  }, 
+  },
   {
-    "pk": "Microfilm Master", 
-    "model": "core.MaterialType", 
+    "pk": "Microfilm Print Master",
+    "model": "core.materialtype",
     "fields": {}
-  }, 
+  },
   {
-    "pk": "Eye-Readable Reprint", 
-    "model": "core.MaterialType", 
+    "pk": "Microfilm Service Copy",
+    "model": "core.materialtype",
     "fields": {}
-  }, 
+  },
   {
-    "pk": "Microopaque Service Copy", 
-    "model": "core.MaterialType", 
+    "pk": "Microform",
+    "model": "core.materialtype",
     "fields": {}
-  }, 
+  },
   {
-    "pk": "Microfiche Service Copy", 
-    "model": "core.MaterialType", 
+    "pk": "Original",
+    "model": "core.materialtype",
     "fields": {}
-  }, 
+  },
   {
-    "pk": "Microfiche Master", 
-    "model": "core.MaterialType", 
+    "pk": "Unspecified",
+    "model": "core.materialtype",
     "fields": {}
   },
   {

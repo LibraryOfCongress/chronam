@@ -1,9 +1,3 @@
-function normalize(s) {
-    s = s.toLowerCase();
-    var parts = s.split(' ');
-    return parts.join('_');
-}
-
 function getUrlVars(){
     var searchString = window.location.search.substring(1);
     var vars = {};
@@ -23,9 +17,14 @@ jQuery(function($){
     $("#tabs-container").on('chronam.tabsloaded', function () {
     $("#box-tabs").tabs({collapsible: true});
     $("#box-tabs").show();
-    if ($("#tabs-container").hasClass("collapsed")) {
-        $("#box-tabs").tabs('select', '#tab_search');
-    };
+    var selectedTab = 0;
+    $("#box-tabs li a").each(function(index) {
+        if ($.bbq.getState("tab") == $(this).attr("href").replace("#", "")) {
+            selectedTab = index;
+        };
+    });
+    $("#box-tabs").tabs({'select': function(event, ui){$.bbq.pushState({"tab": $(ui.tab).attr("href").replace("#", "")})},
+                         'selected': selectedTab})
 
     // simple search tab
     // bind form field click

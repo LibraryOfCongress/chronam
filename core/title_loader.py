@@ -129,10 +129,17 @@ class TitleLoader(object):
         title.publisher = _extract(record, '260', 'b')
         title.frequency = _extract(record, '310', 'a')
         title.frequency_date = _extract(record, '310', 'b')
+        title.uri = _extract(record, '856', 'u')
         # the main purpose of this it to look for records
         # with 245 $h[microform] or [microfilm]
         # but we save everything
-        title.medium = _extract(record, '245', 'h')
+        
+        # In RDA practice, encoding "material format" in the 245$h ("medium")
+        # is deprecated in favor of encoding it in the 338$a (carrier type).
+        title.medium = _extract(record, '338', 'a')
+        if not title.medium:
+            title.medium = _extract(record, '245', 'h')
+
         title.issn = _extract(record, '022', 'a')
         f008 = record['008'].data
         title.start_year = _normal_year(f008[7:11])

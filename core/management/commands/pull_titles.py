@@ -34,13 +34,13 @@ class Command(BaseCommand):
         make_option('-p','--path',
         action='store',
         dest='path',
-        default='/worldcat_titles/',
+        default='/worldcat_titles',
         help="Path var that is appeneded to settings.BIB_STORAGE to save to"),
     )
 
     def run_pull(self, path, lccn=None, oclc=None, query=None):
         start = datetime.now()
-        search = title_pull.SearchWorldCatTitles()
+        search = title_pull.TitlePuller()
         save_path = settings.BIB_STORAGE + path
         search.run(save_path, lccn, oclc, query)
         end = datetime.now()

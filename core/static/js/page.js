@@ -213,7 +213,7 @@
         var viewer = null;
         addSearchNav();
 
-        var tileSize = 256;
+        var tileSize = 512;
         var tileOverlap = 1;
         var minLevel = 8;
         var maxLevel = Math.ceil(Math.log(Math.max(width, height)) / Math.log(2));
@@ -228,7 +228,8 @@
             autoHideControls: false,
             nextButton: "next",
             previousButton: "previous",
-            tileSources: ts
+            tileSources: ts,
+            timeout: 60000
         });
 
         viewer.addHandler("open", addOverlays);
