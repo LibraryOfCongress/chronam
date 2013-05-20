@@ -1,29 +1,29 @@
-import re, datetime, json, os, urlparse
+import datetime
+import os
+import re
+import urlparse
 
 from django import forms as django_forms
 
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, InvalidPage
 from django.core import urlresolvers
 from django.forms import fields
 from django.http import HttpResponse, HttpResponseNotFound, Http404, \
-                        HttpResponseRedirect, HttpResponsePermanentRedirect
+    HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.template.defaultfilters import filesizeformat
-from django.utils import html, dateformat
+from django.utils import html
 from django.views.decorators.vary import vary_on_headers
 
 from chronam.core.utils.url import unpack_url_path
 from chronam.core import models, index
-from chronam.core.index import SolrPaginator
 from chronam.core.rdf import title_to_graph, issue_to_graph, page_to_graph
 
 from chronam.core.utils.utils import HTMLCalendar, _get_tip, _stream_file, \
-                                     _page_range_short, _rdf_base, get_page, \
-                                     label, create_crumbs
+    _page_range_short, _rdf_base, get_page, label, create_crumbs
 from chronam.core.decorator import cache_page, rdf_view
 
 
@@ -44,7 +44,7 @@ def issues(request, lccn, year=None):
 
     class SelectYearForm(django_forms.Form):
         year = fields.ChoiceField(choices=((d.year, d.year) for d in dates),
-                              initial=_year)
+                                  initial=_year)
     select_year_form = SelectYearForm()
     page_title = "Browse Issues: %s" % title.display_name
     page_name = "issues"
@@ -182,7 +182,7 @@ def page(request, lccn, date, edition, sequence, words=None):
                           sequence=sequence)
         url = urlresolvers.reverse('chronam_page',
                                    kwargs=path_parts)
-        
+
         return HttpResponseRedirect(url + "#" + "&".join(fragments))
 
     title, issue, page = _get_tip(lccn, date, edition, sequence)
@@ -455,7 +455,7 @@ def _search_engine_words(request):
     if 'q' in qs:
         words = qs['q'][0]
     elif 'p' in qs:
-        qwords = qs['p'][0]
+        words = qs['p'][0]
     else:
         return []
 
@@ -498,7 +498,7 @@ def page_ocr_txt(request, lccn, date, edition, sequence):
     try:
         text = page.ocr.text
         return HttpResponse(text, mimetype='text/plain')
-    except models.OCR.DoesNotExist, e:
+    except models.OCR.DoesNotExist:
         raise Http404("No OCR for %s" % page)
 
 
