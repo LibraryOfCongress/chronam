@@ -67,7 +67,8 @@ def newspapers(request, state=None, format='html'):
                 if place.state:
                     _newspapers_by_state.setdefault(place.state, set()).add(title)
 
-    newspapers_by_state = [(s, sorted(t, key=lambda title: title.name)) for s, t in sorted(_newspapers_by_state.iteritems())]
+
+    newspapers_by_state = [(s, sorted(t, key=lambda title: title.name_normal)) for s, t in sorted(_newspapers_by_state.iteritems())]
     crumbs = list(settings.BASE_CRUMBS)
 
     if format == "html":
