@@ -67,15 +67,14 @@
     // add parser through the tablesorter addParser method 
     $.tablesorter.addParser({ 
         // set a unique id 
-        id: 'newspapers', 
+        id: 'titles', 
         is: function(s) { 
             // return false so this parser is not auto detected 
             return false; 
         }, 
         format: function(s) { 
             // format your data for normalization
-            s = s.trim()  //Make sure there are no leading spaces
-            
+            s = $.trim(s)  //Make sure there are no leading spaces
             if (s.indexOf('The ') === 0)
                 { 
                 s = s.replace("The ", ''); 
@@ -97,13 +96,13 @@
         $("#newspapers").tablesorter({ 
             headers: { 
                 {% if state %}0: { sorter: false},{% endif %}
-                1: { sorter: 'newspapers' },
+                1: { sorter: 'titles' },
                 2: { sorter: false }, 
                 6: { sorter: false } 
             }, 
             widgets: ['zebra'],
             // for all newspapers, sort on state. If state, then sort on title.
-            sortList: [{% if not state %}[0,0],{% else %}[1,0],{% endif %}]
+            sortList: [{% if not state %}[0,0]{% else %}[1,0]{% endif %}]
         }); 
     });
 
