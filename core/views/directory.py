@@ -4,9 +4,8 @@ from rfc3339 import rfc3339
 
 from django.conf import settings
 from django.core import urlresolvers
-from django.db import connection
-from django.http import Http404, HttpResponse
-from django.db.models import Count, Max, Min, Q
+from django.http import Http404, HttpResponse, HttpResponseServerError
+from django.db.models import Max, Min, Q
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
@@ -37,7 +36,7 @@ def newspapers(request, state=None, format='html'):
         page_title = 'All Digitized Newspapers'
     else:
         page_title = 'Results: Digitized Newspapers'
-        
+
     titles = models.Title.objects.filter(has_issues=True)
     titles = titles.annotate(first=Min('issues__date_issued'))
     titles = titles.annotate(last=Max('issues__date_issued'))
@@ -67,7 +66,6 @@ def newspapers(request, state=None, format='html'):
                 if place.state:
                     _newspapers_by_state.setdefault(place.state, set()).add(title)
 
-
     newspapers_by_state = [(s, sorted(t, key=lambda title: title.name_normal)) for s, t in sorted(_newspapers_by_state.iteritems())]
     crumbs = list(settings.BASE_CRUMBS)
 
@@ -86,7 +84,12 @@ def newspapers(request, state=None, format='html'):
         results = {"newspapers": []}
         for state, titles in newspapers_by_state:
             for title in titles:
-                results["newspapers"].append({"lccn": title.lccn, "title": title.display_name, "url": "http://" + host + title.json_url, "state": state})
+                results["newspapers"].append({
+                    "lccn": title.lccn,
+                    "title": title.display_name,
+                    "url": "http://" + host + title.json_url,
+                    "state": state
+                })
 
         return HttpResponse(json.dumps(results, indent=2), mimetype='application/json')
     else:
