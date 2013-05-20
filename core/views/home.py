@@ -1,5 +1,4 @@
 import json
-import random
 import datetime
 
 from django.conf import settings
@@ -7,13 +6,9 @@ from django.http import Http404, HttpResponse
 from django.template import RequestContext
 from django.template.loader import get_template
 from django.core import urlresolvers
-from django.core.cache import cache
-from django.shortcuts import render_to_response
-from django.core.paginator import Paginator
 
 from chronam.core import models
 from chronam.core import forms
-from chronam.core.decorator import profile
 
 
 def home(request, date=None):
@@ -21,7 +16,7 @@ def home(request, date=None):
     context["crumbs"] = list(settings.BASE_CRUMBS)
     today = datetime.date.today()
     context["date"] = date = today.replace(year=today.year-100)
-    context["pages"] = pages = _frontpages(request, date)
+    context["pages"] = _frontpages(request, date)
     template = get_template("home.html")
     # note the date is handled on the client side in javascript
     return HttpResponse(content=template.render(context))
@@ -60,7 +55,7 @@ def frontpages(request, date):
     _year, _month, _day = date.split("-")
     try:
         date = datetime.date(int(_year), int(_month), int(_day))
-    except ValueError, e:
+    except ValueError:
         raise Http404
     results = _frontpages(request, date)
     return HttpResponse(json.dumps(results), mimetype="application/json")
