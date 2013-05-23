@@ -20,26 +20,27 @@ Get chronam
 Configure Solr
 --------------
 
-    wget http://archive.apache.org/dist/lucene/solr/1.4.1/apache-solr-1.4.1.tgz
-    gunzip apache-solr-1.4.1.tgz
-    tar xvf apache-solr-1.4.1.tar
-    mv apache-solr-1.4.1/example/ /opt/solr-1.4.1
+Download solr from a mirror site
+    wget http://mirrors.ibiblio.org/apache/lucene/solr/4.3.0/solr-4.3.0.tgz
+    gunzip solr-4.3.0.tgz
+    tar xvf solr-4.3.0.tar
+    mv solr-4.3.0/example/ /opt/solr-4.3.0
 
-    cp /opt/chronam/conf/schema.xml /opt/solr-1.4.1/solr/conf/schema.xml
-    cp /opt/chronam/conf/stopwords* /opt/solr-1.4.1/solr/conf/
-    cp /opt/chronam/conf/solrconfig-centos.xml /opt/solr-1.4.1/solr/conf/solrconfig.xml
+    cp /opt/chronam/conf/schema.xml /opt/solr-4.3.0/solr/collection1/conf/schema.xml
+    cp /opt/chronam/conf/stopwords* /opt/solr-4.3.0/solr/collection1/conf/
+    cp /opt/chronam/conf/solrconfig-centos.xml /opt/solr-4.3.0/solr/collection1/conf/solrconfig.xml
 
-Update the dataDir field in /opt/solr-1.4.1/solr/conf/solrconfig.xml and 
+Update the dataDir field in /opt/solr-4.3.0/solr/conf/solrconfig.xml and 
 point to a directory for where the solr index will live.
 
-    useradd -d /opt/solr-1.4.1 -s /bin/bash solr
-    chown solr:solr -R /opt/solr-1.4.1
+    useradd -d /opt/solr-4.3.0 -s /bin/bash solr
+    chown solr:solr -R /opt/solr-4.3.0
 
     cp /opt/chronam/conf/jetty6.sh /etc/init.d/jetty
     chmod +x /etc/init.d/jetty
 
     cp /opt/chronam/conf/jetty /etc/default/
-    cp /opt/chronam/conf/jetty-logging.xml /opt/solr-1.4.1/etc/jetty-logging.xml
+    cp /opt/chronam/conf/jetty-logging.xml /opt/solr-4.3.0/etc/jetty-logging.xml
 
     sudo service jetty start
 
