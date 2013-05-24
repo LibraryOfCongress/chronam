@@ -36,7 +36,7 @@ point to a directory for where the solr index will live.
     useradd -d /opt/solr-4.3.0 -s /bin/bash solr
     chown solr:solr -R /opt/solr-4.3.0
 
-    cp /opt/chronam/conf/jetty6.sh /etc/init.d/jetty
+    cp /opt/chronam/conf/jetty7.sh /etc/init.d/jetty
     chmod +x /etc/init.d/jetty
 
     cp /opt/chronam/conf/jetty /etc/default/
