@@ -123,8 +123,8 @@ class HTMLCalendar(calendar.Calendar):
         a(self.formatweekheader())
         a('\n')
         weeks = self.monthdays2calendar(theyear, themonth)
-        if len(weeks) < 6:
-            # add blank week so all calendars are 6 weeks long.
+        while len(weeks) < 6:
+            # add blank weeks so all calendars are 6 weeks long.
             weeks.append([(0, 0)] * 7)
         for week in weeks:
             a(self.formatweek(theyear, themonth, week))
