@@ -12,10 +12,12 @@ from django.utils import datetime_safe
 
 from chronam.core import models
 
+
 def _rdf_base(request):
     host = request.get_host()
     path = request.get_full_path().rstrip(".rdf")
     return "http://%s%s" % (host, path)
+
 
 def _page_range_short(paginator, page):
     middle = 3
@@ -28,6 +30,7 @@ def _page_range_short(paginator, page):
             yield p
         elif abs(p - page.number) == middle:
             yield "..."
+
 
 class HTMLCalendar(calendar.Calendar):
     """
@@ -63,8 +66,8 @@ class HTMLCalendar(calendar.Calendar):
                 _day = """<a href="%s">%s</a>""" % (url, day)
             elif count > 1:
                 _class = "multiple"
-                _day = "%s " % day
-                _day += "<ul>"
+                _day = "<em class='text-info'>%s </em>" % day
+                _day += "<ul class='unstyled'>"
                 for lccn, date_issued, edition in issues:
                     kw = dict(lccn=lccn, date=date_issued, edition=edition)
                     url = urlresolvers.reverse('chronam_issue_pages',
@@ -116,7 +119,7 @@ class HTMLCalendar(calendar.Calendar):
         """
         v = []
         a = v.append
-        a('<table border="0" cellpadding="0" cellspacing="0" class="month">')
+        a('<table border="0" cellpadding="0" cellspacing="0" class="month table table-condensed table-bordered">')
         a('\n')
         a(self.formatmonthname(theyear, themonth, withyear=withyear))
         a('\n')
@@ -135,24 +138,24 @@ class HTMLCalendar(calendar.Calendar):
 
     def formatyear(self, theyear, width=4):
         """
-        Return a formatted year as a table of tables.
+        Return a formatted year as a div of tables.
         """
         v = []
         a = v.append
         width = max(width, 1)
-        a('<table cellspacing="0" class="calendar_wrapper"')
-        a('\n')
+        a('<div cellspacing="0" class="calendar_wrapper">')
         for i in range(calendar.January, calendar.January + 12, width):
             # months in this row
             months = range(i, min(i + width, 13))
-            a('<tr class="calendar_row">')
+            a('<div class="calendar_row">')
             for m in months:
-                a('<td class="calendar_month">')
+                a('<div class="span3 calendar_month">')
                 a(self.formatmonth(theyear, m, withyear=False))
-                a('</td>')
-            a('</tr>')
-        a('</table>')
+                a('</div>')
+            a('</div>')
+        a('</div>')
         return ''.join(v)
+
 
 def get_page(lccn, date, edition, sequence):
     """a helper function to lookup a particular page based on metadata
@@ -199,6 +202,7 @@ def _get_tip(lccn, date, edition, sequence=1):
         raise Http404
     return title, issue, page
 
+
 def _stream_file(path, mimetype):
     """helper function for streaming back the contents of a file"""
     # must calculate Content-length else django ConditionalGetMiddleware
@@ -214,10 +218,11 @@ def _stream_file(path, mimetype):
     else:
         raise Http404
 
+
 def label(instance):
     if isinstance(instance, models.Title):
-        return u'%s (%s) %s-%s' % (instance.display_name, 
-                                   instance.place_of_publication, 
+        return u'%s (%s) %s-%s' % (instance.display_name,
+                                   instance.place_of_publication,
                                    instance.start_year, instance.end_year)
     elif isinstance(instance, models.Issue):
         parts = []
@@ -237,15 +242,16 @@ def label(instance):
     else:
         return u"%s" % instance
 
+
 def create_crumbs(title, issue=None, date=None, edition=None, page=None):
     crumbs = list(settings.BASE_CRUMBS)
     crumbs.extend([{'label': label(title.name.split(":")[0]),
-               'href': urlresolvers.reverse('chronam_title',
-                                            kwargs={'lccn': title.lccn})}])
+                    'href': urlresolvers.reverse('chronam_title',
+                                                 kwargs={'lccn': title.lccn})}])
     if date and edition is not None:
         crumbs.append(
             {'label': label(issue),
-             'href': urlresolvers.reverse('chronam_issue_pages', 
+             'href': urlresolvers.reverse('chronam_issue_pages',
                                           kwargs={'lccn': title.lccn,
                                                   'date': date,
                                                   'edition': edition})})
@@ -253,13 +259,14 @@ def create_crumbs(title, issue=None, date=None, edition=None, page=None):
     if page is not None:
         crumbs.append(
             {'label': label(page),
-             'href': urlresolvers.reverse('chronam_page', 
+             'href': urlresolvers.reverse('chronam_page',
                                           kwargs={'lccn': title.lccn,
                                                   'date': date,
                                                   'edition': edition,
                                                   'sequence': page.sequence})})
 
     return crumbs
+
 
 def validate_bib_dir():
     bib_isdir = os.path.isdir(settings.BIB_STORAGE)

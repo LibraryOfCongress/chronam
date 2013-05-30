@@ -1611,10 +1611,10 @@ table.browse_collect td.last {
 }
 
 /********************* issues - browse all *********************/
-table.calendar_wrapper {
+div.calendar_wrapper {
     margin:0 auto;
 }
-table.calendar_wrapper table.month {
+div.calendar_wrapper table.month {
     margin: 5px 10px;
     border: 1px solid #ccc;
     border-right:none;
@@ -1622,36 +1622,45 @@ table.calendar_wrapper table.month {
     color:#999;
     text-align:center;
 }
-table.calendar_wrapper table.month tr.daynames td {
+div.calendar_wrapper div.calendar_row {
+    white-space: nowrap;
+}
+div.calendar_wrapper div.calendar_month {
+    vertical-align:top;
+}
+div.calendar_wrapper table.month tr.daynames td {
     color:#333;
 }
-table.calendar_wrapper table.month th,
-table.calendar_wrapper table.month td {
+div.calendar_wrapper table.month th,
+div.calendar_wrapper table.month td {
     text-align:center;
     border: 1px solid #ccc;
     border-left:none;
     border-top:none;
 }
-table.calendar_wrapper table.month td {
+div.calendar_wrapper table.month td {
     vertical-align:top;
     padding:1px 4px;
 }
-table.calendar_wrapper table.month td.title {
+div.calendar_wrapper table.month td.title {
     font-size:1.125em;
     color:#fff;
     background-color:#2b4e70;
     padding-top:5px;
     padding-bottom: 6px;
 }
-table.calendar_wrapper table.month td a {
+div.calendar_wrapper table.month td a {
     font-weight:bold;
 }
-table.calendar_wrapper table.month td.single {
-    font:bold 95% verdana,georgia,times,serif;
+div.calendar_wrapper table.month td.single {
+    font:bold 90% verdana,georgia,times,serif;
 }
-table.calendar_wrapper table.month td.multiple {
-    font: bold italic 95% verdana, georgia, times, serif;
+div.calendar_wrapper table.month td.multiple {
+    font: bold italic 90% verdana, georgia, times, serif;
     color: #036;
+}
+div.calendar_wrapper div.span3 {
+    display:inline-block; 
 }
 td.multiple ul {
     padding:0; 
@@ -1660,7 +1669,6 @@ td.multiple ul {
 td.multiple li { 
     list-style-type:none; 
 } 
-
 /********************* issues - about *********************/
 .about_issue_right {
     margin-bottom:1.25em;
