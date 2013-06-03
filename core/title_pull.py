@@ -3,7 +3,6 @@ import itertools
 import logging
 import os
 import sys
-import types
 
 from django.conf import settings
 
@@ -57,10 +56,10 @@ def str_value(value):
 class TitlePuller(object):
 
     """
-    Title puller class pulls files from OCLC's Worldcat API, 
-    based on params passed. 
+    Title puller class pulls files from OCLC's Worldcat API,
+    based on params passed.
 
-    Best place to start is with the run method. Run defaults to 
+    Best place to start is with the run method. Run defaults to
     a generic pull for Chronam, unless a query is passed.
     """
 
@@ -390,5 +389,5 @@ class TitlePuller(object):
         bib_requests = self.generate_requests(lccn=lccn, oclc=oclc,
             start=start, end=end, countries=countries)
         files_saved = self.grab_content(save_path, bib_requests)
-        
+
         return files_saved

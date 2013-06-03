@@ -7,7 +7,7 @@ import datetime
 from django.conf import settings
 from django.test import TestCase
 
-from chronam.core.models import Batch, Issue, Page, OCR, OcrDump
+from chronam.core.models import Batch, OcrDump
 
 settings.OCR_DUMP_STORAGE = "/tmp/test_ocr_dumps"
 dumps_dir = settings.OCR_DUMP_STORAGE
@@ -22,7 +22,7 @@ class OcrDumpTests(TestCase):
 
         # create symlink if necessary
         link = os.path.join(settings.BATCH_STORAGE, "batch_dlc_jamaica_ver01")
-        if not os.path.islink(link): 
+        if not os.path.islink(link):
             os.symlink("/vol/ndnp/chronam/batches/dlc/batch_dlc_jamaica_ver01", link)
 
     def tearDown(self):
@@ -39,8 +39,8 @@ class OcrDumpTests(TestCase):
         self.assertEqual(dump.path, os.path.join(dumps_dir, "batch_dlc_jamaica_ver01.tar.bz2"))
         # size can actually vary based on the compression of the different dates
         # that are in the tarfile
-        self.assertTrue(dump.size > 2000000) 
-        self.assertTrue(dump.size < 2871684) 
+        self.assertTrue(dump.size > 2000000)
+        self.assertTrue(dump.size < 2871684)
 
         # make sure the sha1 looks good
         sha1 = hashlib.sha1()
@@ -57,7 +57,7 @@ class OcrDumpTests(TestCase):
         self.assertEqual(len(members), 28) # ocr xml and txt for each page
         self.assertEqual(members[0].size, 29610)
 
-        # mtime on files in the archive should be just after we 
+        # mtime on files in the archive should be just after we
         # created the OcrDump object from the batch
         t1 = datetime.datetime.fromtimestamp(members[0].mtime)
         self.assertTrue(t1 - t0 < datetime.timedelta(seconds=2))

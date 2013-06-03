@@ -10,7 +10,6 @@ from django.conf import settings
 
 from chronam.core import models
 from chronam.core.title_loader import _normal_lccn
-from chronam.core.utils import utils
 
 _log = logging.getLogger(__name__)
 
@@ -22,17 +21,17 @@ PROX_DISTANCE_DEFAULT = 5
 
 ESCAPE_CHARS_RE = re.compile(r'(?<!\\)(?P<char>[&|+\-!(){}[\]^"~*?:])')
 
-def solr_escape(value): 
-    """ 
-    Escape un-escaped special characters and return escaped value. 
-    >>> solr_escape(r'foo+') == r'foo\+' 
-    True 
-    >>> solr_escape(r'foo\+') == r'foo\+' 
-    True 
-    >>> solr_escape(r'foo\\+') == r'foo\\+' 
-    True 
-    """ 
-    return ESCAPE_CHARS_RE.sub(r'\\\g<char>', value) 
+def solr_escape(value):
+    """
+    Escape un-escaped special characters and return escaped value.
+    >>> solr_escape(r'foo+') == r'foo\+'
+    True
+    >>> solr_escape(r'foo\+') == r'foo\+'
+    True
+    >>> solr_escape(r'foo\\+') == r'foo\\+'
+    True
+    """
+    return ESCAPE_CHARS_RE.sub(r'\\\g<char>', value)
 
 # TODO: prefix functions that are intended for local use only with _
 
@@ -49,7 +48,7 @@ def title_count():
 class SolrPaginator(Paginator):
     """
     SolrPaginator takes a QueryDict object, builds and executes a solr query for
-    newspaper pages, and returns a paginator for the search results for use in 
+    newspaper pages, and returns a paginator for the search results for use in
     a HTML form.
     """
 
@@ -138,11 +137,11 @@ class SolrPaginator(Paginator):
         params = {"hl.snippets": 100, # TODO: make this unlimited
             "hl.requireFieldMatch": 'true', # limits highlighting slop
             "hl.maxAnalyzedChars": '102400', # increased from default 51200
-            } 
+            }
         sort_field, sort_order = _get_sort(self.query.get('sort'), in_pages=True)
-        solr_response = solr.query(self._q, 
+        solr_response = solr.query(self._q,
                                    fields=['id', 'title', 'date', 'sequence',
-                                           'edition_label', 'section_label'], 
+                                           'edition_label', 'section_label'],
                                    highlight=self._ocr_list,
                                    rows=self.per_page,
                                    sort=sort_field,
@@ -153,7 +152,7 @@ class SolrPaginator(Paginator):
         pages = []
         for result in solr_response.results:
             page = models.Page.lookup(result['id'])
-            if not page: 
+            if not page:
                 continue
             words = set()
             coords = solr_response.highlighting[result['id']]
@@ -193,7 +192,7 @@ class SolrPaginator(Paginator):
                 middle.append(p)
 
         # create the list with '...' where the sequence breaks
-        last = None 
+        last = None
         q = self.query.copy()
         for p in before + middle + end:
             if last and p - last > 1:
@@ -207,7 +206,7 @@ class SolrPaginator(Paginator):
 
     def englishify(self):
         """
-        Returns some pseudo english text describing the query. 
+        Returns some pseudo english text describing the query.
         """
         d = self.query
         parts = []
@@ -227,7 +226,7 @@ class SolrPaginator(Paginator):
     # TODO: see ticket #176
     # i think this can be removed if the search pages results view uses
     # css to orient pages, rather than fixing them in a table. other views
-    # currently do the floating css so it should be easy to copy, and it 
+    # currently do the floating css so it should be easy to copy, and it
     # would be nice to simplify this module.
     def results_table(self):
         """
@@ -253,8 +252,8 @@ class SolrPaginator(Paginator):
 
 class SolrTitlesPaginator(Paginator):
     """
-    SolrTitlesPaginator takes a QueryDict object, builds and executes a solr 
-    query for newspaper titles, and returns a paginator for the search results 
+    SolrTitlesPaginator takes a QueryDict object, builds and executes a solr
+    query for newspaper titles, and returns a paginator for the search results
     for use in a HTML form.
     """
 
@@ -280,12 +279,12 @@ class SolrTitlesPaginator(Paginator):
 
         # execute query
         solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
-        solr_response = solr.query(q, 
+        solr_response = solr.query(q,
                                    fields=['lccn', 'title',
-                                           'edition', 
-                                           'place_of_publication', 
+                                           'edition',
+                                           'place_of_publication',
                                            'start_year', 'end_year',
-                                           'language'], 
+                                           'language'],
                                    rows=rows,
                                    sort=sort_field,
                                    sort_order=sort_order,
@@ -300,11 +299,11 @@ class SolrTitlesPaginator(Paginator):
                 title = models.Title.objects.get(lccn=lccn)
                 results.append(title)
             except models.Title.DoesNotExist, e:
-                pass # TODO: log exception 
+                pass # TODO: log exception
 
         # set up some bits that the Paginator expects to be able to use
         Paginator.__init__(self, results, per_page=rows, orphans=0)
-        self._count = int(solr_response.results.numFound) 
+        self._count = int(solr_response.results.numFound)
         self._num_pages = None
         self._cur_page = page
 
@@ -432,7 +431,7 @@ def page_search(d):
 
 def query_join(values, field, and_clause=False):
     """
-    helper to create a chunk of a lucene query, based on 
+    helper to create a chunk of a lucene query, based on
     some value(s) extracted from form data
     """
 
@@ -440,13 +439,13 @@ def query_join(values, field, and_clause=False):
     if not isinstance(values, list):
         values = [values]
 
-    # escape solr chars 
+    # escape solr chars
     values = [solr_escape(v) for v in values]
 
     # quote values
     values = ['"%s"' % v for v in values]
 
-    # add + to the beginnging of each value if we are doing an AND clause 
+    # add + to the beginnging of each value if we are doing an AND clause
     if and_clause:
         values = ["+%s" % v for v in values]
 
@@ -482,7 +481,7 @@ def index_titles(since=None):
     count = 0
     while True:
         row = cursor.fetchone()
-        if row == None: 
+        if row == None:
             break
         title = models.Title.objects.get(lccn=row[0])
         index_title(title, solr)
@@ -500,7 +499,7 @@ def index_title(title, solr=None):
     try:
         solr.add(**title.solr_doc)
     except Exception, e:
-        _log.exception(e)        
+        _log.exception(e)
 
 def delete_title(title):
     solr = SolrConnection(settings.SOLR)
@@ -531,7 +530,7 @@ def index_pages():
 
 def word_matches_for_page(page_id, words):
     """
-    Gets a list of pre-analyzed words for a list of words on a particular 
+    Gets a list of pre-analyzed words for a list of words on a particular
     page. So if you pass in 'manufacturer' you can get back a list like
     ['Manufacturer', 'manufacturers', 'MANUFACTURER'] etc ...
     """
@@ -570,8 +569,8 @@ def _get_sort(sort, in_pages=False):
         sort_field = 'country' # odd artifact of Title model
         sort_order = 'asc'
     elif sort == 'title':
-        # important to sort on title_facet since it's the original 
-        # string, and not the analyzed title 
+        # important to sort on title_facet since it's the original
+        # string, and not the analyzed title
         sort_field = 'title_normal'
         sort_order = 'asc'
     # sort by the full issue date if we searching pages
@@ -585,7 +584,7 @@ def _get_sort(sort, in_pages=False):
 
 def _expand_ethnicity(e):
     """
-    takes an ethnicity string, expands it out the query using the 
+    takes an ethnicity string, expands it out the query using the
     the EthnicitySynonym models, and returns a chunk of a lucene query
     """
     parts = ['subject:"%s"' % e]

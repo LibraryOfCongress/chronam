@@ -1,9 +1,7 @@
 import json
 
 from django.test import TestCase
-from django.test.client import Client
 
-from chronam.core.models import Title, Page, Issue, Batch, Awardee
 
 class ApiTests(TestCase):
     """Tests the current API. Note URLs are hardwired instead of dynamic

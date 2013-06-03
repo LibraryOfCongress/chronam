@@ -1,4 +1,3 @@
-import re
 import json
 import urllib
 import logging
@@ -12,7 +11,7 @@ class CTS(object):
 
     def __init__(self, username, password, base_url):
         self.auth = (username, password)
-        self.base_url = base_url 
+        self.base_url = base_url
         if not self.base_url.endswith("/"):
             self.base_url += "/"
 
@@ -22,7 +21,7 @@ class CTS(object):
         url = "project/%s" % project_id
         instance_data = self._request(url)
         return Project(instance_data, self)
- 
+
     def next_service_request(self, queue_name, service_type):
         """get the next ServiceRequest for a given queue and service type
         """
@@ -54,7 +53,7 @@ class CTS(object):
         url = "inventory/bag_instance/%s" % key
         instance_data = self._request(url)
         return BagInstance(instance_data, self)
-      
+
     def _request(self, url, method='get', params={}, data=None):
         headers = {"accept": "application/json"}
         url = urlparse.urljoin(self.base_url, url)
@@ -62,10 +61,10 @@ class CTS(object):
             data = urllib.urlencode(data)
             headers["content-type"] = "application/x-www-form-urlencoded"
 
-        r = requests.request(method, url, 
-                             params=params, 
+        r = requests.request(method, url,
+                             params=params,
                              data=data,
-                             headers=headers, 
+                             headers=headers,
                              auth=self.auth)
 
         if r.status_code == 200:
@@ -75,7 +74,7 @@ class CTS(object):
         elif r.status_code == 204:
             return None
         else:
-            logger.error("%s %s with %s resulted in %s", method, url, params, 
+            logger.error("%s %s with %s resulted in %s", method, url, params,
                     r.status_code)
             return None
 
@@ -91,7 +90,7 @@ class Resource(object):
         self.data = self.cts._request(url)
 
     @property
-    def url(self): 
+    def url(self):
         return urlparse.urljoin(self.cts.base_url, self.link('self'))
 
     def link(self, rel):
