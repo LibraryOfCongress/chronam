@@ -2,7 +2,6 @@ import socket
 from urllib2 import urlopen
 
 from django import template
-from django.conf import settings
 from django.core.cache import cache
 
 register = template.Library()
@@ -25,11 +24,11 @@ def get_ext_url(url, timeout=None):
             except ValueError:
                 raise template.TemplateSyntaxError, "timeout argument of geturl tag, if provided, cannot be less than zero"
         try:
-            try: 
+            try:
                 content = urlopen(url).read()
             finally: # reset socket timeout
                 if timeout is not None:
-                    socket.setdefaulttimeout(socket_default_timeout) 
+                    socket.setdefaulttimeout(socket_default_timeout)
         except:
             content = ''
         # store in cache for 1 day

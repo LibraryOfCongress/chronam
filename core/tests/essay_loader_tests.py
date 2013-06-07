@@ -1,4 +1,3 @@
-import os
 import datetime
 
 import feedparser
@@ -6,7 +5,6 @@ import feedparser
 from django.test import TestCase
 from django.conf import settings
 
-import chronam.core
 from chronam.core.essay_loader import load_essay, purge_essay
 from chronam.core.models import Essay, Title
 

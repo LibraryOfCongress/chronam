@@ -1,7 +1,6 @@
 import datetime
 import logging
 import os
-import types
 
 from django.conf import settings
 from django.utils.unittest import skipUnless
@@ -48,7 +47,7 @@ def _chk_if_test_dir_exists(test_dir=None):
     return test_dir
 
 def _clear_test_dir(test_dir=None):
-    """ 
+    """
     Function to clear the test data directory.
     """
     cleared = False
@@ -77,7 +76,7 @@ class TitlePullTests(TestCase):
     @classmethod
     def tearDownClass(cls):
         _logging.info("Removing test-pull dir & files.")
-        cleared = _clear_test_dir(cls.test_dir)    
+        cleared = _clear_test_dir(cls.test_dir)
         if cleared:
             os.rmdir(cls.test_dir)
 
@@ -188,4 +187,4 @@ class TitlePullTests(TestCase):
 
         _clear_test_dir(self.test_dir)
         files_saved = self.t.run(self.test_dir, start=1978, end=1979, countries=('puerto rico',))
-        self.assertEqual(len(os.listdir(self.test_dir)), files_saved) 
+        self.assertEqual(len(os.listdir(self.test_dir)), files_saved)

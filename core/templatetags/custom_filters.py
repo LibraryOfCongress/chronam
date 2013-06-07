@@ -1,5 +1,4 @@
 from django import template
-from django.template.defaultfilters import stringfilter
 
 from rfc3339 import rfc3339
 

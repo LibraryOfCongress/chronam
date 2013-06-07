@@ -6,11 +6,10 @@ from rfc3339 import rfc3339
 from django.db.models import Q
 from django.conf import settings
 from django.core import urlresolvers
-from django.core.paginator import Paginator, InvalidPage
-from django.shortcuts import get_object_or_404, render_to_response
+from django.core.paginator import InvalidPage
+from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.template import RequestContext
-from django.template.loader import get_template
 
 from chronam.core import index, models
 from chronam.core import forms

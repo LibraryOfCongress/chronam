@@ -34,7 +34,7 @@ class Command(BaseCommand):
         make_option('-p','--path',
         action='store',
         dest='path',
-        default='/worldcat_titles',
+        default='/worldcat_titles/',
         help="Path var that is appeneded to settings.BIB_STORAGE to save to"),
     )
 

@@ -5,11 +5,9 @@ from optparse import make_option
 
 from django.core import management
 from django.core.management.base import BaseCommand
-from django.conf import settings
 
 from chronam.core import models
 from chronam.core import index
-from chronam.core.models import Language, Place, Subject
 from chronam.core.management.commands import configure_logging
 from chronam.core.utils.utils import validate_bib_dir
 
@@ -66,7 +64,7 @@ class Command(BaseCommand):
                     filepath = os.path.join(bib_in_settings, filename)
                     management.call_command('load_titles', filepath, skip_index=True)
 
-        management.call_command('title_sync', 
+        management.call_command('title_sync',
                                 skip_essays=options['skip_essays'],
                                 pull_title_updates=options['pull_title_updates'])
 
