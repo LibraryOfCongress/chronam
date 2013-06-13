@@ -2,17 +2,21 @@ from django.conf import settings
 from django.core.cache import cache
 
 from chronam.core import models, index
+from chronam.core.forms import _fulltext_range
 
 
 def extra_request_info(request):
     """
     Add some extra useful stuff into the RequestContext.
     """
+    fulltext_range = _fulltext_range()
     return {
         'site_title': 'Chronicling America',
         'omniture_url': settings.OMNITURE_SCRIPT if "OMNITURE_SCRIPT" in dir(settings) else None,
         'sharetool_url': settings.SHARETOOL_URL if "SHARETOOL_URL" in dir(settings) else None,
-        }
+        'fulltext_startdate': fulltext_range[0],
+        'fulltext_enddate': fulltext_range[1],
+    }
 
 
 def cors(request):
@@ -55,4 +59,3 @@ def newspaper_info(request):
         cache.set("newspaper_info", info)
 
     return info
-

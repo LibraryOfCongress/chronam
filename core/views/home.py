@@ -18,8 +18,6 @@ def home(request, date=None):
     context["date"] = date = today.replace(year=today.year-100)
     context["pages"] = _frontpages(request, date)
     template = get_template("home.html")
-    fulltext_range = forms._fulltext_range() 
-    context["fulltext_range"] = "%s-%s" % (fulltext_range[0], fulltext_range[1])
     # note the date is handled on the client side in javascript
     return HttpResponse(content=template.render(context))
 
