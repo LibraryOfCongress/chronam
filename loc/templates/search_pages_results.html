@@ -4,24 +4,24 @@
 
 {% block javascript %}
 {{ block.super }}
-<script type="text/javascript" src="{% static 'js/search_results.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script> 
 <script type="text/javascript">
 
 jQuery(function($){
     $("#sort_select option[value='{{sort}}']").attr("selected", true);
     $("#rpp_select option[value='{{rows}}']").attr("selected", true);
-    {% ifequal sequence 1 %}
-    $("input#check_front").attr('checked', 'checked');
-    {% endifequal %}
+    if ($.deparam.querystring().sequence == 1){ 
+        $("input#check_front").attr('checked', 'checked');
+    }
     $("#rpp_select").change(function(){
-        window.location=setUrlVar('rows', this.value);
+        window.location=$.param.querystring(location.href, {'rows': this.value});
     });
     $("#sort_select").change(function(){
-        window.location=setUrlVar('sort', this.value);
+        window.location=$.param.querystring(location.href, {'sort': this.value});
     });
     $("#check_front").change(function(){
         var checked = $("#check_front").attr("checked") ? 1 : '';
-        window.location=setUrlVar('sequence', checked);
+        window.location=$.param.querystring(location.href, {'sequence': checked});
     });
 });
 </script>
