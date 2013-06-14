@@ -27,7 +27,7 @@ VERBOSE=yes
 #JAVA_OPTIONS="-Xmx256m -Djava.awt.headless=true"
 
 # Home of Java installation.
-JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
+JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:bin/javac::")
 
 # The first existing directory is used for JAVA_HOME (if JAVA_HOME is not
 # defined in /etc/default/jetty). Should contain a list of space separated directories.
