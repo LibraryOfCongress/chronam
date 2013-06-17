@@ -24,8 +24,8 @@ Configure Solr
 
     sudo cp /opt/chronam/conf/schema.xml /etc/solr/conf/
     sudo cp /opt/chronam/conf/stopwords_* /etc/solr/conf/
-    sudo cp /opt/chronam/conf/solrconfig-ubuntu.xml /etc/solr/conf/solrconfig.xml
-    sudo cp /opt/chronam/conf/jetty /etc/default/jetty
+    sudo cp /opt/chronam/conf/solrconfig-4.3.0.xml /etc/solr/conf/solrconfig.xml
+    sudo cp /opt/chronam/conf/jetty-ubuntu /etc/default/jetty
     sudo service jetty start
 
 Configure Apache

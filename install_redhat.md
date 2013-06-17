@@ -28,7 +28,7 @@ Download solr from a mirror site
 
     cp /opt/chronam/conf/schema.xml /opt/solr-4.3.0/solr/collection1/conf/schema.xml
     cp /opt/chronam/conf/stopwords* /opt/solr-4.3.0/solr/collection1/conf/
-    cp /opt/chronam/conf/solrconfig-centos.xml /opt/solr-4.3.0/solr/collection1/conf/solrconfig.xml
+    cp /opt/chronam/conf/solrconfig-4.3.0.xml /opt/solr-4.3.0/solr/collection1/conf/solrconfig.xml
 
 Update the dataDir field in /opt/solr-4.3.0/solr/conf/solrconfig.xml and 
 point to a directory for where the solr index will live.
@@ -39,7 +39,7 @@ point to a directory for where the solr index will live.
     cp /opt/chronam/conf/jetty7.sh /etc/init.d/jetty
     chmod +x /etc/init.d/jetty
 
-    cp /opt/chronam/conf/jetty /etc/default/
+    cp /opt/chronam/conf/jetty-redhat /etc/default/
     cp /opt/chronam/conf/jetty-logging.xml /opt/solr-4.3.0/etc/jetty-logging.xml
 
     sudo service jetty start
