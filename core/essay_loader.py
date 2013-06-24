@@ -44,7 +44,7 @@ def load_essay(essay_url, index=True):
     # extract metadata from the html
     logging.info("loading essay %s" % essay_url)
     g = Graph()
-    g.parse(essay_url, format='rdfa', html5=True, encoding='utf-8')
+    g.parse(essay_url, format='rdfa')
 
     # create the essay instance
     essay_uri = URIRef(essay_url)

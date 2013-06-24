@@ -12,7 +12,7 @@ rfc3339
 south
 mimeparse
 NativeImaging
-html5lib
+html5lib=0.95-dev
 requests
 django-celery
 django-kombu
