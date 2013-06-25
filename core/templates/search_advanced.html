@@ -8,15 +8,17 @@
 {% endblock head_content %}
 {% block subcontent %}
 <div>
-    <form action="{% url chronam_search_pages_results %}" method="get" name="fulltext2" id="fulltext2" class="well">
+    <form action="{% url chronam_search_pages_results %}" method="get" name="fulltext2" id="fulltext2" class="form-inline">
         <fieldset>
             <legend>Limit Search</legend>
-            <!-- state -->
-            <label for="id_states" class="control-label">Select State(s):</label>
-            {{ adv_search_form.state }}
+	    <!-- state -->
+            <div class="row">
+                    <div class="span3"> <label for="id_states" class="control-label">Select State(s):</label>
+                    {{ adv_search_form.state }} </div>
             <!-- newspaper -->
-            <label for="id_lccns" class="control-label">Select Newspaper(s):</label>
-            {{ adv_search_form.lccn }}
+            <div class="span3"> <label for="id_lccns" class="control-label">Or Select Newspaper(s):</label>
+            {{ adv_search_form.lccn }} </div>
+            </div>
             <!-- page -->
             <label for="id_sequence" class="control-label">Specific page</label>
             {{ adv_search_form.sequence }}
