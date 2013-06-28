@@ -13,10 +13,10 @@
             <legend>Limit Search</legend>
             <div class="row">
 	            <!-- state -->
-                <div class="span3"> <label for="id_states">Select State(s):</label>
+                <div class="span3"> <label for="id_states">Select States:</label>
                 {{ adv_search_form.state }} </div>
                 <!-- newspaper -->
-                <div class="span3"> <label for="id_lccns">Or Select Newspaper(s):</label>
+                <div class="span3"> <label for="id_lccns">Or Select Newspapers:</label>
                 {{ adv_search_form.lccn }} </div>
             </div>
             <div class="row">
@@ -24,6 +24,10 @@
                 <div class="span3">
                     <label for="id_sequence">Specific page</label>
                     {{ adv_search_form.sequence }}
+                </div>
+                <div class="span3"
+                    <label for="id_language" class="control-label">Language</label>
+                    {{ adv_search_form.language }}
                 </div>
             </div>
         </fieldset>
@@ -44,8 +48,6 @@
         </fieldset>
         <fieldset>
             <legend>Enter Search</legend>
-            <label for="id_language" class="control-label">Language</label>
-            {{ adv_search_form.language }}
             <div class="row">
                 <div class="span3">
                     <label for="id_ortext" class="control-label">...with <strong>any</strong> of the words:</label>
