@@ -1,46 +1,38 @@
 {% extends "reports/reports.html" %}
 {% load static from staticfiles %}
 
-{% block extra_link_types %}
-      {% if page.has_previous %}
-      <link rel="prev" href="{% url chronam_institutions_page_number page.previous_page_number %}" />
-      {% endif %}
-      {% if page.has_next %}
-      <link rel="next" href="{% url chronam_institutions_page_number page.next_page_number %}" />
-      {% endif %}
-{% endblock %}
 
 {% block subcontent %}
 
   {% ifnotequal paginator.num_pages 1 %}
-  <div id="searchnav">
-    <div class="pageNavigator">
+    <div class="pagination">
+        <ul>
       {% if page.has_previous %}
-      <a rel="prev" href="{% url chronam_institutions_page_number page.previous_page_number %}"><img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" /></a>
+      <li><a href="{% url chronam_institutions_page_number page.previous_page_number %}">&laquo;</a></li>
       {% endif %}
       {% for page_number in page_range_short %}
       {% ifequal page_number "..." %}
-      ...
+      <li><a href="#">...</a></li>
       {% else %}
 
       {% ifequal page_number page.number %}
-      <span class="off">{{page_number}}</span> 
+      <li><span class="off">{{page_number}}</span></li>
       {% else %}
-      <a href="{% url chronam_institutions_page_number page_number%}">{{page_number}}</a> 
+      <li><a href="{% url chronam_institutions_page_number page_number%}">{{page_number}}</a></li>
       {% endifequal %}
 
       {% endifequal %}
       {% endfor %}
       {% if page.has_next %}
-      <a rel="next" href="{% url chronam_institutions_page_number page.next_page_number %}"><img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a> 
+      <li><a href="{% url chronam_institutions_page_number page.next_page_number %}">&raquo;</a></li>
       {% endif %}
+        </ul>
     </div>
-  </div>
 
 {% endifnotequal %}
 
     <div id="search_results_box">
-        
+       
 
         <table class="data table table-striped table-hover" style="margin: 20px;">
         {% for institution in page.object_list %}
