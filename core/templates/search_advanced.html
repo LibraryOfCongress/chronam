@@ -12,7 +12,7 @@
         <fieldset>
             <legend>Limit Search</legend>
             <div class="row">
-	            <!-- state -->
+                <!-- state -->
                 <div class="span3"> <label for="id_states">Select States:</label>
                 {{ adv_search_form.state }} </div>
                 <!-- newspaper -->
@@ -26,7 +26,7 @@
                     {{ adv_search_form.sequence }}
                 </div>
                 <div class="span3"
-                    <label for="id_language" class="control-label">Language</label>
+                    <label for="id_language">Language</label>
                     {{ adv_search_form.language }}
                 </div>
             </div>
@@ -50,22 +50,22 @@
             <legend>Enter Search</legend>
             <div class="row">
                 <div class="span3">
-                    <label for="id_ortext" class="control-label">...with <strong>any</strong> of the words:</label>
+                    <label for="id_ortext">...with <strong>any</strong> of the words:</label>
                     {{ adv_search_form.ortext }}
                 </div>
                 <div class="span3">
-                    <label for="id_andtext" class="control-label">...with <strong>all</strong> of the words:</label>
+                    <label for="id_andtext">...with <strong>all</strong> of the words:</label>
                     {{ adv_search_form.andtext }}
                 </div>
                 <div class="span3">    
-                    <label for="id_phrasetext" class="control-label">...with the <strong>phrase</strong>:</label>
+                    <label for="id_phrasetext">...with the <strong>phrase</strong>:</label>
                     {{ adv_search_form.phrasetext }}
                 </div>
             </div>    
-            <label for="id_proxtext_adv" class="control-label">...with the words:</label>
+            <label for="id_proxtext_adv">...with the words:</label>
             <div class="form-inline">
                 {{ adv_search_form.proxtext }}
-                <label for="id_proxdistance" class="control-label">within</label>
+                <label for="id_proxdistance">within</label>
                 {{ adv_search_form.proxdistance}}
                 <span>words of each other</span>
             </div>
