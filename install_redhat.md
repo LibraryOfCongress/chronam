@@ -27,7 +27,6 @@ Download solr from a mirror site
     mv solr-4.3.0/example/ /opt/solr-4.3.0
 
     cp /opt/chronam/conf/schema.xml /opt/solr-4.3.0/solr/collection1/conf/schema.xml
-    cp /opt/chronam/conf/stopwords* /opt/solr-4.3.0/solr/collection1/conf/
     cp /opt/chronam/conf/solrconfig-4.3.0.xml /opt/solr-4.3.0/solr/collection1/conf/solrconfig.xml
 
 Update the dataDir field in /opt/solr-4.3.0/solr/conf/solrconfig.xml and 
