@@ -1,14 +1,11 @@
 chronam Ubuntu
 ==============
 
-The following are instructions for installing system level dependencies on 
-Ubuntu:
+The following are instructions for installing system level dependencies on Ubuntu:
 
-    sudo apt-get install python-dev python-virtualenv mysql-server libmysqlclient-dev apache2 libapache2-mod-wsgi solr-jetty openjdk-6-jdk libxml2-dev libxslt-dev libjpeg-dev git-core graphicsmagick
+    sudo apt-get install python-dev python-virtualenv mysql-server libmysqlclient-dev apache2 libapache2-mod-wsgi jetty openjdk-6-jdk libxml2-dev libxslt-dev libjpeg-dev git-core graphicsmagick
 
-When you install mysql-server, you will be prompted for a root password. If 
-you choose one, make a note of what it is. Later you will be asked to enter 
-the password when you create the database for the project.
+When you install mysql-server, you will be prompted for a root password. If you choose one, make a note of what it is. Later you will be asked to enter the password when you create the database for the project.
 
 Get chronam
 -----------
@@ -22,9 +19,15 @@ Next you need to get the chronam code:
 Configure Solr
 --------------
 
-    sudo cp /opt/chronam/conf/schema.xml /etc/solr/conf/
-    sudo cp /opt/chronam/conf/stopwords_* /etc/solr/conf/
-    sudo cp /opt/chronam/conf/solrconfig-4.3.0.xml /etc/solr/conf/solrconfig.xml
+Download Solr from a mirror site
+
+    wget http://apache.mirrors.lucidnetworks.net/lucene/solr/4.3.1/solr-4.3.1.tgz
+    tar zxvf solr-4.3.1.tgz
+    mv solr-4.3.1/example/ /opt/solr-4.3.1
+
+    sudo cp /opt/chronam/conf/schema.xml /opt/solr-4.3.1/solr/collection1/conf/schema.xml
+    sudo cp /opt/chronam/conf/solrconfig-4.3.0.xml /opt/solr-4.3.1/solr/collection1/conf/solrconfig.xml
+
     sudo cp /opt/chronam/conf/jetty-ubuntu /etc/default/jetty
     sudo service jetty start
 
