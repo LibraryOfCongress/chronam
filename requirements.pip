@@ -2,7 +2,6 @@ distribute>=0.6.28
 Django==1.4.2
 MySQL-python
 lxml
-rdflib
 pymarc
 solrpy
 PIL
@@ -13,6 +12,7 @@ south
 mimeparse
 NativeImaging
 html5lib==0.95
+rdflib==3.2.3
 requests
 django-celery
 django-kombu
