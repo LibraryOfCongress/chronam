@@ -1,13 +1,13 @@
 chronam Redhat
 ==============
 
-The following are instructions for installing system level dependencies on 
+The following are instructions for installing system level dependencies on
 RHEL.
 
     sudo yum install mysql-server mysql-devel httpd python-virtualenv gcc libxml2-devel libxslt-devel libjpeg-devel zlib-devel mod_wsgi java-1.6.0-openjdk-devel git
 
-When you install mysql-server, you will be prompted for a root password. If 
-you choose one, make a note of what it is. Later you will be asked to enter 
+When you install mysql-server, you will be prompted for a root password. If
+you choose one, make a note of what it is. Later you will be asked to enter
 the password when you create the database for the project.
 
 Get chronam
@@ -21,6 +21,7 @@ Configure Solr
 --------------
 
 Download solr from a mirror site
+
     wget http://mirrors.ibiblio.org/apache/lucene/solr/4.3.0/solr-4.3.0.tgz
     gunzip solr-4.3.0.tgz
     tar xvf solr-4.3.0.tar
@@ -29,7 +30,7 @@ Download solr from a mirror site
     cp /opt/chronam/conf/schema.xml /opt/solr-4.3.0/solr/collection1/conf/schema.xml
     cp /opt/chronam/conf/solrconfig-4.3.0.xml /opt/solr-4.3.0/solr/collection1/conf/solrconfig.xml
 
-Update the dataDir field in /opt/solr-4.3.0/solr/conf/solrconfig.xml and 
+Update the dataDir field in /opt/solr-4.3.0/solr/conf/solrconfig.xml and
 point to a directory for where the solr index will live.
 
     useradd -d /opt/solr-4.3.0 -s /bin/bash solr
