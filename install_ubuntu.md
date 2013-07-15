@@ -25,6 +25,9 @@ Download Solr from a mirror site
     tar zxvf solr-4.3.1.tgz
     mv solr-4.3.1/example/ /opt/solr-4.3.1
 
+    useradd -d /opt/solr-4.3.1 -s /bin/bash solr
+    chown solr:solr -R /opt/solr-4.3.1
+
     sudo cp /opt/chronam/conf/schema.xml /opt/solr-4.3.1/solr/collection1/conf/schema.xml
     sudo cp /opt/chronam/conf/solrconfig-4.3.0.xml /opt/solr-4.3.1/solr/collection1/conf/solrconfig.xml
 
