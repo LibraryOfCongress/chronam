@@ -23,10 +23,13 @@ Download Solr from a mirror site
 
     wget http://apache.mirrors.lucidnetworks.net/lucene/solr/4.3.1/solr-4.3.1.tgz
     tar zxvf solr-4.3.1.tgz
-    mv solr-4.3.1/example/ /opt/solr-4.3.1
+    sudo mv solr-4.3.1/example/ /opt/solr-4.3.1
 
-    useradd -d /opt/solr-4.3.1 -s /bin/bash solr
-    chown solr:solr -R /opt/solr-4.3.1
+    sudo useradd -d /opt/solr-4.3.1 -s /bin/bash solr
+    sudo chown solr:solr -R /opt/solr-4.3.1
+    
+    sudo cp /opt/chronam/conf/jetty7.sh /etc/init.d/jetty
+    sudo chmod +x /etc/init.d/jetty
 
     sudo cp /opt/chronam/conf/schema.xml /opt/solr-4.3.1/solr/collection1/conf/schema.xml
     sudo cp /opt/chronam/conf/solrconfig-4.3.0.xml /opt/solr-4.3.1/solr/collection1/conf/solrconfig.xml
