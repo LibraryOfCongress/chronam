@@ -34,20 +34,29 @@ PROX_CHOICES = (
 
 
 def _titles_states():
+    """
+    returns a tuple of two elements (list of titles, list of states)
+
+    example return value:
+    ([('', 'All newspapers'), (u'sn83030214', u'New-York tribune. (New York [N.Y.])')], 
+     [('', 'All states'), (u'New York', u'New York')])
+    """
     titles_states = cache.get("titles_states")
     if not titles_states:
         titles = [("", "All newspapers"), ]
-        countries = set()
+        states = [("", "All states")]
+        # create a temp Set _states to hold states before compiling full list
+        _states = set()
         for title in models.Title.objects.filter(has_issues=True).select_related():
             short_name = title.name.split(":")[0]  # remove subtitle
             title_name = "%s (%s)" % (short_name,
                                       title.place_of_publication)
             titles.append((title.lccn, title_name))
             for p in title.places.all():
-                countries.add(p.state)
-        states = [("", "All states")]
-        for country in countries:
-            states.append((country, country))
+                _states.add(p.state)
+        _states = filter(lambda s: s is not None, _states)
+        for state in _states:
+            states.append((state, state))
         states = sorted(states)
         cache.set("titles_states", (titles, states))
     else:
