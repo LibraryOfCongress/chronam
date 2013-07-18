@@ -174,12 +174,17 @@ def search_titles_results(request):
                                   mimetype='application/atom+xml')
 
     elif format == 'json':
+        def prep_title_for_json(t):
+            title = {}
+            title.update(t.solr_doc)
+            title['oclc'] = t.oclc
+            return title
         results = {
             'startIndex': start,
             'endIndex': end,
             'totalItems': paginator.count,
             'itemsPerPage': rows,
-            'items': [t.solr_doc for t in page.object_list]
+            'items': [prep_title_for_json(t) for t in page.object_list]
         }
         # add url for the json view
         for i in results['items']:
