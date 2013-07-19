@@ -181,6 +181,8 @@ urlpatterns += patterns(
     url(r'^newspapers/$', 'newspapers', name='chronam_newspapers'),
     url(r'^newspapers/feed/$', 'newspapers_atom', name='chronam_newspapers_atom'),
 
+    url(r'^newspapers.(?P<format>csv)$', 'newspapers',
+        name='chronam_newspapers_format'),
     url(r'^newspapers.(?P<format>txt)$', 'newspapers', 
         name='chronam_newspapers_format'),
     url(r'^newspapers.(?P<format>json)$', 'newspapers', 
