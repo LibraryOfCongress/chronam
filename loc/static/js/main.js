@@ -52,6 +52,10 @@ jQuery(function($){
 
     // disable options in 'from' year dropdown based on option selected in 'to' dropdown
     $("select#id_date1").change(function(){
+        // enable all options first before selectively disabling some
+        $('select option').each(function() {        
+            $(this).attr('disabled', false);
+        });
         var _start_yr = parseInt($(this).val());
         $("select#id_date2 > option").each(function() {
             if(parseInt(this.text) < _start_yr)
