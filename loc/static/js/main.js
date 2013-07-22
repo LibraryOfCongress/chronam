@@ -47,8 +47,19 @@ jQuery(function($){
     });
 
     // init datepickers
-    var start_year = $('#id_date1').val();
-    var end_year = $('#id_date2').val();
+    var start_year = $("#id_date1").val();
+    var end_year = $("#id_date2").val();
+
+    // disable options in 'from' year dropdown based on option selected in 'to' dropdown
+    $("select#id_date1").change(function(){
+        var _start_yr = parseInt($(this).val());
+        $("select#id_date2 > option").each(function() {
+            if(parseInt(this.text) < _start_yr)
+            {
+                $(this).attr('disabled', true);
+            }
+        });
+    });
 
     $('#id_date_from').datepicker({defaultDate: new Date(start_year, 1-1, 1), showOn: "focus", yearRange: start_year+":"+end_year, currentText: '', changeMonth: true, changeYear: true, closeText: 'Done'});
     $('#id_date_to').datepicker({defaultDate: new Date(end_year, 12-1, 31), showOn: "focus", yearRange: start_year+":"+end_year, currentText: '', changeMonth: true, changeYear: true});
