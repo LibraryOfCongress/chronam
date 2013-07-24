@@ -1,9 +1,10 @@
+import csv
 import datetime
 import json
 from rfc3339 import rfc3339
 
 from django.conf import settings
-from django.core import urlresolvers
+from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse, HttpResponseServerError
 from django.db.models import Max, Min, Q
 from django.shortcuts import render_to_response
@@ -79,6 +80,27 @@ def newspapers(request, state=None, format='html'):
                                   dictionary=locals(),
                                   context_instance=RequestContext(request),
                                   mimetype="text/plain")
+    elif format == "csv":
+        csv_header_labels = ('Persistent Link', 'State', 'Title', 'LCCN', 'OCLC', 
+                             'ISSN', 'No. of Issues', 'First Issue Date', 
+                             'Last Issue Date', 'More Info')
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="chronam_newspapers.csv"'
+        writer = csv.writer(response)
+        writer.writerow(csv_header_labels)
+        for state, titles in newspapers_by_state:
+            for title in titles:
+                writer.writerow(('http://%s%s' % (request.get_host(), 
+                                                  reverse('chronam_issues', 
+                                                           kwargs={'lccn': title.lccn}),),
+                                 state, title, title.lccn or '', title.oclc or '',
+                                 title.issn or '', title.issues.count(), title.first, 
+                                 title.last, 
+                                 'http://%s%s' % (request.get_host(),
+                                                  reverse('chronam_title_essays',
+                                                           kwargs={'lccn': title.lccn}),),))
+        return response
+
     elif format == "json":
         host = request.get_host()
         results = {"newspapers": []}
@@ -128,7 +150,7 @@ def search_titles_results(request):
     page_title = 'US Newspaper Directory Search Results'
     crumbs = list(settings.BASE_CRUMBS)
     crumbs.extend([{'label': 'Search Newspaper Directory',
-                    'href': urlresolvers.reverse('chronam_search_titles')},
+                    'href': reverse('chronam_search_titles')},
                    ])
     try:
         curr_page = int(request.REQUEST.get('page', 1))
@@ -174,12 +196,17 @@ def search_titles_results(request):
                                   mimetype='application/atom+xml')
 
     elif format == 'json':
+        def prep_title_for_json(t):
+            title = {}
+            title.update(t.solr_doc)
+            title['oclc'] = t.oclc
+            return title
         results = {
             'startIndex': start,
             'endIndex': end,
             'totalItems': paginator.count,
             'itemsPerPage': rows,
-            'items': [t.solr_doc for t in page.object_list]
+            'items': [prep_title_for_json(t) for t in page.object_list]
         }
         # add url for the json view
         for i in results['items']:
