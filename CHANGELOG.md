@@ -1,3 +1,31 @@
+Development: v3.9.0 ([changes](https://github.com/LibraryOfCongress/chronam/compare/v3.8.1...master))
+-------------------
+#### New Features & Updates
+* Disallow invalid date ranges #60
+* Add OCLC number to JSON view in Directory #59
+* Use default stopwords from Solr
+* Upgrade to Solr 4.3
+* Added German language
+* Styling on multiple pages in the core templates
+* JQuery BBQ replaced custom javascript
+* Newspaper directory sort
+* Example app added
+* Made javascript elements cacheable #40
+* Added secondary sort to newspaper list page #33
+* Ignore English articles in sorting #33
+* Jenkins integration
+* Seadragon files size increased to 512
+* Timeout setting to 60 seconds
+
+#### Bug Fixes
+* Default date range 1836-1922 on all pages #61
+* Remove "None" from list of options
+* Numerous corrections to Ubuntu install instructions
+* Correct versions for html5lib and rdflib
+* Code cleanup in cataloging management code
+* Miscellaneous flake8 cleanups
+
+
 Development: v3.8.1 ([changes](https://github.com/LibraryOfCongress/chronam/compare/v3.8.0...master))
 -------------------
 #### New Features & Updates
@@ -10,9 +38,9 @@ Development: v3.8.1 ([changes](https://github.com/LibraryOfCongress/chronam/comp
 * Clean up added for used languages, subjects, and places in the database | trac 1349, 1307
 * Updates state list in search to include all states in 752 field | trac 1339
 * Jenkins Settings updated -- removes memorius
-* Instructions consolidated into README.md and reformatted as Markdown for viewing on Github, with operating specific notes remaining in install_ubuntu.md and install_redhat.md. 
+* Instructions consolidated into README.md and reformatted as Markdown for viewing on Github, with operating specific notes remaining in install_ubuntu.md and install_redhat.md.
 
-#### Bugs Fixes 
+#### Bugs Fixes
 * Fixes - error displaying in holdings data that has been updated in the 21st century | trac 1331
 * Fixes - holdings display error from 866 so that preceding letter and '=' are not striped off in loading process. | trac 1332
  * Example
