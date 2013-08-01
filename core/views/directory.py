@@ -152,6 +152,49 @@ def search_titles_results(request):
     crumbs.extend([{'label': 'Search Newspaper Directory',
                     'href': reverse('chronam_search_titles')},
                    ])
+
+    def prep_title_for_return(t):
+        title = {}
+        title.update(t.solr_doc)
+        title['oclc'] = t.oclc
+        return title
+
+    format = request.GET.get('format', None)
+
+    # check if requested format is CSV before building pages for response. CSV 
+    # response does not make use of pagination, instead all matching titles from
+    # SOLR are returned at once
+    if format == 'csv':
+        query = request.GET.copy()
+        q, fields, sort_field, sort_order = index.get_solr_request_params_from_query(query)
+        
+        # return all titles in csv format. * May hurt performance. Assumption is that this
+        # request is not made often. 
+        # TODO: revisit if assumption is incorrect
+        solr_response = index.execute_solr_query(q, fields, sort_field, 
+                                                 sort_order, index.title_count(), 0)
+        titles = index.get_titles_from_solr_documents(solr_response)
+
+        csv_header_labels = ('lccn', 'title', 'place_of_publication', 'start_year',
+                             'end_year', 'publisher', 'edition', 'frequency', 'subject', 
+                             'state', 'city', 'country', 'language', 'oclc',
+                             'holding_type',)
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="chronam_titles.csv"'
+        writer = csv.writer(response)
+        writer.writerow(csv_header_labels)
+        for title in titles:
+            writer.writerow(map(lambda val: val or '--',
+                               (title.lccn, title.name, title.place_of_publication,
+                                title.start_year, title.end_year, title.publisher, 
+                                title.edition, title.frequency, 
+                                map(str, title.subjects.all()), 
+                                set(map(lambda p: p.state, title.places.all())), 
+                                map(lambda p: p.city, title.places.all()),
+                                str(title.country), map(str, title.languages.all()),
+                                title.oclc, title.holding_types)))
+        return response
+ 
     try:
         curr_page = int(request.REQUEST.get('page', 1))
     except ValueError, e:
@@ -186,7 +229,7 @@ def search_titles_results(request):
     for p in range(len(page.object_list)):
         page_start = start+p
         page_list.append((page_start, page.object_list[p]))
-    format = request.GET.get('format', None)
+
     if format == 'atom':
         feed_url = 'http://' + host + request.get_full_path()
         updated = rfc3339(datetime.datetime.now())
@@ -196,17 +239,12 @@ def search_titles_results(request):
                                   mimetype='application/atom+xml')
 
     elif format == 'json':
-        def prep_title_for_json(t):
-            title = {}
-            title.update(t.solr_doc)
-            title['oclc'] = t.oclc
-            return title
         results = {
             'startIndex': start,
             'endIndex': end,
             'totalItems': paginator.count,
             'itemsPerPage': rows,
-            'items': [prep_title_for_json(t) for t in page.object_list]
+            'items': [prep_title_for_return(t) for t in page.object_list]
         }
         # add url for the json view
         for i in results['items']:
@@ -216,6 +254,7 @@ def search_titles_results(request):
         if request.GET.get('callback') is not None:
             json_text = "%s(%s);" % (request.GET.get('callback'), json_text)
         return HttpResponse(json_text, mimetype='application/json')
+
 
     sort = request.GET.get('sort', 'relevance')
 

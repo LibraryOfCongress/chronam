@@ -259,9 +259,7 @@ class SolrTitlesPaginator(Paginator):
 
     def __init__(self, query):
         self.query = query.copy()
-
-        # figure out the solr query
-        q = title_search(self.query)
+        q, fields, sort_field, sort_order = get_solr_request_params_from_query(self.query)
 
         try:
             page = int(self.query.get('page'))
@@ -274,32 +272,12 @@ class SolrTitlesPaginator(Paginator):
             rows = 50
         start = rows * (page - 1)
 
-        # determine sort order
-        sort_field, sort_order = _get_sort(self.query.get('sort'))
-
         # execute query
-        solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
-        solr_response = solr.query(q,
-                                   fields=['lccn', 'title',
-                                           'edition',
-                                           'place_of_publication',
-                                           'start_year', 'end_year',
-                                           'language'],
-                                   rows=rows,
-                                   sort=sort_field,
-                                   sort_order=sort_order,
-                                   start=start)
+        solr_response = execute_solr_query(q, fields, sort_field, sort_order, rows, start)
 
         # convert the solr documents to Title models
         # could use solr doc instead of going to db, if performance requires it
-        lccns = [d['lccn'] for d in solr_response.results]
-        results = []
-        for lccn in lccns:
-            try:
-                title = models.Title.objects.get(lccn=lccn)
-                results.append(title)
-            except models.Title.DoesNotExist, e:
-                pass # TODO: log exception
+        results = get_titles_from_solr_documents(solr_response)
 
         # set up some bits that the Paginator expects to be able to use
         Paginator.__init__(self, results, per_page=rows, orphans=0)
@@ -315,6 +293,46 @@ class SolrTitlesPaginator(Paginator):
         number = self.validate_number(number)
         return Page(self.object_list, number, self)
 
+
+def get_titles_from_solr_documents(solr_response):
+    """
+    solr_response: search result returned from SOLR in response to
+    title search.
+
+    This function turns SOLR documents into chronam.models.Title 
+    instances 
+    """
+    lccns = [d['lccn'] for d in solr_response.results]
+    results = []
+    for lccn in lccns:
+        try:
+            title = models.Title.objects.get(lccn=lccn)
+            results.append(title)
+        except models.Title.DoesNotExist, e:
+            pass # TODO: log exception
+    return results
+
+
+def get_solr_request_params_from_query(query):
+    q = title_search(query)
+    fields = ['id', 'title', 'date', 'sequence', 'edition_label', 'section_label']
+    sort_field, sort_order = _get_sort(query.get('sort'))
+    return q, fields, sort_field, sort_order
+ 
+
+def execute_solr_query(query, fields, sort, sort_order, rows, start):
+    solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
+    solr_response = solr.query(query,
+                               fields=['lccn', 'title',
+                                       'edition',
+                                       'place_of_publication',
+                                       'start_year', 'end_year',
+                                       'language'],
+                               rows=rows,
+                               sort=sort,
+                               sort_order=sort_order,
+                               start=start)
+    return solr_response
 
 def title_search(d):
     """
