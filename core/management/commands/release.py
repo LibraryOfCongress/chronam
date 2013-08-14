@@ -120,29 +120,42 @@ def write_sitemaps():
         if url_count % 1000 == 0:
             reset_queries()
 
-    # wrap up some open files
-    sitemap.write('</urlset>\n')
-    sitemap.close()
-    sitemap_index.write('</sitemapindex>\n')
-    sitemap_index.close()
+    try:
+        # wrap up some open files. do this only if we had release candidates 
+        # if not, accessing sitemap variable will cause an error
+        sitemap.write('</urlset>\n')
+        sitemap.close()
+        sitemap_index.write('</sitemapindex>\n')
+        sitemap_index.close()
+    except NameError:
+        _logger.info("No release candidates this time.")
+        pass
 
 def sitemap_urls():
     """
     A generator that returns all the urls for batches, issues, pages and
     titles, and their respective modified time as a tuple.
     """
-    for batch in m.Batch.objects.all():
+    for batch in m.Batch.objects.filter(sitemap_indexed=False):
         yield batch.url, batch.released
         yield rdf_uri(batch), batch.released
-        for issue in batch.issues.all():
+        batch.sitemap_indexed = True
+        batch.save()
+        for issue in batch.issues.filter(sitemap_indexed=False):
             yield issue.url, batch.released
             yield rdf_uri(issue), batch.released
-            for page in issue.pages.all():
+            issue.sitemap_indexed = True
+            issue.save()
+            for page in issue.pages.filter(sitemap_indexed=False):
                 yield page.url, batch.released
                 yield rdf_uri(page), batch.released
+                page.sitemap_indexed = True
+                page.save()
 
-    paginator = Paginator(m.Title.objects.all(), 10000)
+    paginator = Paginator(m.Title.objects.filter(sitemap_indexed=False), 10000)
     for page_num in range(1, paginator.num_pages + 1):
         page = paginator.page(page_num)
         for title in page.object_list:
             yield title.url, title.created
+            title.sitemap_indexed = True
+            title.save()

@@ -22,6 +22,11 @@ from chronam.core.utils import strftime
 
 from django.core import urlresolvers
 
+class SiteMapIndexedModel(models.Model):
+    sitemap_indexed = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
 
 class Awardee(models.Model):
     org_code = models.CharField(max_length=50, primary_key=True)
@@ -63,7 +68,7 @@ class Awardee(models.Model):
         return self.name
 
 
-class Batch(models.Model):
+class Batch(SiteMapIndexedModel):
     name = models.CharField(max_length=250, primary_key=True)
     created = models.DateTimeField(auto_now_add=True)
     validated_batch_file = models.CharField(max_length=100)
@@ -194,7 +199,7 @@ class LoadBatchEvent(models.Model):
         return self.batch_name
 
 
-class Title(models.Model):
+class Title(SiteMapIndexedModel):
     lccn = models.CharField(primary_key=True, max_length=25)
     lccn_orig = models.CharField(max_length=25)
     name = models.CharField(max_length=250)
@@ -474,7 +479,7 @@ class MARC(models.Model):
         return ('chronam_title_marcxml', (), {'lccn': self.title.lccn})
 
 
-class Issue(models.Model):
+class Issue(SiteMapIndexedModel):
     date_issued = models.DateField(db_index=True)
     volume = models.CharField(null=True, max_length=50)
     number = models.CharField(max_length=50)
@@ -591,7 +596,7 @@ class Issue(models.Model):
         ordering = ('date_issued',)
 
 
-class Page(models.Model):
+class Page(SiteMapIndexedModel):
     sequence = models.IntegerField(db_index=True)
     number = models.CharField(max_length=50)
     section_label = models.CharField(max_length=100)
