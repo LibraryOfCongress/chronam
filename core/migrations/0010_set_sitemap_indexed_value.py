@@ -8,25 +8,9 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
-        # as of 08/12/2013 all batches, issues, pages and titles in the 
-        # database have been indexed in the sitemap. set sitemap_indexed
-        # to True for all Batch, Issue, Page and Title instances
-        for batch in orm.Batch.objects.all():
-            batch.sitemap_indexed = True
-            batch.save()
-
-        for issue in orm.Issue.objects.all():
-            issue.sitemap_indexed = True
-            issue.save()
-
-        for page in orm.Page.objects.all():
-            page.sitemap_indexed = True
-            page.save()
-
-        for title in orm.Title.objects.all():
-            title.sitemap_indexed = True
-            title.save()        
-        
+        # Note: Don't use "from appname.models import ModelName". 
+        # Use orm.ModelName to refer to models in this application,
+        # and orm['appname.ModelName'] for models in other applications.
 
     def backwards(self, orm):
         "Write your backwards methods here."
@@ -51,7 +35,7 @@ class Migration(DataMigration):
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '250', 'primary_key': 'True'}),
             'released': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
-            'sitemap_indexed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'sitemap_indexed': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
             'source': ('django.db.models.fields.CharField', [], {'max_length': '4096', 'null': 'True'}),
             'validated_batch_file': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
@@ -121,7 +105,6 @@ class Migration(DataMigration):
             'edition_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'number': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'sitemap_indexed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'title': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'issues'", 'to': "orm['core.Title']"}),
             'volume': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True'})
         },
@@ -204,7 +187,6 @@ class Migration(DataMigration):
             'reel': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'pages'", 'null': 'True', 'to': "orm['core.Reel']"}),
             'section_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'sequence': ('django.db.models.fields.IntegerField', [], {'db_index': 'True'}),
-            'sitemap_indexed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'tiff_filename': ('django.db.models.fields.CharField', [], {'max_length': '250'})
         },
         'core.pagenote': {
@@ -298,7 +280,7 @@ class Migration(DataMigration):
             'oclc': ('django.db.models.fields.CharField', [], {'max_length': '25', 'null': 'True', 'db_index': 'True'}),
             'place_of_publication': ('django.db.models.fields.CharField', [], {'max_length': '250', 'null': 'True'}),
             'publisher': ('django.db.models.fields.CharField', [], {'max_length': '250', 'null': 'True'}),
-            'sitemap_indexed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'sitemap_indexed': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
             'start_year': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
             'uri': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True'}),
             'version': ('django.db.models.fields.DateTimeField', [], {})

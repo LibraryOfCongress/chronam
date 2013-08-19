@@ -22,11 +22,6 @@ from chronam.core.utils import strftime
 
 from django.core import urlresolvers
 
-class SiteMapIndexedModel(models.Model):
-    sitemap_indexed = models.BooleanField(default=False)
-
-    class Meta:
-        abstract = True
 
 class Awardee(models.Model):
     org_code = models.CharField(max_length=50, primary_key=True)
@@ -68,13 +63,14 @@ class Awardee(models.Model):
         return self.name
 
 
-class Batch(SiteMapIndexedModel):
+class Batch(models.Model):
     name = models.CharField(max_length=250, primary_key=True)
     created = models.DateTimeField(auto_now_add=True)
     validated_batch_file = models.CharField(max_length=100)
     awardee = models.ForeignKey('Awardee', related_name='batches', null=True)
     released = models.DateTimeField(null=True)
     source = models.CharField(max_length=4096, null=True)
+    sitemap_indexed = models.DateTimeField(auto_now_add=False, null=True)
 
     @classmethod
     def viewable_batches(klass):
@@ -199,7 +195,7 @@ class LoadBatchEvent(models.Model):
         return self.batch_name
 
 
-class Title(SiteMapIndexedModel):
+class Title(models.Model):
     lccn = models.CharField(primary_key=True, max_length=25)
     lccn_orig = models.CharField(max_length=25)
     name = models.CharField(max_length=250)
@@ -219,6 +215,7 @@ class Title(SiteMapIndexedModel):
     created = models.DateTimeField(auto_now_add=True)
     has_issues = models.BooleanField(default=False, db_index=True)
     uri = models.URLField(null=True, max_length=500, help_text="856$u")
+    sitemap_indexed = models.DateTimeField(auto_now_add=False, null=True)
 
     @property
     @permalink
@@ -479,7 +476,7 @@ class MARC(models.Model):
         return ('chronam_title_marcxml', (), {'lccn': self.title.lccn})
 
 
-class Issue(SiteMapIndexedModel):
+class Issue(models.Model):
     date_issued = models.DateField(db_index=True)
     volume = models.CharField(null=True, max_length=50)
     number = models.CharField(max_length=50)
@@ -596,7 +593,7 @@ class Issue(SiteMapIndexedModel):
         ordering = ('date_issued',)
 
 
-class Page(SiteMapIndexedModel):
+class Page(models.Model):
     sequence = models.IntegerField(db_index=True)
     number = models.CharField(max_length=50)
     section_label = models.CharField(max_length=100)

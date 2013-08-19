@@ -8,39 +8,23 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Issue.sitemap_indexed'
-        db.add_column('core_issue', 'sitemap_indexed',
-                      self.gf('django.db.models.fields.BooleanField')(default=False),
-                      keep_default=False)
-
         # Adding field 'Batch.sitemap_indexed'
         db.add_column('core_batch', 'sitemap_indexed',
-                      self.gf('django.db.models.fields.BooleanField')(default=False),
+                      self.gf('django.db.models.fields.DateTimeField')(null=True),
                       keep_default=False)
 
         # Adding field 'Title.sitemap_indexed'
         db.add_column('core_title', 'sitemap_indexed',
-                      self.gf('django.db.models.fields.BooleanField')(default=False),
-                      keep_default=False)
-
-        # Adding field 'Page.sitemap_indexed'
-        db.add_column('core_page', 'sitemap_indexed',
-                      self.gf('django.db.models.fields.BooleanField')(default=False),
+                      self.gf('django.db.models.fields.DateTimeField')(null=True),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting field 'Issue.sitemap_indexed'
-        db.delete_column('core_issue', 'sitemap_indexed')
-
         # Deleting field 'Batch.sitemap_indexed'
         db.delete_column('core_batch', 'sitemap_indexed')
 
         # Deleting field 'Title.sitemap_indexed'
         db.delete_column('core_title', 'sitemap_indexed')
-
-        # Deleting field 'Page.sitemap_indexed'
-        db.delete_column('core_page', 'sitemap_indexed')
 
 
     models = {
@@ -63,7 +47,7 @@ class Migration(SchemaMigration):
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '250', 'primary_key': 'True'}),
             'released': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
-            'sitemap_indexed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'sitemap_indexed': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
             'source': ('django.db.models.fields.CharField', [], {'max_length': '4096', 'null': 'True'}),
             'validated_batch_file': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
@@ -133,7 +117,6 @@ class Migration(SchemaMigration):
             'edition_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'number': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'sitemap_indexed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'title': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'issues'", 'to': "orm['core.Title']"}),
             'volume': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True'})
         },
@@ -216,7 +199,6 @@ class Migration(SchemaMigration):
             'reel': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'pages'", 'null': 'True', 'to': "orm['core.Reel']"}),
             'section_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'sequence': ('django.db.models.fields.IntegerField', [], {'db_index': 'True'}),
-            'sitemap_indexed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'tiff_filename': ('django.db.models.fields.CharField', [], {'max_length': '250'})
         },
         'core.pagenote': {
@@ -310,7 +292,7 @@ class Migration(SchemaMigration):
             'oclc': ('django.db.models.fields.CharField', [], {'max_length': '25', 'null': 'True', 'db_index': 'True'}),
             'place_of_publication': ('django.db.models.fields.CharField', [], {'max_length': '250', 'null': 'True'}),
             'publisher': ('django.db.models.fields.CharField', [], {'max_length': '250', 'null': 'True'}),
-            'sitemap_indexed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'sitemap_indexed': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
             'start_year': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
             'uri': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True'}),
             'version': ('django.db.models.fields.DateTimeField', [], {})
