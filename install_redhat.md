@@ -44,7 +44,7 @@ point to a directory for where the solr index will live.
     sudo cp /opt/chronam/conf/jetty7.sh /etc/init.d/jetty
     sudo chmod +x /etc/init.d/jetty
 
-    sudo cp /opt/chronam/conf/jetty-redhat /etc/default/
+    sudo cp /opt/chronam/conf/jetty-redhat /etc/default/jetty
     sudo cp /opt/chronam/conf/jetty-logging.xml /opt/solr-4.3.1/etc/jetty-logging.xml
 
     sudo service jetty start
