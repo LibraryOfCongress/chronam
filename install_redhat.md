@@ -4,6 +4,10 @@ chronam Redhat
 The following are instructions for installing system level dependencies on
 RHEL, tested with Red Hat Enterprise Linux Server release 6.4 (Santiago).
 
+Enable Extra Packages if you need to (for example, you're using RHEL6 on EC2:
+    sudo rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+
+Install system dependencies:
     sudo yum install mysql-server mysql-devel httpd python-virtualenv gcc libxml2-devel libxslt-devel libjpeg-devel zlib-devel mod_wsgi java-1.6.0-openjdk-devel git
 
 When you install mysql-server, you will be prompted for a root password. If
