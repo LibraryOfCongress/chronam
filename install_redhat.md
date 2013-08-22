@@ -33,7 +33,7 @@ Download solr from a mirror site
     sudo mv solr-4.3.1/example/ /opt/solr-4.3.1
 
     sudo cp /opt/chronam/conf/schema.xml /opt/solr-4.3.1/solr/collection1/conf/schema.xml
-    sudo cp /opt/chronam/conf/solrconfig-4.3.1.xml /opt/solr-4.3.1/solr/collection1/conf/solrconfig.xml
+    sudo cp /opt/chronam/conf/solrconfig-4.3.0.xml /opt/solr-4.3.1/solr/collection1/conf/solrconfig.xml
 
 Update the dataDir field in /opt/solr-4.3.1/solr/conf/solrconfig.xml and
 point to a directory for where the solr index will live.
