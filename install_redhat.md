@@ -22,7 +22,7 @@ Configure Solr
 
 Download solr from a mirror site
 
-    wget http://mirrors.ibiblio.org/apache/lucene/solr/4.3.0/solr-4.3.0.tgz
+    wget http://archive.apache.org/dist/lucene/solr/4.3.1/solr-4.3.1-src.tgz
     gunzip solr-4.3.0.tgz
     tar xvf solr-4.3.0.tar
     mv solr-4.3.0/example/ /opt/solr-4.3.0
