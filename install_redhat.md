@@ -33,14 +33,14 @@ Download solr from a mirror site
 Update the dataDir field in /opt/solr-4.3.0/solr/conf/solrconfig.xml and
 point to a directory for where the solr index will live.
 
-    useradd -d /opt/solr-4.3.0 -s /bin/bash solr
-    chown solr:solr -R /opt/solr-4.3.0
+    sudo useradd -d /opt/solr-4.3.0 -s /bin/bash solr
+    sudo chown solr:solr -R /opt/solr-4.3.0
 
-    cp /opt/chronam/conf/jetty7.sh /etc/init.d/jetty
-    chmod +x /etc/init.d/jetty
+    sudo cp /opt/chronam/conf/jetty7.sh /etc/init.d/jetty
+    sudo chmod +x /etc/init.d/jetty
 
-    cp /opt/chronam/conf/jetty-redhat /etc/default/
-    cp /opt/chronam/conf/jetty-logging.xml /opt/solr-4.3.0/etc/jetty-logging.xml
+    sudo cp /opt/chronam/conf/jetty-redhat /etc/default/
+    sudo cp /opt/chronam/conf/jetty-logging.xml /opt/solr-4.3.0/etc/jetty-logging.xml
 
     sudo service jetty start
 
