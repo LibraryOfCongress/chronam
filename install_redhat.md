@@ -29,7 +29,7 @@ Configure Solr
 Download solr from a mirror site
 
     wget http://archive.apache.org/dist/lucene/solr/4.3.1/solr-4.3.1.tgz
-    tar zxvf solr-4.3.1.tar
+    tar zxvf solr-4.3.1.tgz
     mv solr-4.3.1/example/ /opt/solr-4.3.1
 
     cp /opt/chronam/conf/schema.xml /opt/solr-4.3.1/solr/collection1/conf/schema.xml
