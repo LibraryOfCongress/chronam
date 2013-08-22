@@ -2,7 +2,7 @@ chronam Redhat
 ==============
 
 The following are instructions for installing system level dependencies on
-RHEL.
+RHEL, tested with Red Hat Enterprise Linux Server release 6.4 (Santiago).
 
     sudo yum install mysql-server mysql-devel httpd python-virtualenv gcc libxml2-devel libxslt-devel libjpeg-devel zlib-devel mod_wsgi java-1.6.0-openjdk-devel git
 
