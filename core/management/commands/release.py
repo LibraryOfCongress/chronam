@@ -7,6 +7,7 @@ sitemap files for crawlers.
 import re
 import logging
 import os
+import csv
 
 from optparse import make_option
 from time import mktime
@@ -42,11 +43,11 @@ class Command(BaseCommand):
                 _logger.info("unsetting release time for %s" % batch.name)
                 batch.save()
 
-        input_file = None
+        input_file_path = None
         if args and os.path.isfile(args[0]):
-            input_file = args[0]               
+            input_file_path = args[0]               
             # turn content from input file into a dictionary for easy lookup
-            batch_release_from_file = preprocess_input_file(input_file)
+            batch_release_from_file = preprocess_input_file(input_file_path)
 
         # turn content from public feed into a dictionary for easy lookup
         batch_release_from_feed = preprocess_public_feed()
@@ -57,7 +58,7 @@ class Command(BaseCommand):
                 # move on to the next batch, else try other options
                 if set_batch_released_from_bag_info(batch):
                     continue
-            if input_file:
+            if input_file_path:
                 batch_release_datetime = batch_release_from_file.get(batch.name, None)
                 if batch_release_datetime:
                     batch.released = batch_release_datetime
@@ -72,10 +73,19 @@ class Command(BaseCommand):
             batch.released = datetime.now()
             batch.save()
 
-def preprocess_input_file():
+def preprocess_input_file(file_path):
     """
+    Input file format: batch_name\tbatch_date\n - one batch per line
     """
-    pass
+    batch_release_times = {}
+    try:
+        tsv = csv.reader(open(file_path, 'rb'), delimiter='\t')
+        for row in tsv:
+            batch_release_times[row[0]] = row[1]
+    except: 
+        pass
+    return batch_release_times
+
 
 
 def preprocess_public_feed():
@@ -94,12 +104,11 @@ def preprocess_public_feed():
 
 def set_batch_released_from_bag_info(batch):
     status = False
-    if os.path.isfile('%s/%s/bag-info.txt' % (settings.BATCH_STORAGE, b.name)):
-        bag_info = open(('%s/%s/bag-info.txt' % (settings.BATCH_STORAGE, b.name)), 'r')
-        for line in bag_info.readlines():
-            if 'Released Date' in line:
-                batch.released = datetime.strptime(line.split(': ')[1], '%Y-%m-%d')
-                batch.save()
-                status = True
-        bag_info.close()
+    bag_info = open(('%s/%s/bag-info.txt' % (settings.BATCH_STORAGE, b.name)), 'r')
+    for line in bag_info.readlines():
+        if 'Released Date' in line:
+            batch.released = datetime.strptime(line.split(': ')[1], '%Y-%m-%d')
+            batch.save()
+            status = True
+    bag_info.close()
     return status
