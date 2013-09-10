@@ -111,13 +111,15 @@
                     var boxes = [];
 
                     var coordinates = all_coordinates["coords"][word];
-                    $.each(coordinates, function(index, value) {
-                        addOverlay(viewer,
-                                   value[0]*scale,
-                                   value[1]*scale,
-                                   value[2]*scale,
-                                   value[3]*scale);
-                    });
+                    if(coordinates !== undefined){
+                        $.each(coordinates, function(index, value) {
+                            addOverlay(viewer,
+                                       value[0]*scale,
+                                       value[1]*scale,
+                                       value[2]*scale,
+                                       value[3]*scale);
+                        });
+                    }
                 }
             });
         });
