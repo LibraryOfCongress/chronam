@@ -52,7 +52,10 @@ Python dependencies:
     cd /opt/chronam/
     virtualenv ENV
     source /opt/chronam/ENV/bin/activate
-    cp conf/chronam.pth ENV/lib/python2.7/site-packages/chronam.pth
+    cp conf/chronam.pth ENV/lib/python2.6/site-packages/chronam.pth
+
+(There is another small difference here between RedHat and Ubuntu, you may need to change the 2.6 above to a 2.7)
+
     pip install -U distribute
     pip install -r requirements.pip
 
