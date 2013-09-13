@@ -116,7 +116,7 @@ import multiprocessing
 #TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
 TOO_BUSY_LOAD_AVERAGE = 64 
 
-SOLR = "http://localhost:8080/solr"
+SOLR = "http://localhost:8983/solr"
 SOLR_LANGUAGES = ("eng", "fre", "spa", "ger")
 
 DOCUMENT_ROOT = "/opt/chronam/static"
