@@ -30,7 +30,7 @@ class Command(BaseCommand):
     )
 
     def __init__(self):
-        super(BaseCommand, self).__init__()
+        super(Command, self).__init__()
         self.total_processed = 0
         self.total_created = 0
         self.total_updated = 0
