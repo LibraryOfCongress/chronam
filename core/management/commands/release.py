@@ -106,7 +106,9 @@ def set_batch_released_from_bag_info(batch):
     status = False
     bag_info = open(('%s/%s/bag-info.txt' % (settings.BATCH_STORAGE, b.name)), 'r')
     for line in bag_info.readlines():
-        if 'Released Date' in line:
+        # if the key release date is specified at in bag-info.txt changes, edit
+        # the line below.
+        if 'lc-accept-date' in line:
             batch.released = datetime.strptime(line.split(': ')[1], '%Y-%m-%d')
             batch.save()
             status = True
