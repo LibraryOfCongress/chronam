@@ -18,13 +18,13 @@
       {% ifequal page_number page.number %}
       <span class="off">{{page_number}}</span> 
       {% else %}
-      <a href="{% url chronam_events_page page_number %}">{{ page_number }}</a> 
+      <a href="{% url 'chronam_events_page' page_number %}">{{ page_number }}</a> 
       {% endifequal %}
 
       {% endifequal %}
       {% endfor %}
       {% if page.has_next %}
-      <a rel="next" href="{% url chronam_events_page page.next_page_number %}"><img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a> 
+      <a rel="next" href="{% url 'chronam_events_page' page.next_page_number %}"><img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a> 
       {% endif %}
     </div>
   </div>
