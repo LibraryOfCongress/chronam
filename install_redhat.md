@@ -26,31 +26,33 @@ Get chronam
 Configure Solr
 --------------
 
-Download solr from a mirror site
+Download solr from a mirror site (tested with Solr 4.3 and 4.4, get the latest version)
 
-    wget http://archive.apache.org/dist/lucene/solr/4.3.1/solr-4.3.1.tgz
-    tar zxvf solr-4.3.1.tgz
-    sudo mv solr-4.3.1/example/ /opt/solr-4.3.1
-
-    sudo cp /opt/chronam/conf/schema.xml /opt/solr-4.3.1/solr/collection1/conf/schema.xml
-    sudo cp /opt/chronam/conf/solrconfig-4.3.0.xml /opt/solr-4.3.1/solr/collection1/conf/solrconfig.xml
+    wget http://mirror.metrocast.net/apache/lucene/solr/4.4.0/solr-4.4.0.tgz
+    tar zxvf solr-4.4.0.tgz
+    sudo mv solr-4.4.0/example/ /opt/solr/
+    sudo cp /opt/chronam/conf/schema.xml /opt/solr/solr/collection1/conf/schema.xml
+    sudo cp /opt/chronam/conf/solrconfig-4.3.0.xml /opt/solr/solr/collection1/conf/solrconfig.xml
 
 Update the dataDir field in /opt/solr-4.3.1/solr/conf/solrconfig.xml and
 point to a directory for where the solr index will live.
 
-    sudo useradd -d /opt/solr-4.3.1 -s /bin/bash solr
-    sudo chown solr:solr -R /opt/solr-4.3.1
+    sudo useradd -d /opt/solr -s /bin/bash solr
+    sudo chown solr:solr -R /opt/solr
 
     sudo cp /opt/chronam/conf/jetty7.sh /etc/init.d/jetty
     sudo chmod +x /etc/init.d/jetty
 
+The jetty-redhat config file contains a default heap space allocation- "-Xms2g -Xmx2g".  Change the 2g 
+to a sensible default for your system if 2g is too much or too little.
+
     sudo cp /opt/chronam/conf/jetty-redhat /etc/default/jetty
-    sudo cp /opt/chronam/conf/jetty-logging.xml /opt/solr-4.3.1/etc/jetty-logging.xml
+    sudo cp /opt/chronam/conf/jetty-logging.xml /opt/solr/etc/jetty-logging.xml
 
     sudo service jetty start
 
-Configure Aware
----------------
+Configure Image Rendering:
+--------------------------
 
 If you have the Aware JPEG 2000 library this is how you install it:
 
@@ -61,6 +63,10 @@ If you have the Aware JPEG 2000 library this is how you install it:
     sudo ln -s /usr/local/lib/libawj2k.so.2.0.1 /usr/local/lib/libawj2k.so
     sudo echo "/usr/local/lib" > /etc/ld.so.conf.d/aware.so.conf
     sudo ldconfig /usr/local/lib/
+
+If not, install GraphicsMagick:
+
+    sudo yum install GraphicsMagick
 
 Configure Apache
 ----------------

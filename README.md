@@ -65,8 +65,14 @@ Next you need to create some directories for data:
     mkdir /opt/chronam/data/cache
     mkdir /opt/chronam/data/bib
 
-And you will need a MySQL database. You will probably want to change the 
-password 'pick_one' in the example below to something else:
+And you will need a MySQL database. If this is a new server, you will need to
+start MySQL and assign it a root password:
+
+    sudo service mysqld start
+    /usr/bin/mysqladmin -u root password '' # pick a real password
+    
+You will probably want to change the password 'pick_one' in the example below
+to something else:
 
     echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one'; GRANT ALL ON test_chronam.* TO 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root -p
 
@@ -86,7 +92,7 @@ everytime you log in.
 Next you will need to initialize database schema and load some initial data:
 
     django-admin.py syncdb --noinput --migrate
-    django-admin.py chronam_sync
+    django-admin.py chronam_sync --skip-essays
 
 And finally you will need to collect static files (stylesheets, images) 
 for serving up by Apache in production settings:
@@ -105,13 +111,17 @@ you can use a tool like [wget](http://www.gnu.org/software/wget/) to bulk
 download the batches. For example:
 
     cd /opt/chronam/data/
-    wget --recursive --no-host-directories --cut-dirs 1 --reject index.html* --include-directories /data/batches/batch_dlc_jamaica_ver01/ http://chroniclingamerica.loc.gov/data/batches/batch_dlc_jamaica_ver01/
+    wget --recursive --no-host-directories --cut-dirs 1 --reject index.html* --include-directories /data/batches/batch_uuml_thys_ver01/ http://chroniclingamerica.loc.gov/data/batches/batch_uuml_thys_ver01/
 
 In order to load data you will need to run the load_batch management command by
 passing it the full path to the batch directory. So assuming you have downloaded
 batch_dlc_jamaica_ver01 you will want to:
 
-    django-admin.py load_batch /opt/chronam/data/batches/batch_dlc_jamaica_ver01
+    django-admin.py load_batch /opt/chronam/data/batches/batch_uuml_thys_ver01
+
+If this is a new server, you may need to start the web server:
+
+    sudo service httpd start
 
 After this completes you should be able to view the batch in the batches report
 via the Web:
