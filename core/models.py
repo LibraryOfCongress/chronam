@@ -715,8 +715,10 @@ class Page(models.Model):
 
     @property
     def solr_doc(self):
+     def solr_doc(self):
         date = self.issue.date_issued
-        date = "%4i%02i%02i" % (date.year, date.month, date.day)
+        month, day, year  = '%02i'%date.month, '%02i'%date.day, '%04i'%date.year
+        date = ''.join([year, month, day])
         # start with basic title data
         doc = self.issue.title.solr_doc
         # no real need to repeat this stuff in pages
@@ -728,6 +730,8 @@ class Page(models.Model):
             'type': 'page',
             'batch': self.issue.batch.name,
             'date': date,
+            'month': month,
+            'day': day,
             'page': self.number,
             'sequence': self.sequence,
             'section_label': self.section_label,
