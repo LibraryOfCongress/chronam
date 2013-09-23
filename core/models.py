@@ -715,7 +715,6 @@ class Page(models.Model):
 
     @property
     def solr_doc(self):
-     def solr_doc(self):
         date = self.issue.date_issued
         month, day, year  = '%02i'%date.month, '%02i'%date.day, '%04i'%date.year
         date = ''.join([year, month, day])

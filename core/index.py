@@ -140,8 +140,9 @@ class SolrPaginator(Paginator):
             }
         sort_field, sort_order = _get_sort(self.query.get('sort'), in_pages=True)
         solr_response = solr.query(self._q,
-                                   fields=['id', 'title', 'date', 'sequence',
-                                           'edition_label', 'section_label'],
+                                   fields=['id', 'title', 'date', 'month', 'day',
+                                           'sequence', 'edition_label', 
+                                           'section_label'],
                                    highlight=self._ocr_list,
                                    rows=self.per_page,
                                    sort=sort_field,
@@ -377,6 +378,7 @@ def page_search(d):
     Pass in form data for a given page search, and get back
     a corresponding solr query.
     """
+    de = d
     q = ['+type:page']
 
     if d.get('lccn', None):
@@ -394,7 +396,6 @@ def page_search(d):
         d2 = _solrize_date(d['date2'], is_start=False)
         if d1 and d2:
             q.append('+date:[%i TO %i]' % (d1, d2))
-
     ocrs = ['ocr_%s' % l for l in settings.SOLR_LANGUAGES]
 
     lang = d.get('language', None)
@@ -445,6 +446,8 @@ def page_search(d):
         q.append(')')
     if d.get('sequence', None):
         q.append('+sequence:"%s"' % d['sequence'])
+    if d.get('issue_date', None):
+        q.append('+month:%d +day:%d' % (int(d['date_month']), int(d['date_day'])))
     return ' '.join(q)
 
 def query_join(values, field, and_clause=False):
