@@ -216,6 +216,7 @@ urlpatterns += patterns(
         name='chronam_search_advanced'),
 
     url(r'^events/$', 'events', name='chronam_events'),
+    url(r'^events\.csv$', 'events_csv', name='chronam_events_csv'),
     url(r'^events/(?P<page_number>\d+)/$', 'events',
         name='chronam_events_page'),
     url(r'^events/feed/$', 'events_atom', name='chronam_events_atom'),
@@ -374,6 +375,7 @@ urlpatterns += patterns(
     url(r'^batches/feed/(?P<page_number>\d+)/$','batches_atom',
         name='chronam_batches_atom_page'), 
     url(r'^batches\.json$', 'batches_json', name='chronam_batches_json'),
+    url(r'^batches\.csv$', 'batches_csv', name='chronam_batches_csv'),
     url(r'^batches/(?P<page_number>\d+).json$', 'batches_json',
         name='chronam_batches_json_page'),
     url(r'^batches/(?P<batch_name>.+)/$', 'batch', name='chronam_batch'),

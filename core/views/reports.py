@@ -1,3 +1,4 @@
+import csv
 from rfc3339 import rfc3339
 import datetime
 import json
@@ -70,6 +71,19 @@ def batches_json(request, page_number=1):
         j['previous'] = "http://" + host + url_prev
     return HttpResponse(json.dumps(j, indent=2), mimetype='application/json')
 
+
+@cache_page(settings.API_TTL_SECONDS)
+def batches_csv(request):
+    csv_header_labels = ('Created', 'Name', 'Awardee', 'Total Pages',
+                         'Released',)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="chronam_batches.csv"'
+    writer = csv.writer(response)
+    writer.writerow(csv_header_labels)
+    for batch in models.Batch.viewable_batches():
+        writer.writerow((batch.created, batch.name, batch.awardee.name, 
+                         batch.page_count, batch.released))
+    return response
 
 @cache_page(settings.API_TTL_SECONDS)
 def batch(request, batch_name):
@@ -179,6 +193,18 @@ def events(request, page_number=1):
 
     return render_to_response('reports/events.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
+
+@cache_page(settings.API_TTL_SECONDS)
+def events_csv(request):
+    csv_header_labels = ('Time', 'Batch name', 'Message',) 
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="chronam_events.csv"'
+    writer = csv.writer(response)
+    writer.writerow(csv_header_labels)
+    for event in models.LoadBatchEvent.objects.all().order_by('-created'):
+        writer.writerow((event.created, event.batch_name, event.message,))
+    return response
 
 
 @cache_page(settings.API_TTL_SECONDS)
