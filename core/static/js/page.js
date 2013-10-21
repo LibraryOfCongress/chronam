@@ -149,13 +149,14 @@
         sx = Math.min(sx, dimensionsScaled.x - px)
         sy = Math.min(sy, dimensionsScaled.y - py)
 
-        var tile_width = parseInt(sx);
-        var tile_height = parseInt(sy);
-
         var x1 = parseInt(px / scale);
         var y1 = parseInt(py / scale);
         var x2 = parseInt((px + sx) / scale);
         var y2 = parseInt((py + sy) / scale);
+
+        // tile width/height dimension can't be more than image sides 
+        var tile_width = Math.min(parseInt(sx), (x2-x1));
+        var tile_height = Math.min(parseInt(sy), (y2-y1));
 
         return tile_url + 'image_'+tile_width+'x'+tile_height+'_from_'+x1+','+y1+'_to_'+x2+','+y2+'.jpg';
     }
