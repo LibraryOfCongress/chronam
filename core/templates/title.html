@@ -226,9 +226,9 @@
         {% if title.has_issues %}
         <div class="about_issue_right row">
             <div class="frontpage span2">
-            {% if title.first_issue.first_page.jp2_filename and title.first_issue.first_page.sequence %}
-            <a href="{% url 'chronam_page' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page.sequence %}">
-                <img class="thumbnail" src="{% url 'chronam_page_thumbnail' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page.sequence %}" alt="" />
+            {% if title.first_issue.first_page_with_image.jp2_filename and title.first_issue.first_page_with_image.sequence %}
+            <a href="{% url 'chronam_page' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page_with_image.sequence %}">
+                <img class="thumbnail" src="{% url 'chronam_page_thumbnail' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page_with_image.sequence %}" alt="" />
             </a>
             {% else %}
                 Missing Page: {{explanation}}

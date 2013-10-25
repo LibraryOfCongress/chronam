@@ -517,6 +517,13 @@ class Issue(models.Model):
             return None
 
     @property
+    def first_page_with_image(self):
+        for page in self.pages.all():
+            if page.jp2_filename:
+                return page
+        return None
+
+    @property
     def _previous(self):
         """return the previous issue to this one (including 'duplicates')."""
         try:
