@@ -70,6 +70,7 @@ class Batch(models.Model):
     awardee = models.ForeignKey('Awardee', related_name='batches', null=True)
     released = models.DateTimeField(null=True)
     source = models.CharField(max_length=4096, null=True)
+    sitemap_indexed = models.DateTimeField(auto_now_add=False, null=True)
 
     @classmethod
     def viewable_batches(klass):
@@ -214,6 +215,7 @@ class Title(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     has_issues = models.BooleanField(default=False, db_index=True)
     uri = models.URLField(null=True, max_length=500, help_text="856$u")
+    sitemap_indexed = models.DateTimeField(auto_now_add=False, null=True)
 
     @property
     @permalink

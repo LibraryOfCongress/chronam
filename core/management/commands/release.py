@@ -6,28 +6,29 @@ sitemap files for crawlers.
 
 import re
 import logging
+import os
+import csv
 
 from optparse import make_option
 from time import mktime
 from datetime import datetime
 
 import feedparser
-from rfc3339 import rfc3339
 
 from django.core.management.base import BaseCommand
-from django.core.paginator import Paginator
-from django.db import reset_queries
+from django.conf import settings
 
 from chronam.core.management.commands import configure_logging
-from chronam.core import models as m
 from chronam.core.rdf import rdf_uri
+from chronam.core import models as m
 
 configure_logging("release.config", "release.log")
 
 _logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
-    help = "Prepares for a data release by setting the released datetime on batches that lack them using the current public feed of batches or the current time. This command also writes out sitemap files to the static directory."
+    help = "Updates (Resets if --reset option is used) release datetime on batches from one of following sources (in order of preference) 1. bag-info.txt, if found in the batch source 2. If path to a file is provided with the command, datetime is extracted from the file 3. current public feed 4. current server datetime"
+
     reset = make_option('--reset',
         action = 'store_true',
         dest = 'reset',
@@ -35,114 +36,81 @@ class Command(BaseCommand):
         help = 'reset release times to nothing before setting them again')
     option_list = BaseCommand.option_list + (reset, )
 
-    def handle(self, **options):
+    def handle(self, *args, **options):
         if options['reset']:
             for batch in m.Batch.objects.all():
                 batch.released = None
                 _logger.info("unsetting release time for %s" % batch.name)
                 batch.save()
 
-        # commenting out for now until we resolve release dates 
-        # https://rdc.lctl.gov/trac/chronam/ticket/1214
-        # load_release_times_from_prod()
-        
-        # batches that lack a release time are assumed to be released *now*
-        now = datetime.now()
+        input_file_path = None
+        if args and os.path.isfile(args[0]):
+            input_file_path = args[0]               
+            # turn content from input file into a dictionary for easy lookup
+            batch_release_from_file = preprocess_input_file(input_file_path)
+
+        # turn content from public feed into a dictionary for easy lookup
+        batch_release_from_feed = preprocess_public_feed()
+
         for batch in m.Batch.objects.filter(released__isnull=True):
-            batch.released = now
-            batch.save()
-            _logger.info("set batch %s release time to %s" % (batch.name, 
-                batch.released))
-
-        write_sitemaps()
-
-def load_release_times_from_prod():
-    feed = feedparser.parse("http://chroniclingamerica.loc.gov/batches.xml")
-    for entry in feed.entries:
-        try:
-            # convert the info uri for the batch to the batch name and get it 
-            batch_name = re.match(r'info:lc/ndnp/batch/(.+)', entry.id).group(1)
-            batch = m.Batch.objects.get(name=batch_name)
-
-            # if the batch already has a release date assume it's right
-            if batch.released:
+            if os.path.isfile('%s/%s/bag-info.txt' % (settings.BATCH_STORAGE, batch.name)):
+                # if released datetime is successfully set from the bag-info file,
+                # move on to the next batch, else try other options
+                if set_batch_released_from_bag_info(batch):
+                    continue
+            if input_file_path:
+                batch_release_datetime = batch_release_from_file.get(batch.name, None)
+                if batch_release_datetime:
+                    batch.released = batch_release_datetime
+                    batch.save()
+                    continue
+            batch_release_datetime = batch_release_from_feed.get(batch.name, None)
+            if batch_release_datetime:
+                batch.released = batch_release_datetime
+                batch.save()
                 continue
-
-            # convert time.struct from feedparser into a datetime for django
-            released = datetime.fromtimestamp(mktime(entry.updated_parsed))
-
-            # save the release date from production
-            batch.released = released
+            # well, none of the earlier options worked, current timestamp it is.
+            batch.released = datetime.now()
             batch.save()
-            _logger.info("set %s release time to %s from production feed" % 
-                   (batch.name, entry.modified))
 
-        except m.Batch.DoesNotExist:
-            # this can happen when there are batches in production that
-            # aren't in this particular environment
-            _logger.error("batch for %s not found" % entry.title)
-
-def write_sitemaps():
+def preprocess_input_file(file_path):
     """
-    This function will write a sitemap index file that references individual
-    sitemaps for all the batches, issues, pages and titles that have been
-    loaded.
+    Input file format: batch_name\tbatch_date\n - one batch per line
     """
-    sitemap_index = open('static/sitemaps/sitemap.xml', 'w')
-    sitemap_index.write('<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
+    batch_release_times = {}
+    try:
+        tsv = csv.reader(open(file_path, 'rb'), delimiter='\t')
+        for row in tsv:
+            batch_release_times[row[0]] = row[1]
+    except: 
+        pass
+    return batch_release_times
 
-    max_urls = 50000
-    page_count = 0
-    url_count = 0
-    sitemap_file = None
 
-    for loc, last_mod in sitemap_urls():
 
-        # if we've maxed out the number of urls per sitemap 
-        # close out the one we have open and open a new one
-        if url_count % max_urls == 0:
-            page_count += 1
-            if sitemap_file: 
-                sitemap.write('</urlset>\n')
-                sitemap.close()
-            sitemap_file = 'sitemap-%05d.xml' % page_count
-            sitemap_path = 'static/sitemaps/%s' % sitemap_file
-            _logger.info("writing %s" % sitemap_path)
-            sitemap = open(sitemap_path, 'w')
-            sitemap.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
-            sitemap_index.write('<sitemap><loc>http://chroniclingamerica.loc.gov/%s</loc></sitemap>\n' % sitemap_file)
-    
-        # add a url to the sitemap
-        sitemap.write("<url><loc>http://chroniclingamerica.loc.gov%s</loc><lastmod>%s</lastmod></url>\n" % (loc, rfc3339(last_mod)))
-        url_count += 1
-
-        # necessary to avoid memory bloat when settings.DEBUG = True
-        if url_count % 1000 == 0:
-            reset_queries()
-
-    # wrap up some open files
-    sitemap.write('</urlset>\n')
-    sitemap.close()
-    sitemap_index.write('</sitemapindex>\n')
-    sitemap_index.close()
-
-def sitemap_urls():
+def preprocess_public_feed():
     """
-    A generator that returns all the urls for batches, issues, pages and
-    titles, and their respective modified time as a tuple.
+    reads the public feed - http://chroniclingamerica.loc.gov/batches/feed/
+    and returns a dictionary of {batch name: released datetime}
     """
-    for batch in m.Batch.objects.all():
-        yield batch.url, batch.released
-        yield rdf_uri(batch), batch.released
-        for issue in batch.issues.all():
-            yield issue.url, batch.released
-            yield rdf_uri(issue), batch.released
-            for page in issue.pages.all():
-                yield page.url, batch.released
-                yield rdf_uri(page), batch.released
+    feed = feedparser.parse("http://chroniclingamerica.loc.gov/batches.xml")
+    batch_release_times = {}
+    for entry in feed.entries:
+        batch_name = re.match(r'info:lc/ndnp/batch/(.+)', entry.id).group(1)
+        # convert time.struct from feedparser into a datetime for django
+        released = datetime.fromtimestamp(mktime(entry.updated_parsed))
+        batch_release_times[batch_name] = released 
+    return batch_release_times
 
-    paginator = Paginator(m.Title.objects.all(), 10000)
-    for page_num in range(1, paginator.num_pages + 1):
-        page = paginator.page(page_num)
-        for title in page.object_list:
-            yield title.url, title.created
+def set_batch_released_from_bag_info(batch):
+    status = False
+    bag_info = open(('%s/%s/bag-info.txt' % (settings.BATCH_STORAGE, batch.name)), 'r')
+    for line in bag_info.readlines():
+        # if the key release date is specified at in bag-info.txt changes, edit
+        # the line below.
+        if 'lc-accept-date' in line:
+            batch.released = datetime.strptime(line.split(': ')[1], '%Y-%m-%d')
+            batch.save()
+            status = True
+    bag_info.close()
+    return status
