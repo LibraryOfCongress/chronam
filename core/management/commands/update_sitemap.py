@@ -73,7 +73,7 @@ def sitemap_urls():
     A generator that returns all the urls for batches, issues, pages and
     titles, and their respective modified time as a tuple.
     """
-    for batch in m.Batch.objects.exclude(sitemap_indexed__isnull=True):
+    for batch in m.Batch.objects.filter(sitemap_indexed__isnull=True):
         yield batch.url, batch.released
         yield rdf_uri(batch), batch.released
         batch.sitemap_indexed = datetime.now()
