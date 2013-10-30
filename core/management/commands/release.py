@@ -104,7 +104,7 @@ def preprocess_public_feed():
 
 def set_batch_released_from_bag_info(batch):
     status = False
-    bag_info = open(('%s/%s/bag-info.txt' % (settings.BATCH_STORAGE, b.name)), 'r')
+    bag_info = open(('%s/%s/bag-info.txt' % (settings.BATCH_STORAGE, batch.name)), 'r')
     for line in bag_info.readlines():
         # if the key release date is specified at in bag-info.txt changes, edit
         # the line below.
