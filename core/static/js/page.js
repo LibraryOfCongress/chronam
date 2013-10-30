@@ -12,6 +12,7 @@
             $.bbq.pushState({"fullscreen": true});
             rewritePagingLinks();
         } else {
+            window.history.pushState("",$(document).find("title").text(),$("#pageNum").val());
             $.bbq.removeState("fullscreen");
             rewritePagingLinks();
         }
@@ -246,11 +247,12 @@
         }
 
         $("#pageNum").change(function(event) { 
-            var url = $("#pageNum").val();
-            if (viewer.isFullPage()) {
-                url += "#fullscreen=true";
+            viewer.close();
+            tile_url = $("#pageNum").val();
+            viewer.openTileSource(ts);
+            if (!($.bbq.getState("fullscreen"))) {
+                window.history.pushState("",$(document).find("title").text(),$("#pageNum").val());
             }
-            document.location = url;
         });
 
     }
