@@ -15,7 +15,7 @@ class OcrExtractorTests(TestCase):
         expected_text = {"eng": file(join(dir, 'ocr.txt')).read().decode('utf-8')}
 
         self.assertEqual(text, expected_text)
-        self.assertEqual(len(coords.keys()), 2195)
+        self.assertEqual(len(coords.keys()), 2150)
         self.assertEqual(len(coords['place']), 3)
         # Craft. should be normalized to Craft
         # since Solr's highlighting will not include
