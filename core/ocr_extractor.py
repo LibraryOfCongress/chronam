@@ -3,7 +3,7 @@ import re
 from xml.sax.handler import ContentHandler, feature_namespaces
 from xml.sax import make_parser
 
-trailing_punctuation = re.compile('''[^a-zA-Z0-9]+$''')
+trailing_punctuation = re.compile('''^[^a-zA-Z0-9]+|[^a-zA-Z0-9]+$''')
 
 class OCRHandler(ContentHandler):
 
