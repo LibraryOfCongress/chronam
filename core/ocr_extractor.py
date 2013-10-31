@@ -3,7 +3,8 @@ import re
 from xml.sax.handler import ContentHandler, feature_namespaces
 from xml.sax import make_parser
 
-trailing_punctuation = re.compile('''^[^a-zA-Z0-9]+|[^a-zA-Z0-9]+$''')
+# trash leading/trailing punctuation and apostropes
+non_lexemes = re.compile('''^[^a-zA-Z0-9]+|[^a-zA-Z0-9]+$|'s$''')
 
 class OCRHandler(ContentHandler):
 
@@ -26,7 +27,7 @@ class OCRHandler(ContentHandler):
             # solr's WordDelimiterFilterFactory tokenizes based on punctuation
             # which removes it from highlighting, so it's important to remove
             # it here as well or else we'll look up words that don't match
-            word = re.sub(trailing_punctuation, '', content)
+            word = re.sub(non_lexemes, '', content)
             if word == "":
                 pass
             elif word in self._coords:
