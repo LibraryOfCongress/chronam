@@ -149,5 +149,5 @@ def coordinates(request, lccn, date, edition, sequence, words=None):
         return_coords['coords'][re.sub(non_lexemes, '', key)] = data['coords'][key]
 
     r = HttpResponse(mimetype='application/json')
-    r.write(return_coords)
+    r.write(json.dumps(return_coords))
     return r
