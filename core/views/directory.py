@@ -9,6 +9,7 @@ from django.http import Http404, HttpResponse, HttpResponseServerError
 from django.db.models import Max, Min, Q
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.utils.encoding import smart_str
 
 from chronam.core.decorator import cache_page, opensearch_clean, rdf_view, cors
 from chronam.core.utils.utils import _page_range_short, _rdf_base
@@ -184,7 +185,7 @@ def search_titles_results(request):
         writer = csv.writer(response)
         writer.writerow(csv_header_labels)
         for title in titles:
-            writer.writerow(map(lambda val: val or '--',
+            writer.writerow(map(lambda val: smart_str(val or '--'),
                                (title.lccn, title.name, title.place_of_publication,
                                 title.start_year, title.end_year, title.publisher, 
                                 title.edition, title.frequency, 
