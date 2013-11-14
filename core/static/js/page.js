@@ -248,6 +248,7 @@
 
         $("#pageNum").change(function(event) { 
             viewer.close();
+            page_url = $("#pageNum").val();
             tile_url = $("#pageNum").val();
             viewer.openTileSource(ts);
             if (!($.bbq.getState("fullscreen"))) {
