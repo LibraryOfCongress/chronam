@@ -38,7 +38,7 @@ from the NDNP Awardee, {{ awardee }}. Summary information about <a href="{% url 
     <th>Created</th>
     {% for essay in awardee.essays.all %}
     <tr class="{% cycle 'lightGray' 'white' %}">
-        <td><a href="{% url 'chronam_essay essay.id' %}">{{ essay.title }}</td>
+        <td><a href="{% url 'chronam_essay' essay.id %}">{{ essay.title }}</td>
         <td>{{ essay.created|date }}</td>
     </tr>
     {% endfor %}
