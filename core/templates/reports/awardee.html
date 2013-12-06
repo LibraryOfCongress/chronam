@@ -22,7 +22,7 @@ from the NDNP Awardee, {{ awardee }}. Summary information about <a href="{% url 
 {% for batch in batches %}
     <tr class="{% cycle 'lightGray' 'white' %}">
     <td>{{batch.created }}</td>
-    <td><a href="{% url 'chronam_batch batch.name' %}">{{ batch.name }}</a></td>
+    <td><a href="{% url 'chronam_batch' batch.name %}">{{ batch.name }}</a></td>
     <td style="text-align: right">{{ batch.page_count|intcomma }}</td>
     </tr>
 {% endfor %}
