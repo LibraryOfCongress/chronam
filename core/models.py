@@ -730,6 +730,7 @@ class Page(models.Model):
             'batch': self.issue.batch.name,
             'date': date,
             'month': month,
+            'year': year,
             'day': day,
             'page': self.number,
             'sequence': self.sequence,

@@ -148,6 +148,8 @@
           required="false" multiValued="false" />
       <field name="day" type="tint" indexed="true" stored="true"
           required="false" multiValued="false" />
+      <field name="year" type="tint" indexed="true" stored="true"
+          required="false" multiValued="false" />
       <field name="sequence" type="tint" indexed="true" stored="true"
           required="false" multiValued="false" />
       <field name="page" type="string" indexed="true" stored="true"
