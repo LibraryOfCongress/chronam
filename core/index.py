@@ -1,4 +1,5 @@
 import re
+import math
 import logging
 from urllib import urlencode
 
@@ -9,6 +10,7 @@ from django.http import QueryDict
 from django.conf import settings
 
 from chronam.core import models
+from chronam.core.forms import _fulltext_range
 from chronam.core.title_loader import _normal_lccn
 
 _log = logging.getLogger(__name__)
@@ -59,7 +61,7 @@ class SolrPaginator(Paginator):
         if 'words' in self.query:
             del self.query['words']
 
-        self._q = page_search(self.query)
+        self._q, self.facet_params = page_search(self.query)
 
         try:
             self._cur_page = int(self.query.get('page'))
@@ -138,6 +140,7 @@ class SolrPaginator(Paginator):
             "hl.requireFieldMatch": 'true', # limits highlighting slop
             "hl.maxAnalyzedChars": '102400', # increased from default 51200
             }
+        params.update(self.facet_params)
         sort_field, sort_order = _get_sort(self.query.get('sort'), in_pages=True)
         solr_response = solr.query(self._q,
                                    fields=['id', 'title', 'date', 'month', 'day',
@@ -149,7 +152,18 @@ class SolrPaginator(Paginator):
                                    sort_order=sort_order,
                                    start=start,
                                    **params)
-
+        solr_facets = solr_response.facet_counts
+        # sort states by number of hits per state (desc)
+        facets = {'state': sorted(solr_facets.get('facet_fields')['state'].items(),
+                                  lambda x, y: x - y, lambda k: k[1], True),
+                  'year': solr_facets['facet_ranges']['year']['counts']}
+        # sort by year (desc)
+        facets['year'] = sorted(solr_facets['facet_ranges']['year']['counts'].items(),
+                                lambda x, y: int(x) - int(y), lambda k: k[0], True)
+        facet_gap = self.facet_params['f_year_facet_range_gap']
+        if facet_gap > 1:
+            facets['year'] = [('%s-%d' % (y[0], int(y[0])+facet_gap-1), y[1]) 
+                              for y in facets['year']]
         pages = []
         for result in solr_response.results:
             page = models.Page.lookup(result['id'])
@@ -167,7 +181,9 @@ class SolrPaginator(Paginator):
                                                     number, len(pages))
             pages.append(page)
 
-        return Page(pages, number, self)
+        solr_page = Page(pages, number, self)
+        solr_page.facets = facets
+        return solr_page
 
     def pages(self):
         """
@@ -372,13 +388,11 @@ def title_search(d):
     q = ' '.join(q)
     return q
 
-
 def page_search(d):
     """
     Pass in form data for a given page search, and get back
     a corresponding solr query.
     """
-    de = d
     q = ['+type:page']
 
     if d.get('lccn', None):
@@ -388,14 +402,28 @@ def page_search(d):
         q.append(query_join(d.getlist('state'), 'state'))
 
     date_filter_type = d.get('dateFilterType', None)
-    if date_filter_type == 'year' and d.get('year', None):
-        q.append('+date:[%(year)s0101 TO %(year)s1231]' % d)
-    elif date_filter_type in ('range', 'yearRange') and d.get('date1', None) \
-        and d.get('date2', None):
-        d1 = _solrize_date(d['date1'])
-        d2 = _solrize_date(d['date2'], is_start=False)
+    date_boundaries = _fulltext_range()
+    date1 = d.get('date1', None)
+    date2 = d.get('date2', None)
+   
+    if not date1:
+        date1 = date_boundaries[0]
+    if not date2:
+        date2 = date_boundaries[1]
+    if date_filter_type == 'year':
+        date1 = int(date1)
+        date2 = int(date2)
+        q.append('+year:[%(year)s TO %(year)s]' % d)
+    elif date_filter_type in ('range', 'yearRange'):
+        d1 = _solrize_date(str(date1))
+        d2 = _solrize_date(str(date2), is_start=False)
         if d1 and d2:
+            date1, date2 = map(lambda d: int(str(d)[:4]), (d1, d2))
             q.append('+date:[%i TO %i]' % (d1, d2))
+    # choose a facet range gap such that the number of date ranges returned
+    # is <= 10. These would be used to populate a select dropdown on search 
+    # results page.
+    gap = max(1, int(math.ceil((date2 - date1)/10)))
     ocrs = ['ocr_%s' % l for l in settings.SOLR_LANGUAGES]
 
     lang = d.get('language', None)
@@ -448,7 +476,12 @@ def page_search(d):
         q.append('+sequence:"%s"' % d['sequence'])
     if d.get('issue_date', None):
         q.append('+month:%d +day:%d' % (int(d['date_month']), int(d['date_day'])))
-    return ' '.join(q)
+
+    facet_params = {'facet': 'true','facet_field': ['state'], 'facet_range':'year',
+                    'f_year_facet_range_start': date1,
+                    'f_year_facet_range_end': date2,
+                    'f_year_facet_range_gap': gap, 'facet_mincount': 1}
+    return ' '.join(q), facet_params
 
 def query_join(values, field, and_clause=False):
     """
