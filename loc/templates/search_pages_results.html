@@ -142,27 +142,26 @@ if ($.browser.msie && $.browser.version < 7) {
         {% if request.REQUEST.date1 and request.REQUEST.date2 %}
               &nbsp for date range {{ request.REQUEST.date1 }} -
                   {{ request.REQUEST.date2 }}
-              <a href="#" id="cancel_date_filter"><img src="{% static 'images/btn_remove.png' %}" alt="remove date filter"/></a>
+              <a href="#" id="cancel_date_filter"><img src="{% static 'images/btn_remove.png' %}" title="clear date filter" alt="remove date filter"/></a>
         {% endif %}
         {% if request.REQUEST.state %}
               &nbsp for states {{ request.REQUEST.state }} 
-              <a href="#" id="cancel_state_filter"><img src="{% static 'images/btn_remove.png' %}" alt="remove state filter"/></a>
+              <a href="#" id="cancel_state_filter"><img src="{% static 'images/btn_remove.png' %}" title="clear state filter" alt="remove state filter"/></a>
         {% endif %}
         </p> 
         <form id="results">
             <p>
             <input class="check" name="check_front" id="check_front" value=1 type="checkbox" />
             <label class="norm" for="check_front">Show only front pages</label> &nbsp;&nbsp; 
-            <label class="norm" for="filter_select">filter by year: </label>
-            <select class="sel" name="filter_select_year" id="filter_select_year">
-                <option value="" disabled selected> Select year </option>
+            <label class="norm" for="filter_select">Filter results: </label>
+            <select class="sel" name="filter_results" id="filter_select_year">
+                <option value="" disabled selected> by year </option>
                 {% for year, count in page.facets.year %}
                     <option value={{year}}>{{year}} ({{count}})</option>
                 {% endfor %}
-            </select> &nbsp;  &nbsp;
-            <label class="norm" for="filter_select_state"> filter by state:</label>
+            </select>
             <select class="sel" name="rpp_select" id="filter_select_state">
-                <option value="" disabled selected> Select state </option>
+                <option value="" disabled selected> by state </option>
                 {% for state, count in page.facets.state %}
                     <option value={{state}}>{{state}} ({{count}})</option>
                 {% endfor %}
