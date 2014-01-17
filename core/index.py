@@ -157,7 +157,9 @@ class SolrPaginator(Paginator):
         # sort states by number of hits per state (desc)
         facets = {'state': sorted(solr_facets.get('facet_fields')['state'].items(),
                                   lambda x, y: x - y, lambda k: k[1], True),
-                  'year': solr_facets['facet_ranges']['year']['counts']}
+                  'year': solr_facets['facet_ranges']['year']['counts'],
+                  'county': sorted(solr_facets.get('facet_fields')['county'].items(),
+                                  lambda x, y: x - y, lambda k: k[1], True)}
         # sort by year (desc)
         facets['year'] = sorted(solr_facets['facet_ranges']['year']['counts'].items(),
                                 lambda x, y: int(x) - int(y), lambda k: k[0], True)
@@ -302,7 +304,12 @@ class SolrTitlesPaginator(Paginator):
         self._count = int(solr_response.results.numFound)
         self._num_pages = None
         self._cur_page = page
-        self.state_facets = solr_response.facet_counts.get('facet_fields')['state']
+        self.state_facets = sorted(solr_response.facet_counts.get(
+                                   'facet_fields')['state'].items(),
+                                  lambda x, y: x - y, lambda k: k[1], True)
+        self.county_facets = sorted(solr_response.facet_counts.get(
+                                   'facet_fields')['county'].items(),
+                                  lambda x, y: x - y, lambda k: k[1], True) 
         self.year_facets = year_facets
 
     def page(self, number):
@@ -399,8 +406,8 @@ def title_search(d):
     # keep the gap 10 for year range 100, 20 for year range 200 and so on
     range_gap = int(math.ceil((int(year2) - int(year1)) / 100.0)) * 5
     year_facets = range(int(year1), int(year2), range_gap or 1)
-    facets = {'facet': 'true', 'facet_field': ['state'], 'facet_mincount': 1, 
-              'year_facets': year_facets}
+    facets = {'facet': 'true', 'facet_field': ['state', 'county'], 
+              'facet_mincount': 1, 'year_facets': year_facets}
     return q, facets
 
 def page_search(d):
@@ -492,7 +499,8 @@ def page_search(d):
     if d.get('issue_date', None):
         q.append('+month:%d +day:%d' % (int(d['date_month']), int(d['date_day'])))
 
-    facet_params = {'facet': 'true','facet_field': ['state'], 'facet_range':'year',
+    facet_params = {'facet': 'true','facet_field': ['state', 'county'],
+                    'facet_range':'year',
                     'f_year_facet_range_start': date1,
                     'f_year_facet_range_end': date2,
                     'f_year_facet_range_gap': gap, 'facet_mincount': 1}

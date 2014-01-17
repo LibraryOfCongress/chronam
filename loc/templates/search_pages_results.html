@@ -39,6 +39,9 @@ jQuery(function($){
     $("#filter_select_state").change(function(){
         window.location=$.param.querystring(location.href, {'state': this.value});
     });
+    $("#filter_select_county").change(function(){
+        window.location=$.param.querystring(location.href, {'county': this.value});
+    });
     $("#cancel_date_filter").on("click", function(e) {
             window.location=$.param.querystring(location.href, 
                                             {"date1": "",
@@ -148,6 +151,10 @@ if ($.browser.msie && $.browser.version < 7) {
               &nbsp for states {{ request.REQUEST.state }} 
               <a href="#" id="cancel_state_filter"><img src="{% static 'images/btn_remove.png' %}" title="clear state filter" alt="remove state filter"/></a>
         {% endif %}
+        {% if request.REQUEST.county %}
+              &nbsp for counties {{ request.REQUEST.county }}
+              <a href="#" id="cancel_county_filter"><img src="{% static 'images/btn_remove.png' %}" title="clear county filter" alt="remove county filter"/></a>
+        {% endif %}
         </p> 
         <form id="results">
             <p>
@@ -164,6 +171,12 @@ if ($.browser.msie && $.browser.version < 7) {
                 <option value="" disabled selected> by state </option>
                 {% for state, count in page.facets.state %}
                     <option value={{state}}>{{state}} ({{count}})</option>
+                {% endfor %}
+            </select>
+            <select class="sel" name="rpp_select" id="filter_select_county">
+                <option value="" disabled selected> by county </option>
+                {% for county, count in page.facets.county %}
+                    <option value="{{county}}">{{county}} ({{count}})</option>
                 {% endfor %}
             </select> &nbsp;  &nbsp; &nbsp;  &nbsp;
             <label class="norm" for="sort_select">Sort by:</label> 

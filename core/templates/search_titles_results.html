@@ -25,17 +25,24 @@
         $("#sort_select").change(function(){
             window.location=setUrlVar('sort', this.value);
         });
-        $("#filter_select_state").change(function(){
-            window.location=$.param.querystring(location.href, {'state': this.value});
-        });
         $("#cancel_state_filter").on("click", function(e) {
                 window.location=$.param.querystring(location.href, 
                                                 {"state": ""});
         }); 
+        $("#cancel_county_filter").on("click", function(e) {
+                window.location=$.param.querystring(location.href, 
+                                                {"county": ""});
+        });
         $("#cancel_date_filter").on("click", function(e) {
                 window.location=$.param.querystring(location.href, 
                                                 {"year1": "",
                                                  "year2": ""});
+        });
+        $("#filter_select_state").change(function(){
+            window.location=$.param.querystring(location.href, {'state': this.value});
+        });
+        $("#filter_select_county").change(function(){
+            window.location=$.param.querystring(location.href, {'county': this.value});
         });
         $("#filter_select_from_year").change(function(){
             var year = this.value;
@@ -66,9 +73,13 @@
         {% if request.REQUEST.state %}
               &nbsp for states {{ request.REQUEST.state }}
               <a href="#" id="cancel_state_filter"><img src="{% static 'images/btn_remove.png' %}" title="clear state filter" alt="remove state filter"/></a>
-        {% endif %} &nbsp
+        {% endif %} 
+        {% if request.REQUEST.county %}
+              &nbsp for county {{ request.REQUEST.county }}
+              <a href="#" id="cancel_county_filter"><img src="{% static 'images/btn_remove.png' %}" title="clear county filter" alt="remove county filter"/></a>
+        {% endif %} 
         &nbsp for date range {% firstof request.REQUEST.year1 '1690' %} - {% firstof request.REQUEST.year2 'present' %}
-        {% if request.REQUEST.year1 and request.REQUEST.year2 %}
+        {% if request.REQUEST.year1 or request.REQUEST.year2 %}
             <a href="#" id="cancel_date_filter"><img src="{% static 'images/btn_remove.png' %}" title="clear date filter" alt="remove date filter"/></a>
         {% endif %}
         <br /></p> 
@@ -77,8 +88,14 @@
             <label class="norm" for="filter_results">filter results: </label>
             <select class="sel" name="filter_select_state" id="filter_select_state">
                 <option value="" disabled selected> by state </option>
-                {% for state, count in paginator.state_facets.items %}
+                {% for state, count in paginator.state_facets %}
                     <option value="{{state}}">{{state}} ({{count}})</option>
+                {% endfor %}
+            </select> 
+            <select class="sel" name="filter_select_county" id="filter_select_county">
+                <option value="" disabled selected> by county </option>
+                {% for county, count in paginator.county_facets %}
+                    <option value="{{county}}">{{county}} ({{count}})</option>
                 {% endfor %}
             </select> &nbsp;  
 
