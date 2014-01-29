@@ -21,18 +21,18 @@ Configure Solr
 
 Download Solr from a mirror site
 
-    wget http://archive.apache.org/dist/lucene/solr/4.3.1/solr-4.3.1.tgz
-    tar zxvf solr-4.3.1.tgz
-    sudo mv solr-4.3.1/example/ /opt/solr-4.3.1
+    wget http://archive.apache.org/dist/lucene/solr/4.4.0/solr-4.4.0.tgz
+    tar zxvf solr-4.4.0.tgz
+    sudo mv solr-4.4.0/example/ /opt/solr
 
-    sudo useradd -d /opt/solr-4.3.1 -s /bin/bash solr
-    sudo chown solr:solr -R /opt/solr-4.3.1
-    
+    sudo useradd -d /opt/solr -s /bin/bash solr
+    sudo chown solr:solr -R /opt/solr
+
     sudo cp /opt/chronam/conf/jetty7.sh /etc/init.d/jetty
     sudo chmod +x /etc/init.d/jetty
 
-    sudo cp /opt/chronam/conf/schema.xml /opt/solr-4.3.1/solr/collection1/conf/schema.xml
-    sudo cp /opt/chronam/conf/solrconfig-4.3.0.xml /opt/solr-4.3.1/solr/collection1/conf/solrconfig.xml
+    sudo cp /opt/chronam/conf/schema.xml /opt/solr/solr/collection1/conf/schema.xml
+    sudo cp /opt/chronam/conf/solrconfig.xml /opt/solr/solr/collection1/conf/solrconfig.xml
 
     sudo cp /opt/chronam/conf/jetty-ubuntu /etc/default/jetty
     sudo service jetty start
