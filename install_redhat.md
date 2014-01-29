@@ -28,7 +28,7 @@ Configure Solr
 
 Download solr from a mirror site (tested with Solr 4.3 and 4.4, get the latest version)
 
-    wget http://mirror.metrocast.net/apache/lucene/solr/4.4.0/solr-4.4.0.tgz
+    wget http://archive.apache.org/dist/lucene/solr/4.4.0/solr-4.4.0.tgz
     tar zxvf solr-4.4.0.tgz
     sudo mv solr-4.4.0/example/ /opt/solr/
     sudo cp /opt/chronam/conf/schema.xml /opt/solr/solr/collection1/conf/schema.xml
