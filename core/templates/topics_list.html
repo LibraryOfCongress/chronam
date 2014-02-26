@@ -1,0 +1,55 @@
+{% extends 'site_base_alt.html' %}
+
+{% load static from staticfiles %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script> 
+<script type="text/javascript">
+
+jQuery(function($){
+    $("#topic_sort").change(function(){
+        window.location=$.param.querystring(location.href, {'sort_by': this.value});
+    });
+});
+</script>
+{% endblock %}
+
+{% block box-tabs %}
+{% endblock %}
+
+{% block main_content %}
+ <div id="std_box">
+   <p>
+     Chronicling America provides free access to millions of historic American newspaper pages. Listed here are topics widely covered in the American press of the time. We will be adding more topics on a regular basis. To find out what's new, sign up for Chronicling America’s weekly notification service, that highlights interesting content on the site and lets you know when new newspapers and topics are added. Users can use the icons at the bottom of the Chronicling America Web page to subscribe. If you would like to suggest other topics, use the <a href="http://www.loc.gov/rr/askalib/ask-news.html">Ask a Librarian contact form</a> available on the Newspaper and Current Periodical Reading Room site. Dates show the approximate range of sample articles.</p>
+   <hr/>
+   <p><label for="state">Sort topics in chronicling america by </label>
+            <select id="topic_sort" name="topic_sort">
+            <option value="" disabled selected>Select order</option>
+            <option value="name">by name</option>
+            <option value="category">by Category</option>
+            <option value="date">by date range</option>
+            </select>
+   </p>
+   <ul>
+   {% if not category_sort %}
+     {% for topic in topics %}
+        <li> <a href="{% url 'chronam_topic' topic_id=topic.pk %}">{{topic.name}}</a> ({{topic.topic_start_year}}{% if topic.topic_end_year %}-{{topic.topic_end_year}}{% endif %}) </li>
+     {% endfor %}
+     </ul>
+   {% else %}
+     <ul>
+     {% for category in topics %}
+        <li> <h3> {{category.name}} </h3>
+        <ul>
+        {% for topic in category.topic_set.all %}
+          <li> <a href="{% url 'chronam_topic' topic_id=topic.pk %}">{{topic.name}}</a> ({{topic.topic_start_year}}{% if topic.topic_end_year %}-{{topic.topic_end_year}}{% endif %}) </li>
+        {% endfor %}
+        </li> 
+        </ul>
+     {% endfor %}
+     </ul>
+   {% endif %}
+ </div>
+
+{% endblock main_content %}

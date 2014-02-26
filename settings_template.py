@@ -132,6 +132,9 @@ TEMP_TEST_DATA = os.path.join(STORAGE, "temp_test_data")
 
 BASE_CRUMBS = [{'label':'Home', 'href': '/'}]
 
+TOPICS_ROOT_URL = 'http://www.loc.gov/rr/news/topics'
+TOPICS_SUBJECT_URL = '/topicsSubject.html'
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['*']

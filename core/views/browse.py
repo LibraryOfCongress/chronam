@@ -3,6 +3,8 @@ import os
 import re
 import urlparse
 
+from itertools import groupby
+
 from django import forms as django_forms
 
 from django.conf import settings
@@ -256,6 +258,10 @@ def page(request, lccn, date, edition, sequence, words=None):
     profile_uri = 'http://www.openarchives.org/ore/html/'
 
     template = "page.html"
+    page_topics = None
+    if page.topicpages_set.count():
+        page_topics = map(lambda tp: {'name': tp.topic.name, 'id': tp.topic.id}, 
+                          page.topicpages_set.all())
     response = render_to_response(template, dictionary=locals(),
                                   context_instance=RequestContext(request))
     return response
@@ -557,4 +563,57 @@ def issues_first_pages(request, lccn, page_number=1):
     page_head_subheading = label(title)
     crumbs = create_crumbs(title)
     return render_to_response('issue_pages.html', dictionary=locals(),
+                              context_instance=RequestContext(request))
+
+
+@cache_page(settings.DEFAULT_TTL_SECONDS)
+def recommended_topics(request):
+    sort_order = request.REQUEST.get('sort_by', None)
+    page_title = 'Topics in Chronicling America'
+    crumbs = list(settings.BASE_CRUMBS)
+    crumbs.extend([{'label': 'Recommended Topics', 
+                   'href': urlresolvers.reverse('recommended_topics')}])
+    category_sort = False
+    topics = models.Topic.objects.all() 
+    if sort_order == 'date':
+        topics = topics.order_by('topic_start_year')
+    elif sort_order == 'category':
+        category_sort = True
+        topics = models.TopicCategory.objects.all()
+    else:
+        topics = topics.order_by('name')
+    return render_to_response('topics_list.html', dictionary=locals(),
+                              context_instance=RequestContext(request))
+
+
+@cache_page(settings.DEFAULT_TTL_SECONDS)
+@vary_on_headers('Referer')
+def chronam_topic(request, topic_id):
+    topic = get_object_or_404(models.Topic, pk=topic_id)
+    page_title = topic.name
+    crumbs = list(settings.BASE_CRUMBS)
+    if urlresolvers.reverse('recommended_topics') in request.META.get('HTTP_REFERER'):
+        crumbs.extend([{'label': 'Recommended Topics',        
+                        'href': urlresolvers.reverse('recommended_topics')},
+                       {'label': topic.name,
+                        'href': urlresolvers.reverse('chronam_topic', 
+                                              kwargs={'topic_id': topic.pk})}])
+    else:
+        referer = re.sub('^https?:\/\/', '', request.META.get('HTTP_REFERER')).split('/')
+        try:
+            lccn, date, edition, sequence = referer[2], referer[3], referer[4][-1], referer[5][-1]
+            page = get_page(lccn, date, edition, sequence)
+            if page: 
+                title, issue, page = _get_tip(lccn, date, edition, sequence)
+                crumbs = create_crumbs(title, issue, date, edition, page)
+                crumbs.extend([{'label': topic.name,
+                                'href': urlresolvers.reverse('chronam_topic',
+                                              kwargs={'topic_id': topic.pk})}])
+        except:
+            pass
+    important_dates = filter(lambda s: not s.isspace(), topic.important_dates.split('\n '))
+    search_suggestions = topic.suggested_search_terms.split('\t')
+    chronam_pages = [{'title': t.title, 'description': t.description.lstrip(t.title),
+                      'url': t.url} for t in topic.topicpages_set.all()]
+    return render_to_response('topic.html', dictionary=locals(),
                               context_instance=RequestContext(request))
