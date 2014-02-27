@@ -59,7 +59,7 @@ def poll_purge():
                       settings.CTS_USERNAME,
                       settings.CTS_PASSWORD)
 
-    queue = "ndnpingestqueue"
+    queue = settings.CTS_QUEUE
     purge_service_type = "purge.NdnpPurge.purge"
     while True:
         req = cts.next_service_request(queue, purge_service_type)
