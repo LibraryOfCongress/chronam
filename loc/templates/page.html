@@ -1,5 +1,6 @@
 {% extends "site_base.html" %}
 {% load static from staticfiles %}
+{% load custom_filters %}
 
 {% block javascript %}
 {{ block.super }}
@@ -199,5 +200,21 @@
         </ul> 
       </div>
     </div><!-- end id:imageViewer_nav --> 
+    {% if related_pages %}
+    <div class="related-carousel-body">
+      <div class="carousel-menu">
+        <strong>Similar issues for {{page.issue.date_issued|date:"M d, Y"}}</strong>
+      </div>
+      <div class="related-carousel-inner">
+      <ul id="mycarousel" class="jcarousel-skin-tango">
+        {% for page in related_pages %}
+            <li><a href="{{page.url}}"><img src="http://chroniclingamerica.loc.gov/lccn/sn93067669/1914-02-28/ed-1/seq-1/thumbnail.jpg"/></a>
+            <a href="{{page.url}}">{{page.issue.title.display_name}}</a>
+            <a href="{{page.url}}">({{page.issue.title.place_of_publication}}), {{page.issue|label}}</a></li>
+        {% endfor %}
+      </ul>
+    </div><!-- end carousel-body -->
+    {% endif %}
+    <div class="clear"><!-- --></div>
   </div><!-- end id:item-wrapper --> 
 {% endblock %}
