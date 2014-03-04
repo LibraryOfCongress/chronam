@@ -5,6 +5,7 @@ import datetime
 from urllib import urlencode, unquote
 
 from solr import SolrConnection
+from django.core import urlresolvers
 from django.core.paginator import Paginator, Page
 from django.db import connection, reset_queries
 from django.http import QueryDict
@@ -12,6 +13,7 @@ from django.conf import settings
 
 from chronam.core import models
 from chronam.core.forms import _fulltext_range
+from chronam.core.utils import utils
 from chronam.core.title_loader import _normal_lccn
 
 _log = logging.getLogger(__name__)
@@ -709,3 +711,17 @@ def _solrize_date(d, is_start=True):
         return int(y) * 10000 + int(m) * 100 + int(d)
     else:
         return None
+
+
+def similar_pages(page):
+    solr = SolrConnection(settings.SOLR)
+    d = page.issue.date_issued
+    year, month, day = '{:02d}'.format(d.year), '{:02d}'.format(d.month), '{:02d}'.format(d.day) 
+    date = ''.join(map(str, (year, month, day)))
+
+    query = '+type:page AND date:%s AND %s AND NOT(lccn:%s)' % (date, query_join(map(lambda p: p.city, 
+                                           page.issue.title.places.all()), 'city'), page.issue.title.lccn)
+    response = solr.query(query, rows=25)
+    results = response.results
+    return map(lambda kwargs: utils.get_page(**kwargs), 
+               map(lambda r: urlresolvers.resolve(r['id']).kwargs, results))

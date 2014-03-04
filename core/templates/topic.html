@@ -1,0 +1,40 @@
+{% extends 'site_base_alt.html' %}
+
+{% load static from staticfiles %}
+
+{% block box-tabs %}
+{% endblock %}
+
+{% block main_content %}
+ <div id="std_box">
+   <p>{% if not topic.intro_text == 'Jump to: Sample Articles' %}{{ topic.intro_text }}{% endif %}</p>
+
+   <h2> Important dates </h2>
+   <p> 
+     <ul>
+       {% for important_date in important_dates %}
+         <li>{{ important_date }}</li>
+       {% endfor %}
+   </ul>
+   </p>
+   <h2> Suggested Search Strategies: </h2>
+   <p> 
+     <ul>
+       {% for search_suggestion in search_suggestions %}
+         <li>{{ search_suggestion }}</li>
+       {% endfor %}
+   </ul>
+   </p>
+   <hr/>
+   </p>
+   <h2> Sample Articles from Chronicling America: </h2>
+   <p>
+     <ul>
+       {% for page in chronam_pages %}
+         <li><a href="{{page.url}}">{{page.title}}</a> {{page.description}}</li>
+       {% endfor %}
+   </ul>
+   </p>
+ </div>
+
+{% endblock main_content %}

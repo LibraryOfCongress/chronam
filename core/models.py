@@ -1262,3 +1262,26 @@ def coordinates_path(url_parts):
     if not os.path.exists(full_path):
         os.makedirs(full_path)
     return os.path.join(full_path, "coordinates.json.gz")
+
+
+class TopicCategory(models.Model):
+    name = models.CharField(max_length=250)
+    date_synced = models.DateTimeField(auto_now_add=True)
+
+
+class Topic(models.Model):
+    name = models.CharField(max_length=250)
+    category = models.ForeignKey('TopicCategory')
+    topic_start_year = models.IntegerField()
+    topic_end_year = models.IntegerField()
+    suggested_search_terms = models.TextField()
+    intro_text = models.TextField()    
+    important_dates = models.TextField()
+    
+class TopicPages(models.Model):
+    page = models.ForeignKey('Page', null=True)
+    topic = models.ForeignKey('Topic')
+    query_params = models.CharField(max_length=500)
+    title = models.CharField(max_length=250)
+    url = models.CharField(max_length=1000)
+    description = models.TextField()
