@@ -10,6 +10,11 @@ from chronam.core import models
 
 MIN_YEAR = 1860
 MAX_YEAR = 1922
+DAY_CHOICES = [(i, i) for i in range(1,32)]
+MONTH_CHOICES = ((1, u'Jan',), (2, u'Feb',), (3, u'Mar',),
+                 (4, u'Apr',), (5, u'May',), (6, u'Jun',),
+                 (7, u'Jul',), (8, u'Aug',), (9, u'Sep',),
+                 (10, u'Oct',), (11, u'Nov',), (12, u'Dec',)) 
 
 FREQUENCY_CHOICES = (
     ("", "Select"),
@@ -100,6 +105,7 @@ class SearchPagesForm(forms.Form):
     date2 = fields.ChoiceField(choices=[])
     proxtext = fields.CharField()
     sequence = fields.BooleanField()
+    issue_date = fields.BooleanField()
 
     def __init__(self, *args, **kwargs):
         super(SearchPagesForm, self).__init__(*args, **kwargs)
@@ -121,6 +127,8 @@ class SearchPagesForm(forms.Form):
 
 
 class AdvSearchPagesForm(SearchPagesForm):
+    date_month = fields.ChoiceField(choices=MONTH_CHOICES)
+    date_day = fields.ChoiceField(choices=DAY_CHOICES)
     lccn = fields.MultipleChoiceField(choices=[])
     state = fields.MultipleChoiceField(choices=[])
     date1 = fields.CharField()

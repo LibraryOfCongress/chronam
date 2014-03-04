@@ -1,6 +1,8 @@
 import re
+import math
 import logging
-from urllib import urlencode
+import datetime
+from urllib import urlencode, unquote
 
 from solr import SolrConnection
 from django.core.paginator import Paginator, Page
@@ -9,6 +11,7 @@ from django.http import QueryDict
 from django.conf import settings
 
 from chronam.core import models
+from chronam.core.forms import _fulltext_range
 from chronam.core.title_loader import _normal_lccn
 
 _log = logging.getLogger(__name__)
@@ -59,7 +62,7 @@ class SolrPaginator(Paginator):
         if 'words' in self.query:
             del self.query['words']
 
-        self._q = page_search(self.query)
+        self._q, self.facet_params = page_search(self.query)
 
         try:
             self._cur_page = int(self.query.get('page'))
@@ -138,17 +141,32 @@ class SolrPaginator(Paginator):
             "hl.requireFieldMatch": 'true', # limits highlighting slop
             "hl.maxAnalyzedChars": '102400', # increased from default 51200
             }
+        params.update(self.facet_params)
         sort_field, sort_order = _get_sort(self.query.get('sort'), in_pages=True)
         solr_response = solr.query(self._q,
-                                   fields=['id', 'title', 'date', 'sequence',
-                                           'edition_label', 'section_label'],
+                                   fields=['id', 'title', 'date', 'month', 'day',
+                                           'sequence', 'edition_label', 
+                                           'section_label'],
                                    highlight=self._ocr_list,
                                    rows=self.per_page,
                                    sort=sort_field,
                                    sort_order=sort_order,
                                    start=start,
                                    **params)
-
+        solr_facets = solr_response.facet_counts
+        # sort states by number of hits per state (desc)
+        facets = {'state': sorted(solr_facets.get('facet_fields')['state'].items(),
+                                  lambda x, y: x - y, lambda k: k[1], True),
+                  'year': solr_facets['facet_ranges']['year']['counts'],
+                  'county': sorted(solr_facets.get('facet_fields')['county'].items(),
+                                  lambda x, y: x - y, lambda k: k[1], True)}
+        # sort by year (desc)
+        facets['year'] = sorted(solr_facets['facet_ranges']['year']['counts'].items(),
+                                lambda x, y: int(x) - int(y), lambda k: k[0], True)
+        facet_gap = self.facet_params['f_year_facet_range_gap']
+        if facet_gap > 1:
+            facets['year'] = [('%s-%d' % (y[0], int(y[0])+facet_gap-1), y[1]) 
+                              for y in facets['year']]
         pages = []
         for result in solr_response.results:
             page = models.Page.lookup(result['id'])
@@ -166,7 +184,9 @@ class SolrPaginator(Paginator):
                                                     number, len(pages))
             pages.append(page)
 
-        return Page(pages, number, self)
+        solr_page = Page(pages, number, self)
+        solr_page.facets = facets
+        return solr_page
 
     def pages(self):
         """
@@ -259,8 +279,8 @@ class SolrTitlesPaginator(Paginator):
 
     def __init__(self, query):
         self.query = query.copy()
-        q, fields, sort_field, sort_order = get_solr_request_params_from_query(self.query)
-
+        q, fields, sort_field, sort_order, facets = get_solr_request_params_from_query(self.query)
+        year_facets = facets.pop('year_facets')
         try:
             page = int(self.query.get('page'))
         except:
@@ -271,9 +291,9 @@ class SolrTitlesPaginator(Paginator):
         except:
             rows = 50
         start = rows * (page - 1)
-
+        query = q
         # execute query
-        solr_response = execute_solr_query(q, fields, sort_field, sort_order, rows, start)
+        solr_response = execute_solr_query(q, fields, sort_field, sort_order, rows, start, facets)
 
         # convert the solr documents to Title models
         # could use solr doc instead of going to db, if performance requires it
@@ -284,6 +304,13 @@ class SolrTitlesPaginator(Paginator):
         self._count = int(solr_response.results.numFound)
         self._num_pages = None
         self._cur_page = page
+        self.state_facets = sorted(solr_response.facet_counts.get(
+                                   'facet_fields')['state'].items(),
+                                  lambda x, y: x - y, lambda k: k[1], True)
+        self.county_facets = sorted(solr_response.facet_counts.get(
+                                   'facet_fields')['county'].items(),
+                                  lambda x, y: x - y, lambda k: k[1], True) 
+        self.year_facets = year_facets
 
     def page(self, number):
         """
@@ -314,15 +341,17 @@ def get_titles_from_solr_documents(solr_response):
 
 
 def get_solr_request_params_from_query(query):
-    q = title_search(query)
+    q, facets = title_search(query)
     fields = ['id', 'title', 'date', 'sequence', 'edition_label', 'section_label']
     sort_field, sort_order = _get_sort(query.get('sort'))
-    return q, fields, sort_field, sort_order
+    return q, fields, sort_field, sort_order, facets
  
 
-def execute_solr_query(query, fields, sort, sort_order, rows, start):
+def execute_solr_query(query, fields, sort, sort_order, rows, start, facets):
+    # default arg_separator - underscore wont work if fields to facet on 
+    # themselves have underscore in them
     solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
-    solr_response = solr.query(query,
+    solr_response = solr.query(query, 
                                fields=['lccn', 'title',
                                        'edition',
                                        'place_of_publication',
@@ -331,7 +360,7 @@ def execute_solr_query(query, fields, sort, sort_order, rows, start):
                                rows=rows,
                                sort=sort,
                                sort_order=sort_order,
-                               start=start)
+                               start=start, **facets)
     return solr_response
 
 def title_search(d):
@@ -356,21 +385,30 @@ def title_search(d):
         q.append('+' + _expand_ethnicity(d['ethnicity']))
     if d.get('labor'):
         q.append('+subject:"%s"' % d['labor'])
-    if d.get('year1') and d.get('year2'):
-        # don't add the start_year restriction if it's the lowest allowed year
-        if d.get('year1') != '1690':
-            q.append('+end_year:[%s TO 9999]' % d['year1'])
-        # don't add the end_year restriction if it's the max allowed year
-        # particularly important for end_years that are coded as 'current'
-        if d.get('year2') != '2009':
-            q.append('+start_year: [0 TO %s]' % d['year2'])
+    year1 = d.get('year1', None)
+    if not year1:
+        year1 = '1690'
+    year2 = d.get('year2', None)
+    if not year2:
+        year2 = '2009'
+    # don't add the start_year restriction if it's the lowest allowed year
+    if year1 != '1690':
+        q.append('+end_year:[%s TO 9999]' % year1)
+    # don't add the end_year restriction if it's the max allowed year
+    # particularly important for end_years that are coded as 'current'
+    if year2 != '2009':
+        q.append('+start_year: [0 TO %s]' % year2)
     if d.get('lccn'):
         q.append('+lccn:"%s"' % _normal_lccn(d['lccn']))
     if d.get('material_type'):
         q.append('+holding_type:"%s"' % d['material_type'])
     q = ' '.join(q)
-    return q
-
+    # keep the gap 10 for year range 100, 20 for year range 200 and so on
+    range_gap = int(math.ceil((int(year2) - int(year1)) / 100.0)) * 5
+    year_facets = range(int(year1), int(year2), range_gap or 1)
+    facets = {'facet': 'true', 'facet_field': ['state', 'county'], 
+              'facet_mincount': 1, 'year_facets': year_facets}
+    return q, facets
 
 def page_search(d):
     """
@@ -386,15 +424,28 @@ def page_search(d):
         q.append(query_join(d.getlist('state'), 'state'))
 
     date_filter_type = d.get('dateFilterType', None)
-    if date_filter_type == 'year' and d.get('year', None):
-        q.append('+date:[%(year)s0101 TO %(year)s1231]' % d)
-    elif date_filter_type in ('range', 'yearRange') and d.get('date1', None) \
-        and d.get('date2', None):
-        d1 = _solrize_date(d['date1'])
-        d2 = _solrize_date(d['date2'], is_start=False)
+    date_boundaries = _fulltext_range()
+    date1 = d.get('date1', None)
+    date2 = d.get('date2', None)
+   
+    if not date1:
+        date1 = date_boundaries[0]
+    if not date2:
+        date2 = date_boundaries[1]
+    if date_filter_type == 'year':
+        date1 = int(date1)
+        date2 = int(date2)
+        q.append('+year:[%(year)s TO %(year)s]' % d)
+    elif date_filter_type in ('range', 'yearRange'):
+        d1 = _solrize_date(str(date1))
+        d2 = _solrize_date(str(date2), is_start=False)
         if d1 and d2:
+            date1, date2 = map(lambda d: int(str(d)[:4]), (d1, d2))
             q.append('+date:[%i TO %i]' % (d1, d2))
-
+    # choose a facet range gap such that the number of date ranges returned
+    # is <= 10. These would be used to populate a select dropdown on search 
+    # results page.
+    gap = max(1, int(math.ceil((date2 - date1)/10)))
     ocrs = ['ocr_%s' % l for l in settings.SOLR_LANGUAGES]
 
     lang = d.get('language', None)
@@ -445,7 +496,15 @@ def page_search(d):
         q.append(')')
     if d.get('sequence', None):
         q.append('+sequence:"%s"' % d['sequence'])
-    return ' '.join(q)
+    if d.get('issue_date', None):
+        q.append('+month:%d +day:%d' % (int(d['date_month']), int(d['date_day'])))
+
+    facet_params = {'facet': 'true','facet_field': ['state', 'county'],
+                    'facet_range':'year',
+                    'f_year_facet_range_start': date1,
+                    'f_year_facet_range_end': date2,
+                    'f_year_facet_range_gap': gap, 'facet_mincount': 1}
+    return ' '.join(q), facet_params
 
 def query_join(values, field, and_clause=False):
     """

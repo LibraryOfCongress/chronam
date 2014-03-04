@@ -27,7 +27,7 @@ Download Solr from a mirror site
 
     sudo useradd -d /opt/solr -s /bin/bash solr
     sudo chown solr:solr -R /opt/solr
-
+    
     sudo cp /opt/chronam/conf/jetty7.sh /etc/init.d/jetty
     sudo chmod +x /etc/init.d/jetty
 

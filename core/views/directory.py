@@ -167,7 +167,7 @@ def search_titles_results(request):
     # SOLR are returned at once
     if format == 'csv':
         query = request.GET.copy()
-        q, fields, sort_field, sort_order = index.get_solr_request_params_from_query(query)
+        q, fields, sort_field, sort_order, facets = index.get_solr_request_params_from_query(query)
         
         # return all titles in csv format. * May hurt performance. Assumption is that this
         # request is not made often. 

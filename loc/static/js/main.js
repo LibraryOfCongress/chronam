@@ -50,6 +50,23 @@ jQuery(function($){
     var start_year = $("#id_date1").val();
     var end_year = $("#id_date2").val();
 
+    // disable issue_date selector on page load
+    $("#id_date_month").prop("disabled", "disabled");
+    $('#id_date_day').prop("disabled", "disabled");
+
+    // enable issue_date selector when checkbox is on
+    $("#id_issue_date").change(function() {
+        if ($('#id_issue_date').is(':checked')) {
+            $("#id_date_month").prop("disabled", false);
+            $('#id_date_day').prop("disabled", false);
+        } 
+        else 
+        {
+            $("#id_date_month").prop("disabled", "disabled");
+            $('#id_date_day').prop("disabled", "disabled");
+        }
+    });
+
     // disable options in 'from' year dropdown based on option selected in 'to' dropdown
     $("select#id_date1").change(function(){
         // enable all options first before selectively disabling some
@@ -64,6 +81,7 @@ jQuery(function($){
             }
         });
     });
+
 
     $('#id_date_from').datepicker({defaultDate: new Date(start_year, 1-1, 1), showOn: "focus", yearRange: start_year+":"+end_year, currentText: '', changeMonth: true, changeYear: true, closeText: 'Done'});
     $('#id_date_to').datepicker({defaultDate: new Date(end_year, 12-1, 31), showOn: "focus", yearRange: start_year+":"+end_year, currentText: '', changeMonth: true, changeYear: true});
