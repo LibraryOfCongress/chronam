@@ -208,7 +208,7 @@
       <div class="related-carousel-inner">
       <ul id="mycarousel" class="jcarousel-skin-tango">
         {% for page in related_pages %}
-            <li><a href="{{page.url}}"><img src="http://chroniclingamerica.loc.gov/lccn/sn93067669/1914-02-28/ed-1/seq-1/thumbnail.jpg"/></a>
+            <li><a href="{{page.url}}"><img src="{{page.thumb_url}}"/></a>
             <a href="{{page.url}}">{{page.issue.title.display_name}}</a>
             <a href="{{page.url}}">({{page.issue.title.place_of_publication}}), {{page.issue|label}}</a></li>
         {% endfor %}
