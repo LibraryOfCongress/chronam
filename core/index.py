@@ -716,7 +716,7 @@ def _solrize_date(d, is_start=True):
 def similar_pages(page):
     solr = SolrConnection(settings.SOLR)
     d = page.issue.date_issued
-    year, month, day = '{:02d}'.format(d.year), '{:02d}'.format(d.month), '{:02d}'.format(d.day) 
+    year, month, day = '{0:02d}'.format(d.year), '{0:02d}'.format(d.month), '{0:02d}'.format(d.day) 
     date = ''.join(map(str, (year, month, day)))
 
     query = '+type:page AND date:%s AND %s AND NOT(lccn:%s)' % (date, query_join(map(lambda p: p.city, 
