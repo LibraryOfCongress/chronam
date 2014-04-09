@@ -193,3 +193,10 @@ class TitleLoaderTests(TestCase):
         self.assertEqual(loader.records_processed, 2)
         self.assertRaises(Title.DoesNotExist, Title.objects.get,
                           lccn='sn83030846')
+
+    def test_rda_place_of_publication(self):
+        loader = TitleLoader()
+        loader.load_file(abs_filename('./test-data/rda.xml'))
+        self.assertEqual(loader.records_processed, 1)
+        t = Title.objects.get(lccn='sn84022687')
+        self.assertEqual(t.place_of_publication, 'Montpelier, Vt.')

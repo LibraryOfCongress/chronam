@@ -125,17 +125,17 @@ class TitleLoader(object):
         title.lccn_orig = lccn_orig
         title.oclc = self._extract_oclc(record)
         title.edition = _extract(record, '250', 'a')
-        title.place_of_publication = _extract(record, '260', 'a')
         title.publisher = _extract(record, '260', 'b')
         title.frequency = _extract(record, '310', 'a')
         title.frequency_date = _extract(record, '310', 'b')
         title.uri = _extract(record, '856', 'u')
-        # the main purpose of this it to look for records
-        # with 245 $h[microform] or [microfilm]
-        # but we save everything
-        
-        # In RDA practice, encoding "material format" in the 245$h ("medium")
-        # is deprecated in favor of encoding it in the 338$a (carrier type).
+
+        # rda records use 265$a, fallback to 260$a
+        title.place_of_publication = _extract(record, '264', 'a')
+        if not title.place_of_publication:
+            title.place_of_publication = _extract(record, '260', 'a')
+
+        # rda records use 338$a, fallback to 245$h
         title.medium = _extract(record, '338', 'a')
         if not title.medium:
             title.medium = _extract(record, '245', 'h')
