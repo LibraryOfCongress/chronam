@@ -113,9 +113,9 @@
                   <span class="visible-desktop">PDF</span>
                   <i class="icon-file"></i>
 	      </a>
-	    </li>
+            </li>
 	    <li>
-	      <a href="{% url 'chronam_page_jp2' title.lccn issue.date_issued issue.edition page.sequence %}">
+	      <a href="{% url 'chronam_page_jp2' title.lccn issue.date_issued issue.edition page.sequence %}" download="{{ title.lccn }}-{{ issue.date_issued|date:"Ymd" }}.jp2">
                   <span class="visible-desktop">JP2 ({{image_size}})</span>
                   <i class="icon-picture"></i>
 	      </a>
