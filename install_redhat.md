@@ -56,7 +56,7 @@ Configure Image Rendering:
 
 If you have the Aware JPEG 2000 library this is how you install it:
 
-    wget --no-check-certificate --http-user your-username --http-password your-password https://rdc.lctl.gov/svn/ndnp/third-party/j2k-3.18.9-linux-x86-64.tar.gz
+    wget --no-check-certificate --http-user your-username --http-password your-password https://svn.rdc.lctl.gov/svn/ndnp/third-party/j2k-3.18.9-linux-x86-64.tar.gz
     tar -zxvf j2k-3.18.9-linux-x86-64.tar.gz
     sudo cp j2k-3.18.9-linux-x86-64/include/* /usr/local/include/
     sudo cp j2k-3.18.9-linux-x86-64/lib/libawj2k.so.2.0.1 /usr/local/lib/
