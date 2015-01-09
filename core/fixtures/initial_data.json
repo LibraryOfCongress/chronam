@@ -264,6 +264,23 @@
     }
   },
   {
+    "pk": "nvln", 
+    "model": "core.awardee", 
+    "fields": {
+      "name": "University of Nevada Las Vegas University Libraries",
+      "created": "2015-01-07 17:06:00"
+    }  
+  },   
+  {
+    "pk": "sdhi",
+    "model": "core.awardee", 
+    "fields": {
+      "name": "South Dakota State Historical Society – State Archives",
+      "created": "2015-01-07 06:06:00"
+     
+    }
+  },
+  {
     "pk": "Online Resource",
     "model": "core.materialtype",
     "fields": {}
