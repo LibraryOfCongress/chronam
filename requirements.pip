@@ -4,7 +4,7 @@ MySQL-python
 lxml
 pymarc
 solrpy
-PIL
+Pillow
 simplejson
 feedparser
 rfc3339==5
