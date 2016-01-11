@@ -3,10 +3,10 @@ import os
 
 from django.test import TestCase
 
-import chronam.core
-from chronam.core.batch_loader import BatchLoader
-from chronam.core.models import Title
-from chronam.core.models import Batch
+import openoni.core
+from openoni.core.batch_loader import BatchLoader
+from openoni.core.models import Title
+from openoni.core.models import Batch
 
 
 class BatchLoaderTest(TestCase):
@@ -17,7 +17,7 @@ class BatchLoaderTest(TestCase):
         self.assertEqual(title.name, 'New-York tribune.')
 
     def test_load_batch(self):
-        batch_dir = '/vol/ndnp/chronam/batches/dlc/batch_dlc_jamaica_ver01/'
+        batch_dir = '/vol/ndnp/openoni/batches/dlc/batch_dlc_jamaica_ver01/'
         self.assertTrue(os.path.isdir(batch_dir))
         loader = BatchLoader(process_ocr=False)
         batch = loader.load_batch(batch_dir)
@@ -81,7 +81,7 @@ class BatchLoaderTest(TestCase):
             u'The Big Apple'])
         self.assertTrue(not solr_doc.has_key('essay'))
 
-        f = os.path.join(os.path.dirname(chronam.core.__file__), 'test-data', 
+        f = os.path.join(os.path.dirname(openoni.core.__file__), 'test-data', 
             'ocr.txt')
         self.assertEqual(solr_doc['ocr_eng'], file(f).read().decode('utf-8'))
 

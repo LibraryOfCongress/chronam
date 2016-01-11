@@ -4,10 +4,10 @@
 
 {% block extra_link_types %}
   {% if page.has_previous %}
-  <link rel="prev" href="{% url 'chronam_county_page_number' state|pack_url county|pack_url page.previous_page_number %}" />
+  <link rel="prev" href="{% url 'openoni_county_page_number' state|pack_url county|pack_url page.previous_page_number %}" />
   {% endif %}
   {% if page.has_next %}
-  <link rel="next" href="{% url 'chronam_county_page_number' state|pack_url county|pack_url page.next_page_number %}" />
+  <link rel="next" href="{% url 'openoni_county_page_number' state|pack_url county|pack_url page.next_page_number %}" />
   {% endif %}
 
 {% endblock %}
@@ -18,7 +18,7 @@
 <div id="searchnav">
   <span class="pagination">
     {% if page.has_previous %}
-      <a rel="prev" href="{% url 'chronam_county_page_number' state|pack_url county|pack_url page.previous_page_number %}"><img src="{% static 'images/pag_prev_on.gif'%}" width="9" height="9" alt=""/></a>
+      <a rel="prev" href="{% url 'openoni_county_page_number' state|pack_url county|pack_url page.previous_page_number %}"><img src="{% static 'images/pag_prev_on.gif'%}" width="9" height="9" alt=""/></a>
     {% endif %}
     
     {% for page_number in page_range_short %}
@@ -29,13 +29,13 @@
         {% ifequal page_number page.number %}
           <span class="off">{{page_number}}</span> 
         {% else %}
-          <a href="{% url 'chronam_county_page_number' state|pack_url county|pack_url page_number %}">{{page_number}}</a> 
+          <a href="{% url 'openoni_county_page_number' state|pack_url county|pack_url page_number %}">{{page_number}}</a> 
         {% endifequal %}
       {% endifequal %}
     {% endfor %}
  
     {% if page.has_next %}
-      <a href="{% url 'chronam_county_page_number' state|pack_url county|pack_url page.next_page_number %}"><img src="{% static 'images/pag_next_on.gif' %}" width="9" height="9" alt=""/></a>
+      <a href="{% url 'openoni_county_page_number' state|pack_url county|pack_url page.next_page_number %}"><img src="{% static 'images/pag_next_on.gif' %}" width="9" height="9" alt=""/></a>
     {% endif %}
   </span>
 </div>
@@ -47,7 +47,7 @@
       {% for title in page.object_list %}
         <tr class="{% cycle 'lightGray' 'white' %}">
             <td>
-                <a href="{% url 'chronam_title' title.lccn %}">{{title}}</a>
+                <a href="{% url 'openoni_title' title.lccn %}">{{title}}</a>
                 {% if title.has_non_english_language %}
                 <br />
                 Languages:

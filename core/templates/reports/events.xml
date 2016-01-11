@@ -2,21 +2,21 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
     <title>Chronicling America Events</title>
-    <link rel="self" type="application/atom+xml" href="{% url 'chronam_events_atom' %}" />
-    <link rel="alternate" type="text/html" href="{% url 'chronam_events' %}" />
+    <link rel="self" type="application/atom+xml" href="{% url 'openoni_events_atom' %}" />
+    <link rel="alternate" type="text/html" href="{% url 'openoni_events' %}" />
     <id>info:lc/ndnp/events</id>
     <author>
         <name>Library of Congress</name>
         <uri>http://loc.gov</uri>
     </author>
     <updated>{{ now }}</updated>
-    {% if page.has_previous %}<link rel="previous" type="application/atom+xml" href="http://{{ request.get_host }}{% url 'chronam_events_atom_page' page.previous_page_number %}" />{% endif %}
-    {% if page.has_next %}<link rel="next" type="application/atom+xml" href="http://{{ request.get_host }}{% url 'chronam_events_atom_page' page.next_page_number %}" />{% endif %}
+    {% if page.has_previous %}<link rel="previous" type="application/atom+xml" href="http://{{ request.get_host }}{% url 'openoni_events_atom_page' page.previous_page_number %}" />{% endif %}
+    {% if page.has_next %}<link rel="next" type="application/atom+xml" href="http://{{ request.get_host }}{% url 'openoni_events_atom_page' page.next_page_number %}" />{% endif %}
 
     {% for event in page.object_list %}
     <entry>
         <title>{{event.batch_name}} Event</title>
-        <link rel="alternate" type="text/html" href="{% url 'chronam_event' event.id %}" />
+        <link rel="alternate" type="text/html" href="{% url 'openoni_event' event.id %}" />
         <id>info:lc/ndnp/event/{{ event.id }}</id>
         <author><name>Library of Congress</name></author>
         <updated>{{ event.created|rfc3339 }}</updated>

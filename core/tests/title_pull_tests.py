@@ -7,7 +7,7 @@ from django.utils.unittest import skipUnless
 from django.test import TestCase
 from worldcat.util.extract import extract_elements
 
-from chronam.core.title_pull import (
+from openoni.core.title_pull import (
     raw_query, str_value, TitlePuller,
 )
 

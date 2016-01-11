@@ -6,8 +6,8 @@ from lxml import html
 
 from django.conf import settings
 from django.http import HttpResponse, Http404
-from chronam.core import models
-from chronam.core.utils import utils
+from openoni.core import models
+from openoni.core.utils import utils
 
 _logger = logging.getLogger(__name__)
 
@@ -56,17 +56,17 @@ def load_topic_and_categories():
             for page in pages:
                 page_url = list(page.iterlinks())[0][2]
                 params = page_url.split('/')
-                chronam_page = None
+                openoni_page = None
                 try:
                     params = params[params.index('lccn')+1:]
-                    chronam_page = utils.get_page(params[0], params[1], 
+                    openoni_page = utils.get_page(params[0], params[1], 
                                                   params[2][-1:], params[3][-1:])
                     _logger.info('Syncing topic with page :- lccn:%s.' % params[0])
 
                 except ValueError: pass
                 except Http404: pass
 
-                models.TopicPages.objects.get_or_create(page=chronam_page, topic=topic,
+                models.TopicPages.objects.get_or_create(page=openoni_page, topic=topic,
                                           query_params=params[-1], url=page_url,
                                           title=list(page.iterlinks())[0][0].text,
                                           description=page.text_content().lstrip(list(

@@ -1,30 +1,30 @@
 {% load static from staticfiles %}
 
 <div class="search_results_ctrl">
-    <span class="nav"><a href="{% url 'chronam_issues' issue.title.lccn %}" class="ar-back">Back to Browse All Available Issues</a> 
+    <span class="nav"><a href="{% url 'openoni_issues' issue.title.lccn %}" class="ar-back">Back to Browse All Available Issues</a> 
 
 |
 {% if issue.previous %}
-<a href="{% url 'chronam_issue_pages' issue.previous.title.lccn issue.previous.date_issued issue.previous.edition %}" shape="rect"><strong>Previous Issue</strong></a>
+<a href="{% url 'openoni_issue_pages' issue.previous.title.lccn issue.previous.date_issued issue.previous.edition %}" shape="rect"><strong>Previous Issue</strong></a>
 {% else %}
 <span class="off">Previous Issue</span>
 {% endif %}
 | 
 <!--Next issue-->
 {% if issue.next %}
-<a href="{% url 'chronam_issue_pages' issue.next.title.lccn issue.next.date_issued issue.next.edition %}"><strong>Next Issue</strong></a>
+<a href="{% url 'openoni_issue_pages' issue.next.title.lccn issue.next.date_issued issue.next.edition %}"><strong>Next Issue</strong></a>
 {% else %}
 <span class="off">Next Issue</span>
 {% endif %}
 
-| <a href="{% url 'chronam_issues_first_pages' title.lccn %}"><strong>Show all front pages</strong></a>
+| <a href="{% url 'openoni_issues_first_pages' title.lccn %}"><strong>Show all front pages</strong></a>
 </span>
 
 {% if paginator.num_pages > 1 %}
 <span class="pagination">
     |
     {% if page.has_previous %}
-    <a href="{% url 'chronam_issue_pages_page_number' title.lccn issue.date_issued issue.edition page.previous_page_number %}" class="prev">
+    <a href="{% url 'openoni_issue_pages_page_number' title.lccn issue.date_issued issue.edition page.previous_page_number %}" class="prev">
         <img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" />
     </a>
     {% endif %}
@@ -36,13 +36,13 @@
             {% ifequal page_number page.number %}
             <span class="off">{{page_number}}</span>
             {% else %}
-            <a href="{% url 'chronam_issue_pages_page_number' title.lccn issue.date_issued issue.edition page_number %}">{{page_number}}</a>
+            <a href="{% url 'openoni_issue_pages_page_number' title.lccn issue.date_issued issue.edition page_number %}">{{page_number}}</a>
             {% endifequal %}
         {% endifequal %}
     {% endfor %}
 
     {% if page.has_next %}
-    <a href="{% url 'chronam_issue_pages_page_number' title.lccn issue.date_issued issue.edition page.next_page_number %}" class="next">
+    <a href="{% url 'openoni_issue_pages_page_number' title.lccn issue.date_issued issue.edition page.next_page_number %}" class="next">
     <img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" />
     </a>
     {% endif %}

@@ -13,11 +13,11 @@ from django.core.paginator import Paginator, InvalidPage
 from django.db import connection
 from django.utils import datetime_safe
 
-from chronam.core import index, models
-from chronam.core.rdf import batch_to_graph, awardee_to_graph
-from chronam.core.utils.url import unpack_url_path
-from chronam.core.decorator import cache_page, rdf_view, cors
-from chronam.core.utils.utils import _page_range_short, _rdf_base, _get_tip
+from openoni.core import index, models
+from openoni.core.rdf import batch_to_graph, awardee_to_graph
+from openoni.core.utils.url import unpack_url_path
+from openoni.core.decorator import cache_page, rdf_view, cors
+from openoni.core.utils.utils import _page_range_short, _rdf_base, _get_tip
 
 
 @cache_page(settings.API_TTL_SECONDS)
@@ -63,11 +63,11 @@ def batches_json(request, page_number=1):
     j = {'batches': b}
 
     if page.has_next():
-        url_next = urlresolvers.reverse('chronam_batches_json_page', args=[page.next_page_number()])
+        url_next = urlresolvers.reverse('openoni_batches_json_page', args=[page.next_page_number()])
         j['next'] = "http://" + host + url_next
 
     if page.has_previous():
-        url_prev = urlresolvers.reverse('chronam_batches_json_page', args=[page.previous_page_number()])
+        url_prev = urlresolvers.reverse('openoni_batches_json_page', args=[page.previous_page_number()])
         j['previous'] = "http://" + host + url_prev
     return HttpResponse(json.dumps(j, indent=2), mimetype='application/json')
 
@@ -77,7 +77,7 @@ def batches_csv(request):
     csv_header_labels = ('Created', 'Name', 'Awardee', 'Total Pages',
                          'Released',)
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="chronam_batches.csv"'
+    response['Content-Disposition'] = 'attachment; filename="openoni_batches.csv"'
     writer = csv.writer(response)
     writer.writerow(csv_header_labels)
     for batch in models.Batch.viewable_batches():
@@ -199,7 +199,7 @@ def events(request, page_number=1):
 def events_csv(request):
     csv_header_labels = ('Time', 'Batch name', 'Message',) 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="chronam_events.csv"'
+    response['Content-Disposition'] = 'attachment; filename="openoni_events.csv"'
     writer = csv.writer(response)
     writer.writerow(csv_header_labels)
     for event in models.LoadBatchEvent.objects.all().order_by('-created'):
@@ -490,7 +490,7 @@ def reel(request, reel_number):
     crumbs = list(settings.BASE_CRUMBS)
     crumbs.extend([
         {'label': 'Reels',
-         'href': urlresolvers.reverse('chronam_reels')},
+         'href': urlresolvers.reverse('openoni_reels')},
     ])
     page_title = 'Reel %s' % reel_number
     m_reels = models.Reel.objects.filter(number=reel_number)

@@ -9,10 +9,10 @@ try:
 except ImportError:
     import json
 
-from chronam.core import models
-from chronam.core.management.commands import configure_logging
+from openoni.core import models
+from openoni.core.management.commands import configure_logging
 
-configure_logging("chronam_link_places.config", "chronam_link_places.log")
+configure_logging("openoni_link_places.config", "openoni_link_places.log")
 _logger = logging.getLogger(__name__)
 
 geo = Namespace('http://www.w3.org/2003/01/geo/wgs84_pos#')

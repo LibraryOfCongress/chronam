@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.core import urlresolvers
-from chronam.core.decorator import cache_page
+from openoni.core.decorator import cache_page
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
@@ -10,7 +10,7 @@ def about(request):
     crumbs = list(settings.BASE_CRUMBS)
     crumbs.extend([
         {'label':'About',
-         'href': urlresolvers.reverse('chronam_about'),
+         'href': urlresolvers.reverse('openoni_about'),
          'active': True},
     ])
     return render_to_response('about.html', dictionary=locals(),
@@ -22,7 +22,7 @@ def about_api(request):
     crumbs = list(settings.BASE_CRUMBS)
     crumbs.extend([
         {'label':'About API',
-         'href': urlresolvers.reverse('chronam_about_api'),
+         'href': urlresolvers.reverse('openoni_about_api'),
          'active': True},
     ])
     return render_to_response('about_api.html', dictionary=locals(),
@@ -34,7 +34,7 @@ def help(request):
     crumbs = list(settings.BASE_CRUMBS)
     crumbs.extend([
         {'label':'Help',
-         'href': urlresolvers.reverse('chronam_help'),
+         'href': urlresolvers.reverse('openoni_help'),
          'active': True},
     ])
     return render_to_response('help.html', dictionary=locals(),

@@ -9,9 +9,9 @@
     <opensearch:totalResults>{{paginator.count}}</opensearch:totalResults>
     <opensearch:startIndex>{{page.start_index}}</opensearch:startIndex>
     <opensearch:itemsPerPage>50</opensearch:itemsPerPage>
-    <link rel="search" type="application/opensearchdescription+xml" href="{% url 'chronam_search_pages_opensearch' %}" />
-    {% if previous_url %}<link rel="previous" type="application/atom+xml" href="http://{{host}}{% url 'chronam_search_pages_results' %}{{ previous_url }}" />{% endif %}
-    {% if next_url %}<link rel="next" type="application/atom+xml" href="http://{{host}}{% url 'chronam_search_pages_results' %}{{ next_url }}" />{% endif %}
+    <link rel="search" type="application/opensearchdescription+xml" href="{% url 'openoni_search_pages_opensearch' %}" />
+    {% if previous_url %}<link rel="previous" type="application/atom+xml" href="http://{{host}}{% url 'openoni_search_pages_results' %}{{ previous_url }}" />{% endif %}
+    {% if next_url %}<link rel="next" type="application/atom+xml" href="http://{{host}}{% url 'openoni_search_pages_results' %}{{ next_url }}" />{% endif %}
 
     {% for title in page.object_list %}
     <entry>

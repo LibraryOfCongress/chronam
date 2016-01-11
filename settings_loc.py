@@ -1,7 +1,7 @@
 from settings_template import *
 
 INSTALLED_APPS = (
-    'chronam.loc',
+    'openoni.loc',
     'lc',
 ) + INSTALLED_APPS
 

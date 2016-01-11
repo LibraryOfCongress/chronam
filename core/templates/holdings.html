@@ -22,7 +22,7 @@
 
       <p>
         <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
-        <a href="{% url 'chronam_institution_titles' inst_holding.grouper.code.lower %}" shape="rect">View more titles from this institution</a>
+        <a href="{% url 'openoni_institution_titles' inst_holding.grouper.code.lower %}" shape="rect">View more titles from this institution</a>
       </p>
 
       {% for holding in inst_holding.list %}

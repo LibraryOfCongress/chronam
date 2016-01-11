@@ -6,11 +6,11 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 import pymarc
 
-from chronam.core.management.commands import configure_logging
-from chronam.core import index
-from chronam.core.models import Title
+from openoni.core.management.commands import configure_logging
+from openoni.core import index
+from openoni.core.models import Title
 
-configure_logging("chronam_purge_titles.config", "chronam_purge_etitles.log")
+configure_logging("openoni_purge_titles.config", "openoni_purge_etitles.log")
 _log = logging.getLogger(__name__)
 
 class Command(BaseCommand):

@@ -5,7 +5,7 @@ try:
 except ImportError:
     import json
 
-from chronam.core import models as m
+from openoni.core import models as m
 
 class JsonTests(TestCase):
     fixtures = ['batch.json']

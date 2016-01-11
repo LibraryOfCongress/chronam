@@ -4,8 +4,8 @@
 {% load humanize %}
 
 {% block extrahead %}
-<link rel="alternate" title="Newspapers Atom Feed" href="{% url 'chronam_newspapers_atom' %}" />
-<link rel="alternate" title="Newspapers JSON Feed" href="{% url 'chronam_newspapers_format' "json" %}" />
+<link rel="alternate" title="Newspapers Atom Feed" href="{% url 'openoni_newspapers_atom' %}" />
+<link rel="alternate" title="Newspapers JSON Feed" href="{% url 'openoni_newspapers_format' "json" %}" />
 <link type="text/css" href="{% static 'css/tablesort.css' %}" rel="stylesheet" />
 {% endblock %}
 
@@ -38,13 +38,13 @@
         {% for title in titles %}
             {% with title.lccn as lccn %}
             <tr>
-                <td class="first left_no_border"><a {% ifchanged state %}name="{{state}}" {% endifchanged %}href="{% url 'chronam_newspapers_state' state|pack_url %}">{{state}}</a></td>
-                <td><a href="{% url 'chronam_title' lccn %}"><strong>{{title.display_name}}</strong></a><br />{{title.place_of_publication}}, {{title.start_year}}-{{title.end_year}}</td>
-                <td><a href="{% url 'chronam_issues' lccn %}" shape="rect"><img src="{% static 'images/calendar_icon.gif' %}" alt="calendar"/></a></td>
+                <td class="first left_no_border"><a {% ifchanged state %}name="{{state}}" {% endifchanged %}href="{% url 'openoni_newspapers_state' state|pack_url %}">{{state}}</a></td>
+                <td><a href="{% url 'openoni_title' lccn %}"><strong>{{title.display_name}}</strong></a><br />{{title.place_of_publication}}, {{title.start_year}}-{{title.end_year}}</td>
+                <td><a href="{% url 'openoni_issues' lccn %}" shape="rect"><img src="{% static 'images/calendar_icon.gif' %}" alt="calendar"/></a></td>
                 <td>{{title.issues.count}}</td>
-                <td><a href="{% url 'chronam_issue_pages' lccn title.first 1 %}">{{title.first|date:'Y-m-d'}}</a></td>
-                <td><a href="{% url 'chronam_issue_pages' lccn title.last 1 %}">{{title.last|date:'Y-m-d'}}</a></td>
-                <td class="last">{% if title.has_essays %}<a href="{% url 'chronam_title' lccn %}">Yes</a>{% endif %}</td>
+                <td><a href="{% url 'openoni_issue_pages' lccn title.first 1 %}">{{title.first|date:'Y-m-d'}}</a></td>
+                <td><a href="{% url 'openoni_issue_pages' lccn title.last 1 %}">{{title.last|date:'Y-m-d'}}</a></td>
+                <td class="last">{% if title.has_essays %}<a href="{% url 'openoni_title' lccn %}">Yes</a>{% endif %}</td>
             </tr>
             {% endwith %}
         {% endfor %}

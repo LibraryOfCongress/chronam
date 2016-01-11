@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription 
     xmlns="http://a9.com/-/spec/opensearch/1.1/"
-    xmlns:chronam="http://chroniclingamerica.loc.gov">
+    xmlns:openoni="http://chroniclingamerica.loc.gov">
     <ShortName>Chronicling America Pages Search</ShortName>
     <Description>Search digital newspaper content from the Library of Congress</Description>
     <InputEncoding>UTF-8</InputEncoding>
     <Image width="16" height="16" type="image/x-icon">http://loc.gov/favicon.ico</Image>
-    <Url type="text/html" template="http://{{host}}{% url 'chronam_search_pages_results' %}?andtext={searchTerms}&amp;page={startPage?}&amp;ortext={chronam:booleanOrText?}&amp;year={chronam:year?}&amp;date1={chronam:date?}&amp;date2={chronam:date?}&amp;phrasetext={chronam:phraseText?}&amp;proxText={chronam:proxText?}&amp;proximityValue={chronam:proximityValue?}" />
-    <Url type="application/atom+xml" template="http://{{host}}{% url 'chronam_search_pages_results' %}?andtext={searchTerms}&amp;page={startPage?}&amp;ortext={chronam:booleanOrText?}&amp;year={chronam:year?}&amp;date1={chronam:date?}&amp;date2={chronam:date?}&amp;phrasetext={chronam:phraseText?}&amp;proxText={chronam:proxText?}&amp;proximityValue={chronam:proximityValue?}&amp;format=atom" />
-    <Url type="application/json" template="http://{{host}}{% url 'chronam_search_pages_results' %}?andtext={searchTerms}&amp;page={startPage?}&amp;ortext={chronam:booleanOrText?}&amp;year={chronam:year?}&amp;date1={chronam:date?}&amp;date2={chronam:date?}&amp;phrasetext={chronam:phraseText?}&amp;proxText={chronam:proxText?}&amp;proximityValue={chronam:proximityValue?}&amp;format=json" />
+    <Url type="text/html" template="http://{{host}}{% url 'openoni_search_pages_results' %}?andtext={searchTerms}&amp;page={startPage?}&amp;ortext={openoni:booleanOrText?}&amp;year={openoni:year?}&amp;date1={openoni:date?}&amp;date2={openoni:date?}&amp;phrasetext={openoni:phraseText?}&amp;proxText={openoni:proxText?}&amp;proximityValue={openoni:proximityValue?}" />
+    <Url type="application/atom+xml" template="http://{{host}}{% url 'openoni_search_pages_results' %}?andtext={searchTerms}&amp;page={startPage?}&amp;ortext={openoni:booleanOrText?}&amp;year={openoni:year?}&amp;date1={openoni:date?}&amp;date2={openoni:date?}&amp;phrasetext={openoni:phraseText?}&amp;proxText={openoni:proxText?}&amp;proximityValue={openoni:proximityValue?}&amp;format=atom" />
+    <Url type="application/json" template="http://{{host}}{% url 'openoni_search_pages_results' %}?andtext={searchTerms}&amp;page={startPage?}&amp;ortext={openoni:booleanOrText?}&amp;year={openoni:year?}&amp;date1={openoni:date?}&amp;date2={openoni:date?}&amp;phrasetext={openoni:phraseText?}&amp;proxText={openoni:proxText?}&amp;proximityValue={openoni:proximityValue?}&amp;format=json" />
 </OpenSearchDescription>

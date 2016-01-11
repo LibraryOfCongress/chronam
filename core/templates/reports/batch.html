@@ -3,8 +3,8 @@
 
 {% block extra_link_types %}
     <link rel="primaryTopic" href="{{ batch.abstract_url }}" />
-    <link rel="resourcemap" type="application/rdf+xml" href="{% url 'chronam_batch_dot_rdf' batch.name %}" />
-    <link rel="alternate" href="{% url 'chronam_batch_dot_json' batch.name %}" />
+    <link rel="resourcemap" type="application/rdf+xml" href="{% url 'openoni_batch_dot_rdf' batch.name %}" />
+    <link rel="alternate" href="{% url 'openoni_batch_dot_json' batch.name %}" />
 {% endblock %}
 
 {% block subcontent %}
@@ -18,7 +18,7 @@
     <tr class="lightGray">
         <td>Awardee:</td>
         <td>
-            <a href="{% url 'chronam_awardee' batch.awardee.org_code %}">
+            <a href="{% url 'openoni_awardee' batch.awardee.org_code %}">
                 {{ batch.awardee.name }}
             </a>
         </td>
@@ -47,7 +47,7 @@
         <td>LCCNs In Batch:</td>
         <td>
             {% for lccn in batch.lccns %}
-            <a href="{% url 'chronam_title' lccn %}">{{ lccn }}</a> 
+            <a href="{% url 'openoni_title' lccn %}">{{ lccn }}</a> 
             {% endfor %}
         </td>
     </tr>
@@ -64,8 +64,8 @@
 </tr>
 {% for issue in issue_stats %}
 <tr class="{% cycle 'lightGray' 'white' %}">
-    <td><a href="{% url 'chronam_title' issue.1 %}">{{ issue.0 }}</a></td>
-    <td><a href="{% url 'chronam_issue_pages' issue.1 issue.2 1 %}">{{issue.2 }}</a></td>
+    <td><a href="{% url 'openoni_title' issue.1 %}">{{ issue.0 }}</a></td>
+    <td><a href="{% url 'openoni_issue_pages' issue.1 issue.2 1 %}">{{issue.2 }}</a></td>
     <td>{{ issue.3 }}</td>
     </tr>
     {% endfor %}
@@ -86,10 +86,10 @@
     {% for reel in reels %}
     {% if reel.number %}
     <tr class="{% cycle 'lightGray' 'white' %}">
-      <td><a href="{% url 'chronam_reel' reel.number %}">{{ reel.number }}</a></td>
+      <td><a href="{% url 'openoni_reel' reel.number %}">{{ reel.number }}</a></td>
         <td>
             {% for title in reel.titles %}
-            <a href="{% url 'chronam_title' title.lccn %}">{{ title.display_name }} ({{title.lccn}})</a> 
+            <a href="{% url 'openoni_title' title.lccn %}">{{ title.display_name }} ({{title.lccn}})</a> 
             {% endfor %}
         </td>
       <td>{{ reel.title_range }}</td>

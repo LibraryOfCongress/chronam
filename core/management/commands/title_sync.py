@@ -12,12 +12,12 @@ try:
 except ImportError:
     import json
 
-from chronam import core
-from chronam.core import index
-from chronam.core.essay_loader import load_essays
-from chronam.core.management.commands import configure_logging
-from chronam.core.models import Place, Title
-from chronam.core.utils.utils import validate_bib_dir
+from openoni import core
+from openoni.core import index
+from openoni.core.essay_loader import load_essays
+from openoni.core.management.commands import configure_logging
+from openoni.core.models import Place, Title
+from openoni.core.utils.utils import validate_bib_dir
 
 configure_logging("title_sync_logging.config", "title_sync.log")
 _logger = logging.getLogger(__name__)

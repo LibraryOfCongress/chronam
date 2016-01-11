@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block extra_link_types %}
-<link rel="alternate" href="{% url 'chronam_title_dot_json' title.lccn %}" />
+<link rel="alternate" href="{% url 'openoni_title_dot_json' title.lccn %}" />
 {% endblock %}
 
 {% block newspaper_content %}
@@ -22,7 +22,7 @@
                 {% if title.essay %}
                 <br/>
                 <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt="" />
-                <a href="{% url 'chronam_essay' title.essay.id %}">More About this Newspaper</a>
+                <a href="{% url 'openoni_essay' title.essay.id %}">More About this Newspaper</a>
                 {% endif %}
             </dd>
             
@@ -60,11 +60,11 @@
                         {% endifnotequal %}
                         {{ place.state }}
                         &nbsp;|&nbsp; View more titles from this: 
-                        <a href="{% url 'chronam_city' place.state|pack_url place.county|pack_url place.city|pack_url %}">City</a>
+                        <a href="{% url 'openoni_city' place.state|pack_url place.county|pack_url place.city|pack_url %}">City</a>
                         {% ifnotequal place.county None %}
-                        <a href="{% url 'chronam_county' place.state|pack_url place.county|pack_url %}">County</a>,
+                        <a href="{% url 'openoni_county' place.state|pack_url place.county|pack_url %}">County</a>,
                         {% endifnotequal %}
-                        <a href="{% url 'chronam_state' place.state|pack_url %}">State</a>
+                        <a href="{% url 'openoni_state' place.state|pack_url %}">State</a>
                     </li>
                     {% endfor %}
                 </ul>
@@ -156,7 +156,7 @@
             <dd>
                 <ul class="bullet_blue">
                 {% for t in preceeding_titles %}
-                    <li><a href="{% url 'chronam_title' t.lccn %}">{{t}}</a></li>
+                    <li><a href="{% url 'openoni_title' t.lccn %}">{{t}}</a></li>
                 {% endfor %}
                 </ul>
             </dd>
@@ -167,7 +167,7 @@
             <dd>
                 <ul class="bullet_blue">
                     {% for t in succeeding_titles %}
-                    <li><a href="{% url 'chronam_title' t.lccn %}">{{t}}</a></li>
+                    <li><a href="{% url 'openoni_title' t.lccn %}">{{t}}</a></li>
                     {% endfor %}
                 </ul>
             </dd>
@@ -178,7 +178,7 @@
             <dd>
                 <ul class="bullet_blue">
                     {% for t in related_titles %}
-                    <li><a href="{% url 'chronam_title' t.lccn %}">{{t}}</a></li>
+                    <li><a href="{% url 'openoni_title' t.lccn %}">{{t}}</a></li>
                     {% endfor %}
                 </ul>
             </dd>
@@ -198,7 +198,7 @@
             <dt>Holdings:</dt>
             <dd>
                 <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt="" />
-                <a href="{% url 'chronam_title_holdings' title.lccn %}">
+                <a href="{% url 'openoni_title_holdings' title.lccn %}">
                     View complete holdings information
                 </a>
             </dd>
@@ -208,12 +208,12 @@
             <dd>
                 {% if title.first_issue.first_page.sequence %}
                 <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
-                <a href="{% url 'chronam_page' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page.sequence %}">First Issue</a>
+                <a href="{% url 'openoni_page' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page.sequence %}">First Issue</a>
                 {% endif %}
         
                 {% if title.last_issue.first_page.sequence %}
                 <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
-                <a href="{% url 'chronam_page' title.lccn title.last_issue.date_issued title.last_issue.edition title.last_issue.first_page.sequence %}">Last Issue</a>
+                <a href="{% url 'openoni_page' title.lccn title.last_issue.date_issued title.last_issue.edition title.last_issue.first_page.sequence %}">Last Issue</a>
                 {% endif %}
             </dd>
             {% endif %}
@@ -227,8 +227,8 @@
         <div class="about_issue_right row">
             <div class="frontpage span2">
             {% if title.first_issue.first_page_with_image.jp2_filename and title.first_issue.first_page_with_image.sequence %}
-            <a href="{% url 'chronam_page' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page_with_image.sequence %}">
-                <img class="thumbnail" src="{% url 'chronam_page_thumbnail' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page_with_image.sequence %}" alt="" />
+            <a href="{% url 'openoni_page' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page_with_image.sequence %}">
+                <img class="thumbnail" src="{% url 'openoni_page_thumbnail' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page_with_image.sequence %}" alt="" />
             </a>
             {% else %}
                 Missing Page: {{explanation}}
@@ -238,14 +238,14 @@
               <h3>{{title.display_name}}&nbsp;{{issue_date|date:"F j, Y"}}, Image {{title.first_issue.first_page.sequence}}</h3>
               <h4 class="browse">Browse:</h4>
             
-              <p><a href="{% url 'chronam_issues' lccn %}" class="view_cal">Calendar View</a></p>
-              <p class="dot-top"><a href="{% url 'chronam_issues_first_pages' title.lccn %}">All front pages</a></p>
+              <p><a href="{% url 'openoni_issues' lccn %}" class="view_cal">Calendar View</a></p>
+              <p class="dot-top"><a href="{% url 'openoni_issues_first_pages' title.lccn %}">All front pages</a></p>
               {% if title.first_issue.first_page.sequence %}
-              <p class="dot-top"><a href="{% url 'chronam_page' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page.sequence %}">First Issue</a>
+              <p class="dot-top"><a href="{% url 'openoni_page' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page.sequence %}">First Issue</a>
               &nbsp;|&nbsp;
               {% endif %}
               {% if title.last_issue.first_page.sequence %}
-              <a href="{% url 'chronam_page' title.lccn title.last_issue.date_issued title.last_issue.edition title.last_issue.first_page.sequence %}">Last Issue</a></p>
+              <a href="{% url 'openoni_page' title.lccn title.last_issue.date_issued title.last_issue.edition title.last_issue.first_page.sequence %}">Last Issue</a></p>
               {% endif %}
             </div>
         </div>
@@ -255,7 +255,7 @@
             <div class="span6">
             <h4>{{first_essay.title}}</h4>
             <p>{{first_essay.html|safe}}</p>
-            <p><em>Provided by: <a href="{% url 'chronam_awardee' first_essay.creator.org_code %}">{{ first_essay.creator }}</a></em></p>
+            <p><em>Provided by: <a href="{% url 'openoni_awardee' first_essay.creator.org_code %}">{{ first_essay.creator }}</a></em></p>
             </div>
         </div><!-- end class:more -->
         {% endif %}

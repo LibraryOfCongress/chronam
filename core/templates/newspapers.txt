@@ -1,4 +1,4 @@
 Persistent Link | State | Title | LCCN | OCLC | ISSN | No. of Issues | First Issue Date | Last Issue Date | More Info
 {% for state, titles in newspapers_by_state %}
-{% for title in titles %}http://{{host}}{% url 'chronam_issues' title.lccn %} | {{state}} | {{title}} | {{title.lccn|default:""}} | {{title.oclc|default:""}} | {{title.issn|default:""}} | {{title.issues.count}} | {{title.first}} | {{title.last}} | {% if title.has_essays %}http://{{host}}{% url 'chronam_title_essays' title.lccn %}{% endif %}
+{% for title in titles %}http://{{host}}{% url 'openoni_issues' title.lccn %} | {{state}} | {{title}} | {{title.lccn|default:""}} | {{title.oclc|default:""}} | {{title.issn|default:""}} | {{title.issues.count}} | {{title.first}} | {{title.last}} | {% if title.has_essays %}http://{{host}}{% url 'openoni_title_essays' title.lccn %}{% endif %}
 {% endfor %}{% endfor %}

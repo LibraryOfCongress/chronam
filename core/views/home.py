@@ -7,8 +7,8 @@ from django.template import RequestContext
 from django.template.loader import get_template
 from django.core import urlresolvers
 
-from chronam.core import models
-from chronam.core import forms
+from openoni.core import models
+from openoni.core import forms
 
 
 def home(request, date=None):
@@ -40,7 +40,7 @@ def _frontpages(request, date):
                           date=issue.date_issued,
                           edition=issue.edition,
                           sequence=first_page.sequence)
-        url = urlresolvers.reverse('chronam_page', kwargs=path_parts)
+        url = urlresolvers.reverse('openoni_page', kwargs=path_parts)
         results.append({
             'label': "%s" % issue.title.display_name,
             'url': url,

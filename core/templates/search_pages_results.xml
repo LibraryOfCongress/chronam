@@ -9,9 +9,9 @@
     <opensearch:totalResults>{{paginator.count}}</opensearch:totalResults>
     <opensearch:startIndex>{{page.start_index}}</opensearch:startIndex>
     <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
-    <link rel="search" type="application/opensearchdescription+xml" href="{% url 'chronam_search_pages_opensearch' %}" />
-    {% if previous_url %}<link type="application/atom+xml" rel="previous" href="http://{{host}}{% url 'chronam_search_pages_results' %}{{ previous_url }}" />{% endif %}
-    {% if next_url %}<link rel="next" type="application/atom+xml" href="http://{{host}}{% url 'chronam_search_pages_results' %}{{ next_url }}" />{% endif %}
+    <link rel="search" type="application/opensearchdescription+xml" href="{% url 'openoni_search_pages_opensearch' %}" />
+    {% if previous_url %}<link type="application/atom+xml" rel="previous" href="http://{{host}}{% url 'openoni_search_pages_results' %}{{ previous_url }}" />{% endif %}
+    {% if next_url %}<link rel="next" type="application/atom+xml" href="http://{{host}}{% url 'openoni_search_pages_results' %}{{ next_url }}" />{% endif %}
 
     {% for p in page.object_list %}
     <entry>
@@ -19,7 +19,7 @@
         <link href="http://{{host}}{{ p.url }}" />
         <id>info:lc/ndnp{{ p.url }}</id>
         <author>
-            <uri>http://{{host}}{% url 'chronam_awardee' p.issue.batch.awardee.org_code %}</uri>
+            <uri>http://{{host}}{% url 'openoni_awardee' p.issue.batch.awardee.org_code %}</uri>
             <name>{{ p.issue.batch.awardee.name }}</name>
         </author>
         <updated>{{p.created|rfc3339}}</updated>

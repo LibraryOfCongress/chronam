@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from chronam.core.cts import CTS
+from openoni.core.cts import CTS
 
 class Command(BaseCommand):
     help = "Lookup CTS bag_instance ids for batches"

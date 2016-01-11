@@ -16,7 +16,7 @@
              {% ifequal page_number page.number %}
              <span class="off">{{page_number}}</span> 
              {% else %}
-             <a href="{% url 'chronam_search_titles_results' %}?{{q}}&amp;page={{page_number}}&amp;sort={{sort}}">{{page_number}}</a> 
+             <a href="{% url 'openoni_search_titles_results' %}?{{q}}&amp;page={{page_number}}&amp;sort={{sort}}">{{page_number}}</a> 
              {% endifequal %}
 
              {% endifequal %}

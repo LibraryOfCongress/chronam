@@ -3,14 +3,14 @@
 
 {% block extra_link_types %}
 <link rel="primaryTopic" href="{{ awardee.abstract_url }}" />
-<link rel="alternate" type="application/rdf+xml" href="{% url 'chronam_awardee_dot_rdf' awardee.org_code %}" />
+<link rel="alternate" type="application/rdf+xml" href="{% url 'openoni_awardee_dot_rdf' awardee.org_code %}" />
 {% endblock %}
 
 
 {% block subcontent %}
 
 <p>Below is some summary information about contributions to Chronicling America
-from the NDNP Awardee, {{ awardee }}. Summary information about <a href="{% url 'chronam_awardees' %}">all awardees</a> is also available.</p>
+from the NDNP Awardee, {{ awardee }}. Summary information about <a href="{% url 'openoni_awardees' %}">all awardees</a> is also available.</p>
 
 <h2>Batches</h2>
 
@@ -22,7 +22,7 @@ from the NDNP Awardee, {{ awardee }}. Summary information about <a href="{% url 
 {% for batch in batches %}
     <tr class="{% cycle 'lightGray' 'white' %}">
     <td>{{batch.created }}</td>
-    <td><a href="{% url 'chronam_batch' batch.name %}">{{ batch.name }}</a></td>
+    <td><a href="{% url 'openoni_batch' batch.name %}">{{ batch.name }}</a></td>
     <td style="text-align: right">{{ batch.page_count|intcomma }}</td>
     </tr>
 {% endfor %}
@@ -38,7 +38,7 @@ from the NDNP Awardee, {{ awardee }}. Summary information about <a href="{% url 
     <th>Created</th>
     {% for essay in awardee.essays.all %}
     <tr class="{% cycle 'lightGray' 'white' %}">
-        <td><a href="{% url 'chronam_essay' essay.id %}">{{ essay.title }}</td>
+        <td><a href="{% url 'openoni_essay' essay.id %}">{{ essay.title }}</td>
         <td>{{ essay.created|date }}</td>
     </tr>
     {% endfor %}

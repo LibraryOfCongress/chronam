@@ -7,10 +7,10 @@ from urlparse import urlparse
 
 from django.core.management.base import BaseCommand
 
-from chronam.core.management.commands import configure_logging
-from chronam.core.models import Page, FlickrUrl
+from openoni.core.management.commands import configure_logging
+from openoni.core.models import Page, FlickrUrl
 
-configure_logging("chronam_flickr.config", "chronam_flickr.log")
+configure_logging("openoni_flickr.config", "openoni_flickr.log")
 _log = logging.getLogger(__name__)
 
 class Command(BaseCommand):
@@ -18,18 +18,18 @@ class Command(BaseCommand):
     help = 'load links for content that has been pushed to flickr.'
 
     def handle(self, key, **options):
-        _log.debug("looking for chronam page content on flickr")
+        _log.debug("looking for openoni page content on flickr")
         create_count = 0
 
-        for flickr_url, chronam_url in flickr_chronam_links(key):
-            _log.info("found flickr/chronam link: %s, %s" % 
-                         (flickr_url, chronam_url))
+        for flickr_url, openoni_url in flickr_openoni_links(key):
+            _log.info("found flickr/openoni link: %s, %s" % 
+                         (flickr_url, openoni_url))
 
             # use the page url to locate the Page model
-            path = urlparse(chronam_url).path
+            path = urlparse(openoni_url).path
             page = Page.lookup(path)
             if not page:
-                _log.error("page for %s not found" % chronam_url)
+                _log.error("page for %s not found" % openoni_url)
                 continue
 
             # create the FlickrUrl attached to the apprpriate page
@@ -69,8 +69,8 @@ def flickr_url(photo):
     return None
 
 
-def chronam_url(photo):
-    """Tries to find a chronam link in the photo metadata
+def openoni_url(photo):
+    """Tries to find a openoni link in the photo metadata
     """
     # libraryofcongress photos are uploaded with a machinetag
     for tag in photo['photo']['tags']['tag']:
@@ -86,15 +86,15 @@ def chronam_url(photo):
     return None
 
 
-def flickr_chronam_links(key):
+def flickr_openoni_links(key):
     """
     A generator that returns a tuple of flickr urls, and their corresponding
     chroniclingamerica.loc.gov page url.
     """
-    # these are two flickr sets that have known chronam content
+    # these are two flickr sets that have known openoni content
     for set_id in [72157600479553448, 72157619452486566]:
         for photo in photos_in_set(key, set_id):
-            chronam = chronam_url(photo)
-            # not all photos in set will have a link to chronam
-            if chronam:
-                yield flickr_url(photo), chronam
+            openoni = openoni_url(photo)
+            # not all photos in set will have a link to openoni
+            if openoni:
+                yield flickr_url(photo), openoni

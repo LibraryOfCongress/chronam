@@ -8,8 +8,8 @@ import feedparser
 from django.core import management
 from rdflib import Graph, Namespace, URIRef
 
-from chronam.core.index import index_title
-from chronam.core.models import Essay, Title, Awardee
+from openoni.core.index import index_title
+from openoni.core.models import Essay, Title, Awardee
 
 
 DC = Namespace('http://purl.org/dc/terms/')

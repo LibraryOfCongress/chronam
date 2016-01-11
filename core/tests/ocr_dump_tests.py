@@ -7,7 +7,7 @@ import datetime
 from django.conf import settings
 from django.test import TestCase
 
-from chronam.core.models import Batch, OcrDump
+from openoni.core.models import Batch, OcrDump
 
 settings.OCR_DUMP_STORAGE = "/tmp/test_ocr_dumps"
 dumps_dir = settings.OCR_DUMP_STORAGE
@@ -23,7 +23,7 @@ class OcrDumpTests(TestCase):
         # create symlink if necessary
         link = os.path.join(settings.BATCH_STORAGE, "batch_dlc_jamaica_ver01")
         if not os.path.islink(link):
-            os.symlink("/vol/ndnp/chronam/batches/dlc/batch_dlc_jamaica_ver01", link)
+            os.symlink("/vol/ndnp/openoni/batches/dlc/batch_dlc_jamaica_ver01", link)
 
     def tearDown(self):
         pass #shutil.rmtree(dumps_dir)

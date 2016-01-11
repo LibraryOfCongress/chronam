@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from chronam.core import models as m
+from openoni.core import models as m
     
 class Command(BaseCommand):
     help = "Updates the Title.has_issues property appropriately"

@@ -14,11 +14,11 @@
             height: auto;
         }
     </style>
-    <link rel="canonical" href="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}" />
-    <link rel="alternate" type="application/xml" href="{% url 'chronam_page_ocr_xml' title.lccn issue.date_issued issue.edition page.sequence %}" />
+    <link rel="canonical" href="{% url 'openoni_page' title.lccn issue.date_issued issue.edition page.sequence %}" />
+    <link rel="alternate" type="application/xml" href="{% url 'openoni_page_ocr_xml' title.lccn issue.date_issued issue.edition page.sequence %}" />
 </head>
 
-<body id="chronam_page_print">
+<body id="openoni_page_print">
     <div id="head_nav">
     <h1>OCR Interpretation</h1>
     <br>
@@ -27,12 +27,12 @@
     <h3>Persistent link: <a href="{{page.url}}">http://{{host}}{{page.url}}</a></h3>
     </div> 
 
-    <h2><a href="{% url 'chronam_ocr' %}">What is OCR?</a></h2>
+    <h2><a href="{% url 'openoni_ocr' %}">What is OCR?</a></h2>
 
     <div class="thumbnail">
         <br />
     <a href="{{url}}">
-        <img src="{% url 'chronam_page_thumbnail' title.lccn issue.date_issued issue.edition page.sequence %}" alt="Thumbnail for {{page.number}}">
+        <img src="{% url 'openoni_page_thumbnail' title.lccn issue.date_issued issue.edition page.sequence %}" alt="Thumbnail for {{page.number}}">
     </a>
     <br />
     </div>
@@ -42,8 +42,8 @@
     </div>
 
     <p>
-    <a href="{% url 'chronam_page_ocr_xml' title.lccn issue.date_issued issue.edition page.sequence %}">xml</a> | 
-    <a href="{% url 'chronam_page_ocr_txt' title.lccn issue.date_issued issue.edition page.sequence %}">txt</a>
+    <a href="{% url 'openoni_page_ocr_xml' title.lccn issue.date_issued issue.edition page.sequence %}">xml</a> | 
+    <a href="{% url 'openoni_page_ocr_txt' title.lccn issue.date_issued issue.edition page.sequence %}">txt</a>
     </p>
 
 </body>

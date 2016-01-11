@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.conf import settings
 from django.http import QueryDict as Q
 
-from chronam.core.index import page_search, title_search, find_words, \
+from openoni.core.index import page_search, title_search, find_words, \
                               _solrize_date
 
 

@@ -34,7 +34,7 @@ jQuery(function($){
    <ul>
    {% if not category_sort %}
      {% for topic in topics %}
-        <li> <a href="{% url 'chronam_topic' topic_id=topic.pk %}">{{topic.name}}</a> ({{topic.topic_start_year}}{% if topic.topic_end_year %}-{{topic.topic_end_year}}{% endif %}) </li>
+        <li> <a href="{% url 'openoni_topic' topic_id=topic.pk %}">{{topic.name}}</a> ({{topic.topic_start_year}}{% if topic.topic_end_year %}-{{topic.topic_end_year}}{% endif %}) </li>
      {% endfor %}
      </ul>
    {% else %}
@@ -43,7 +43,7 @@ jQuery(function($){
         <li> <h3> {{category.name}} </h3>
         <ul>
         {% for topic in category.topic_set.all %}
-          <li> <a href="{% url 'chronam_topic' topic_id=topic.pk %}">{{topic.name}}</a> ({{topic.topic_start_year}}{% if topic.topic_end_year %}-{{topic.topic_end_year}}{% endif %}) </li>
+          <li> <a href="{% url 'openoni_topic' topic_id=topic.pk %}">{{topic.name}}</a> ({{topic.topic_start_year}}{% if topic.topic_end_year %}-{{topic.topic_end_year}}{% endif %}) </li>
         {% endfor %}
         </li> 
         </ul>

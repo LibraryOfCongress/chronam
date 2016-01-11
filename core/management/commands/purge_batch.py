@@ -9,8 +9,8 @@ from django.core.management.base import BaseCommand, CommandError
 
 from solr import SolrConnection
 
-from chronam.core.batch_loader import BatchLoader, BatchLoaderException
-from chronam.core.management.commands import configure_logging
+from openoni.core.batch_loader import BatchLoader, BatchLoaderException
+from openoni.core.management.commands import configure_logging
     
 configure_logging('purge_batches_logging.config', 
                   'purge_batch_%s.log' % os.getpid())

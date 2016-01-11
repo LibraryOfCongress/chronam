@@ -6,9 +6,9 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from chronam.core import title_pull
+from openoni.core import title_pull
 
-from chronam.core.management.commands import configure_logging
+from openoni.core.management.commands import configure_logging
     
 configure_logging('pull_titles_logging.config', 'pull_titles.log')
 _logger = logging.getLogger(__name__)

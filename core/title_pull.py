@@ -60,7 +60,7 @@ class TitlePuller(object):
     based on params passed.
 
     Best place to start is with the run method. Run defaults to
-    a generic pull for Chronam, unless a query is passed.
+    a generic pull for openoni, unless a query is passed.
     """
 
 

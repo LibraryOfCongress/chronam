@@ -2,27 +2,27 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
     <title>NDNP Batches</title>
-    <link rel="self" type="application/atom+xml" href="{% url 'chronam_batches_atom' %}" />
-    <link rel="alternate" type="text/html" href="{% url 'chronam_batches' %}" />
+    <link rel="self" type="application/atom+xml" href="{% url 'openoni_batches_atom' %}" />
+    <link rel="alternate" type="text/html" href="{% url 'openoni_batches' %}" />
     <id>info:lc/ndnp/batches</id>
     <author>
         <name>Library of Congress</name>
         <uri>http://loc.gov</uri>
     </author>
     <updated>{{ now }}</updated>
-    {% if page.has_previous %}<link rel="previous" type="application/atom+xml" href="http://{{ request.get_host }}{% url 'chronam_batches_atom_page' page.previous_page_number %}" />{% endif %}
-    {% if page.has_next %}<link rel="next" type="application/atom+xml" href="http://{{ request.get_host }}{% url 'chronam_batches_atom_page' page.next_page_number %}" />{% endif %}
+    {% if page.has_previous %}<link rel="previous" type="application/atom+xml" href="http://{{ request.get_host }}{% url 'openoni_batches_atom_page' page.previous_page_number %}" />{% endif %}
+    {% if page.has_next %}<link rel="next" type="application/atom+xml" href="http://{{ request.get_host }}{% url 'openoni_batches_atom_page' page.next_page_number %}" />{% endif %}
 
     {% for batch in page.object_list %}
     <entry>
         <title>{{batch.name}}</title>
-        <link rel="alternate" type="text/html" href="{% url 'chronam_batch' batch.name %}" />
-        <link rel="alternate" type="application/rdf+xml" href="{% url 'chronam_batch_dot_rdf' batch.name %}" />
-        <link rel="alternate" type="application/json" href="{% url 'chronam_batch_dot_json' batch.name %}" />
+        <link rel="alternate" type="text/html" href="{% url 'openoni_batch' batch.name %}" />
+        <link rel="alternate" type="application/rdf+xml" href="{% url 'openoni_batch_dot_rdf' batch.name %}" />
+        <link rel="alternate" type="application/json" href="{% url 'openoni_batch_dot_json' batch.name %}" />
         <id>info:lc/ndnp/batch/{{batch.name}}</id>
         <author>
             <name>{{batch.awardee.name}}</name>
-            <uri>http://{{ request.get_host }}{% url 'chronam_awardee' batch.awardee.org_code %}</uri>
+            <uri>http://{{ request.get_host }}{% url 'openoni_awardee' batch.awardee.org_code %}</uri>
         </author>
         <updated>{% if batch.released %}{{ batch.released|rfc3339 }}{% else %}{{ batch.created|rfc3339 }}{% endif %}</updated>
     </entry>

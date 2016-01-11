@@ -5,8 +5,8 @@ import feedparser
 from django.test import TestCase
 from django.conf import settings
 
-from chronam.core.essay_loader import load_essay, purge_essay
-from chronam.core.models import Essay, Title
+from openoni.core.essay_loader import load_essay, purge_essay
+from openoni.core.models import Essay, Title
 
 class EssayLoaderTests(TestCase):
     fixtures = ['countries.json', 'essay_titles.json']

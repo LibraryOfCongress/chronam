@@ -28,14 +28,14 @@ MEDIA_ROOT = ''
 MEDIA_URL = ''
 #ADMIN_MEDIA_PREFIX = '/media/'
 
-ROOT_URLCONF = 'chronam.urls'
+ROOT_URLCONF = 'openoni.urls'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'chronam',
-        'USER': 'chronam',
-        'PASSWORD': 'chronam',
+        'NAME': 'openoni',
+        'USER': 'openoni',
+        'PASSWORD': 'openoni',
         }
     }
 
@@ -55,9 +55,9 @@ MIDDLEWARE_CLASSES = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'chronam.core.context_processors.get_search_form',
-    'chronam.core.context_processors.extra_request_info',
-    'chronam.core.context_processors.newspaper_info',
+    'openoni.core.context_processors.get_search_form',
+    'openoni.core.context_processors.extra_request_info',
+    'openoni.core.context_processors.newspaper_info',
 )
 
 TEMPLATE_DIRS = (
@@ -71,7 +71,7 @@ INSTALLED_APPS = (
     'djcelery',
     'djkombu',
 
-    'chronam.core',
+    'openoni.core',
 )
 
 BROKER_TRANSPORT = "django"
@@ -82,7 +82,7 @@ DEFAULT_TTL_SECONDS = 86400  # 1 day
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24 * 7 * 2  # 2 weeks
 API_TTL_SECONDS = 60 * 60  # 1 hour
 
-MEMORIOUS_REPOSITORIES = {"default": '/opt/chronam/'}
+MEMORIOUS_REPOSITORIES = {"default": '/opt/openoni/'}
 
 MEMORIOUS_DEBUG = True
 USE_TIFF = False
@@ -92,8 +92,8 @@ ESSAYS_FEED = "http://ndnp-essays.rdc.lctl.gov/feed/"
 CACHE_BACKEND = 'file:///var/tmp/django_cache?timeout=100'
 
 IS_PRODUCTION = False
-CTS_USERNAME = 'chronam'
-CTS_PASSWORD = 'chronam'
+CTS_USERNAME = 'openoni'
+CTS_PASSWORD = 'openoni'
 CTS_PROJECT_ID = 'ndnp'
 CTS_QUEUE = 'ndnpingestqueue'
 CTS_SERVICE_TYPE = 'ingest.NdnpIngest.ingest'
@@ -111,9 +111,9 @@ FEED_TTL_SECONDS = 60 * 60 * 24 * 7
 SOLR = "http://localhost:8080/solr"
 SOLR_LANGUAGES = ("eng", "fre", "ger", "ita", "spa")
 
-DOCUMENT_ROOT = "/opt/chronam/static"
+DOCUMENT_ROOT = "/opt/openoni/static"
 
-STORAGE = '/var/lib/jenkins/jobs/chronam/chronam/data/'
+STORAGE = '/var/lib/jenkins/jobs/openoni/openoni/data/'
 STORAGE_URL = '/data/'
 BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")

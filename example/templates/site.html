@@ -80,14 +80,14 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li><a href="/">Home</a></li>
-              <li><a href="{% url chronam_newspapers %}">Newspapers</a></li>
-              <li><a href="{% url chronam_about %}">About</a></li>
-              <!-- <li><a href="{% url chronam_about_api %}">API</a></li> -->
+              <li><a href="{% url openoni_newspapers %}">Newspapers</a></li>
+              <li><a href="{% url openoni_about %}">About</a></li>
+              <!-- <li><a href="{% url openoni_about_api %}">API</a></li> -->
               <li><a href="http://loc.gov/">Library of Congress</a></li>
-              <li><a href="{% url chronam_reports %}">Reports</a></li>
+              <li><a href="{% url openoni_reports %}">Reports</a></li>
               <li><a href="/help/">Help</a></li>
             </ul>
-	    <form class="navbar-form pull-right" action="{% url chronam_search_pages_results %}" method="get">
+	    <form class="navbar-form pull-right" action="{% url openoni_search_pages_results %}" method="get">
               <input type="hidden" name="rows" id="rows" alt="rows" value="20" />
               <input type="hidden" name="searchType" alt="searchType" value="basic" />
               <input class="span2" type="text" name="proxtext" placeholder="search words">

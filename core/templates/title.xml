@@ -2,8 +2,8 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
     <title>Chronicling America Title Feed: {{ title }}</title>
-    <link rel="self" type="application/atom+xml" href="http://{{ host }}{% url 'chronam_title_atom' title.lccn %}" />
-    <link rel="alternate" type="text/html" href="http://{{ host }}{% url 'chronam_title' title.lccn %}" />
+    <link rel="self" type="application/atom+xml" href="http://{{ host }}{% url 'openoni_title_atom' title.lccn %}" />
+    <link rel="alternate" type="text/html" href="http://{{ host }}{% url 'openoni_title' title.lccn %}" />
     <id>info:lc/ndnp/titles/{{ title.lccn }}</id>
     <author>
         <name>Library of Congress</name>
@@ -11,10 +11,10 @@
     </author>
     <updated>{{ feed_updated|rfc3339 }}</updated>
     {% if page.has_previous %}
-    <link rel="previous" type="application/atom+xml" href="http://{{ host }}{% url 'chronam_title_atom_page' title.lccn page.previous_page_number %}" />
+    <link rel="previous" type="application/atom+xml" href="http://{{ host }}{% url 'openoni_title_atom_page' title.lccn page.previous_page_number %}" />
     {% endif %}
     {% if page.has_next %}
-    <link rel="next" type="application/atom+xml" href="http://{{ host }}{% url 'chronam_title_atom_page' title.lccn page.next_page_number %}" />
+    <link rel="next" type="application/atom+xml" href="http://{{ host }}{% url 'openoni_title_atom_page' title.lccn page.next_page_number %}" />
     {% endif %}
 
     {% for issue in issues %}

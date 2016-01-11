@@ -38,7 +38,7 @@ def rdf_view(f):
     def f1(request, **kwargs):
         # construct a http redirect response to html view
         html_view = f.func_name.replace('_rdf', '')
-        html_url = urlresolvers.reverse('chronam_%s' % html_view, kwargs=kwargs)
+        html_url = urlresolvers.reverse('openoni_%s' % html_view, kwargs=kwargs)
         html_redirect = HttpResponseSeeOther(html_url)
 
         # determine the clients preferred representation
@@ -68,7 +68,7 @@ def opensearch_clean(f):
     Some opensearch clients send along optional parameters from the opensearch
     description when they're not needed. For example:
     
-        state={chronam:state?}
+        state={openoni:state?}
 
     These can cause search results not to come back, and even can cause Solr's 
     query parsing to throw an exception, so it's best to remove them when
