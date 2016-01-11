@@ -70,7 +70,7 @@
        with their external dependencies.
     -->
 
-  <!-- chronam: don't need these
+  <!-- openoni: don't need these
   <lib dir="../../../contrib/extraction/lib" regex=".*\.jar" />
   <lib dir="../../../dist/" regex="solr-cell-\d.*\.jar" />
 
@@ -343,7 +343,7 @@
          is recommended (see below).
          "dir" - the target directory for transaction logs, defaults to the
                 solr data directory.  --> 
-    <!-- chronam: removing this 
+    <!-- openoni: removing this 
     <updateLog>
       <str name="dir">${solr.ulog.dir:}</str>
     </updateLog>

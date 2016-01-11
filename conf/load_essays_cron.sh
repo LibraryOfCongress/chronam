@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /opt/chronam/
+cd /opt/openoni/
 source ENV/bin/activate
 
-django-admin.py load_essays --settings chronam.settings 2>/dev/null
+django-admin.py load_essays --settings openoni.settings 2>/dev/null

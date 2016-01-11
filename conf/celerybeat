@@ -8,15 +8,15 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-name="chronam-celerybeat"
-home="/opt/chronam"
+name="openoni-celerybeat"
+home="/opt/openoni"
 user="ndnp"
 
 virtualenv_dir="$home/ENV"
 source $virtualenv_dir/bin/activate
 
 cd "$home"
-export PYTHONPATH="$PYTHONPATH:/opt/chronam/conf"
+export PYTHONPATH="$PYTHONPATH:/opt/openoni/conf"
 
 lockfile="/logs/celery/subsys/celerybeat.lock"
 logfile="/logs/celery/celerybeat.log"

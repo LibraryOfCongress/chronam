@@ -18,7 +18,7 @@ from django.db import models
 from django.db.models import permalink, Q
 from django.conf import settings
 
-from chronam.core.utils import strftime
+from openoni.core.utils import strftime
 
 from django.core import urlresolvers
 
@@ -39,12 +39,12 @@ class Awardee(models.Model):
     @property
     @permalink
     def url(self):
-        return ('chronam_awardee', (), {'institution_code': self.org_code})
+        return ('openoni_awardee', (), {'institution_code': self.org_code})
 
     @property
     @permalink
     def json_url(self):
-        return ('chronam_awardee_json', (), {'institution_code': self.org_code})
+        return ('openoni_awardee_json', (), {'institution_code': self.org_code})
 
     @property
     def abstract_url(self):
@@ -113,12 +113,12 @@ class Batch(models.Model):
     @property
     @permalink
     def url(self):
-        return ('chronam_batch', (), {'batch_name': self.name})
+        return ('openoni_batch', (), {'batch_name': self.name})
 
     @property
     @permalink
     def json_url(self):
-        return ('chronam_batch_dot_json', (), {'batch_name': self.name})
+        return ('openoni_batch_dot_json', (), {'batch_name': self.name})
 
     @property
     def abstract_url(self):
@@ -220,12 +220,12 @@ class Title(models.Model):
     @property
     @permalink
     def url(self):
-        return ('chronam_title', (), {'lccn': self.lccn})
+        return ('openoni_title', (), {'lccn': self.lccn})
 
     @property
     @permalink
     def json_url(self):
-        return ('chronam_title_dot_json', (), {'lccn': self.lccn})
+        return ('openoni_title_dot_json', (), {'lccn': self.lccn})
 
     @property
     def abstract_url(self):
@@ -473,7 +473,7 @@ class MARC(models.Model):
     @property
     @permalink
     def url(self):
-        return ('chronam_title_marcxml', (), {'lccn': self.title.lccn})
+        return ('openoni_title_marcxml', (), {'lccn': self.title.lccn})
 
 
 class Issue(models.Model):
@@ -493,7 +493,7 @@ class Issue(models.Model):
     @permalink
     def url(self):
         date = self.date_issued
-        return ('chronam_issue_pages', (),
+        return ('openoni_issue_pages', (),
                 {'lccn': self.title.lccn,
                  'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
                  'edition': self.edition})
@@ -502,7 +502,7 @@ class Issue(models.Model):
     @permalink
     def json_url(self):
         date = self.date_issued
-        return ('chronam_issue_pages_dot_json', (),
+        return ('openoni_issue_pages_dot_json', (),
                 {'lccn': self.title.lccn,
                  'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
                  'edition': self.edition})
@@ -672,12 +672,12 @@ class Page(models.Model):
     @property
     @permalink
     def url(self):
-        return ('chronam_page', (), self._url_parts())
+        return ('openoni_page', (), self._url_parts())
 
     @property
     @permalink
     def json_url(self):
-        return ('chronam_page_dot_json', (), self._url_parts())
+        return ('openoni_page_dot_json', (), self._url_parts())
 
     @property
     def abstract_url(self):
@@ -686,32 +686,32 @@ class Page(models.Model):
     @property
     @permalink
     def thumb_url(self):
-        return ('chronam_page_thumbnail', (), self._url_parts())
+        return ('openoni_page_thumbnail', (), self._url_parts())
 
     @property
     @permalink
     def medium_url(self):
-        return ('chronam_page_medium', (), self._url_parts())
+        return ('openoni_page_medium', (), self._url_parts())
 
     @property
     @permalink
     def jp2_url(self):
-        return ('chronam_page_jp2', (), self._url_parts())
+        return ('openoni_page_jp2', (), self._url_parts())
 
     @property
     @permalink
     def ocr_url(self):
-        return ('chronam_page_ocr_xml', (), self._url_parts())
+        return ('openoni_page_ocr_xml', (), self._url_parts())
 
     @property
     @permalink
     def txt_url(self):
-        return ('chronam_page_ocr_txt', (), self._url_parts())
+        return ('openoni_page_ocr_txt', (), self._url_parts())
 
     @property
     @permalink
     def pdf_url(self):
-        return ('chronam_page_pdf', (), self._url_parts())
+        return ('openoni_page_pdf', (), self._url_parts())
 
     @property
     def solr_doc(self):
@@ -937,7 +937,7 @@ class Essay(models.Model):
     @property
     @permalink
     def url(self):
-        return ('chronam_essay', (), {'essay_id': self.id})
+        return ('openoni_essay', (), {'essay_id': self.id})
 
     class Meta:
         ordering = ['title']
@@ -1254,7 +1254,7 @@ class OcrDump(models.Model):
 
 
 def coordinates_path(url_parts):
-    url = urlresolvers.reverse('chronam_page', kwargs=url_parts)
+    url = urlresolvers.reverse('openoni_page', kwargs=url_parts)
     path = url2pathname(url)
     if path.startswith("/"):
         path = path[1:]

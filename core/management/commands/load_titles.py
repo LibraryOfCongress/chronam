@@ -6,10 +6,10 @@ from optparse import make_option
 
 from django.core.management.base import BaseCommand
 
-from chronam.core import title_loader
-from chronam.core.index import index_titles
-from chronam.core.models import Title
-from chronam.core.management.commands import configure_logging
+from openoni.core import title_loader
+from openoni.core.index import index_titles
+from openoni.core.models import Title
+from openoni.core.management.commands import configure_logging
 
 configure_logging('load_titles_logging.config', 'load_titles.log')
 _logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ class Command(BaseCommand):
         default=False,
         help="\
                 Skip the index process. Use this if you call this from \
-                another process such as 'chronam_sync'. If you call this \
+                another process such as 'openoni_sync'. If you call this \
                 directly, you don't want to use this flag. \
             "),
     )

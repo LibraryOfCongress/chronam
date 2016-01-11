@@ -3,9 +3,9 @@
 
 {% block extra_link_types %}
 {% if county %}
-<link rel="alternate" type="application/json" href="{% url chronam_cities_in_county_json state|pack_url county|pack_url 'json' %}" />
+<link rel="alternate" type="application/json" href="{% url openoni_cities_in_county_json state|pack_url county|pack_url 'json' %}" />
 {% else %}
-<link rel="alternate" type="application/json" href="{% url chronam_cities_in_state_json state|pack_url 'json' %}" />
+<link rel="alternate" type="application/json" href="{% url openoni_cities_in_state_json state|pack_url 'json' %}" />
 {% endif %}
 {% endblock %}
 

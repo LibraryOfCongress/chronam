@@ -17,7 +17,7 @@
 
     function setup_states() {
         var select = $("select#id_nd_state");
-        $.getJSON('{% url 'chronam_home' %}' + 'states.json', function(states){
+        $.getJSON('{% url 'openoni_home' %}' + 'states.json', function(states){
             for (state in states) {
                 select.append('<option>' + states[state] + '</option>')
             }
@@ -34,7 +34,7 @@
     
         // load up the counties for the selected state
         var state = $('select#id_nd_state').find('option:selected').text();
-        $.getJSON('{% url 'chronam_home' %}' + 'counties/' + normalize(state) + '.json', function(counties){
+        $.getJSON('{% url 'openoni_home' %}' + 'counties/' + normalize(state) + '.json', function(counties){
             for (county in counties) {
                 county_select.append('<option>' + counties[county] + '</option>');
             }
@@ -47,7 +47,7 @@
         var state = $('select#id_nd_state').find('option:selected').text();
         var select = $('select#id_nd_city');
         select.empty().append('<option value="">Select Cities...</option>');
-        $.getJSON('{% url 'chronam_home' %}' + 'cities/' + normalize(state) + '.json', function(cities){
+        $.getJSON('{% url 'openoni_home' %}' + 'cities/' + normalize(state) + '.json', function(cities){
             for (city in cities) {
                 select.append('<option>' + cities[city] + '</option>');
             }
@@ -61,10 +61,10 @@
         select.empty().append('<option value="">Select Cities...</option>');
         // load 'All' counties is selected then load all cities
         if (county == 'Select Counties...') {
-            var url = '{% url 'chronam_home' %}' + 'cities/' + normalize(state) + '.json';
+            var url = '{% url 'openoni_home' %}' + 'cities/' + normalize(state) + '.json';
         } 
         else {
-            var url = '{% url 'chronam_home' %}' + 'cities/' + normalize(state) + '/' + normalize(county) + '.json';
+            var url = '{% url 'openoni_home' %}' + 'cities/' + normalize(state) + '/' + normalize(county) + '.json';
         }
         $.getJSON(url, function(cities) {
             var select = $('select#id_nd_city');
@@ -88,13 +88,13 @@
     <div class="pagination pagination-mini">
     <ul class="alpha_tags">
     {% for val in browse_val %}
-    	<li><a href="{% url 'chronam_titles_start' val %}">{{val}}</a></li>
+    	<li><a href="{% url 'openoni_titles_start' val %}">{{val}}</a></li>
     {% endfor %}
     </ul>
     </div>
 </div>
 <div id="wrap_searchdir">
-    <form action="{% url 'chronam_search_titles_results' %}" method="get" class="search_directory">
+    <form action="{% url 'openoni_search_titles_results' %}" method="get" class="search_directory">
         <div class="wrapper-search">
             <p><label for="state">Select where the newspaper was published:</label><br />
             <select id="id_nd_state" name="state">

@@ -2,8 +2,8 @@ from django import template
 
 from rfc3339 import rfc3339
 
-from chronam.core.utils import url
-from chronam.core.utils.utils import label
+from openoni.core.utils import url
+from openoni.core.utils.utils import label
 
 
 

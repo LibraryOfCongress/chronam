@@ -5,8 +5,8 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
 
-from chronam.core import batch_loader
-from chronam.core.management.commands import configure_logging
+from openoni.core import batch_loader
+from openoni.core.management.commands import configure_logging
     
 configure_logging('load_batches_logging.config', 
                   'load_batches_%s.log' % os.getpid())

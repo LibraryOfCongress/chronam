@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.core.cache import cache
 
-from chronam.core import models, index
-from chronam.core.forms import _fulltext_range
+from openoni.core import models, index
+from openoni.core.forms import _fulltext_range
 
 
 def extra_request_info(request):
@@ -46,7 +46,7 @@ def newspaper_info(request):
         ethnicities_with_issues = []
         for e in models.Ethnicity.objects.all():
             # fliter out a few ethnicities, not sure why really
-            # https://rdc.lctl.gov/trac/chronam/ticket/724#comment:22
+            # https://rdc.lctl.gov/trac/openoni/ticket/724#comment:22
             if e.has_issues and e.name not in ["African", "Canadian", "Welsh"]:
                 ethnicities_with_issues.append(e.name)
 

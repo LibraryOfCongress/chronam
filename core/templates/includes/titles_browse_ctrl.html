@@ -4,9 +4,9 @@
       <span class="pagination">
         {% if page.has_previous %}
           {% if start %}
-          <a class="prev" rel="prev" href="{% url 'chronam_titles_start_page' start page.previous_page_number %}">
+          <a class="prev" rel="prev" href="{% url 'openoni_titles_start_page' start page.previous_page_number %}">
           {% else %}
-          <a class="prev" rel="prev" href="{% url 'chronam_titles_page' page.previous_page_number %}">
+          <a class="prev" rel="prev" href="{% url 'openoni_titles_page' page.previous_page_number %}">
           {% endif %}
           <img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" /></a>
         {% endif %}
@@ -20,9 +20,9 @@
         <span class="off">{{page_number}}</span> 
         {% else %}
             {% if start %}
-            <a href="{% url 'chronam_titles_start_page' start page_number %}">{{page_number}}</a>
+            <a href="{% url 'openoni_titles_start_page' start page_number %}">{{page_number}}</a>
             {% else %}
-            <a href="{% url 'chronam_titles_page' page_number%}">{{page_number}}</a>
+            <a href="{% url 'openoni_titles_page' page_number%}">{{page_number}}</a>
             {% endif %}
         {% endifequal %}
         {% endifequal %}
@@ -30,9 +30,9 @@
       
         {% if page.has_next %}
           {% if start %}
-          <a class="next" rel="next" href="{% url 'chronam_titles_start_page' start page.next_page_number %}">
+          <a class="next" rel="next" href="{% url 'openoni_titles_start_page' start page.next_page_number %}">
           {% else %}
-          <a class="next" rel="next" href="{% url 'chronam_titles_page' page.next_page_number %}">
+          <a class="next" rel="next" href="{% url 'openoni_titles_page' page.next_page_number %}">
           {% endif %}
           <img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a>
       {% endif %}

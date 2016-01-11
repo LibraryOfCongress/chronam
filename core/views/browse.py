@@ -20,13 +20,13 @@ from django.template.defaultfilters import filesizeformat
 from django.utils import html
 from django.views.decorators.vary import vary_on_headers
 
-from chronam.core.utils.url import unpack_url_path
-from chronam.core import models, index
-from chronam.core.rdf import title_to_graph, issue_to_graph, page_to_graph
+from openoni.core.utils.url import unpack_url_path
+from openoni.core import models, index
+from openoni.core.rdf import title_to_graph, issue_to_graph, page_to_graph
 
-from chronam.core.utils.utils import HTMLCalendar, _get_tip, _stream_file, \
+from openoni.core.utils.utils import HTMLCalendar, _get_tip, _stream_file, \
     _page_range_short, _rdf_base, get_page, label, create_crumbs
-from chronam.core.decorator import cache_page, rdf_view
+from openoni.core.decorator import cache_page, rdf_view
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -182,7 +182,7 @@ def page(request, lccn, date, edition, sequence, words=None):
     if fragments:
         path_parts = dict(lccn=lccn, date=date, edition=edition,
                           sequence=sequence)
-        url = urlresolvers.reverse('chronam_page',
+        url = urlresolvers.reverse('openoni_page',
                                    kwargs=path_parts)
 
         return HttpResponseRedirect(url + "#" + "&".join(fragments))
@@ -207,7 +207,7 @@ def page(request, lccn, date, edition, sequence, words=None):
             if len(words) > 0:
                 path_parts = dict(lccn=lccn, date=date, edition=edition,
                                   sequence=sequence, words=words)
-                url = urlresolvers.reverse('chronam_page_words',
+                url = urlresolvers.reverse('openoni_page_words',
                                            kwargs=path_parts)
                 return HttpResponseRedirect(url)
         except Exception, e:
@@ -534,7 +534,7 @@ def page_print(request, lccn, date, edition, sequence,
                       sequence=sequence,
                       width=width, height=height,
                       x1=x1, y1=y1, x2=x2, y2=y2)
-    url = urlresolvers.reverse('chronam_page_print',
+    url = urlresolvers.reverse('openoni_page_print',
                                kwargs=path_parts)
 
     return render_to_response('page_print.html', dictionary=locals(),
@@ -589,7 +589,7 @@ def recommended_topics(request):
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @vary_on_headers('Referer')
-def chronam_topic(request, topic_id):
+def openoni_topic(request, topic_id):
     topic = get_object_or_404(models.Topic, pk=topic_id)
     page_title = topic.name
     crumbs = list(settings.BASE_CRUMBS)
@@ -597,7 +597,7 @@ def chronam_topic(request, topic_id):
         crumbs.extend([{'label': 'Recommended Topics',        
                         'href': urlresolvers.reverse('recommended_topics')},
                        {'label': topic.name,
-                        'href': urlresolvers.reverse('chronam_topic', 
+                        'href': urlresolvers.reverse('openoni_topic', 
                                               kwargs={'topic_id': topic.pk})}])
     else:
         referer = re.sub('^https?:\/\/', '', request.META.get('HTTP_REFERER')).split('/')
@@ -608,13 +608,13 @@ def chronam_topic(request, topic_id):
                 title, issue, page = _get_tip(lccn, date, edition, sequence)
                 crumbs = create_crumbs(title, issue, date, edition, page)
                 crumbs.extend([{'label': topic.name,
-                                'href': urlresolvers.reverse('chronam_topic',
+                                'href': urlresolvers.reverse('openoni_topic',
                                               kwargs={'topic_id': topic.pk})}])
         except:
             pass
     important_dates = filter(lambda s: not s.isspace(), topic.important_dates.split('\n '))
     search_suggestions = topic.suggested_search_terms.split('\t')
-    chronam_pages = [{'title': t.title, 'description': t.description.lstrip(t.title),
+    openoni_pages = [{'title': t.title, 'description': t.description.lstrip(t.title),
                       'url': t.url} for t in topic.topicpages_set.all()]
     return render_to_response('topic.html', dictionary=locals(),
                               context_instance=RequestContext(request))

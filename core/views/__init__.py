@@ -5,7 +5,7 @@ from browse import issues, title_holdings, title_marc, \
     issues_first_pages, title_rdf, title_atom, title_marcxml, issue_pages, \
     page, title, titles, titles_in_city, titles_in_county, titles_in_state, \
     title_essays, page_ocr, page_pdf, page_jp2, page_ocr_xml, page_ocr_txt, \
-    issue_pages_rdf, page_rdf, page_print, recommended_topics, chronam_topic
+    issue_pages_rdf, page_rdf, page_print, recommended_topics, openoni_topic
 
 from directory import newspapers, newspapers_atom, search_titles_results, \
     newspapers_rdf

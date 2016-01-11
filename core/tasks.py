@@ -8,9 +8,9 @@ from django.conf import settings
 from django.core import management
 from django.core.cache import cache
 
-from chronam.core import cts
-from chronam.core.models import Batch, OcrDump
-from chronam.core.batch_loader import BatchLoader
+from openoni.core import cts
+from openoni.core.models import Batch, OcrDump
+from openoni.core.batch_loader import BatchLoader
 
 logger = logging.getLogger(__name__)
 

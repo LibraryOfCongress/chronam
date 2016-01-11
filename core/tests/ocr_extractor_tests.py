@@ -2,7 +2,7 @@ from os.path import dirname, join
 
 from django.test import TestCase
 
-from chronam.core.ocr_extractor import ocr_extractor
+from openoni.core.ocr_extractor import ocr_extractor
 
 
 class OcrExtractorTests(TestCase):

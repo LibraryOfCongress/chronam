@@ -16,9 +16,9 @@ are available in Chronicling America.
     {% for essay in essays %}
     <tr class="{% cycle 'lightGray' 'white' %}">
         <td>
-            <a href="{% url 'chronam_essay' essay.id %}">{{ essay.title }}</a>
+            <a href="{% url 'openoni_essay' essay.id %}">{{ essay.title }}</a>
         </td>
-        <td><a href="{% url 'chronam_awardee' essay.creator.org_code %}">{{ essay.creator.name }}</a></td> 
+        <td><a href="{% url 'openoni_awardee' essay.creator.org_code %}">{{ essay.creator.name }}</a></td> 
         <td>{{ essay.created|date }}</td>
     </tr>
     {% endfor %}

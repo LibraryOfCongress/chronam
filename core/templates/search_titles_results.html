@@ -4,13 +4,13 @@
 
 {% block extrahead %}
     {% if page.has_previous %}
-    <link rel="prev" href="http://{{host}}{% url 'chronam_search_titles_results' %}{{previous_url}}" />
+    <link rel="prev" href="http://{{host}}{% url 'openoni_search_titles_results' %}{{previous_url}}" />
     {% endif %}
     {% if page.has_next %}
-    <link rel="next" href="http://{{host}}{% url 'chronam_search_titles_results' %}{{next_url}}" />
+    <link rel="next" href="http://{{host}}{% url 'openoni_search_titles_results' %}{{next_url}}" />
     {% endif %}
-    <link rel="alternate" type="application/atom+xml" link="http://{{host}}{% url 'chronam_search_titles_results' %}?{{q}}&amp;page={{page.number}}&amp;format=atom" />
-    <link rel="alternate" type="application/json" link="http://{{host}}{% url 'chronam_search_titles_results' %}?{{q}}&amp;page={{page.number}}&amp;format=json" />
+    <link rel="alternate" type="application/atom+xml" link="http://{{host}}{% url 'openoni_search_titles_results' %}?{{q}}&amp;page={{page.number}}&amp;format=atom" />
+    <link rel="alternate" type="application/json" link="http://{{host}}{% url 'openoni_search_titles_results' %}?{{q}}&amp;page={{page.number}}&amp;format=json" />
 {% endblock %}
 
 {% block javascript %}
@@ -132,7 +132,7 @@
     <ul class="results_list">
         {% for number, object_list in page_list %}
         <li><span class="order">{{number}}.</span>
-            <a href="{% url 'chronam_title' object_list.lccn %}">{{object_list}}</a>
+            <a href="{% url 'openoni_title' object_list.lccn %}">{{object_list}}</a>
                 {% if object_list.has_non_english_language %}
                 | Languages:
                 {{ object_list.languages.all|join:", " }}

@@ -7,11 +7,11 @@ This script returns a list of sample values for a directory of marc records.
 You could a adjust to return all if needed.
 
 To run this file: python extract_cntry_from_worldcatrecs.py $path_to_bib_folder $FIELD $SUBFIELD
-Example: python extract_marc_values.py /vol/ndnp/chronam/bib/holdings/ 852 a
+Example: python extract_marc_values.py /vol/ndnp/openoni/bib/holdings/ 852 a
 
 
-This also useds: Chronam
-Found here: http://github.com/LibraryOfCongress/chronam
+This also useds: openoni
+Found here: http://github.com/LibraryOfCongress/openoni
 '''
 
 
@@ -24,8 +24,8 @@ from random import choice
 from pymarc import map_xml
 from django.db.models import Count
 
-from chronam.core.models import Country
-from chronam.core.title_loader import _extract as extract
+from openoni.core.models import Country
+from openoni.core.title_loader import _extract as extract
 
 # FOLDER should be the location of the marcxml files.
 SOURCE = sys.argv[1]

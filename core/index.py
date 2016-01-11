@@ -11,10 +11,10 @@ from django.db import connection, reset_queries
 from django.http import QueryDict
 from django.conf import settings
 
-from chronam.core import models
-from chronam.core.forms import _fulltext_range
-from chronam.core.utils import utils
-from chronam.core.title_loader import _normal_lccn
+from openoni.core import models
+from openoni.core.forms import _fulltext_range
+from openoni.core.utils import utils
+from openoni.core.title_loader import _normal_lccn
 
 _log = logging.getLogger(__name__)
 
@@ -328,7 +328,7 @@ def get_titles_from_solr_documents(solr_response):
     solr_response: search result returned from SOLR in response to
     title search.
 
-    This function turns SOLR documents into chronam.models.Title 
+    This function turns SOLR documents into openoni.models.Title 
     instances 
     """
     lccns = [d['lccn'] for d in solr_response.results]

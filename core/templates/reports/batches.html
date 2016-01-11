@@ -2,8 +2,8 @@
 {% load static from staticfiles %}
 
 {% block extra_link_types %}
-<link rel="alternate" type="application/atom+xml" href="{% url 'chronam_batches_atom' %}" title="Batches Atom Feed" />
-<link rel="alternate" type="application/json" href="{% url 'chronam_batches_json'%}" title="Batches JSON Feed" />
+<link rel="alternate" type="application/atom+xml" href="{% url 'openoni_batches_atom' %}" title="Batches Atom Feed" />
+<link rel="alternate" type="application/json" href="{% url 'openoni_batches_json'%}" title="Batches JSON Feed" />
     
 {% endblock %}
 
@@ -11,7 +11,7 @@
 
 <p>
 The Library of Congress regularly receives digitized newspaper content 
-from <a href="{% url 'chronam_awardees' %}">grant awardees</a> in the <a
+from <a href="{% url 'openoni_awardees' %}">grant awardees</a> in the <a
     href="http://www.loc.gov/ndnp/">National Digital Newspaper Program</a>.
 Content is delivered in the form of batches, where each batch can contain
 one or more issues, from one or more newspapers. As batches are loaded into
@@ -21,8 +21,8 @@ batch can be discovered by clicking on the batch name link.
 
 <p>
 If you are interested in automated access to this data you may be interested 
-in the <a href="{% url 'chronam_batches_atom' %}">Atom</a> and
-<a href="{% url 'chronam_batches_json' %}">JSON</a> versions of this table.
+in the <a href="{% url 'openoni_batches_atom' %}">Atom</a> and
+<a href="{% url 'openoni_batches_json' %}">JSON</a> versions of this table.
 </p>
 
   {% ifnotequal paginator.num_pages 1 %}
@@ -30,7 +30,7 @@ in the <a href="{% url 'chronam_batches_atom' %}">Atom</a> and
       <div class="pageNavigator">
       Pages: 
       {% if page.has_previous %}
-      <a rel="prev" href="{% url 'chronam_batches_page' page.previous_page_number %}"><img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" /></a>
+      <a rel="prev" href="{% url 'openoni_batches_page' page.previous_page_number %}"><img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" /></a>
       {% endif %}
       {% for page_number in page_range_short %}
       {% ifequal page_number "..." %}
@@ -40,13 +40,13 @@ in the <a href="{% url 'chronam_batches_atom' %}">Atom</a> and
       {% ifequal page_number page.number %}
       <span class="off">{{page_number}}</span> 
       {% else %}
-      <a href="{% url 'chronam_batches_page' page_number %}">{{ page_number }}</a> 
+      <a href="{% url 'openoni_batches_page' page_number %}">{{ page_number }}</a> 
       {% endifequal %}
 
       {% endifequal %}
       {% endfor %}
       {% if page.has_next %}
-      <a rel="next" href="{% url 'chronam_batches_page' page.next_page_number %}"><img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a> 
+      <a rel="next" href="{% url 'openoni_batches_page' page.next_page_number %}"><img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a> 
       {% endif %}
     </div>
   </div>
@@ -70,9 +70,9 @@ in the <a href="{% url 'chronam_batches_atom' %}">Atom</a> and
 
   <tr class="{% cycle 'lightGray' 'white' %}">
     <td>{{batch.created }}</td>
-    <td><a href="{% url 'chronam_batch' batch.name %}">{{ batch.name }}</a></td>
+    <td><a href="{% url 'openoni_batch' batch.name %}">{{ batch.name }}</a></td>
     <td>
-        <a href="{% url 'chronam_awardee' batch.awardee.org_code %}">
+        <a href="{% url 'openoni_awardee' batch.awardee.org_code %}">
             {{ batch.awardee.name }}
         </a>
     </td>

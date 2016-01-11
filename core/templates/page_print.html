@@ -1,7 +1,7 @@
 {% extends "site_base.html" %}
 {% block content %}
 <p>
-  <img src="{% url 'chronam_page_image_tile' lccn issue.date_issued issue.edition page.sequence width height x1 y1 x2 y2 %}" alt="Page" />
+  <img src="{% url 'openoni_page_image_tile' lccn issue.date_issued issue.edition page.sequence width height x1 y1 x2 y2 %}" alt="Page" />
 </p>
 
 <p>Image provided by {{issue.batch.awardee.name}}</p>

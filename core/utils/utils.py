@@ -10,7 +10,7 @@ from django.http import HttpResponse, Http404
 from django.utils.http import http_date
 from django.utils import datetime_safe
 
-from chronam.core import models
+from openoni.core import models
 
 
 def _rdf_base(request):
@@ -62,7 +62,7 @@ class HTMLCalendar(calendar.Calendar):
                 _class = "single"
                 lccn, date_issued, edition = issues[0]
                 kw = dict(lccn=lccn, date=date_issued, edition=edition)
-                url = urlresolvers.reverse('chronam_issue_pages', kwargs=kw)
+                url = urlresolvers.reverse('openoni_issue_pages', kwargs=kw)
                 _day = """<a href="%s">%s</a>""" % (url, day)
             elif count > 1:
                 _class = "multiple"
@@ -70,7 +70,7 @@ class HTMLCalendar(calendar.Calendar):
                 _day += "<ul class='unstyled'>"
                 for lccn, date_issued, edition in issues:
                     kw = dict(lccn=lccn, date=date_issued, edition=edition)
-                    url = urlresolvers.reverse('chronam_issue_pages',
+                    url = urlresolvers.reverse('openoni_issue_pages',
                                                kwargs=kw)
                     _day += """<li><a href="%s">ed-%d</a></li>""" % (url, edition)
                 _day += "</ul>"
@@ -159,7 +159,7 @@ class HTMLCalendar(calendar.Calendar):
 
 def get_page(lccn, date, edition, sequence):
     """a helper function to lookup a particular page based on metadata
-    cooked into the chronam URLs, and raise a 404 appropriately when
+    cooked into the openoni URLs, and raise a 404 appropriately when
     portions of the hiearchical metadata are not found in the database
     """
 
@@ -181,7 +181,7 @@ def get_page(lccn, date, edition, sequence):
 
 def _get_tip(lccn, date, edition, sequence=1):
     """a helper function to lookup a particular page based on metadata cooked
-    into the chronam URLs, and raise a 404 appropriately when portions of the
+    into the openoni URLs, and raise a 404 appropriately when portions of the
     hiearchical metadata are not found in the database
     """
     title = get_object_or_404(models.Title, lccn=lccn)
@@ -246,12 +246,12 @@ def label(instance):
 def create_crumbs(title, issue=None, date=None, edition=None, page=None):
     crumbs = list(settings.BASE_CRUMBS)
     crumbs.extend([{'label': label(title.name.split(":")[0]),
-                    'href': urlresolvers.reverse('chronam_title',
+                    'href': urlresolvers.reverse('openoni_title',
                                                  kwargs={'lccn': title.lccn})}])
     if date and edition is not None:
         crumbs.append(
             {'label': label(issue),
-             'href': urlresolvers.reverse('chronam_issue_pages',
+             'href': urlresolvers.reverse('openoni_issue_pages',
                                           kwargs={'lccn': title.lccn,
                                                   'date': date,
                                                   'edition': edition})})
@@ -259,7 +259,7 @@ def create_crumbs(title, issue=None, date=None, edition=None, page=None):
     if page is not None:
         crumbs.append(
             {'label': label(page),
-             'href': urlresolvers.reverse('chronam_page',
+             'href': urlresolvers.reverse('openoni_page',
                                           kwargs={'lccn': title.lccn,
                                                   'date': date,
                                                   'edition': edition,

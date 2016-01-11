@@ -26,8 +26,8 @@ around the site, &quot;view source&quot; often, and follow where the
 different links take you to get started.  When describing Chronicling America as the source of content, please use the URL and a Web site citation, such as &quot;from the Library of Congress, Chronicling America: Historic American Newspapers site&quot;.</p> 
 
 <p>For more information about the open source Chronicling America software 
-please see the <a href="https://github.com/LibraryofCongress/chronam">LibraryOfCongress/chronam</a> GitHub site.
-Also, please consider subscribing to the <a href="http://listserv.loc.gov/archives/chronam-users.html">ChronAm-Users</a> discussion list
+please see the <a href="https://github.com/LibraryofCongress/openoni">LibraryOfCongress/openoni</a> GitHub site.
+Also, please consider subscribing to the <a href="http://listserv.loc.gov/archives/openoni-users.html">openoni-Users</a> discussion list
 if you want to discuss how to use or extend the software or data from its
 APIs.</p>
  
@@ -335,17 +335,17 @@ bulk access to the underlying data sets. The initial bulk data sets include:
 
 <ul>
     <li>Batches: each batch of digitized content that is provided by awardees is
-    made available via the Batches <a href="{% url 'chronam_batches' %}">HTML</a>,
-    <a href="{% url 'chronam_batches_atom' %}">Atom</a> and 
-    <a href="{% url 'chronam_batches_json' %}">JSON</a> views. These views provide
+    made available via the Batches <a href="{% url 'openoni_batches' %}">HTML</a>,
+    <a href="{% url 'openoni_batches_atom' %}">Atom</a> and 
+    <a href="{% url 'openoni_batches_json' %}">JSON</a> views. These views provide
     links to where the files comprising the batch can be fetched with a web
     crawling tool like <a href="http://www.gnu.org/software/wget/">wget</a>.</li>
     <li>OCR Bulk Data: the complete set of OCR XML and text files that make up
     the newspaper collection are made available as compressed archive files. 
-    These files are listed in the <a href="{% url 'chronam_ocr' %}">OCR</a> 
+    These files are listed in the <a href="{% url 'openoni_ocr' %}">OCR</a> 
     report, and are also made available via   
-    <a href="{% url 'chronam_ocr_atom' %}">Atom</a> and
-    <a href="{% url 'chronam_ocr_json' %}">JSON</a> feeds that will allow
+    <a href="{% url 'openoni_ocr_atom' %}">Atom</a> and
+    <a href="{% url 'openoni_ocr_json' %}">JSON</a> feeds that will allow
     you to build automated workflows for updating your local collection.</li>
 </ul>
 </p>

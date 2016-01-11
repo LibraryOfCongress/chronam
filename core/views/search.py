@@ -11,10 +11,10 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.template import RequestContext
 
-from chronam.core import index, models
-from chronam.core import forms
-from chronam.core.decorator import opensearch_clean, cache_page, cors
-from chronam.core.utils.utils import _page_range_short
+from openoni.core import index, models
+from openoni.core import forms
+from openoni.core.decorator import opensearch_clean, cache_page, cors
+from openoni.core.utils.utils import _page_range_short
 
 
 def search_pages_paginator(request):
@@ -45,7 +45,7 @@ def search_pages_results(request, view_type='gallery'):
     try:
         page = paginator.page(paginator._cur_page)
     except InvalidPage:
-        url = urlresolvers.reverse('chronam_search_pages_results')
+        url = urlresolvers.reverse('openoni_search_pages_results')
         # Set the page to the first page
         q['page'] = 1
         return HttpResponseRedirect('%s?%s' % (url, q.urlencode()))
@@ -195,7 +195,7 @@ def search_pages_navigation(request):
     if not ('page' in request.GET and 'index' in request.GET):
         return HttpResponseNotFound()
 
-    search_url = urlresolvers.reverse('chronam_search_pages_results')
+    search_url = urlresolvers.reverse('openoni_search_pages_results')
 
     paginator = search_pages_paginator(request)
 

@@ -11,12 +11,12 @@
         <li><a href="#tab_advanced_search"><span>Advanced Search</span></a></li>
         <li><a href="#tab_newspapers"><span>All Digitized Newspapers {{search_form.fulltextStartYear}}-{{search_form.fulltextEndYear}}</span></a></li>
     </ul>
-    <span class="btn_directory"><a href="{% url 'chronam_search_titles' %}"><img src=
+    <span class="btn_directory"><a href="{% url 'openoni_search_titles' %}"><img src=
             {% ifequal page_name 'directory' %}"{% static 'images/btn_usnews_sel.png' %}"
             {% else %}"{% static 'images/btn_usnews.png' %}"{% endifequal %}
             width="296" height="34" border="0" alt="US Newspaper Directory, 1690-Present" /></a></span>
     <div id="tab_search" class="ui-tabs-hide">
-        <form action="{% url 'chronam_search_pages_results' %}" method="get" name="fulltext" id="fulltext" class="search-pages">
+        <form action="{% url 'openoni_search_pages_results' %}" method="get" name="fulltext" id="fulltext" class="search-pages">
             <div class="wrap-tabsearch">
                 <!-- state -->
                 {{ search_form.state}}
@@ -37,7 +37,7 @@
     </div><!-- end id:tab_search -->
     <div id="tab_advanced_search" class="ui-tabs-hide">
         <a href="#" id="id_close_tab_advanced_search">close</a>
-        <form action="{% url 'chronam_search_pages_results' %}" method="get" name="fulltext2" id="fulltext2" class="search_adv">
+        <form action="{% url 'openoni_search_pages_results' %}" method="get" name="fulltext2" id="fulltext2" class="search_adv">
         <div class="wrapper-search">
             <!-- state -->
             <div class="fl-wrap">
@@ -117,9 +117,9 @@
     <div id="tab_newspapers" class="ui-tabs-hide">
         <a href="#" id="id_close_tab_newspapers">close</a>
         <div style="margin:0 20px;padding:15px 0;border-bottom:1px dotted #ccc;">
-            <a href="{% url 'chronam_newspapers' %}">Show All Digitized Papers {{search_form.fulltextStartYear}}-{{search_form.fulltextEndYear}} ({{titles_with_issues_count|intcomma}})</a> | <a href="{% url 'chronam_newspapers_format' 'txt' %}">Download Complete List</a> (also includes LCCN, ISSN)
+            <a href="{% url 'openoni_newspapers' %}">Show All Digitized Papers {{search_form.fulltextStartYear}}-{{search_form.fulltextEndYear}} ({{titles_with_issues_count|intcomma}})</a> | <a href="{% url 'openoni_newspapers_format' 'txt' %}">Download Complete List</a> (also includes LCCN, ISSN)
         </div>
-        <form action="{% url 'chronam_newspapers' %}" method="get" class="search_adv">
+        <form action="{% url 'openoni_newspapers' %}" method="get" class="search_adv">
             <div class="wrapper-search">
             <p>
             <label for="state_select">State:</label> 

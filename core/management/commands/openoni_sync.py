@@ -6,12 +6,12 @@ from optparse import make_option
 from django.core import management
 from django.core.management.base import BaseCommand
 
-from chronam.core import models
-from chronam.core import index
-from chronam.core.management.commands import configure_logging
-from chronam.core.utils.utils import validate_bib_dir
+from openoni.core import models
+from openoni.core import index
+from openoni.core.management.commands import configure_logging
+from openoni.core.utils.utils import validate_bib_dir
 
-configure_logging("chronam_sync_logging.config", "chronam_sync.log")
+configure_logging("openoni_sync_logging.config", "openoni_sync.log")
 _logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
@@ -73,4 +73,4 @@ class Command(BaseCommand):
         _logger.info('start time: %s' % start)
         _logger.info('end time: %s' % end)
         _logger.info('total time: %s' % total_time)
-        _logger.info("chronam_sync done.")
+        _logger.info("openoni_sync done.")

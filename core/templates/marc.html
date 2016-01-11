@@ -6,7 +6,7 @@
 {{ block.super }}
     <link rel="alternate" 
           type="application/marc+xml" 
-          href="{% url 'chronam_title_marcxml' title.lccn %}" />
+          href="{% url 'openoni_title_marcxml' title.lccn %}" />
 
 {% endblock %}
 
@@ -19,7 +19,7 @@
 <br />
  
 <div style="text-align: center;"> 
-<a href="{% url 'chronam_title_marcxml' title.lccn %}">
+<a href="{% url 'openoni_title_marcxml' title.lccn %}">
     <img src="{% static 'images/xml.png' %}"></img>
 </a>
 </div>

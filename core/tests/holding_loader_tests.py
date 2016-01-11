@@ -2,22 +2,22 @@ import os.path
 
 from django.test import TestCase
 
-from chronam.core.models import Title
-from chronam.core.title_loader import TitleLoader
-from chronam.core.holding_loader import HoldingLoader
+from openoni.core.models import Title
+from openoni.core.title_loader import TitleLoader
+from openoni.core.holding_loader import HoldingLoader
 
-import chronam.core
+import openoni.core
 
 class HoldingLoaderTests(TestCase):
     fixtures = ['countries.json', 'languages.json', 'institutions.json']
 
     def test_holdings(self):
         # title data
-        titlexml = os.path.join(os.path.dirname(chronam.core.__file__), 
+        titlexml = os.path.join(os.path.dirname(openoni.core.__file__), 
             'test-data', 'title.xml')
 
         # holdings data
-        holdingsxml = os.path.join(os.path.dirname(chronam.core.__file__), 
+        holdingsxml = os.path.join(os.path.dirname(openoni.core.__file__), 
             'test-data', 'holdings.xml')
 
         # first need to load the titles so we can link against them

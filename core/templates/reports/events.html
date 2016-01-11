@@ -8,7 +8,7 @@
       <div class="pageNavigator">
       Pages: 
       {% if page.has_previous %}
-      <a rel="prev" href="{% url 'chronam_events_page' page.previous_page_number %}"><img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" /></a>
+      <a rel="prev" href="{% url 'openoni_events_page' page.previous_page_number %}"><img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" /></a>
       {% endif %}
       {% for page_number in page_range_short %}
       {% ifequal page_number "..." %}
@@ -18,13 +18,13 @@
       {% ifequal page_number page.number %}
       <span class="off">{{page_number}}</span> 
       {% else %}
-      <a href="{% url 'chronam_events_page' page_number %}">{{ page_number }}</a> 
+      <a href="{% url 'openoni_events_page' page_number %}">{{ page_number }}</a> 
       {% endifequal %}
 
       {% endifequal %}
       {% endfor %}
       {% if page.has_next %}
-      <a rel="next" href="{% url 'chronam_events_page' page.next_page_number %}"><img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a> 
+      <a rel="next" href="{% url 'openoni_events_page' page.next_page_number %}"><img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a> 
       {% endif %}
     </div>
   </div>
@@ -45,7 +45,7 @@
     <td>{{ event.created }}</td>
     <td>
         {% if event.get_batch %}
-        <a href="{% url 'chronam_batch' event.batch_name %}">
+        <a href="{% url 'openoni_batch' event.batch_name %}">
             {{ event.batch_name }}
         </a>
         {% else %}

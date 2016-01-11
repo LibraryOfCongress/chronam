@@ -3,16 +3,16 @@
 {% block extrahead %}
     {% if page.has_previous %}
         {% if start %}
-        <link rel="prev" href="{% url 'chronam_titles_start_page' start page.previous_page_number %}" />
+        <link rel="prev" href="{% url 'openoni_titles_start_page' start page.previous_page_number %}" />
         {% else %}
-        <link rel="prev" href="{% url 'chronam_titles_page' page.previous_page_number %}" />
+        <link rel="prev" href="{% url 'openoni_titles_page' page.previous_page_number %}" />
         {% endif %}
     {% endif %}
     {% if page.has_next %}
         {% if start %}
-        <link rel="next" href="{% url 'chronam_titles_start_page' start page.next_page_number %}" />
+        <link rel="next" href="{% url 'openoni_titles_start_page' start page.next_page_number %}" />
         {% else %}
-        <link rel="next" href="{% url 'chronam_titles_page' page.next_page_number %}" />
+        <link rel="next" href="{% url 'openoni_titles_page' page.next_page_number %}" />
         {% endif %}
     {% endif %}
 {% endblock %}
@@ -27,9 +27,9 @@
     <ul class="alpha_tags">
       {% for val in browse_val %}
       {% ifequal val start %}
-      <li><a class="off" href="{% url 'chronam_titles_start' val %}">{{val}}</a></li>
+      <li><a class="off" href="{% url 'openoni_titles_start' val %}">{{val}}</a></li>
       {% else %}
-      <li><a href="{% url 'chronam_titles_start' val %}">{{val}}</a></li>
+      <li><a href="{% url 'openoni_titles_start' val %}">{{val}}</a></li>
       {% endifequal %}
       {% endfor %}
     </ul>
@@ -44,7 +44,7 @@
     <table class="data" width="100%">
     {% for title in page.object_list %}
     <tr class="{% cycle 'lightGray' 'white' %}">
-        <td><a href="{% url 'chronam_title' title.lccn %}">{{title}}</a></td>
+        <td><a href="{% url 'openoni_title' title.lccn %}">{{title}}</a></td>
     </tr>
     {% endfor %}
     </table>
@@ -61,7 +61,7 @@
       jQuery(function($){
           $("[name=jumptopage]").submit(function(e){
               e.preventDefault();
-              var base = '{% url 'chronam_titles' %}';
+              var base = '{% url 'openoni_titles' %}';
               var page = this.elements[0].value;
               {% if start %}
               window.location.href=base+';start='+'{{start}}'+';page='+page; 

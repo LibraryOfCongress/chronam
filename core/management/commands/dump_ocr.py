@@ -3,8 +3,8 @@ import os
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from chronam.core.models import Batch
-from chronam.core.tasks import dump_ocr
+from openoni.core.models import Batch
+from openoni.core.tasks import dump_ocr
 
 class Command(BaseCommand):
     help = "looks for batches that need to have ocr dump files created"

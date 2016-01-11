@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.db.models import Min, Max
 
-from chronam.core import models
+from openoni.core import models
 
 MIN_YEAR = 1860
 MAX_YEAR = 1922
@@ -86,7 +86,7 @@ def _fulltext_range():
         else:
             max_year = MAX_YEAR
 
-        # removing these bits for https://rdc.lctl.gov/trac/chronam/ticket/1025
+        # removing these bits for https://rdc.lctl.gov/trac/openoni/ticket/1025
         # See: https://rdc.lctl.gov/trac/ndnp/ticket/446
         #min_year = max(min_year, MIN_YEAR)
 

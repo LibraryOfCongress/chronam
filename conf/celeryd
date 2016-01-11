@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# celeryd        init file for starting chronam-celeryd
+# celeryd        init file for starting openoni-celeryd
 #
 # chkconfig:   - 20 80
 # description: Starts and stops the celeryd daemon
@@ -8,15 +8,15 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-name="chronam-celeryd"
-home="/opt/chronam"
+name="openoni-celeryd"
+home="/opt/openoni"
 user="ndnp"
 
 virtualenv_dir="$home/ENV"
 source $virtualenv_dir/bin/activate
 
 cd "$home"
-export PYTHONPATH="$PYTHONPATH:/opt/chronam/conf"
+export PYTHONPATH="$PYTHONPATH:/opt/openoni/conf"
 
 lockfile="/logs/celery/celeryd.lock"
 logfile="/logs/celery/celeryd.log"

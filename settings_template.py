@@ -31,14 +31,14 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStora
 STATIC_URL = '/media/'
 STATIC_ROOT = os.path.join(DIRNAME, '.static-media')
 
-ROOT_URLCONF = 'chronam.urls'
+ROOT_URLCONF = 'openoni.urls'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'chronam',
-        'USER': 'chronam',
-        'PASSWORD': 'pick_one',
+        'NAME': 'openoni',
+        'USER': 'openoni',
+        'PASSWORD': 'openoni',
         }
     }
 
@@ -55,12 +55,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.http.ConditionalGetMiddleware',
-    'chronam.core.middleware.TooBusyMiddleware',
+    'openoni.core.middleware.TooBusyMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'chronam.core.context_processors.extra_request_info',
-    'chronam.core.context_processors.newspaper_info',
+    'openoni.core.context_processors.extra_request_info',
+    'openoni.core.context_processors.newspaper_info',
 )
 
 TEMPLATE_DIRS = (
@@ -69,15 +69,15 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     # 'lc',
-    # 'chronam.example',
-    # 'chronam.loc',
+    # 'openoni.example',
+    # 'openoni.loc',
     'south',
     'django.contrib.humanize',
     'django.contrib.staticfiles',
     'djcelery',
     'djkombu',
 
-    'chronam.core',
+    'openoni.core',
 )
 
 BROKER_TRANSPORT = "django"
@@ -119,9 +119,9 @@ TOO_BUSY_LOAD_AVERAGE = 64
 SOLR = "http://localhost:8983/solr"
 SOLR_LANGUAGES = ("eng", "fre", "spa", "ger", "ita",)
 
-DOCUMENT_ROOT = "/opt/chronam/static"
+DOCUMENT_ROOT = "/opt/openoni/static"
 
-STORAGE = '/opt/chronam/data/'
+STORAGE = '/opt/openoni/data/'
 STORAGE_URL = '/data/'
 BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")

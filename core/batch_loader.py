@@ -27,10 +27,10 @@ try:
 except ImportError:
     j2k = None
 
-from chronam.core import models
-from chronam.core.models import Batch, Issue, Title, Awardee, Page, OCR
-from chronam.core.models import LoadBatchEvent
-from chronam.core.ocr_extractor import ocr_extractor
+from openoni.core import models
+from openoni.core.models import Batch, Issue, Title, Awardee, Page, OCR
+from openoni.core.models import LoadBatchEvent
+from openoni.core.ocr_extractor import ocr_extractor
 
 # some xml namespaces used in batch metadata
 ns = {

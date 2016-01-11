@@ -8,9 +8,9 @@
     {{ block.super }}
     {% block lc_metadata %}{% endblock lc_metadata %}
     <link href="{% static 'img-std/fav.ico' %}" rel="shortcut icon"/>
-    <link title="NDNP Page Search" href="{% url 'chronam_search_pages_opensearch' %}"
+    <link title="NDNP Page Search" href="{% url 'openoni_search_pages_opensearch' %}"
           rel="search" type="application/opensearchdescription+xml" />
-    <link title="NDNP Title Search" href="{% url 'chronam_search_titles_opensearch' %}"
+    <link title="NDNP Title Search" href="{% url 'openoni_search_titles_opensearch' %}"
           rel="search" type="application/opensearchdescription+xml" />
     <link rel="alternate" type="application/rss+xml" title="News about Chronicling America - RSS Feed" 
           href="http://www.loc.gov/rss/ndnp/ndnp.xml" />
@@ -113,7 +113,7 @@ jQuery(function ($) {
         tab_url = '/tabs';
     }
     $('#tabs-container').load(tab_url, function() {
-        $("#tabs-container").trigger('chronam.tabsloaded', {});
+        $("#tabs-container").trigger('openoni.tabsloaded', {});
     });
 });
 </script>

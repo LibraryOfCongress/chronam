@@ -3,8 +3,8 @@
 
     <title>Recent Titles from Chronicling America</title>
     <subtitle>This feed lists newspaper titles that have had new content added to them.</subtitle>
-    <link rel="self" type="application/atom+xml" href="http://{{ host }}{% url 'chronam_newspapers_atom' %}" />
-    <link rel="alternate" type="text/html" href="http://{{ host }}{% url 'chronam_newspapers' %}" />
+    <link rel="self" type="application/atom+xml" href="http://{{ host }}{% url 'openoni_newspapers_atom' %}" />
+    <link rel="alternate" type="text/html" href="http://{{ host }}{% url 'openoni_newspapers' %}" />
     <id>info:lc/ndnp/newspapers</id>
     <author>
         <name>Library of Congress</name>
@@ -15,10 +15,10 @@
     <entry>
         <id>info:lc/ndnp/title/{{ title.lccn }}</id>
         <title>Updated content for {{ title.display_name }} ({{ title.place_of_publication }})</title>
-        <link rel="alternate" type="text/html" href="http://{{ host }}{% url 'chronam_title' title.lccn %}" />
-        <link rel="alternate" type="application/json" href="http://{{ host }}{% url 'chronam_title_dot_json' title.lccn %}" />
-        <link rel="alternate" type="application/atom+xml" href="http://{{ host }}{% url 'chronam_title_atom' title.lccn %}" />
-        <link rel="alternate" type="application/rdf+xml" href="http://{{ host }}{% url 'chronam_title_dot_rdf' title.lccn %}" />
+        <link rel="alternate" type="text/html" href="http://{{ host }}{% url 'openoni_title' title.lccn %}" />
+        <link rel="alternate" type="application/json" href="http://{{ host }}{% url 'openoni_title_dot_json' title.lccn %}" />
+        <link rel="alternate" type="application/atom+xml" href="http://{{ host }}{% url 'openoni_title_atom' title.lccn %}" />
+        <link rel="alternate" type="application/rdf+xml" href="http://{{ host }}{% url 'openoni_title_dot_rdf' title.lccn %}" />
         {% with title.last_issue_released as issue %}
         <author><name>{{issue.batch.awardee.name}}</name></author>
         <updated>{% if issue.batch.released %}{{ issue.batch.released|rfc3339 }}{% else %}{{ issue.batch.created|rfc3339 }}{% endif %}</updated>

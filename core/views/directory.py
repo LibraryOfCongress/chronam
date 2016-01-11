@@ -11,11 +11,11 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.encoding import smart_str
 
-from chronam.core.decorator import cache_page, opensearch_clean, rdf_view, cors
-from chronam.core.utils.utils import _page_range_short, _rdf_base
-from chronam.core import models, index
-from chronam.core.rdf import titles_to_graph
-from chronam.core.utils.url import unpack_url_path
+from openoni.core.decorator import cache_page, opensearch_clean, rdf_view, cors
+from openoni.core.utils.utils import _page_range_short, _rdf_base
+from openoni.core import models, index
+from openoni.core.rdf import titles_to_graph
+from openoni.core.utils.url import unpack_url_path
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -86,19 +86,19 @@ def newspapers(request, state=None, format='html'):
                              'ISSN', 'No. of Issues', 'First Issue Date', 
                              'Last Issue Date', 'More Info')
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="chronam_newspapers.csv"'
+        response['Content-Disposition'] = 'attachment; filename="openoni_newspapers.csv"'
         writer = csv.writer(response)
         writer.writerow(csv_header_labels)
         for state, titles in newspapers_by_state:
             for title in titles:
                 writer.writerow(('http://%s%s' % (request.get_host(), 
-                                                  reverse('chronam_issues', 
+                                                  reverse('openoni_issues', 
                                                            kwargs={'lccn': title.lccn}),),
                                  state, title, title.lccn or '', title.oclc or '',
                                  title.issn or '', title.issues.count(), title.first, 
                                  title.last, 
                                  'http://%s%s' % (request.get_host(),
-                                                  reverse('chronam_title_essays',
+                                                  reverse('openoni_title_essays',
                                                            kwargs={'lccn': title.lccn}),),))
         return response
 
@@ -151,7 +151,7 @@ def search_titles_results(request):
     page_title = 'US Newspaper Directory Search Results'
     crumbs = list(settings.BASE_CRUMBS)
     crumbs.extend([{'label': 'Search Newspaper Directory',
-                    'href': reverse('chronam_search_titles')},
+                    'href': reverse('openoni_search_titles')},
                    ])
 
     def prep_title_for_return(t):
@@ -181,7 +181,7 @@ def search_titles_results(request):
                              'state', 'city', 'country', 'language', 'oclc',
                              'holding_type',)
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="chronam_titles.csv"'
+        response['Content-Disposition'] = 'attachment; filename="openoni_titles.csv"'
         writer = csv.writer(response)
         writer.writerow(csv_header_labels)
         for title in titles:

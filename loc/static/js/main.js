@@ -14,7 +14,7 @@ function getUrlVars(){
 
 jQuery(function($){
     var vars = getUrlVars();
-    $("#tabs-container").on('chronam.tabsloaded', function () {
+    $("#tabs-container").on('openoni.tabsloaded', function () {
     $("#box-tabs").tabs({collapsible: true});
     $("#box-tabs").show();
     var selectedTab = 0;

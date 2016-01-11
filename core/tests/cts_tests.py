@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 
-from chronam.core.cts import CTS
+from openoni.core.cts import CTS
 
 class CTSTest(TestCase):
 

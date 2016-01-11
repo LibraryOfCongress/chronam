@@ -3,10 +3,10 @@
 
 {% block extra_link_types %}
       {% if page.has_previous %}
-      <link rel="prev" href="{% url 'chronam_institution_titles_page_number' code page.previous_page_number %}" />
+      <link rel="prev" href="{% url 'openoni_institution_titles_page_number' code page.previous_page_number %}" />
       {% endif %}
       {% if page.has_next %}
-      <link rel="next" href="{% url 'chronam_institution_titles_page_number' code page.next_page_number %}" />
+      <link rel="next" href="{% url 'openoni_institution_titles_page_number' code page.next_page_number %}" />
       {% endif %}
 {% endblock %}
 
@@ -16,7 +16,7 @@
   <div id="searchnav">
     <div class="pageNavigator">
       {% if page.has_previous %}
-      <a rel="prev" href="{% url 'chronam_institution_titles_page_number' code page.previous_page_number %}"><img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" /></a> 
+      <a rel="prev" href="{% url 'openoni_institution_titles_page_number' code page.previous_page_number %}"><img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" /></a> 
       {% endif %}
       {% for page_number in page_range_short %}
       {% ifequal page_number "..." %}
@@ -26,13 +26,13 @@
       {% ifequal page_number page.number %}
       <span class="off">{{page_number}}</span> 
       {% else %}
-      <a href="{% url 'chronam_institution_titles_page_number' code page_number%}">{{page_number}}</a> 
+      <a href="{% url 'openoni_institution_titles_page_number' code page_number%}">{{page_number}}</a> 
       {% endifequal %}
 
       {% endifequal %}
       {% endfor %}
       {% if page.has_next %}
-          <a rel="next" href="{% url 'chronam_institution_titles_page_number' code page.next_page_number %}"><img src="{% static 'images/pag_next_on.gif' %}" alt="prev" width="13" height="13" /></a>
+          <a rel="next" href="{% url 'openoni_institution_titles_page_number' code page.next_page_number %}"><img src="{% static 'images/pag_next_on.gif' %}" alt="prev" width="13" height="13" /></a>
       {% endif %}
     </div>
   </div>
@@ -46,7 +46,7 @@
         {% for title in page.object_list %}
         <tr class="{% cycle 'lightGray' 'white' %}">
             <td>
-                <a href="{% url 'chronam_title' title.lccn %}">{{title}}</a>
+                <a href="{% url 'openoni_title' title.lccn %}">{{title}}</a>
             </td>
         </tr>
         {% endfor %}

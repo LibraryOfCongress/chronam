@@ -11,9 +11,9 @@ from cStringIO import StringIO
 from django.conf import settings
 from django.http import Http404, HttpResponse, HttpResponseServerError
 
-from chronam.core import models
-from chronam.core.utils.utils import get_page
-from chronam.core.decorator import cors
+from openoni.core import models
+from openoni.core.utils.utils import get_page
+from openoni.core.decorator import cors
 
 LOGGER = logging.getLogger(__name__)
 

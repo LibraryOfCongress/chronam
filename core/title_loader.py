@@ -8,7 +8,7 @@ from time import time, strptime
 from pymarc import map_xml, record_to_xml
 from django.db import reset_queries
 
-from chronam.core import models
+from openoni.core import models
 
 _logger = logging.getLogger(__name__)
 
@@ -165,8 +165,8 @@ class TitleLoader(object):
         marc.save()
 
         # for context see: https://rdc.lctl.gov/trac/ndnp/ticket/375
-        if _is_chronam_electronic_resource(title, record):
-            _logger.info("deleting title record for chronam electronic resource: %s" % title)
+        if _is_openoni_electronic_resource(title, record):
+            _logger.info("deleting title record for openoni electronic resource: %s" % title)
             title.delete()
 
         # this is for long running processes so the query cache
@@ -473,7 +473,7 @@ def _normal_oclc(value):
     return value
 
 
-def _is_chronam_electronic_resource(title, record):
+def _is_openoni_electronic_resource(title, record):
     # delete the Title if it is for an electronic resource
     # and it contains a link to chronicling america
     # https://rdc.lctl.gov/trac/ndnp/ticket/375

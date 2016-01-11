@@ -4,8 +4,8 @@ import codecs
 
 from django.core.management.base import BaseCommand
 
-from chronam.core.management.commands import configure_logging
-from chronam.core.models import Institution
+from openoni.core.management.commands import configure_logging
+from openoni.core.models import Institution
 
 configure_logging("load_intitutions_logging.config", 
                   "load_institutions_%s.log" % os.getpid())

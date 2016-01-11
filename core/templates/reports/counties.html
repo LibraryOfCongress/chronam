@@ -2,7 +2,7 @@
 {% load custom_filters %}
 
 {% block extra_link_types %}
-<link rel="alternate" type="application/json" href="{% url 'chronam_counties_in_state_json' state|pack_url 'json' %}" />
+<link rel="alternate" type="application/json" href="{% url 'openoni_counties_in_state_json' state|pack_url 'json' %}" />
 {% endblock %}
 
 {% block subcontent %}
@@ -13,7 +13,7 @@
       <table class="data table table-striped table-hover" width="100%">
     {% for county in counties %}
         <tr class="{% cycle 'lightGray' 'white' %}">
-          <td><a href="{% url 'chronam_cities_in_county' state|pack_url county|pack_url %}">{{county}}</a></td>
+          <td><a href="{% url 'openoni_cities_in_county' state|pack_url county|pack_url %}">{{county}}</a></td>
         </tr>
     {% endfor %}
       </table>

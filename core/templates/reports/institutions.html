@@ -8,7 +8,7 @@
     <div class="pagination">
         <ul>
       {% if page.has_previous %}
-      <li><a href="{% url 'chronam_institutions_page_number' page.previous_page_number %}">&laquo;</a></li>
+      <li><a href="{% url 'openoni_institutions_page_number' page.previous_page_number %}">&laquo;</a></li>
       {% endif %}
       {% for page_number in page_range_short %}
       {% ifequal page_number "..." %}
@@ -18,13 +18,13 @@
       {% ifequal page_number page.number %}
       <li><span class="off">{{page_number}}</span></li>
       {% else %}
-      <li><a href="{% url 'chronam_institutions_page_number' page_number%}">{{page_number}}</a></li>
+      <li><a href="{% url 'openoni_institutions_page_number' page_number%}">{{page_number}}</a></li>
       {% endifequal %}
 
       {% endifequal %}
       {% endfor %}
       {% if page.has_next %}
-      <li><a href="{% url 'chronam_institutions_page_number' page.next_page_number %}">&raquo;</a></li>
+      <li><a href="{% url 'openoni_institutions_page_number' page.next_page_number %}">&raquo;</a></li>
       {% endif %}
         </ul>
     </div>
@@ -38,7 +38,7 @@
         {% for institution in page.object_list %}
         <tr class="{% cycle 'lightGray' 'white' %}">
             <td>
-                <a href="{% url 'chronam_institution' institution.code.lower %}">{{ institution }}</a>
+                <a href="{% url 'openoni_institution' institution.code.lower %}">{{ institution }}</a>
             </td>
         </tr>
         {% endfor %}

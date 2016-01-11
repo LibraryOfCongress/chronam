@@ -5,12 +5,12 @@
 {% block page_head %}
 <h1>
 {{ page_head_heading }}<br />
-<span>About <a href="{% url 'chronam_title' title.lccn %}">{{page_head_subheading}}</a></span>
+<span>About <a href="{% url 'openoni_title' title.lccn %}">{{page_head_subheading}}</a></span>
 </h1>
 {% endblock %}
 
 {% block extrahead %}
-<link rel="alternate" href="{% url 'chronam_issue_pages_dot_json' title.lccn issue.date_issued issue.edition %}" />
+<link rel="alternate" href="{% url 'openoni_issue_pages_dot_json' title.lccn issue.date_issued issue.edition %}" />
 {% endblock %}
 
 {% block lc_metadata %}
@@ -29,12 +29,12 @@
     <table class="search_results" cellspacing="0" summary="">
         <tr> 
         {% for page in page.object_list %}
-        {% url 'chronam_page' title.lccn page.issue.date_issued page.issue.edition page.sequence as url %}
+        {% url 'openoni_page' title.lccn page.issue.date_issued page.issue.edition page.sequence as url %}
             <td>
                 <div class="highlite">
                     <a href="{{url}}">
                     {% if page.jp2_filename %}
-                    <img src="{% url 'chronam_page_thumbnail' title.lccn page.issue.date_issued page.issue.edition page.sequence %}" alt="Thumbnail for {{page.number}}"/>
+                    <img src="{% url 'openoni_page_thumbnail' title.lccn page.issue.date_issued page.issue.edition page.sequence %}" alt="Thumbnail for {{page.number}}"/>
                     {% else %}
                         <div style="height: auto; margin-bottom: 3em;">
                         No Image. {{page.noteAboutReproduction.text}}<br/>
@@ -78,9 +78,9 @@ jQuery(function($) {
     $("form[name='page_number_form']").submit(function() {
         var pageNumber = $("input[type=text]", this).val();
         {% if first_pages %}
-        window.location.href = '{% url 'chronam_issues_first_pages' title.lccn %}' + pageNumber;
+        window.location.href = '{% url 'openoni_issues_first_pages' title.lccn %}' + pageNumber;
         {% else %}
-        window.location.href = '{% url 'chronam_issue_pages' issue.title.lccn issue.date_issued issue.edition %}' + pageNumber;
+        window.location.href = '{% url 'openoni_issue_pages' issue.title.lccn issue.date_issued issue.edition %}' + pageNumber;
         {% endif %}
         return false;
     });

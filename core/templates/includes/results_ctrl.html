@@ -47,11 +47,11 @@
     <div class="right">
         {% ifequal view_type 'list' %}
         <span class="view">
-            <strong>View:</strong>&nbsp; <a href="{% url 'chronam_search_pages_results' %}?{{q}}&amp;page={{page.number}}&amp;sort={{sort}}" class="pag-gallery">Gallery</a> | <a class="pag-list pag-selected" href="#">List</a>       
+            <strong>View:</strong>&nbsp; <a href="{% url 'openoni_search_pages_results' %}?{{q}}&amp;page={{page.number}}&amp;sort={{sort}}" class="pag-gallery">Gallery</a> | <a class="pag-list pag-selected" href="#">List</a>       
         </span>
         {% else %}
         <span class="view">
-            <strong>View:</strong>&nbsp; <a href="#" class="pag-gallery pag-selected">Gallery</a> | <a class="pag-list" href="{% url 'chronam_search_pages_results_list' view_type="list" %}?{{q}}&amp;page={{page.number}}&amp;sort={{sort}}">List</a>
+            <strong>View:</strong>&nbsp; <a href="#" class="pag-gallery pag-selected">Gallery</a> | <a class="pag-list" href="{% url 'openoni_search_pages_results_list' view_type="list" %}?{{q}}&amp;page={{page.number}}&amp;sort={{sort}}">List</a>
         </span> 
         {% endifequal %}
     </div>

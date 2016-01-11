@@ -6,19 +6,19 @@
     <style type="text/css">
         @import url({% static 'css/ca_print.css' %});
     </style>
-{% url 'chronam_page' title.lccn page.issue.date_issued page.issue.edition page.sequence as url %}
+{% url 'openoni_page' title.lccn page.issue.date_issued page.issue.edition page.sequence as url %}
     <link rel="canonical" href="http://{{host}}{{url}}" />
   </head>
   
-  <body id="chronam_page_print">
+  <body id="openoni_page_print">
     <div id="head_nav">
       <h1>{{page_title}}</h1>
       <h3>Image provided by {{issue.batch.awardee.name}}</h3>
       <h3 class="">Persistent link: <a href="{{url}}">http://{{host}}{{url}}</a></h3>
-      <p class="print_nav"><strong><a class="clip_print" href="javascript:window.print();">Print this image</a></strong> | <strong><a class="clip_download" href="{% url 'chronam_page_image_tile' lccn issue.date_issued issue.edition page.sequence width height x1 y1 x2 y2 %}?download=True">Download this image</a></strong></p>
+      <p class="print_nav"><strong><a class="clip_print" href="javascript:window.print();">Print this image</a></strong> | <strong><a class="clip_download" href="{% url 'openoni_page_image_tile' lccn issue.date_issued issue.edition page.sequence width height x1 y1 x2 y2 %}?download=True">Download this image</a></strong></p>
     </div> 
     <p>
-      <img src="{% url 'chronam_page_image_tile' lccn issue.date_issued issue.edition page.sequence width height x1 y1 x2 y2 %}" alt="Page" />
+      <img src="{% url 'openoni_page_image_tile' lccn issue.date_issued issue.edition page.sequence width height x1 y1 x2 y2 %}" alt="Page" />
     </p>
     <div id="omni">
       <input type="hidden" id="eVar4" value="{{image_credit}}" />

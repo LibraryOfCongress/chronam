@@ -6,18 +6,18 @@
     {% include "includes/lc_metadata.html" %}
     {% endwith %}
     <link rel="primaryTopic" href="{{ page.abstract_url }}" />
-    <link rel="resourcemap" type="application/rdf+xml" href="{% url 'chronam_page_dot_rdf' page.issue.title.lccn page.issue.date_issued page.issue.edition page.sequence %}" />
-    <link rel="alternate" type="application/json" href="{% url 'chronam_page_dot_json' page.issue.title.lccn page.issue.date_issued page.issue.edition page.sequence %}" />
-    <link rel="alternate" type="image/jp2" href="{% url 'chronam_page_jp2' title.lccn issue.date_issued issue.edition page.sequence %}" />
-    <link rel="alternate" type="application/pdf" href="{% url 'chronam_page_pdf' title.lccn issue.date_issued issue.edition page.sequence %}" />
-    <link rel="alternate" type="application/xml" href="{% url 'chronam_page_ocr_xml' title.lccn issue.date_issued issue.edition page.sequence %}" />
-    <link rel="alternate" type="text/plain" href="{% url 'chronam_page_ocr_txt' title.lccn issue.date_issued issue.edition page.sequence %}" />
-    <link rel="canonical" href="http://{{host}}{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}" />
+    <link rel="resourcemap" type="application/rdf+xml" href="{% url 'openoni_page_dot_rdf' page.issue.title.lccn page.issue.date_issued page.issue.edition page.sequence %}" />
+    <link rel="alternate" type="application/json" href="{% url 'openoni_page_dot_json' page.issue.title.lccn page.issue.date_issued page.issue.edition page.sequence %}" />
+    <link rel="alternate" type="image/jp2" href="{% url 'openoni_page_jp2' title.lccn issue.date_issued issue.edition page.sequence %}" />
+    <link rel="alternate" type="application/pdf" href="{% url 'openoni_page_pdf' title.lccn issue.date_issued issue.edition page.sequence %}" />
+    <link rel="alternate" type="application/xml" href="{% url 'openoni_page_ocr_xml' title.lccn issue.date_issued issue.edition page.sequence %}" />
+    <link rel="alternate" type="text/plain" href="{% url 'openoni_page_ocr_txt' title.lccn issue.date_issued issue.edition page.sequence %}" />
+    <link rel="canonical" href="http://{{host}}{% url 'openoni_page' title.lccn issue.date_issued issue.edition page.sequence %}" />
     <link rel="up" href="{{ issue.url }}" />
     <link rel="up" href="{{ issue.batch.url }}" />
-    {% if page.reel.number %}<link rel="up" href="{% url 'chronam_reel' page.reel.number %}" />{% endif %}
+    {% if page.reel.number %}<link rel="up" href="{% url 'openoni_reel' page.reel.number %}" />{% endif %}
     {% if page.on_flickr %}{% for flickr_url in page.flickr_urls.all %}<link rel="alternate" type="text/html" href="{{ flickr_url.value }}" />{% endfor %}{% endif %}
-    <meta property="og:image" content="http://{{ host }}{% url 'chronam_page_thumbnail' title.lccn page.issue.date_issued page.issue.edition page.sequence %}" />
+    <meta property="og:image" content="http://{{ host }}{% url 'openoni_page_thumbnail' title.lccn page.issue.date_issued page.issue.edition page.sequence %}" />
     <meta property="og:title" content="{{ page_title }}" />
     <meta property="og:description" content="{{ page_title }}, brought to you by {{ image_credit }}, and the National Digital Newspaper Program." />
 
@@ -81,41 +81,41 @@
 	<div class="span9">
 	  <ul class="pagetools inline">
 	    <li>
-	      <a rel="previous"{% if page.previous %} href="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.previous.sequence %}"{% else %} class="disabled"{% endif %}>
+	      <a rel="previous"{% if page.previous %} href="{% url 'openoni_page' title.lccn issue.date_issued issue.edition page.previous.sequence %}"{% else %} class="disabled"{% endif %}>
                   <i class="icon-chevron-left"></i>
                   <span class="visible-desktop">prev</span>
 	      </a> 
               Page
-	      <a rel="next"{% if page.next %} href="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.next.sequence %}"{% else %} class="disabled"{% endif %}>
+	      <a rel="next"{% if page.next %} href="{% url 'openoni_page' title.lccn issue.date_issued issue.edition page.next.sequence %}"{% else %} class="disabled"{% endif %}>
                   <span class="visible-desktop">next</span>
                   <i class="icon-chevron-right"></i>
 	      </a>
 	    </li>
 	    <li>
-	      <a rel="previous"{% if previous_issue_first_page %} href="{% url 'chronam_page' title.lccn previous_issue_first_page.issue.date_issued previous_issue_first_page.issue.edition previous_issue_first_page.sequence %}"{% else %} class="disabled"{% endif %}>
+	      <a rel="previous"{% if previous_issue_first_page %} href="{% url 'openoni_page' title.lccn previous_issue_first_page.issue.date_issued previous_issue_first_page.issue.edition previous_issue_first_page.sequence %}"{% else %} class="disabled"{% endif %}>
                   <i class="icon-chevron-left"></i>
                   <span class="visible-desktop">prev</span>
 	      </a>
 	      Issue
-	      <a rel="next"{% if next_issue_first_page %} href="{% url 'chronam_page' title.lccn next_issue_first_page.issue.date_issued next_issue_first_page.issue.edition next_issue_first_page.sequence %}"{% else %} class="disabled"{% endif %}>
+	      <a rel="next"{% if next_issue_first_page %} href="{% url 'openoni_page' title.lccn next_issue_first_page.issue.date_issued next_issue_first_page.issue.edition next_issue_first_page.sequence %}"{% else %} class="disabled"{% endif %}>
                 <span class="visible-desktop">next</span>
                 <i class="icon-chevron-right"></i>
 	      </a>
 	    </li>
 	    <li>
-	      <a href="{% url 'chronam_page_ocr' title.lccn issue.date_issued issue.edition page.sequence %}">
+	      <a href="{% url 'openoni_page_ocr' title.lccn issue.date_issued issue.edition page.sequence %}">
                   <span class="visible-desktop">Text</span>
                   <i class="icon-font"></i>
 	      </a>
 	    </li>
 	    <li>
-	      <a href="{% url 'chronam_page_pdf' title.lccn issue.date_issued issue.edition page.sequence %}">
+	      <a href="{% url 'openoni_page_pdf' title.lccn issue.date_issued issue.edition page.sequence %}">
                   <span class="visible-desktop">PDF</span>
                   <i class="icon-file"></i>
 	      </a>
             </li>
 	    <li>
-	      <a href="{% url 'chronam_page_jp2' title.lccn issue.date_issued issue.edition page.sequence %}" download="{{ title.lccn }}-{{ issue.date_issued|date:"Ymd" }}.jp2">
+	      <a href="{% url 'openoni_page_jp2' title.lccn issue.date_issued issue.edition page.sequence %}" download="{{ title.lccn }}-{{ issue.date_issued|date:"Ymd" }}.jp2">
                   <span class="visible-desktop">JP2 ({{image_size}})</span>
                   <i class="icon-picture"></i>
 	      </a>
@@ -158,10 +158,10 @@
 	 data-static_url="{% static '' %}images/",
 	 data-width="{{page.jp2_width}}"
 	 data-height="{{page.jp2_length}}"
-	 data-page_url="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}"
+	 data-page_url="{% url 'openoni_page' title.lccn issue.date_issued issue.edition page.sequence %}"
 	 data-tile_url="/images/tiles/{{issue.batch.name}}/data/{{page.jp2_filename}}/"
-	 data-coordinates_url="{% url 'chronam_page_coordinates' page.issue.title.lccn page.issue.date_issued page.issue.edition page.sequence %}"
-	 data-navigation_url="{% url 'chronam_search_pages_navigation' %}?"
+	 data-coordinates_url="{% url 'openoni_page_coordinates' page.issue.title.lccn page.issue.date_issued page.issue.edition page.sequence %}"
+	 data-navigation_url="{% url 'openoni_search_pages_navigation' %}?"
 	 ></div>
 
     <script src="{% static 'js/page.js' %}"></script>

@@ -18,13 +18,13 @@
     {% for reel in reels %}
     <tr class="{% cycle 'lightGray' 'white' %}">
         <td>
-            <a href="{% url 'chronam_batch' reel.batch.name %}">
+            <a href="{% url 'openoni_batch' reel.batch.name %}">
                 {{ reel.batch.name }}
             </a>
         </td>
         <td>
             {% for title in reel.titles %}
-            <a href="{% url 'chronam_title' title.lccn %}">{{ title.display_name }} ({{title.lccn}})</a> 
+            <a href="{% url 'openoni_title' title.lccn %}">{{ title.display_name }} ({{title.lccn}})</a> 
             {% endfor %}
         </td>
 	<td>{{ reel.title_range }}</td>

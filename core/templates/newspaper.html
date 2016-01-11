@@ -9,20 +9,20 @@
 
 {% block extrahead %}
 <link rel="primaryTopic" href="{{ title.abstract_url }}" />
-<link rel="resourcemap" type="application/rdf+xml" href="{% url 'chronam_title_dot_rdf' title.lccn %}" title="ORE Resource Map" />
-<link rel="alternate" type="application/marc+xml" href="{% url 'chronam_title_marcxml' title.lccn %}" title="MARCXML Record for {{ title.display_name }}" />
-<link rel="alternate" type="application/atom+xml" href="{% url 'chronam_title_atom' title.lccn %}" title="Update Feed for {{ title.display_name }}" />
+<link rel="resourcemap" type="application/rdf+xml" href="{% url 'openoni_title_dot_rdf' title.lccn %}" title="ORE Resource Map" />
+<link rel="alternate" type="application/marc+xml" href="{% url 'openoni_title_marcxml' title.lccn %}" title="MARCXML Record for {{ title.display_name }}" />
+<link rel="alternate" type="application/atom+xml" href="{% url 'openoni_title_atom' title.lccn %}" title="Update Feed for {{ title.display_name }}" />
 
 {% endblock %}
 
 {% block download_links %}
 {
-    link: '{% url 'chronam_title_marcxml' title.lccn %}',
+    link: '{% url 'openoni_title_marcxml' title.lccn %}',
     label: 'application/marc+xml',
     meta: 'MARCXML Record for {{ title.display_name }}',
 },
 {
-    link: '{% url 'chronam_title_atom' title.lccn %}',
+    link: '{% url 'openoni_title_atom' title.lccn %}',
     label: 'application/atom+xml',
     meta: 'Update Feed for {{ title.display_name }}',
 },
@@ -39,8 +39,8 @@
 
 {% block page_nav %} 
 <div id="page_nav">
-{% if title.has_issues %}<a id="page_nav_issues" href="{% url 'chronam_issues' title.lccn %}">Browse Issues</a> | {% endif %}
-<a id="page_nav_title" href="{% url 'chronam_title' title.lccn %}">About</a> | <a id="page_nav_holdings" href="{% url 'chronam_title_holdings' title.lccn %}">Libraries that Have It</a> | <a id="page_nav_marc" href="{% url 'chronam_title_marc' title.lccn %}">MARC Record</a></div> 
+{% if title.has_issues %}<a id="page_nav_issues" href="{% url 'openoni_issues' title.lccn %}">Browse Issues</a> | {% endif %}
+<a id="page_nav_title" href="{% url 'openoni_title' title.lccn %}">About</a> | <a id="page_nav_holdings" href="{% url 'openoni_title_holdings' title.lccn %}">Libraries that Have It</a> | <a id="page_nav_marc" href="{% url 'openoni_title_marc' title.lccn %}">MARC Record</a></div> 
 {% endblock %}
 
 <div id="std_box"> 
