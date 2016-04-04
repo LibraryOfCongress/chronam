@@ -19,5 +19,3 @@ django-kombu
 worldcat
 
 
-#git+https://api.github.com/repos/loc-rdc/django-lc/tarball/master?access_token=cd5e29f936fac49126f0c780d1b8be3611081b82#egg=lc
-#pip install https://api.github.com/repos/loc-rdc/minicts/tarball/master?access_token=cd5e29f936fac49126f0c780d1b8be3611081b82#egg=minicts
