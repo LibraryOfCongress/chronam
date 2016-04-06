@@ -49,7 +49,7 @@ def batches_atom(request, page_number=1):
     page = paginator.page(page_number)
     return render_to_response('reports/batches.xml', dictionary=locals(),
                               context_instance=RequestContext(request),
-                              mimetype='application/atom+xml')
+                              content_type='application/atom+xml')
 
 
 @cors
@@ -69,7 +69,7 @@ def batches_json(request, page_number=1):
     if page.has_previous():
         url_prev = urlresolvers.reverse('chronam_batches_json_page', args=[page.previous_page_number()])
         j['previous'] = "http://" + host + url_prev
-    return HttpResponse(json.dumps(j, indent=2), mimetype='application/json')
+    return HttpResponse(json.dumps(j, indent=2), content_type='application/json')
 
 
 @cache_page(settings.API_TTL_SECONDS)
@@ -133,7 +133,7 @@ def batch_rdf(request, batch_name):
     graph = batch_to_graph(batch)
     response = HttpResponse(graph.serialize(base=_rdf_base(request),
                                             include_base=True),
-                            mimetype='application/rdf+xml')
+                            content_type='application/rdf+xml')
     return response
 
 
@@ -142,7 +142,7 @@ def batch_rdf(request, batch_name):
 def batch_json(request, batch_name):
     batch = get_object_or_404(models.Batch, name=batch_name)
     host = request.get_host()
-    return HttpResponse(batch.json(host=host), mimetype='application/json')
+    return HttpResponse(batch.json(host=host), content_type='application/json')
 
 
 @cors
@@ -150,7 +150,7 @@ def batch_json(request, batch_name):
 def title_json(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
     host = request.get_host()
-    return HttpResponse(title.json(host=host), mimetype='application/json')
+    return HttpResponse(title.json(host=host), content_type='application/json')
 
 
 @cors
@@ -159,7 +159,7 @@ def issue_pages_json(request, lccn, date, edition):
     title, issue, page = _get_tip(lccn, date, edition)
     host = request.get_host()
     if issue:
-        return HttpResponse(issue.json(host=host), mimetype='application/json')
+        return HttpResponse(issue.json(host=host), content_type='application/json')
     else:
         return HttpResponseNotFound()
 
@@ -170,7 +170,7 @@ def page_json(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     host = request.get_host()
     if page:
-        return HttpResponse(page.json(host=host), mimetype='application/json')
+        return HttpResponse(page.json(host=host), content_type='application/json')
     else:
         return HttpResponseNotFound()
 
@@ -215,7 +215,7 @@ def events_atom(request, page_number=1):
     page_range_short = list(_page_range_short(paginator, page))
     return render_to_response('reports/events.xml', dictionary=locals(),
                               context_instance=RequestContext(request),
-                              mimetype='application/atom+xml')
+                              content_type='application/atom+xml')
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -236,7 +236,7 @@ def states(request, format='html'):
         states = [n[0] for n in cursor.fetchall()]
         states.extend(non_states)
         return HttpResponse(json.dumps(states),
-                            mimetype='application/json')
+                            content_type='application/json')
     states = [n[0] for n in cursor.fetchall()]
     return render_to_response('reports/states.html', dictionary=locals(),
                               context_instance=RequestContext(request))
@@ -255,7 +255,7 @@ def counties_in_state(request, state, format='html'):
 
     if format == 'json':
         return HttpResponse(json.dumps(county_names),
-                            mimetype='application/json')
+                            content_type='application/json')
     counties = [name for name in county_names]
     if len(counties) == 0:
         raise Http404
@@ -295,7 +295,7 @@ def cities_in_county(request, state, county, format='html'):
         raise Http404
     if format == 'json':
         return HttpResponse(json.dumps(cities),
-                            mimetype='application/json')
+                            content_type='application/json')
     return render_to_response('reports/cities.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
@@ -315,7 +315,7 @@ def cities_in_state(request, state, format='html'):
         raise Http404
     if format == 'json':
         return HttpResponse(json.dumps(cities),
-                            mimetype='application/json')
+                            content_type='application/json')
     return render_to_response('reports/cities.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
@@ -396,7 +396,7 @@ def awardees_json(request):
         awardees['awardees'].append(a)
 
     return HttpResponse(json.dumps(awardees, indent=2),
-                        mimetype='application/json')
+                        content_type='application/json')
 
 
 @cache_page(settings.API_TTL_SECONDS)
@@ -417,7 +417,7 @@ def awardee_json(request, institution_code):
     j['batches'] = []
     for batch in awardee.batches.all():
         j['batches'].append({"name": batch.name, "url": 'http://' + host + batch.json_url})
-    return HttpResponse(json.dumps(j, indent=2), mimetype='application/json')
+    return HttpResponse(json.dumps(j, indent=2), content_type='application/json')
 
 
 @cache_page(settings.API_TTL_SECONDS)
@@ -427,7 +427,7 @@ def awardee_rdf(request, institution_code):
     graph = awardee_to_graph(awardee)
     response = HttpResponse(graph.serialize(base=_rdf_base(request),
                                             include_base=True),
-                            mimetype='application/rdf+xml')
+                            content_type='application/rdf+xml')
     return response
 
 
@@ -467,7 +467,7 @@ def batch_summary(request, format='html'):
     if format == 'txt':
         return render_to_response('reports/batch_summary.txt', dictionary=locals(),
                                   context_instance=RequestContext(request),
-                                  mimetype="text/plain")
+                                  content_type="text/plain")
     return render_to_response('reports/batch_summary.html',
                               dictionary=locals(),
                               context_instance=RequestContext(request))
@@ -537,7 +537,7 @@ def ocr_atom(request):
         last_updated = datetime.datetime.now()
     return render_to_response('reports/ocr.xml', dictionary=locals(),
                               context_instance=RequestContext(request),
-                              mimetype='application/atom+xml')
+                              content_type='application/atom+xml')
 
 
 @cors
@@ -547,7 +547,7 @@ def ocr_json(request):
     host = request.get_host()
     for dump in models.OcrDump.objects.all().order_by("-created"):
         j["ocr"].append(dump.json(host=host, serialize=False))
-    return HttpResponse(json.dumps(j, indent=2), mimetype="application/json")
+    return HttpResponse(json.dumps(j, indent=2), content_type="application/json")
 
 
 @cache_page(settings.API_TTL_SECONDS)

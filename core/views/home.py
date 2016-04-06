@@ -58,7 +58,7 @@ def frontpages(request, date):
     except ValueError:
         raise Http404
     results = _frontpages(request, date)
-    return HttpResponse(json.dumps(results), mimetype="application/json")
+    return HttpResponse(json.dumps(results), content_type="application/json")
 
 
 def tabs(request, date=None):

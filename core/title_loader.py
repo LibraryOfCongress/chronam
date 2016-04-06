@@ -256,7 +256,8 @@ class TitleLoader(object):
             # hack to remove --None-- when county isn't present
             name = sub('--None', '', name)
             place, created = models.Place.objects.get_or_create(name=name)
-            if created:
+            # adding HG to the place object
+            if not place.city:
                 place.country = country
                 place.state = state
                 place.county = county

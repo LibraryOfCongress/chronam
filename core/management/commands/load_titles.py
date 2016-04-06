@@ -48,6 +48,7 @@ class Command(BaseCommand):
             # need to index any titles that we just created
             _logger.info("indexing new titles")
             index_titles(since=self.xml_start)
+
         
         return results
 
