@@ -20,12 +20,12 @@ from chronam.core.utils.utils import _page_range_short
 def search_pages_paginator(request):
     # front page only
     try:
-        sequence = int(request.REQUEST.get('sequence', '0'))
+        sequence = int(request.GET.get('sequence', '0'))
     except ValueError, e:
         sequence = 0
     # set results per page value
     try:
-        rows = int(request.REQUEST.get('rows', '20'))
+        rows = int(request.GET.get('rows', '20'))
     except ValueError, e:
         rows = 20
     q = request.GET.copy()

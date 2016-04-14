@@ -27,12 +27,12 @@ def newspapers(request, state=None, format='html'):
         else:
             state = state.title()
     else:
-        state = request.REQUEST.get('state', None)
+        state = request.GET.get('state', None)
 
-    language = request.REQUEST.get('language', None)
+    language = request.GET.get('language', None)
     if language:
         language_display = models.Language.objects.get(code__contains=language).name
-    ethnicity = request.REQUEST.get('ethnicity', None)
+    ethnicity = request.GET.get('ethnicity', None)
 
     if not state and not language and not ethnicity:
         page_title = 'All Digitized Newspapers'
@@ -197,7 +197,7 @@ def search_titles_results(request):
         return response
  
     try:
-        curr_page = int(request.REQUEST.get('page', 1))
+        curr_page = int(request.GET.get('page', 1))
     except ValueError, e:
         curr_page = 1
 
@@ -211,7 +211,7 @@ def search_titles_results(request):
     page_range_short = list(_page_range_short(paginator, page))
 
     try:
-        rows = int(request.REQUEST.get('rows', '20'))
+        rows = int(request.GET.get('rows', '20'))
     except ValueError, e:
         rows = 20
 
