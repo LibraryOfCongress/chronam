@@ -73,7 +73,7 @@ def search_pages_results(request, view_type='gallery'):
         return render_to_response('search_pages_results.xml',
                                   dictionary=locals(),
                                   context_instance=RequestContext(request),
-                                  mimetype='application/atom+xml')
+                                  content_type='application/atom+xml')
     elif format == 'json':
         results = {
             'startIndex': start,
@@ -88,7 +88,7 @@ def search_pages_results(request, view_type='gallery'):
         # jsonp?
         if request.GET.get('callback') is not None:
             json_text = "%s(%s);" % (request.GET.get('callback'), json_text)
-        return HttpResponse(json_text, mimetype='application/json')
+        return HttpResponse(json_text, content_type='application/json')
     page_range_short = list(_page_range_short(paginator, page))
     # copy the current request query without the page and sort
     # query params so we can construct links with it in the template
@@ -137,7 +137,7 @@ def search_titles(request):
 def search_titles_opensearch(request):
     host = request.get_host()
     return render_to_response('search_titles_opensearch.xml',
-                              mimetype='application/opensearchdescription+xml',
+                              content_type='application/opensearchdescription+xml',
                               dictionary=locals(),
                               context_instance=RequestContext(request))
 
@@ -146,7 +146,7 @@ def search_titles_opensearch(request):
 def search_pages_opensearch(request):
     host = request.get_host()
     return render_to_response('search_pages_opensearch.xml',
-                              mimetype='application/opensearchdescription+xml',
+                              content_type='application/opensearchdescription+xml',
                               dictionary=locals(),
                               context_instance=RequestContext(request))
 
@@ -181,7 +181,7 @@ def suggest_titles(request):
     # jsonp?
     if request.GET.get("callback") is not None:
         json_text = "%s(%s);" % (json.GET.get("callback"), json_text)
-    return HttpResponse(json_text, mimetype='application/x-suggestions+json')
+    return HttpResponse(json_text, content_type='application/x-suggestions+json')
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -206,7 +206,7 @@ def search_pages_navigation(request):
     search['previous_result'] = paginator.previous_result
     search['next_result'] = paginator.next_result
 
-    return HttpResponse(json.dumps(search), mimetype="application/json")
+    return HttpResponse(json.dumps(search), content_type="application/json")
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
