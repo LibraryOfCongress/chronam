@@ -80,7 +80,7 @@ def newspapers(request, state=None, format='html'):
         return render_to_response("newspapers.txt",
                                   dictionary=locals(),
                                   context_instance=RequestContext(request),
-                                  mimetype="text/plain")
+                                  content_type="text/plain")
     elif format == "csv":
         csv_header_labels = ('Persistent Link', 'State', 'Title', 'LCCN', 'OCLC', 
                              'ISSN', 'No. of Issues', 'First Issue Date', 
@@ -114,7 +114,7 @@ def newspapers(request, state=None, format='html'):
                     "state": state
                 })
 
-        return HttpResponse(json.dumps(results, indent=2), mimetype='application/json')
+        return HttpResponse(json.dumps(results, indent=2), content_type='application/json')
     else:
         return HttpResponseServerError("unsupported format: %s" % format)
 
@@ -140,7 +140,7 @@ def newspapers_atom(request):
 
     host = request.get_host()
     return render_to_response("newspapers.xml", dictionary=locals(),
-                              mimetype="application/atom+xml",
+                              content_type="application/atom+xml",
                               context_instance=RequestContext(request))
 
 
@@ -237,7 +237,7 @@ def search_titles_results(request):
         return render_to_response('search_titles_results.xml',
                                   dictionary=locals(),
                                   context_instance=RequestContext(request),
-                                  mimetype='application/atom+xml')
+                                  content_type='application/atom+xml')
 
     elif format == 'json':
         results = {
@@ -254,7 +254,7 @@ def search_titles_results(request):
         # jsonp?
         if request.GET.get('callback') is not None:
             json_text = "%s(%s);" % (request.GET.get('callback'), json_text)
-        return HttpResponse(json_text, mimetype='application/json')
+        return HttpResponse(json_text, content_type='application/json')
 
 
     sort = request.GET.get('sort', 'relevance')
