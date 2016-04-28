@@ -26,10 +26,11 @@ class CTSTest(TestCase):
         bag = bags[0]
         self.assertTrue(bag.data['id'])
 
-    def test_bag_instances(self):
+    def testing_bag_instances(self):
         cts = CTS(settings.CTS_USERNAME, settings.CTS_PASSWORD, settings.CTS_URL)
         project = cts.get_project(settings.CTS_PROJECT_ID)
         bag = list(project.get_bags())[0]
+
 
         instances = list(bag.get_bag_instances())
         self.assertTrue(len(instances) > 0)

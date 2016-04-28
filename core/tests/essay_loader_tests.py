@@ -9,14 +9,14 @@ from chronam.core.essay_loader import load_essay, purge_essay
 from chronam.core.models import Essay, Title
 
 class EssayLoaderTests(TestCase):
-    fixtures = ['countries.json', 'essay_titles.json']
+    fixtures = ['countries.json', 'essay_titles.json', 'awardee.json']
 
     def test_essay_feed(self):
         feed = feedparser.parse(settings.ESSAYS_FEED)
         self.assertTrue(len(feed.entries) > 0)
 
     def test_load_essay(self):
-        e = load_essay('http://ndnp-essays.rdc.lctl.gov/essay/3/', index=False)
+        e = load_essay('http://rdccavld04.loctest.gov/essay/3/', index=False)
         self.assertTrue(isinstance(e, Essay))
 
         # is it in the db now?
@@ -31,7 +31,7 @@ class EssayLoaderTests(TestCase):
         self.assertEqual(essay.created, datetime.datetime(2007, 1, 19, 9, 0))
         self.assertTrue(type(essay.modified), datetime.datetime)
         self.assertEqual(essay.url, '/essays/3/')
-        self.assertEqual(essay.essay_editor_url, 'http://ndnp-essays.rdc.lctl.gov/essay/3/')
+        self.assertEqual(essay.essay_editor_url, 'http://rdccavld04.loctest.gov/essay/3/')
         self.assertEqual(essay.creator.name, 'Library of Congress, Washington, DC')
         self.assertTrue('<a href="http://chroniclingamerica.loc.gov/lccn/sn82016211/"><cite>Indianapolis Freeman</cite></a>' in essay.html)
 
@@ -39,11 +39,11 @@ class EssayLoaderTests(TestCase):
         self.assertEqual(Essay.objects.all().count(), 0)
         num_titles = Title.objects.all().count()
 
-        load_essay('http://ndnp-essays.rdc.lctl.gov/essay/3/', index=False)
+        load_essay('http://rdccavld04.loctest.gov/essay/3/', index=False)
         self.assertEqual(Essay.objects.all().count(), 1)
 
         # purge it
-        purge_essay('http://ndnp-essays.rdc.lctl.gov/essay/3/', index=False)
+        purge_essay('http://rdccavld04.loctest.gov/essay/3/', index=False)
         self.assertEqual(Essay.objects.all().count(), 0)
 
         # same amount of titles (none should be deleted)

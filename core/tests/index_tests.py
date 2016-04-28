@@ -15,15 +15,15 @@ class IndexTests(TestCase):
 
     def test_page_search_lccn(self):
         self.assertEqual(page_search(Q('lccn=sn83030214'))[0], 
-            '+type:page +lccn:("sn83030214")')
+            '+type:page +lccn:(sn83030214)')
         self.assertEqual(page_search(Q('lccn=sn83030214&lccn=sn83030215'))[0],
-            '+type:page +lccn:("sn83030214" "sn83030215")')
+            '+type:page +lccn:(sn83030214 sn83030215)')
 
     def test_page_search_state(self):
         self.assertEqual(page_search(Q('state=California'))[0],
-            '+type:page +state:("California")')
+            '+type:page +state:(California)')
         self.assertEqual(page_search(Q('state=California&state=New Jersey'))[0],
-            '+type:page +state:("California" "New Jersey")')
+            '+type:page +state:(California New Jersey)')
 
     def test_page_search_year(self):
         self.assertEqual(page_search(Q('dateFilterType=year&year=1900'))[0], 
@@ -35,12 +35,12 @@ class IndexTests(TestCase):
             '+type:page +date:[19011025 TO 19011031]')
 
     def test_page_search_ortext(self):
-        q = ' OR '.join(['%s:("apples" "oranges")' % lang for lang in self.ocr_langs])
-        self.assertEqual(page_search(Q('ortext=apples%20oranges'))[0], u'+type:page +((ocr:("apples" "oranges")^10000 ) OR %s )' % q)
+        q = ' OR '.join(['%s:(apples oranges)' % lang for lang in self.ocr_langs])
+        self.assertEqual(page_search(Q('ortext=apples%20oranges'))[0], u'+type:page +((ocr:(apples oranges)^10000 ) OR %s )' % q)
 
     def test_page_search_andtext(self):
-        q = ' OR '.join(['%s:(+"apples" +"oranges")' % lang for lang in self.ocr_langs])
-        self.assertEqual(page_search(Q('andtext=apples%20oranges'))[0], u'+type:page +((ocr:(+"apples" +"oranges")^10000 ) OR %s )' % q)
+        q = ' OR '.join(['%s:(+apples +oranges)' % lang for lang in self.ocr_langs])
+        self.assertEqual(page_search(Q('andtext=apples%20oranges'))[0], u'+type:page +((ocr:(+apples +oranges)^10000 ) OR %s )' % q)
 
     def test_page_search_phrase(self):
         q = ' OR '.join(['%s:"new york yankees"' % lang for lang in self.ocr_langs])

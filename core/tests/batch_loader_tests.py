@@ -10,14 +10,14 @@ from chronam.core.models import Batch
 
 
 class BatchLoaderTest(TestCase):
-    fixtures = ['countries.json', 'titles.json']
+    fixtures = ['countries.json', 'titles.json', 'awardee.json']
 
     def test_fixture(self):
         title = Title.objects.get(lccn = 'sn83030214')
         self.assertEqual(title.name, 'New-York tribune.')
 
     def test_load_batch(self):
-        batch_dir = '/vol/ndnp/chronam/batches/dlc/batch_dlc_jamaica_ver01/'
+        batch_dir = '/service/ndnp/dlc/batch_dlc_jamaica_ver01/'
         self.assertTrue(os.path.isdir(batch_dir))
         loader = BatchLoader(process_ocr=False)
         batch = loader.load_batch(batch_dir)
@@ -84,6 +84,7 @@ class BatchLoaderTest(TestCase):
         f = os.path.join(os.path.dirname(chronam.core.__file__), 'test-data', 
             'ocr.txt')
         self.assertEqual(solr_doc['ocr_eng'], file(f).read().decode('utf-8'))
+
 
         # purge the batch and make sure it's gone from the db
         loader.purge_batch('batch_dlc_jamaica_ver01')

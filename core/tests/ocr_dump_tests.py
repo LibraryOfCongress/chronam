@@ -13,7 +13,7 @@ settings.OCR_DUMP_STORAGE = "/tmp/test_ocr_dumps"
 dumps_dir = settings.OCR_DUMP_STORAGE
 
 class OcrDumpTests(TestCase):
-    fixtures = ["titles", "jamaica_sample"]
+    fixtures = ["titles.json", "jamaica_sample.json", "countries.json", "awardee.json"]
 
     def setUp(self):
         if os.path.isdir(dumps_dir):
@@ -23,7 +23,8 @@ class OcrDumpTests(TestCase):
         # create symlink if necessary
         link = os.path.join(settings.BATCH_STORAGE, "batch_dlc_jamaica_ver01")
         if not os.path.islink(link):
-            os.symlink("/vol/ndnp/chronam/batches/dlc/batch_dlc_jamaica_ver01", link)
+            #os.symlink("/vol/ndnp/chronam/batches/dlc/batch_dlc_jamaica_ver01", link)
+            os.symlink("/service/ndnp/dlc/batch_dlc_jamaica_ver01", link)
 
     def tearDown(self):
         pass #shutil.rmtree(dumps_dir)
