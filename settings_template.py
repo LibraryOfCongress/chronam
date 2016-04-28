@@ -39,6 +39,10 @@ DATABASES = {
         'NAME': 'chronam',
         'USER': 'chronam',
         'PASSWORD': 'pick_one',
+        'TEST': {
+            'CHARSET': "utf8",
+            'COLLATION': "utf8_general_ci"
+        }
         }
     }
 
@@ -89,7 +93,8 @@ FEED_TTL_SECONDS = 60 * 60 * 24 * 7
 
 USE_TIFF = False
 
-ESSAYS_FEED = "http://ndnp-essays.rdc.lctl.gov/feed/"
+
+ESSAYS_FEED = "http://essays.loc.gov/feed/"
 
 CACHES = {
     'default': {
