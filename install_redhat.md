@@ -6,11 +6,14 @@ RHEL, tested with Red Hat Enterprise Linux Server release 6.4 (Santiago).
 
 Enable Extra Packages if you need to (for example, you're using RHEL6 on EC2:
 
-    sudo rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+    sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+    sudo rpm -Uvh http://dl.iuscommunity.org/pub/ius/stable/CentOS/6/x86_64/ius-release-1.0-14.ius.centos6.noarch.rpm
 
 Install system dependencies:
 
-    sudo yum install mysql-server mysql-devel httpd python-virtualenv gcc libxml2-devel libxslt-devel libjpeg-devel zlib-devel mod_wsgi java-1.6.0-openjdk-devel git
+    sudo yum install mysql-server mysql-devel httpd python27 python27-devel python27-setuptools gcc libxml2-devel libxslt-devel libjpeg-devel zlib-devel mod_wsgi java-1.7.0-openjdk-devel git
+    easy_install-2.7 pip
+    pip2.7 install virtualenv
 
 When you install mysql-server, you will be prompted for a root password. If
 you choose one, make a note of what it is. Later you will be asked to enter
@@ -26,11 +29,11 @@ Get chronam
 Configure Solr
 --------------
 
-Download solr from a mirror site (tested with Solr 4.3 and 4.4, get the latest version)
+Download solr from a mirror site (tested with Solr 4.10, get the latest version)
 
-    wget http://archive.apache.org/dist/lucene/solr/4.4.0/solr-4.4.0.tgz
-    tar zxvf solr-4.4.0.tgz
-    sudo mv solr-4.4.0/example/ /opt/solr/
+    wget http://archive.apache.org/dist/lucene/solr/4.10.4/solr-4.10.4.tgz
+    tar zxvf solr-4.10.4.tgz
+    sudo mv solr-4.10.4/example/ /opt/solr/
     sudo cp /opt/chronam/conf/schema.xml /opt/solr/solr/collection1/conf/schema.xml
     sudo cp /opt/chronam/conf/solrconfig.xml /opt/solr/solr/collection1/conf/solrconfig.xml
 
