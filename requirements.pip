@@ -1,19 +1,19 @@
 Django==1.8.12
-MySQL-python
-lxml
-pymarc
-solrpy
-PILLOW
-simplejson
-feedparser
+MySQL-python==1.2.5
+lxml==3.6.0
+pymarc==3.1.1
+solrpy==0.9.7
+Pillow==3.2.0
+simplejson==3.8.2
+feedparser==5.2.1
 rfc3339==5
-mimeparse
-NativeImaging
+mimeparse==0.1.3
+NativeImaging==0.0.7
 html5lib==0.95
 rdflib==3.2.3
-requests
-django-celery
-django-kombu
-worldcat
+requests==2.9.1
+django-celery==3.1.17
+django-kombu==0.9.4
+worldcat==0.3.6
 
 
