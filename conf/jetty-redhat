@@ -1,4 +1,4 @@
-JAVA_HOME=/usr/lib/jvm/jre-1.6.0-openjdk.x86_64/
+JAVA_HOME=/opt/jdk1.8.0_72/
 JAVA_OPTIONS="-verbose:gc -Xms2g -Xmx2g -Xloggc:/logs/solr/gc.log -Dsolr.solr.home=/opt/solr/solr $JAVA_OPTIONS"
 JETTY_HOME=/opt/solr
 JETTY_USER=solr
