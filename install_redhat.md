@@ -11,9 +11,16 @@ Enable Extra Packages if you need to (for example, you're using RHEL6 on EC2:
 
 Install system dependencies:
 
-    sudo yum install mysql-server mysql-devel httpd python27 python27-devel python27-setuptools gcc libxml2-devel libxslt-devel libjpeg-devel zlib-devel mod_wsgi java-1.7.0-openjdk-devel git
+    sudo yum install mysql-server mysql-devel httpd python27 python27-devel python27-setuptools gcc libxml2-devel libxslt-devel libjpeg-devel zlib-devel mod_wsgi  git
     easy_install-2.7 pip
     pip2.7 install virtualenv
+
+    #Install java 8 JDK
+    cd /opt
+    sudo wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u72-b15/jdk-8u72-linux-x64.tar.gz"
+    sudo tar xzf jdk-8u72-linux-x64.tar.gz
+    export JAVA_HOME=/opt/jdk1.8.0_72
+
 
 When you install mysql-server, you will be prompted for a root password. If
 you choose one, make a note of what it is. Later you will be asked to enter
