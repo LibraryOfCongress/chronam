@@ -9,11 +9,12 @@ logger = logging.getLogger(__name__)
 
 class CTS(object):
 
-    def __init__(self, username, password, base_url):
+    def __init__(self, username, password, base_url, verify_ssl=True):
         self.auth = (username, password)
         self.base_url = base_url
         if not self.base_url.endswith("/"):
             self.base_url += "/"
+        self.verify_ssl = verify_ssl
 
     def get_project(self, project_id):
         """get a Project using its project_id e.g. "ndnp"
@@ -65,7 +66,8 @@ class CTS(object):
                              params=params,
                              data=data,
                              headers=headers,
-                             auth=self.auth)
+                             auth=self.auth,
+                             verify=self.verify_ssl)
 
         if r.status_code == 200:
             return json.loads(r.content)
