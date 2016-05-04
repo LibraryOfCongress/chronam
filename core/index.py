@@ -518,15 +518,15 @@ def query_join(values, field, and_clause=False):
     some value(s) extracted from form data
     """
 
- # escape solr chars
-    values = [solr_escape(v) for v in values]
-
     # might be single value or a list of values
     if not isinstance(values, list):
         values = [values]
 
+    # escape solr chars
+    values = [solr_escape(v) for v in values]
 
-
+    # quote values
+    values = ['"%s"' % v for v in values]
 
 
     # add + to the beginnging of each value if we are doing an AND clause
