@@ -133,7 +133,7 @@ available. You can use the wget command in the previous section to get get it.
 After that you should be able to:
 
     cd /opt/chronam/
-    django-admin.py test chronam.core.tests
+    django-admin.py test chronam.core.tests --settings=chronam.settings_test
 
 License
 -------
