@@ -128,7 +128,7 @@ via the Web:
 Run Unit Tests
 --------------
 
-For the unit tests to work you will need to have the batch_dlc_jamaica_ver01
+For the unit tests to work you will need to have the batch_uuml_thys_ver01
 available. You can use the wget command in the previous section to get get it.
 After that you should be able to:
 
