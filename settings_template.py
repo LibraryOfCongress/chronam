@@ -1,6 +1,4 @@
 import os
-import logging
-import subprocess
 
 def abs_path(path):
     import os
@@ -10,7 +8,6 @@ def abs_path(path):
 DIRNAME = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
 )
@@ -49,12 +46,6 @@ DATABASES = {
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'px2@!q2(m5alb$0=)h@u*80mmf9cd-nn**^y4j2j&+_8h^n_0f'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
-
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -62,14 +53,24 @@ MIDDLEWARE_CLASSES = (
     'chronam.core.middleware.TooBusyMiddleware',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'chronam.core.context_processors.extra_request_info',
-    'chronam.core.context_processors.newspaper_info',
-)
 
-TEMPLATE_DIRS = (
-    os.path.join(DIRNAME, 'templates'),
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(DIRNAME, 'templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'chronam.core.context_processors.extra_request_info',
+                'chronam.core.context_processors.newspaper_info',
+            ],
+            'debug' : DEBUG,
+        },
+    },
+]
+
 
 INSTALLED_APPS = (
     # 'lc',
