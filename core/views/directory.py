@@ -278,4 +278,4 @@ def newspapers_rdf(request):
     graph = titles_to_graph(titles)
     return HttpResponse(graph.serialize(base=_rdf_base(request),
                                         include_base=True),
-                        mimetype='application/rdf+xml')
+                        content_type='application/rdf+xml')

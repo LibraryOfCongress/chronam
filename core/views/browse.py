@@ -85,7 +85,7 @@ def title_rdf(request, lccn):
     graph = title_to_graph(title)
     response = HttpResponse(graph.serialize(base=_rdf_base(request),
                                             include_base=True),
-                            mimetype='application/rdf+xml')
+                            content_type='application/rdf+xml')
     return response
 
 
@@ -114,14 +114,14 @@ def title_atom(request, lccn, page_number=1):
 
     host = request.get_host()
     return render_to_response('title.xml', dictionary=locals(),
-                              mimetype='application/atom+xml',
+                              content_type='application/atom+xml',
                               context_instance=RequestContext(request))
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def title_marcxml(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
-    return HttpResponse(title.marc.xml, mimetype='application/marc+xml')
+    return HttpResponse(title.marc.xml, content_type='application/marc+xml')
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -166,7 +166,7 @@ def issue_pages_rdf(request, lccn, date, edition):
     graph = issue_to_graph(issue)
     response = HttpResponse(graph.serialize(base=_rdf_base(request),
                                             include_base=True),
-                            mimetype='application/rdf+xml')
+                            content_type='application/rdf+xml')
     return response
 
 
@@ -504,7 +504,7 @@ def page_ocr_txt(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     try:
         text = page.ocr.text
-        return HttpResponse(text, mimetype='text/plain')
+        return HttpResponse(text, content_type='text/plain')
     except models.OCR.DoesNotExist:
         raise Http404("No OCR for %s" % page)
 
@@ -516,7 +516,7 @@ def page_rdf(request, lccn, date, edition, sequence):
     graph = page_to_graph(page)
     response = HttpResponse(graph.serialize(base=_rdf_base(request),
                                             include_base=True),
-                            mimetype='application/rdf+xml')
+                            content_type='application/rdf+xml')
     return response
 
 
