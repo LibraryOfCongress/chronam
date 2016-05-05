@@ -3,7 +3,7 @@ chronam Ubuntu
 
 The following are instructions for installing system level dependencies on Ubuntu:
 
-    sudo apt-get install python-dev python-virtualenv mysql-server libmysqlclient-dev apache2 libapache2-mod-wsgi jetty openjdk-6-jdk libxml2-dev libxslt-dev libjpeg-dev git-core graphicsmagick
+    sudo apt-get install python-dev python-virtualenv mysql-server libmysqlclient-dev apache2 libapache2-mod-wsgi jetty openjdk-8-jdk libxml2-dev libxslt-dev libjpeg-dev git-core graphicsmagick
 
 When you install mysql-server, you will be prompted for a root password. If you choose one, make a note of what it is. Later you will be asked to enter the password when you create the database for the project.
 
@@ -21,9 +21,9 @@ Configure Solr
 
 Download Solr from a mirror site
 
-    wget http://archive.apache.org/dist/lucene/solr/4.4.0/solr-4.4.0.tgz
-    tar zxvf solr-4.4.0.tgz
-    sudo mv solr-4.4.0/example/ /opt/solr
+    wget http://apache.mirrors.lucidnetworks.net/lucene/solr/4.10.4/solr-4.10.4.tgz
+    tar zxvf solr-4.10.4.tgz
+    sudo mv solr-4.10.4/example/ /opt/solr
 
     sudo useradd -d /opt/solr -s /bin/bash solr
     sudo chown solr:solr -R /opt/solr
