@@ -1,10 +1,5 @@
 import os
 
-def abs_path(path):
-    import os
-    _root = os.path.abspath(os.path.dirname(__file__))
-    return os.path.join(_root, path)
-
 DIRNAME = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = True
@@ -36,10 +31,6 @@ DATABASES = {
         'NAME': 'chronam',
         'USER': 'chronam',
         'PASSWORD': 'pick_one',
-        'TEST': {
-            'CHARSET': "utf8",
-            'COLLATION': "utf8_general_ci"
-        }
         }
     }
 
@@ -73,9 +64,6 @@ TEMPLATES = [
 
 
 INSTALLED_APPS = (
-    # 'lc',
-    # 'chronam.example',
-    # 'chronam.loc',
     'django.contrib.humanize',
     'django.contrib.staticfiles',
     'djcelery',
@@ -121,8 +109,6 @@ TOO_BUSY_LOAD_AVERAGE = 64
 
 SOLR = "http://localhost:8983/solr"
 SOLR_LANGUAGES = ("eng", "fre", "spa", "ger", "ita",)
-
-DOCUMENT_ROOT = "/opt/chronam/static"
 
 STORAGE = '/opt/chronam/data/'
 STORAGE_URL = '/data/'
