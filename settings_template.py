@@ -111,7 +111,6 @@ SOLR = "http://localhost:8983/solr"
 SOLR_LANGUAGES = ("eng", "fre", "spa", "ger", "ita",)
 
 STORAGE = '/opt/chronam/data/'
-STORAGE_URL = '/data/'
 BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
 OCR_DUMP_STORAGE = os.path.join(STORAGE, "ocr")

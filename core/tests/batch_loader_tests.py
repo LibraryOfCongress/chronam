@@ -42,9 +42,6 @@ class BatchLoaderTest(TestCase):
         self.assertEqual(note.type, "agencyResponsibleForReproduction")
         self.assertEqual(note.text, "uuml")
 
-        # extract ocr data just for this page
-        loader.process_ocr(page, index=False)
-        #self.assertEqual(page.number, 1)
         self.assertEqual(page.sequence, 1)
         self.assertEqual(page.tiff_filename, 'sn83045396/print/1911091701/0001.tif')
         self.assertEqual(page.jp2_filename, 'sn83045396/print/1911091701/0001.jp2')
@@ -52,6 +49,9 @@ class BatchLoaderTest(TestCase):
         self.assertEqual(page.jp2_width, 6544)
         self.assertEqual(page.ocr_filename, 'sn83045396/print/1911091701/0001.xml')
         self.assertEqual(page.pdf_filename, 'sn83045396/print/1911091701/0001.pdf')
+
+        # extract ocr data just for this page
+        loader.process_ocr(page, index=False)
         self.assertTrue(page.ocr != None)
         self.assertTrue(len(page.ocr.text) > 0)
 
