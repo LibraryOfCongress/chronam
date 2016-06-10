@@ -50,7 +50,7 @@
     <td>{{ p.reel__number }}</td>
     <td><a href="{% url 'chronam_language_title_pages' language batch p.issue__title__lccn %}">{{ p.issue__title__lccn }}</a></td>
     <td>{{ p.issue__date_issued }}</td>
-    <td><a href="{% url 'chronam_page p.issue__title__lccn' p.issue__date_issued p.issue__edition p.sequence  %}">{{ p.sequence }}</a></td>
+    <td><a href="{% url 'chronam_page' p.issue__title__lccn p.issue__date_issued p.issue__edition p.sequence  %}">{{ p.sequence }}</a></td>
   </tr>
 {% endif %}
 
