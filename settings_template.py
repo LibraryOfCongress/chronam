@@ -67,11 +67,11 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'django.contrib.staticfiles',
     'djcelery',
-    'djkombu',
+    'kombu.transport.django',
     'chronam.core',
 )
 
-BROKER_TRANSPORT = "django"
+BROKER_URL = 'django://'
 
 THUMBNAIL_WIDTH = 360
 
@@ -125,3 +125,5 @@ TOPICS_SUBJECT_URL = '/topicsSubject.html'
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['*']
+import djcelery
+djcelery.setup_loader()
