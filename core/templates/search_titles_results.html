@@ -20,10 +20,12 @@
         $("#sort_select option[value='{{sort}}']").attr("selected", true);
         $("#rpp_select option[value='{{rows}}']").attr("selected", true);
         $("#rpp_select").change(function(){
-            window.location=setUrlVar('rows', this.value);
+            window.location = $.param.querystring(location.href,
+                                             {'rows': this.value});
         });
         $("#sort_select").change(function(){
-            window.location=setUrlVar('sort', this.value);
+            window.location = $.param.querystring(location.href,
+                                            {"sort": this.value});
         });
         $("#cancel_state_filter").on("click", function(e) {
                 window.location=$.param.querystring(location.href, 
