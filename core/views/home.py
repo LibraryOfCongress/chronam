@@ -63,7 +63,7 @@ def frontpages(request, date):
 
 def tabs(request, date=None):
     params = request.GET if request.GET else None
-    form = forms.SearchPagesForm()
+    form = forms.SearchPagesForm(params)
     adv_form = forms.AdvSearchPagesForm(params)
     context = RequestContext(request, {'search_form': form,
                                        'adv_search_form': adv_form})
