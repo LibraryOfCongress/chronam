@@ -156,7 +156,9 @@ class AdvSearchPagesForm(SearchPagesForm):
         self.fields["sequence"].widget.attrs = {"id": "id_char_sequence", "size": "3"}
         self.fields["proxtext"].widget.attrs["id"] = "id_proxtext_adv"
         lang_choices = [("", "All"), ]
-        lang_choices.extend((l, models.Language.objects.get(code=l).name) for l in settings.SOLR_LANGUAGES)
+        #this needs be languages with digitized pages
+        langs = models.LanguageText.objects.values_list('language_id', flat=True).distinct()
+        lang_choices.extend((l, models.Language.objects.get(code=l).name) for l in langs)
         self.fields["language"].choices = lang_choices
 
 
