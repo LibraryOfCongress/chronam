@@ -76,20 +76,12 @@
         }, 
         format: function(s) { 
             // format your data for normalization
-            s = $.trim(s)  //Make sure there are no leading spaces
-            if (s.indexOf('The ') === 0)
-                { 
-                s = s.replace("The ", ''); 
-                } 
-            else if (s.indexOf("A ") === 0)
-                { 
-                s = s.replace("A ", '');
-                }   
-            else if (s.indexOf("An ") === 0)
-                {
-                s = s.replace("An ", '');
-                } 
-            return s; 
+            s = $.trim(s)     //Make sure there are no leading spaces
+            re = /(^The\s+)|(A\s+)|(An\s+)/gi;
+            if (s.match(re) != null) {
+                s = s.replace(re,'');
+             }
+            return s.toLowerCase();
         }, 
         type: 'text' 
     }); 
@@ -98,7 +90,7 @@
         $("#newspapers").tablesorter({ 
             headers: { 
                 {% if state %}0: { sorter: false},{% endif %}
-                1: { sorter: 'titles' },
+                1: {sorter: 'titles'},
                 2: { sorter: false }, 
                 6: { sorter: false } 
             }, 
