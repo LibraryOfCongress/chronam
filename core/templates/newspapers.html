@@ -77,7 +77,7 @@
         format: function(s) { 
             // format your data for normalization
             s = $.trim(s)     //Make sure there are no leading spaces
-            re = /(^The\s+)|(A\s+)|(An\s+)/gi;
+            re = /(^The\s+)|(^A\s+)|(^An\s+)/gi;
             if (s.match(re) != null) {
                 s = s.replace(re,'');
              }
