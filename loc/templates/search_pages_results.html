@@ -8,6 +8,7 @@
 <script type="text/javascript">
 
 jQuery(function($){
+    $.ajaxSettings.traditional = true;
     $("#sort_select option[value='{{sort}}']").attr("selected", true);
     $("#rpp_select option[value='{{rows}}']").attr("selected", true);
     if ($.deparam.querystring().sequence == 1){ 
@@ -142,17 +143,17 @@ if ($.browser.msie && $.browser.version < 7) {
         <strong>&ldquo;{{ part }}&rdquo;</strong>
         {% if not forloop.last %}<em>and</em>{% endif %}
         {% endfor %}
-        {% if request.REQUEST.date1 and request.REQUEST.date2 %}
-              &nbsp for date range {{ request.REQUEST.date1 }} -
-                  {{ request.REQUEST.date2 }}
+        {% if request.GET.date1 and request.GET.date2 %}
+              &nbsp for date range {{ request.GET.date1 }} -
+                  {{ request.GET.date2 }}
               <a href="#" id="cancel_date_filter"><img src="{% static 'images/btn_remove.png' %}" title="clear date filter" alt="remove date filter"/></a>
         {% endif %}
-        {% if request.REQUEST.state %}
-              &nbsp for states {{ request.REQUEST.state }} 
+        {% if request.GET.state %}
+              &nbsp for states {{ request.GET.state }}
               <a href="#" id="cancel_state_filter"><img src="{% static 'images/btn_remove.png' %}" title="clear state filter" alt="remove state filter"/></a>
         {% endif %}
-        {% if request.REQUEST.county %}
-              &nbsp for counties {{ request.REQUEST.county }}
+        {% if request.GET.county %}
+              &nbsp for counties {{ request.GET.county }}
               <a href="#" id="cancel_county_filter"><img src="{% static 'images/btn_remove.png' %}" title="clear county filter" alt="remove county filter"/></a>
         {% endif %}
         </p> 

@@ -612,7 +612,7 @@ class Page(models.Model):
     ocr_filename = models.CharField(max_length=250, null=True)
     issue = models.ForeignKey('Issue', related_name='pages')
     reel = models.ForeignKey('Reel', related_name='pages', null=True)
-    indexed = models.BooleanField()
+    indexed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
     def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
@@ -1228,7 +1228,7 @@ class OcrDump(models.Model):
         info.mtime = time.time()
         tar.addfile(info, open(page.ocr_abs_filename))
 
-        logging.info("added %s to %s" % (page, tar.name))
+        logging.info("added %s to %s" % (unicode(page), tar.name))
 
     def delete(self, *args, **kwargs):
         # clean up file off of filesystem

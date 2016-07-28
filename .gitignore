@@ -6,3 +6,4 @@ data/batches
 data/ocr
 data/word_coordinates
 .static-media/
+.vagrant/

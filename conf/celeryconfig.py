@@ -8,9 +8,6 @@ from chronam.settings import *
 
 APP_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
-BROKER_BACKEND = "djkombu.transport.DatabaseTransport"
-
-INSTALLED_APPS += ("djkombu", "djcelery" )
 
 CELERY_IMPORTS = ("chronam.core.tasks",)
 CELERYD_LOG_FILE = os.path.join("/logs/celery", "celery.log")

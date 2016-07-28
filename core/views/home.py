@@ -58,12 +58,12 @@ def frontpages(request, date):
     except ValueError:
         raise Http404
     results = _frontpages(request, date)
-    return HttpResponse(json.dumps(results), mimetype="application/json")
+    return HttpResponse(json.dumps(results), content_type="application/json")
 
 
 def tabs(request, date=None):
     params = request.GET if request.GET else None
-    form = forms.SearchPagesForm()
+    form = forms.SearchPagesForm(params)
     adv_form = forms.AdvSearchPagesForm(params)
     context = RequestContext(request, {'search_form': form,
                                        'adv_search_form': adv_form})

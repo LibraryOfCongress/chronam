@@ -27,12 +27,12 @@ def newspapers(request, state=None, format='html'):
         else:
             state = state.title()
     else:
-        state = request.REQUEST.get('state', None)
+        state = request.GET.get('state', None)
 
-    language = request.REQUEST.get('language', None)
+    language = request.GET.get('language', None)
     if language:
         language_display = models.Language.objects.get(code__contains=language).name
-    ethnicity = request.REQUEST.get('ethnicity', None)
+    ethnicity = request.GET.get('ethnicity', None)
 
     if not state and not language and not ethnicity:
         page_title = 'All Digitized Newspapers'
@@ -80,7 +80,7 @@ def newspapers(request, state=None, format='html'):
         return render_to_response("newspapers.txt",
                                   dictionary=locals(),
                                   context_instance=RequestContext(request),
-                                  mimetype="text/plain")
+                                  content_type="text/plain")
     elif format == "csv":
         csv_header_labels = ('Persistent Link', 'State', 'Title', 'LCCN', 'OCLC', 
                              'ISSN', 'No. of Issues', 'First Issue Date', 
@@ -114,7 +114,7 @@ def newspapers(request, state=None, format='html'):
                     "state": state
                 })
 
-        return HttpResponse(json.dumps(results, indent=2), mimetype='application/json')
+        return HttpResponse(json.dumps(results, indent=2), content_type='application/json')
     else:
         return HttpResponseServerError("unsupported format: %s" % format)
 
@@ -140,7 +140,7 @@ def newspapers_atom(request):
 
     host = request.get_host()
     return render_to_response("newspapers.xml", dictionary=locals(),
-                              mimetype="application/atom+xml",
+                              content_type="application/atom+xml",
                               context_instance=RequestContext(request))
 
 
@@ -197,7 +197,7 @@ def search_titles_results(request):
         return response
  
     try:
-        curr_page = int(request.REQUEST.get('page', 1))
+        curr_page = int(request.GET.get('page', 1))
     except ValueError, e:
         curr_page = 1
 
@@ -211,7 +211,7 @@ def search_titles_results(request):
     page_range_short = list(_page_range_short(paginator, page))
 
     try:
-        rows = int(request.REQUEST.get('rows', '20'))
+        rows = int(request.GET.get('rows', '20'))
     except ValueError, e:
         rows = 20
 
@@ -237,7 +237,7 @@ def search_titles_results(request):
         return render_to_response('search_titles_results.xml',
                                   dictionary=locals(),
                                   context_instance=RequestContext(request),
-                                  mimetype='application/atom+xml')
+                                  content_type='application/atom+xml')
 
     elif format == 'json':
         results = {
@@ -254,7 +254,7 @@ def search_titles_results(request):
         # jsonp?
         if request.GET.get('callback') is not None:
             json_text = "%s(%s);" % (request.GET.get('callback'), json_text)
-        return HttpResponse(json_text, mimetype='application/json')
+        return HttpResponse(json_text, content_type='application/json')
 
 
     sort = request.GET.get('sort', 'relevance')
@@ -278,4 +278,4 @@ def newspapers_rdf(request):
     graph = titles_to_graph(titles)
     return HttpResponse(graph.serialize(base=_rdf_base(request),
                                         include_base=True),
-                        mimetype='application/rdf+xml')
+                        content_type='application/rdf+xml')

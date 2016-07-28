@@ -50,13 +50,9 @@ First you will need to set up the local Python environment and install some
 Python dependencies:
 
     cd /opt/chronam/
-    virtualenv ENV
+    virtualenv -p /usr/bin/python2.7 ENV
     source /opt/chronam/ENV/bin/activate
-    cp conf/chronam.pth ENV/lib/python2.6/site-packages/chronam.pth
-
-(There is another small difference here between RedHat and Ubuntu, you may need to change the 2.6 above to a 2.7)
-
-    pip install -U distribute
+    cp conf/chronam.pth ENV/lib/python2.7/site-packages/chronam.pth
     pip install -r requirements.pip
 
 Next you need to create some directories for data:
@@ -91,7 +87,8 @@ everytime you log in.
 
 Next you will need to initialize database schema and load some initial data:
 
-    django-admin.py syncdb --noinput --migrate
+    django-admin.py migrate
+    django-admin.py loaddata initial_data
     django-admin.py chronam_sync --skip-essays
 
 And finally you will need to collect static files (stylesheets, images) 
@@ -115,7 +112,7 @@ download the batches. For example:
 
 In order to load data you will need to run the load_batch management command by
 passing it the full path to the batch directory. So assuming you have downloaded
-batch_dlc_jamaica_ver01 you will want to:
+batch_uuml_thys_ver01 you will want to:
 
     django-admin.py load_batch /opt/chronam/data/batches/batch_uuml_thys_ver01
 
@@ -131,12 +128,12 @@ via the Web:
 Run Unit Tests
 --------------
 
-For the unit tests to work you will need to have the batch_dlc_jamaica_ver01
+For the unit tests to work you will need to have the batch_uuml_thys_ver01
 available. You can use the wget command in the previous section to get get it.
 After that you should be able to:
 
     cd /opt/chronam/
-    django-admin.py test core
+    django-admin.py test chronam.core.tests --settings=chronam.settings_test
 
 License
 -------

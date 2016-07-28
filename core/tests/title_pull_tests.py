@@ -3,7 +3,7 @@ import logging
 import os
 
 from django.conf import settings
-from django.utils.unittest import skipUnless
+from unittest import skipUnless
 from django.test import TestCase
 from worldcat.util.extract import extract_elements
 

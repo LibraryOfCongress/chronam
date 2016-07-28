@@ -24,9 +24,13 @@ PROX_DISTANCE_DEFAULT = 5
 # http://groups.google.com/group/solrpy/browse_thread/thread/f4437b885ecb0037?pli=1
 
 
+#ESCAPE_CHARS_RE = re.compile(r'(?<!\\)(?P<char>[&|+\-!(){}[\]^"~*?:])')
 ESCAPE_CHARS_RE = re.compile(r'(?<!\\)(?P<char>[&|+\-!(){}[\]^"~*?:])')
-
 def solr_escape(value):
+    _log.debug("value: %s", value)
+    if not value:
+        value=""
+
     """
     Escape un-escaped special characters and return escaped value.
     >>> solr_escape(r'foo+') == r'foo\+'
@@ -524,6 +528,7 @@ def query_join(values, field, and_clause=False):
     # quote values
     values = ['"%s"' % v for v in values]
 
+
     # add + to the beginnging of each value if we are doing an AND clause
     if and_clause:
         values = ["+%s" % v for v in values]
@@ -718,10 +723,11 @@ def similar_pages(page):
     d = page.issue.date_issued
     year, month, day = '{0:02d}'.format(d.year), '{0:02d}'.format(d.month), '{0:02d}'.format(d.day) 
     date = ''.join(map(str, (year, month, day)))
-
-    query = '+type:page AND date:%s AND %s AND NOT(lccn:%s)' % (date, query_join(map(lambda p: p.city, 
+    if page.issue.title.places.all()[0].city:  
+        query = '+type:page AND date:%s AND %s AND NOT(lccn:%s)' % (date, query_join(map(lambda p: p.city, 
                                            page.issue.title.places.all()), 'city'), page.issue.title.lccn)
-    response = solr.query(query, rows=25)
-    results = response.results
-    return map(lambda kwargs: utils.get_page(**kwargs), 
+        response = solr.query(query, rows=25)
+        results = response.results
+        return map(lambda kwargs: utils.get_page(**kwargs), 
                map(lambda r: urlresolvers.resolve(r['id']).kwargs, results))
+    return None

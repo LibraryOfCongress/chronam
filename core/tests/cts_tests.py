@@ -4,6 +4,7 @@ from django.conf import settings
 from chronam.core.cts import CTS
 
 class CTSTest(TestCase):
+    VERIFY_SSL = False
 
     def test_settings(self):
         self.assertTrue(hasattr(settings, 'IS_PRODUCTION'))
@@ -15,11 +16,17 @@ class CTSTest(TestCase):
         self.assertTrue(settings.CTS_SERVICE_TYPE)
 
     def test_project(self):
-        cts = CTS(settings.CTS_USERNAME, settings.CTS_PASSWORD, settings.CTS_URL)
+        cts = CTS(settings.CTS_USERNAME, 
+                  settings.CTS_PASSWORD, 
+                  settings.CTS_URL,
+                  CTSTest.VERIFY_SSL)
         project = cts.get_project(settings.CTS_PROJECT_ID)
 
     def test_bags(self):
-        cts = CTS(settings.CTS_USERNAME, settings.CTS_PASSWORD, settings.CTS_URL)
+        cts = CTS(settings.CTS_USERNAME, 
+                  settings.CTS_PASSWORD, 
+                  settings.CTS_URL,
+                  CTSTest.VERIFY_SSL)
         project = cts.get_project(settings.CTS_PROJECT_ID)
         bags = list(project.get_bags())
         self.assertTrue(len(bags) > 0)
@@ -27,9 +34,13 @@ class CTSTest(TestCase):
         self.assertTrue(bag.data['id'])
 
     def test_bag_instances(self):
-        cts = CTS(settings.CTS_USERNAME, settings.CTS_PASSWORD, settings.CTS_URL)
+        cts = CTS(settings.CTS_USERNAME, 
+                  settings.CTS_PASSWORD, 
+                  settings.CTS_URL,
+                  CTSTest.VERIFY_SSL)
         project = cts.get_project(settings.CTS_PROJECT_ID)
         bag = list(project.get_bags())[0]
+
 
         instances = list(bag.get_bag_instances())
         self.assertTrue(len(instances) > 0)

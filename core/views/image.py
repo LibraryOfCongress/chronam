@@ -69,7 +69,7 @@ def thumbnail(request, lccn, date, edition, sequence):
         im = _get_resized_image(page, settings.THUMBNAIL_WIDTH)
     except IOError, e:
         return HttpResponseServerError("Unable to create thumbnail: %s" % e)
-    response = HttpResponse(mimetype="image/jpeg")
+    response = HttpResponse(content_type="image/jpeg")
     im.save(response, "JPEG")
     return response
 
@@ -80,7 +80,7 @@ def medium(request, lccn, date, edition, sequence):
         im = _get_resized_image(page, 550)
     except IOError, e:
         return HttpResponseServerError("Unable to create thumbnail: %s" % e)
-    response = HttpResponse(mimetype="image/jpeg")
+    response = HttpResponse(content_type="image/jpeg")
     im.save(response, "JPEG")
     return response
 
@@ -96,9 +96,9 @@ def page_image_tile(request, lccn, date, edition, sequence,
                     width, height, x1, y1, x2, y2):
     page = get_page(lccn, date, edition, sequence)
     if 'download' in request.GET and request.GET['download']:
-        response = HttpResponse(mimetype="binary/octet-stream")
+        response = HttpResponse(content_type="binary/octet-stream")
     else:
-        response = HttpResponse(mimetype="image/jpeg")
+        response = HttpResponse(content_type="image/jpeg")
 
     width, height = int(width), int(height)
     x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
@@ -118,9 +118,9 @@ def page_image_tile(request, lccn, date, edition, sequence,
 
 def image_tile(request, path, width, height, x1, y1, x2, y2):
     if 'download' in request.GET and request.GET['download']:
-        response = HttpResponse(mimetype="binary/octet-stream")
+        response = HttpResponse(content_type="binary/octet-stream")
     else:
-        response = HttpResponse(mimetype="image/jpeg")
+        response = HttpResponse(content_type="image/jpeg")
 
     width, height = int(width), int(height)
     x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
@@ -152,6 +152,6 @@ def coordinates(request, lccn, date, edition, sequence, words=None):
     for key in data.get('coords'):
         return_coords['coords'][re.sub(non_lexemes, '', key)] = data['coords'][key]
 
-    r = HttpResponse(mimetype='application/json')
+    r = HttpResponse(content_type='application/json')
     r.write(json.dumps(return_coords))
     return r

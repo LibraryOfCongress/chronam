@@ -153,7 +153,10 @@ class Command(BaseCommand):
         _CORE_ROOT = os.path.abspath(os.path.dirname(core.__file__))
         filename = os.path.join(_CORE_ROOT, './fixtures/place_links.json')
         for p in json.load(file(filename)):
-            place = Place.objects.get(name=p['name'])
+            try:
+                place = Place.objects.get(name=p['name'])
+            except(Place.DoesNotExist):
+                place  = Place(name=p['name'])
             place.longitude = p['longitude']
             place.latitude = p['latitude']
             place.geonames = p['geonames']
