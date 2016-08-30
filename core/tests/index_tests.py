@@ -14,46 +14,46 @@ class IndexTests(TestCase):
     ocr_langs = ['ocr_%s' %l for l in settings.SOLR_LANGUAGES]
 
     def test_page_search_lccn(self):
-        self.assertEqual(page_search(Q('lccn=sn83030214'))[0], 
+        self.assertEqual(page_search(Q('lccn=sn83030214')),
             '+type:page +lccn:("sn83030214")')
-        self.assertEqual(page_search(Q('lccn=sn83030214&lccn=sn83030215'))[0],
+        self.assertEqual(page_search(Q('lccn=sn83030214&lccn=sn83030215')),
             '+type:page +lccn:("sn83030214" "sn83030215")')
 
     def test_page_search_state(self):
-        self.assertEqual(page_search(Q('state=California'))[0],
+        self.assertEqual(page_search(Q('state=California')),
             '+type:page +state:("California")')
-        self.assertEqual(page_search(Q('state=California&state=New Jersey'))[0],
+        self.assertEqual(page_search(Q('state=California&state=New Jersey')),
             '+type:page +state:("California" "New Jersey")')
 
     def test_page_search_year(self):
-        self.assertEqual(page_search(Q('dateFilterType=year&year=1900'))[0], 
-            '+type:page +year:[1900 TO 1900]')
+        self.assertEqual(page_search(Q('dateFilterType=year&year=1900')),
+            '+type:page +date:[19000101 TO 19001231]')
 
     def test_page_search_date_range(self):
         self.assertEqual(
-            page_search(Q('dateFilterType=range&date1=10/25/1901&date2=10/31/1901'))[0],
+            page_search(Q('dateFilterType=range&date1=10/25/1901&date2=10/31/1901')),
             '+type:page +date:[19011025 TO 19011031]')
 
     def test_page_search_ortext(self):
         q = ' OR '.join(['%s:("apples" "oranges")' % lang for lang in self.ocr_langs])
-        self.assertEqual(page_search(Q('ortext=apples%20oranges'))[0], u'+type:page +((ocr:("apples" "oranges")^10000 ) OR %s )' % q)
+        self.assertEqual(page_search(Q('ortext=apples%20oranges')), u'+type:page +((ocr:("apples" "oranges")^10000 ) OR %s )' % q)
 
     def test_page_search_andtext(self):
         q = ' OR '.join(['%s:(+"apples" +"oranges")' % lang for lang in self.ocr_langs])
-        self.assertEqual(page_search(Q('andtext=apples%20oranges'))[0], u'+type:page +((ocr:(+"apples" +"oranges")^10000 ) OR %s )' % q)
+        self.assertEqual(page_search(Q('andtext=apples%20oranges')), u'+type:page +((ocr:(+"apples" +"oranges")^10000 ) OR %s )' % q)
 
     def test_page_search_phrase(self):
         q = ' OR '.join(['%s:"new york yankees"' % lang for lang in self.ocr_langs])
-        self.assertEqual(page_search(Q('phrasetext=new%20york%20yankees'))[0], u'+type:page +((ocr:"new york yankees"^10000 ) OR %s )' % q)
+        self.assertEqual(page_search(Q('phrasetext=new%20york%20yankees')), u'+type:page +((ocr:"new york yankees"^10000 ) OR %s )' % q)
 
     def test_page_search_proxtext(self):
         q = ' OR '.join(['%s:"apples oranges"~10' % lang for lang in self.ocr_langs])
-        self.assertEqual(page_search(Q('proxtext=apples%20oranges&proxdistance=10'))[0], u'+type:page +((ocr:("apples oranges"~10)^10000 ) OR %s )' %q)
+        self.assertEqual(page_search(Q('proxtext=apples%20oranges&proxdistance=10')), u'+type:page +((ocr:("apples oranges"~10)^10000 ) OR %s )' %q)
         q = ' OR '.join(['%s:"apples oranges"~5' % lang for lang in self.ocr_langs])
-        self.assertEqual(page_search(Q('proxtext=apples%20oranges'))[0], u'+type:page +((ocr:("apples oranges"~5)^10000 ) OR %s )' %q)
+        self.assertEqual(page_search(Q('proxtext=apples%20oranges')), u'+type:page +((ocr:("apples oranges"~5)^10000 ) OR %s )' %q)
 
     def test_page_search_language(self):
-        self.assertEqual(page_search(Q('proxtext=apples%20oranges&language=eng'))[0], '+type:page +((ocr:("apples oranges"~5)^10000 AND ocr_eng:"apples oranges"~5 ) OR ocr_eng:"apples oranges"~5 )')
+        self.assertEqual(page_search(Q('proxtext=apples%20oranges&language=eng')), '+type:page +((ocr:("apples oranges"~5)^10000 AND ocr_eng:"apples oranges"~5 ) OR ocr_eng:"apples oranges"~5 )')
 
     def test_find_words(self):
         hl = "Today <em>is</em> the <em>greatest</em> day i've <em>ever</em> known\nCan't wait <em>for</em> tomorrow ..."
@@ -62,11 +62,11 @@ class IndexTests(TestCase):
 
     def test_title_search(self):
         self.assertEqual(
-            title_search(Q('terms=bloody'))[0], 
+            title_search(Q('terms=bloody')),
             '+type:title +(title:"bloody" OR essay:"bloody" OR note:"bloody" OR edition:"bloody" OR place_of_publication:"bloody" OR url:"bloody" OR publisher:"bloody")')
 
     def test_ethnicity_query(self):
-        self.assertEqual(title_search(Q('ethnicity=Anabaptist'))[0], 
+        self.assertEqual(title_search(Q('ethnicity=Anabaptist')),
                 '+type:title +(subject:"Anabaptist" OR subject:"Amish" OR subject:"Amish Mennonites" OR subject:"Mennonites" OR subject:"Pennsylvania Dutch" OR subject:"Pennsylvania Dutch.")')
 
     def test_solrize_date(self):

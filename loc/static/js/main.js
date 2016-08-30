@@ -50,22 +50,6 @@ jQuery(function($){
     var start_year = $("#id_date1").val();
     var end_year = $("#id_date2").val();
 
-    // disable issue_date selector on page load
-    $("#id_date_month").prop("disabled", "disabled");
-    $('#id_date_day').prop("disabled", "disabled");
-
-    // enable issue_date selector when checkbox is on
-    $("#id_issue_date").change(function() {
-        if ($('#id_issue_date').is(':checked')) {
-            $("#id_date_month").prop("disabled", false);
-            $('#id_date_day').prop("disabled", false);
-        } 
-        else 
-        {
-            $("#id_date_month").prop("disabled", "disabled");
-            $('#id_date_day').prop("disabled", "disabled");
-        }
-    });
 
     // disable options in 'from' year dropdown based on option selected in 'to' dropdown
     $("select#id_date1").change(function(){
