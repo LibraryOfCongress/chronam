@@ -10,11 +10,7 @@ from chronam.core import models
 
 MIN_YEAR = 1860
 MAX_YEAR = 1922
-#DAY_CHOICES = [(i, i) for i in range(1,32)]
-#MONTH_CHOICES = ((1, u'Jan',), (2, u'Feb',), (3, u'Mar',),
-#                 (4, u'Apr',), (5, u'May',), (6, u'Jun',),
-#                 (7, u'Jul',), (8, u'Aug',), (9, u'Sep',),
-#                 (10, u'Oct',), (11, u'Nov',), (12, u'Dec',))
+
 
 FREQUENCY_CHOICES = (
     ("", "Select"),
