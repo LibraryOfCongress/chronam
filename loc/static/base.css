@@ -1084,31 +1084,6 @@ width:714px;
 float:right;
 }
 
-.related-carousel-body {
-border:5px solid #666;
-margin-bottom:1.25em;
-background-color:#eeebe6;
-width: 945px;
-border-top: 2px;
-}
-
-.related-carousel-inner{
-overflow: scroll;
-padding: 25px 0px 25px 0px;
-}
-
-.related-carousel-body ul{
-margin: 5px 0px 0px 0px;
-list-style-type: none;
-display: table;
-}
-
-.related-carousel-body ul li{
-padding-right: 25px;
-display: inline;
-display: table-cell;
-}
-
 .carousel-menu {
     background:#ccc url(./images/dot.gif) 0 bottom repeat-x;
     padding:9px 10px 10px 10px;
