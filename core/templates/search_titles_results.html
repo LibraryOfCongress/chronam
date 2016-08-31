@@ -27,35 +27,7 @@
             window.location = $.param.querystring(location.href,
                                             {"sort": this.value});
         });
-        $("#cancel_state_filter").on("click", function(e) {
-                window.location=$.param.querystring(location.href, 
-                                                {"state": ""});
-        }); 
-        $("#cancel_county_filter").on("click", function(e) {
-                window.location=$.param.querystring(location.href, 
-                                                {"county": ""});
-        });
-        $("#cancel_date_filter").on("click", function(e) {
-                window.location=$.param.querystring(location.href, 
-                                                {"year1": "",
-                                                 "year2": ""});
-        });
-        $("#filter_select_state").change(function(){
-            window.location=$.param.querystring(location.href, {'state': this.value});
-        });
-        $("#filter_select_county").change(function(){
-            window.location=$.param.querystring(location.href, {'county': this.value});
-        });
-        $("#filter_select_from_year").change(function(){
-            var year = this.value;
-            window.location=$.param.querystring(location.href, 
-                                                {"year1": year});
-        });
-        $("#filter_select_to_year").change(function(){
-            var year = this.value;
-            window.location=$.param.querystring(location.href, 
-                                                {"year2": year});
-        });
+
     });
     </script>
 {% endblock %}
@@ -70,49 +42,9 @@
 </div><!-- end class:search_results_ctrl -->
 <div class="search_results_body">
     <div class="results_nav">
-        <p class="term">Your title search returned {{ paginator.count }} results 
-        {% if request.GET.state %}
-              &nbsp for states {{ request.GET.state }}
-              <a href="#" id="cancel_state_filter"><img src="{% static 'images/btn_remove.png' %}" title="clear state filter" alt="remove state filter"/></a>
-        {% endif %} 
-        {% if request.GET.county %}
-              &nbsp for county {{ request.GET.county }}
-              <a href="#" id="cancel_county_filter"><img src="{% static 'images/btn_remove.png' %}" title="clear county filter" alt="remove county filter"/></a>
-        {% endif %} 
-        &nbsp for date range {% firstof request.GET.year1 '1690' %} - {% firstof request.GET.year2 'present' %}
-        {% if request.GET.year1 or request.GET.year2 %}
-            <a href="#" id="cancel_date_filter"><img src="{% static 'images/btn_remove.png' %}" title="clear date filter" alt="remove date filter"/></a>
-        {% endif %}
-        <br /></p> 
+        <p class="term">Your title search returned {{ paginator.count }} results</p>
         <form>
             <p>
-            <label class="norm" for="filter_results">filter results: </label>
-            <select class="sel" name="filter_select_state" id="filter_select_state">
-                <option value="" disabled selected> by state </option>
-                {% for state, count in paginator.state_facets %}
-                    <option value="{{state}}">{{state}} ({{count}})</option>
-                {% endfor %}
-            </select> 
-            <select class="sel" name="filter_select_county" id="filter_select_county">
-                <option value="" disabled selected> by county </option>
-                {% for county, count in paginator.county_facets %}
-                    <option value="{{county}}">{{county}} ({{count}})</option>
-                {% endfor %}
-            </select> &nbsp;  
-
-            <label class="norm" for="filter_select">by date range: </label>
-            <select class="sel" name="filter_select_year" id="filter_select_from_year">
-                <option value="" disabled selected> from year</option>
-                {% for year in paginator.year_facets %}
-                    <option value="{{year}}">{{year}}</option>
-                {% endfor %}
-            </select> 
-            <select class="sel" name="filter_select_year" id="filter_select_to_year">
-                <option value="" disabled selected> to year</option>
-                {% for year in paginator.year_facets %}
-                    <option value="{{year}}">{{year}}</option>
-                {% endfor %}
-            </select> &nbsp;
             <label class="norm" for="sort_select">Sort by:</label> 
             <select class="sel" name="sort_select" id="sort_select">
                 <option value="relevance">Relevance</option>
