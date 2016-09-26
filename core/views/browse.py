@@ -3,8 +3,6 @@ import os
 import re
 import urlparse
 
-from itertools import groupby
-
 from django import forms as django_forms
 
 from django.conf import settings

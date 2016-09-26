@@ -6,7 +6,6 @@ import datetime
 from urllib import urlencode, unquote
 
 from solr import SolrConnection
-from django.core import urlresolvers
 from django.core.paginator import Paginator, Page
 from django.db import connection, reset_queries
 from django.http import QueryDict
@@ -14,7 +13,6 @@ from django.conf import settings
 
 from chronam.core import models
 from chronam.core.forms import _fulltext_range
-from chronam.core.utils import utils
 from chronam.core.title_loader import _normal_lccn
 
 _log = logging.getLogger(__name__)
