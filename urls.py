@@ -88,16 +88,6 @@ urlpatterns += [
         views.ocr, 
         name="chronam_ocr"),
 
-    # recommended topics
-    url(r'^recommended-topics/$', 
-        views.recommended_topics, 
-        name="recommended_topics"),
-
-    # topic page
-    url(r'^recommended-topics/(?P<topic_id>\d+)/$', 
-        views.chronam_topic, 
-        name="chronam_topic"),
-
     # API docs
     url(r'^about/api/$', 
         views.about_api, 

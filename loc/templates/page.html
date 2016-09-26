@@ -1,6 +1,5 @@
 {% extends "site_base.html" %}
 {% load static from staticfiles %}
-{% load custom_filters %}
 
 {% block javascript %}
 {{ block.super }}
@@ -128,14 +127,6 @@
 {% block subcontent %}
 
   <div class="clear"></div>
-  {% if page_topics %}
-  <strong>Page topics (*click to view other pages for the topic)</strong>
-  <p>
-    {% for page_topic in page_topics %}
-      <a href={% url 'chronam_topic' topic_id=page_topic.id %}>{{page_topic.name}}</a> &nbsp
-    {% endfor %}
-  </p>
-  {% endif %}
   <p class="gray nomargin-bottom2">Image provided by: {{image_credit}}</p> 
   <div id="item-wrapper"> 
     <div id="imageViewer_nav">
