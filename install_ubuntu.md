@@ -21,7 +21,7 @@ Configure Solr
 
 Download Solr from a mirror site
 
-    wget http://apache.mirrors.lucidnetworks.net/lucene/solr/4.10.4/solr-4.10.4.tgz
+    wget http://archive.apache.org/dist/lucene/solr/4.10.4/solr-4.10.4.tgz
     tar zxvf solr-4.10.4.tgz
     sudo mv solr-4.10.4/example/ /opt/solr
 
