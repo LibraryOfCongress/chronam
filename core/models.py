@@ -234,7 +234,7 @@ class Title(models.Model):
     @property
     def display_name(self):
         if self.medium:
-            return ' '.join([self.name, self.medium])
+            return ' '.join([self.name, "[%s]" % self.medium])
         else:
             return self.name
 
