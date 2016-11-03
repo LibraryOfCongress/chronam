@@ -22,15 +22,17 @@ if settings.USE_TIFF:
     from PIL import Image
 else:
     import NativeImaging
+
     for backend in ('aware_cext', 'aware', 'graphicsmagick'):
         try:
             Image = NativeImaging.get_image_class(backend)
+            LOGGER.info("Using NativeImage backend '%s'", backend)
             break
         except ImportError, e:
-            LOGGER.info("NativeImage backend '%s' not available.")
+            LOGGER.info("NativeImage backend '%s' not available.", backend)
     else:
         raise Exception("No suitable NativeImage backend found.")
-    LOGGER.info("Using NativeImage backend '%s'" % backend)
+
 
 
 def _get_image(page):
