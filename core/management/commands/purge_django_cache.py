@@ -23,6 +23,11 @@ class Command(BaseCommand):
             # delete the advanced search title list
             LOGGER.info('removing titles_states from cache')
             cache.delete('titles_states')
+	
+	    # delete the fulltext date range
+            LOGGER.info('removing fulltext_range')
+            cache.delete('fulltext_range')
+
 
         except Exception, e:
             LOGGER.exception(e)
