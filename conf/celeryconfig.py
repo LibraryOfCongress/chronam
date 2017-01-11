@@ -20,6 +20,12 @@ CELERYBEAT_SCHEDULE = {
         "schedule": datetime.timedelta(hours=4),
         "args": ()
     },
+    "load_essays": {
+    "task": "chronam.core.tasks.load_essays",
+    "schedule": datetime.timedelta(hours=24),
+    "args": ()
+    },
+
     "poll_purge": {
         "task": "chronam.core.tasks.poll_purge",
         "schedule": crontab(hour=3, minute=0),

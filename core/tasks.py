@@ -40,6 +40,12 @@ def load_batch(batch_dir, service_request=None, process_coordinates=True):
             logger.info("marking service request as failed")
             service_request.fail(str(e))
 
+@task
+def load_essays():
+    try:
+       management.call_command('load_essays')
+    except:
+        logger.error("Unable to load essays")
 
 @task
 def purge_batch(batch, service_request=None):
