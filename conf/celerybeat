@@ -18,9 +18,9 @@ source $virtualenv_dir/bin/activate
 cd "$home"
 export PYTHONPATH="$PYTHONPATH:/opt/chronam/conf"
 
-lockfile="/logs/celery/subsys/celerybeat.lock"
-logfile="/logs/celery/celerybeat.log"
-pidfile="/logs/celery/celerybeat.pid"
+lockfile="/var/log/celery/subsys/celerybeat.lock"
+logfile="/var/log/celery/celerybeat.log"
+pidfile="/var/log/celery/celerybeat.pid"
 
 start() {
     echo -n $"Starting $name: "
