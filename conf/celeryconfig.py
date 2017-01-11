@@ -33,7 +33,7 @@ CELERYBEAT_SCHEDULE = {
     # Executes every morning at 2:00 A.M
     "delete_django_cache": {
         "task": "chronam.core.tasks.delete_django_cache",
-        "schedule": crontab(hour=2, minute=0),
+        "schedule": crontab(hour=5, minute=0),
     }
 }
 
