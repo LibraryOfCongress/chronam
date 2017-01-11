@@ -37,5 +37,5 @@ CELERYBEAT_SCHEDULE = {
     }
 }
 
-CELERYBEAT_LOG_FILE = os.path.join("/logs/celery", "celerybeat.log")
+CELERYBEAT_LOG_FILE = os.path.join("/var/log/celery", "celerybeat.log")
 CELERYBEAT_LOG_LEVEL = logging.INFO

@@ -18,9 +18,9 @@ source $virtualenv_dir/bin/activate
 cd "$home"
 export PYTHONPATH="$PYTHONPATH:/opt/chronam/conf"
 
-lockfile="/logs/celery/celeryd.lock"
-logfile="/logs/celery/celeryd.log"
-pidfile="/logs/celery/celeryd.pid"
+lockfile="/var/log/celery/celeryd.lock"
+logfile="/var/log/celery/celeryd.log"
+pidfile="/var/log/celery/celeryd.pid"
 
 
 start() {
