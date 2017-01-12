@@ -281,6 +281,22 @@
     }
   },
   {
+    "pk": "deu",
+    "model": "core.awardee",
+    "fields": {
+      "name": "University of Delaware Library, Newark, DE",
+      "created": "2016-03-04 17:06:00"
+    }
+  },
+  {
+    "pk": "whi",
+    "model": "core.awardee",
+    "fields": {
+      "name": "Wisconsin Historical Society",
+      "created": "2016-03-04 06:06:00"
+    }
+  },
+  {
     "pk": "Online Resource",
     "model": "core.materialtype",
     "fields": {}
