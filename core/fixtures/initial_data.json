@@ -297,6 +297,39 @@
     }
   },
   {
+    "pk": "ct",
+    "model": "core.awardee",
+    "fields": {
+      "name": "Connecticut State Library, Hartford, CT",
+      "created": "2017-01-13 17:06:00"
+    }
+  },
+  {
+   "pk": "idhi",
+   "model": "core.awardee",
+   "fields": {
+     "name": "Idaho State Historical Society",
+     "created": "2016-01-13 06:06:00"
+    }
+  },
+  {
+    "pk": "msar",
+    "model": "core.awardee",
+    "fields": {
+      "name": "Mississippi Department of Archives and History",
+      "created": "2017-01-13 06:06:00"
+
+    }
+  },
+  {
+    "pk": "prru",
+    "model": "core.awardee",
+    "fields": {
+      "name": "University of Puerto Rico, R\u00edo Piedras Campus, Library System",
+      "created": "2017-01-13 06:06:00"
+    }
+  },
+  {
     "pk": "Online Resource",
     "model": "core.materialtype",
     "fields": {}
