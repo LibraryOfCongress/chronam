@@ -732,6 +732,13 @@
     }
   },
   {
+    "pk": "ice",
+    "model": "core.Language",
+    "fields": {
+      "name": "Icelandic"
+    }
+  },
+  {
     "pk": "zxx", 
     "model": "core.Language", 
     "fields": {
