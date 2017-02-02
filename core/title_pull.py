@@ -145,6 +145,8 @@ class TitlePuller(object):
         Generates the SRURequest used to query OCLC API.
         Most of the values are static, except for query.
         '''
+
+        _logger.debug("The query for OCLC is '%s'" % query)
         bib_rec = SRURequest(wskey=WSKEY,
                              sortKeys=sortkeys,
                              recordSchema=recordschema,
@@ -176,7 +178,7 @@ class TitlePuller(object):
 
             request = self.generate_srurequest(query)
             lccn_count = self.initial_total_count(request)
-            bibs_to_req.append((request, lccn_count[0], (lccn,)))
+            bibs_to_req.append((request, lccn_count, (lccn,)))
 
         else:
             grand_total = 0
@@ -327,33 +329,26 @@ class TitlePuller(object):
 
     def initial_total_count(self, bib_req):
         '''
-        This function hits request three times and returns list of totals from
-        each hit. This is used to access the quality of results returned.
+        This is used to access the quality of results returned.
         '''
-        totals = []
-
-        for grab in itertools.repeat(None, 3):
-            bib_req.get_response()
-            _total = extract_elements(bib_req.response,
-                                      element='{http://www.loc.gov/zing/srw/}numberOfRecords')
-            totals.append(_total[0].text)
-        return totals
+        bib_req.get_response()
+        _total = extract_elements(bib_req.response, element='{http://www.loc.gov/zing/srw/}numberOfRecords')
+        return _total[0].text
 
     def check_for_doable_bulk_request(self, test_totals):
         '''
-        This function compares the results returned from the 3 requests
-        passed in test_totals. The API could misfire when requesting
-        more than 10k, so we make sure that are requests aren't that large.
+        The API could misfire when requesting more than 10k, so we make sure that are requests aren't that large.
         '''
-        # If all 3 pulls are the same
-        if all(map(lambda x: x == test_totals[0], test_totals)):
-            # if all are the same, check that the request is managable.
+        if not test_totals:
+            _logger.error("The total is %s but should be a integer. Check the query to make sure API isn't broken." % test_totals)
+
+            # check that the request is managable.
             # requests over 10000 records will cause failure on the OCLC side
-            if int(test_totals[0]) < 10000:
-                return int(test_totals[0])
-        # if this test_totals do not match, the query broke API
-        # or the total is over 10000
-        # split needs to occur
+            total = int(test_totals)
+            if total < 10000:
+                return total
+            else:
+                _logger.warning("The total [%s] is > 10,000 and a split needs to occur" % total)
         return None
 
     def run(self, save_path, lccn=None, oclc=None,
