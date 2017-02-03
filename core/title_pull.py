@@ -20,8 +20,6 @@ frbrgrouping = 'off'
 MAX_RECORDS = 50
 raw_query = 'srw.pc any "y" and srw.mt any "newspaper"'  # and srw.cp exact "united states"
 
-# Texas should not be a country.
-# See ticket #1226 for the reason why it is in this list.
 COUNTRIES = (
     'united states',
     'puerto rico',
@@ -29,7 +27,58 @@ COUNTRIES = (
     'guam',
     '*northern mariana*',
     'american samoa',
-    'texas',
+
+#According to MARC states are also countries
+    'Alabama',
+    'Alaska',
+    'Arizona',
+    'Arkansas',
+    'California',
+    'Colorado',
+    'Connecticut',
+    'Delaware',
+    'Florida',
+    'Georgia',
+    'Hawaii',
+    'Idaho',
+    'Illinois',
+    'Indiana',
+    'Iowa',
+    'Kansas',
+    'Kentucky',
+    'Louisiana',
+    'Maine',
+    'Maryland',
+    'Massachusetts',
+    'Michigan',
+    'Minnesota',
+    'Mississippi',
+    'Missouri',
+    'Montana',
+    'Nebraska',
+    'Nevada',
+    'New Hampshire',
+    'New Jersey',
+    'New Mexico',
+    'New York',
+    'North Carolina',
+    'North Dakota',
+    'Ohio',
+    'Oklahoma',
+    'Oregon',
+    'Pennsylvania',
+    'Rhode Island',
+    'South Carolina',
+    'South Dakota',
+    'Tennessee',
+    'Texas',
+    'Utah',
+    'Vermont',
+    'Virginia',
+    'Washington',
+    'West Virginia',
+    'Wisconsin',
+    'Wyoming',
 )
 
 # operate map is used in passing the operator to the output file.
