@@ -280,6 +280,7 @@ class TitlePuller(object):
                             bibs_to_req.append((yr_request, yr_request_able, (
                                                 country.strip('*'), year, operator
                                                 )))
+                            total += yr_request_able
                         else:
                             _logger.warning("There is a problem with request. Exiting.")
                             _logger.warning('yr_request: %s' % yr_request)
@@ -290,7 +291,6 @@ class TitlePuller(object):
 
                             continue
 
-                        total += yr_request_able
                 grand_total += total
             _logger.info('GRAND TOTAL: %s' % (grand_total))
 
@@ -390,14 +390,15 @@ class TitlePuller(object):
         '''
         if not test_totals:
             _logger.error("The total is %s but should be a integer. Check the query to make sure API isn't broken." % test_totals)
-
+            return None
+        else:
             # check that the request is managable.
             # requests over 10000 records will cause failure on the OCLC side
             total = int(test_totals)
             if total < 10000:
                 return total
-            else:
-                _logger.warning("The total [%s] is > 10,000 and a split needs to occur" % total)
+        
+        _logger.warning("The total [%s] is > 10,000 and a split needs to occur" % total)
         return None
 
     def run(self, save_path, lccn=None, oclc=None,
