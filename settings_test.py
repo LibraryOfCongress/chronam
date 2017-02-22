@@ -20,5 +20,7 @@ BIB_STORAGE = os.path.join(STORAGE, "test_bib")
 OCR_DUMP_STORAGE = os.path.join(STORAGE, "test_ocr")
 COORD_STORAGE = os.path.join(STORAGE, "test_word_coordinates")
 TEMP_TEST_DATA = os.path.join(STORAGE, "temp_test_data")
+DATA_DIR = os.path.join(DIRNAME, "data")
+BATCH_STORAGE = os.path.join(DATA_DIR, "batches")
 
 # DO NOT CHECK-IN WORLDCAT_KEY TO REPO
