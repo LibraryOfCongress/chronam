@@ -1,4 +1,5 @@
-JAVA_HOME=/opt/jdk1.8.0_72/
+JAVA_HOME=/opt/jdk1.8.0_72
+JAVA=$JAVA_HOME/bin/java
 JAVA_OPTIONS="-verbose:gc -Xms2g -Xmx2g -Xloggc:/logs/solr/gc.log -Dsolr.solr.home=/opt/solr/solr $JAVA_OPTIONS"
 JETTY_HOME=/opt/solr
 JETTY_USER=solr
