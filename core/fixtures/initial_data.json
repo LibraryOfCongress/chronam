@@ -349,7 +349,7 @@
     "pk": "me",
     "model": "core.awardee",
     "fields": {
-      "name": " Maine State Library",
+      "name": "Maine State Library",
       "created": "2017-04-03 06:44:45"
     }
   },
@@ -357,7 +357,7 @@
     "pk": "njr",
     "model": "core.awardee",
     "fields": {
-      "name": " Rutgers University Libraries",
+      "name": "Rutgers University Libraries",
       "created": "2017-04-03 06:44:45"
     }
   },
