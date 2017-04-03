@@ -330,6 +330,38 @@
     }
   },
   {
+    "pk": "ak",
+    "model": "core.awardee",
+    "fields": {
+      "name": "Alaska State Library Historical Collections",
+      "created": "2017-04-03 06:44:45"
+    }
+  },
+  {
+    "pk": "cohi",
+    "model": "core.awardee",
+    "fields": {
+      "name": "History Colorado",
+      "created": "2017-04-03 06:44:45"
+    }
+  },
+  {
+    "pk": "me",
+    "model": "core.awardee",
+    "fields": {
+      "name": " Maine State Library",
+      "created": "2017-04-03 06:44:45"
+    }
+  },
+    {
+    "pk": "njr",
+    "model": "core.awardee",
+    "fields": {
+      "name": " Rutgers University Libraries",
+      "created": "2017-04-03 06:44:45"
+    }
+  },
+  {
     "pk": "Online Resource",
     "model": "core.materialtype",
     "fields": {}
