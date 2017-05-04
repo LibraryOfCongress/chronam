@@ -5,5 +5,5 @@
 # git+ssh://git@github.com/loc-rdc/django-lc.git#egg=lc
 
 # Otherwise use git+https, provide user id and password
-git+https://github.com/loc-rdc/minicts.git#egg=minicts
-git+https://github.com/loc-rdc/django-lc.git#egg=lc
+git+ssh://git@git.loc.gov:7999/ndnp/minicts.git#egg=minicts
+git+ssh://git@git.loc.gov:7999/ndnp/django-lc.git#egg=lc
