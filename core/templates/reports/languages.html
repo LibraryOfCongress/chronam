@@ -17,23 +17,23 @@ Below is a list of languages found in newspaper text that are available in Chron
     {% for l in languages %}
     <tr class="{% cycle 'lightGray' 'white' %}">
         <td>
-            {{ l.language__name }}
+            {{ l.name }}
         </td>
         <td>
-            {{ l.language__code }}
+            {{ l.code }}
         </td>
         <td>
-            {% ifequal l.language__code 'eng' %}
+            {% ifequal l.code 'eng' %}
                 batches
             {% else %} 
-            <a href="{% url 'chronam_language_batches' l.language__code %}">batches</a>
+            <a href="{% url 'chronam_language_batches' l.code %}">batches</a>
             {% endifequal %} 
         </td>
         <td>
-            {% ifequal l.language__code 'eng' %}
+            {% ifequal l.code 'eng' %}
                 titles 
             {% else %} 
-            <a href="{% url 'chronam_language_titles' l.language__code %}">titles</a>
+            <a href="{% url 'chronam_language_titles' l.code %}">titles</a>
             {% endifequal %} 
         </td>
         <td>

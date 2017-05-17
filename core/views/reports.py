@@ -553,8 +553,8 @@ def ocr_json(request):
 @cache_page(settings.API_TTL_SECONDS)
 def languages(request):
     page_title = 'Languages'
-    languages = models.LanguageText.objects.values('language__code', 'language__name').annotate(
-        count=Count('language'))
+    languages = models.Language.objects.values('code', 'name').annotate(
+        count=Count('code'))
 
     return render_to_response('reports/languages.html', dictionary=locals(),
                               context_instance=RequestContext(request))
