@@ -824,6 +824,12 @@ class Page(models.Model):
         pass
 
 
+class LanguageText(models.Model):
+    text = models.TextField()
+    language = models.ForeignKey('Language', null=True)
+    ocr = models.ForeignKey('OCR', related_name="language_texts")
+
+
 class OCR(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     page = models.OneToOneField('Page', null=True, related_name='ocr')
