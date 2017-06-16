@@ -739,6 +739,13 @@
     }
   },
   {
+    "pk": "nob",
+    "model": "core.Language",
+    "fields": {
+      "name": "Norwegian"
+    }
+  },
+  {
     "pk": "zxx", 
     "model": "core.Language", 
     "fields": {
