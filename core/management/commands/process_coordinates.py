@@ -31,7 +31,7 @@ class Command(BaseCommand):
             _logger.info("batch_name: %s" % batch_name)
             parts = batch_name.split("_")
             if len(parts)==4:
-                loader.process_coordinates(batch_name, strict=False)
+                loader.process_coordinates(batch_name)
             else:
                 _logger.warning("invalid batch name '%s'" % batch_name)
 
