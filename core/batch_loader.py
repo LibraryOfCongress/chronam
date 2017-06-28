@@ -464,11 +464,14 @@ class BatchLoader(object):
             self.current_batch = batch
             for issue in batch.issues.all():
                 for page in issue.pages.all():
-                    url = urlparse.urljoin(self.current_batch.storage_url,
+                    if not page.ocr_filename:
+                        logging.warn("Batch [%s] has page [%s] that has no OCR. Skipping processing coordinates for page." % (batch_name, page))
+                    else:
+                        url = urlparse.urljoin(self.current_batch.storage_url,
                                            page.ocr_filename)
-
-                    lang_text, coords = ocr_extractor(url)
-                    self._process_coordinates(page, coords)
+                        logging.debug("Extracting OCR from url %s" % url)
+                        lang_text, coords = ocr_extractor(url)
+                        self._process_coordinates(page, coords)
         except Exception, e:
             msg = "unable to process coordinates for batch: %s" % e
             _logger.error(msg)
