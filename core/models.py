@@ -603,7 +603,7 @@ class Issue(models.Model):
 class Page(models.Model):
     sequence = models.IntegerField(db_index=True)
     number = models.CharField(max_length=50)
-    section_label = models.CharField(max_length=100)
+    section_label = models.CharField(max_length=250)
     tiff_filename = models.CharField(max_length=250)
     jp2_filename = models.CharField(max_length=250, null=True)
     jp2_width = models.IntegerField(null=True)
