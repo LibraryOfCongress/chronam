@@ -11,7 +11,7 @@ configure_logging("load_intitutions_logging.config", "load_institutions.log")
 
 """
 Loads the institutions based on a CSV file in the form of:
-<code>, <name>, <address1>, <address2>, <city>, <state>, <zip>
+<code>, <name>, <city>, <state>, <zip>
 """
 
 class Command(BaseCommand):
@@ -23,12 +23,13 @@ class Command(BaseCommand):
             i = Institution()
             i.code = row[0].upper()
             i.name = row[1]
-            i.address1 = row[2]
-            i.address2 = row[3]
-            i.city = row[4]
-            i.state = row[5]
-            i.zip = row[6]
-            i.save()
+            i.address1 = ""
+            i.address2 = ""
+            i.city = row[2]
+            i.state = row[3]
+            i.zip = row[4]
+            print(i)
+            #i.save()
 
 # some hoops to get csv reader to emit unicode
 # http://www.python.org/doc/2.5.2/lib/csv-examples.html
