@@ -28,8 +28,7 @@ class Command(BaseCommand):
             i.city = row[2]
             i.state = row[3]
             i.zip = row[4]
-            print(i)
-            #i.save()
+            i.save()
 
 # some hoops to get csv reader to emit unicode
 # http://www.python.org/doc/2.5.2/lib/csv-examples.html
