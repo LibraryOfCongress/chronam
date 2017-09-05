@@ -213,8 +213,10 @@ class BatchLoader(object):
         batch.name = batch_name
         batch.source = batch_source
         try:
-            _, org_code, name_part, version = batch_name.split("_", 3)
-            awardee_org_code = org_code
+            parts = batch_name.split("_", 3)
+            if len(parts) is 4:
+                parts = [1:]
+            awardee_org_code, name_part, version = parts
             batch.awardee = Awardee.objects.get(org_code=awardee_org_code)
         except Awardee.DoesNotExist, e:
             msg = "no awardee for org code: %s" % awardee_org_code
