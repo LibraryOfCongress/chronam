@@ -215,7 +215,7 @@ class BatchLoader(object):
         try:
             parts = batch_name.split("_", 3)
             if len(parts) is 4:
-                parts = [1:]
+                parts = parts[1:]
             awardee_org_code, name_part, version = parts
             batch.awardee = Awardee.objects.get(org_code=awardee_org_code)
         except Awardee.DoesNotExist, e:
