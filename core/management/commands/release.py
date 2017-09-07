@@ -95,12 +95,27 @@ def preprocess_public_feed():
     """
     feed = feedparser.parse("http://chroniclingamerica.loc.gov/batches.xml")
     batch_release_times = {}
-    for entry in feed.entries:
-        batch_name = re.match(r'info:lc/ndnp/batch/(.+)', entry.id).group(1)
-        # convert time.struct from feedparser into a datetime for django
-        released = datetime.fromtimestamp(mktime(entry.updated_parsed))
-        batch_release_times[batch_name] = released 
+
+    cont = True
+    while cont:
+        for entry in feed.entries:
+            batch_name = re.match(r'info:lc/ndnp/batch/(.+)', entry.id).group(1)
+            # convert time.struct from feedparser into a datetime for django
+            released = datetime.fromtimestamp(mktime(entry.updated_parsed))
+            batch_release_times[batch_name] = released
+
+        next_page = get_next_page(feed)
+        if next_page:
+            feed = feedparser.parse(next_page)
+        else:
+            cont = False
     return batch_release_times
+
+def get_next_page(feed):
+    for link in feed.feed.links:
+        if link.rel == 'next':
+            return link.href
+    return None
 
 def set_batch_released_from_bag_info(batch):
     status = False
