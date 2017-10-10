@@ -22,7 +22,7 @@ class Command(BaseCommand):
                     help='Do not generate ocr, and index'),
         make_option('--skip-process-coordinates', 
                     action='store_false', 
-                    dest='process_ocr', default=True,
+                    dest='process_coordinates', default=True,
                     help='Do not write out word coordinates'),
     )
     help = "Load batches by name from a batch list file"
@@ -32,16 +32,13 @@ class Command(BaseCommand):
         if len(args)!=0:
             raise CommandError('Usage is load_batch %s' % self.args)
 
-        loader = batch_loader.BatchLoader(process_ocr=options['process_ocr'],
-                                          process_coordinates=options['process_coordinates'])
+        loader = batch_loader.BatchLoader()
+        loader.PROCESS_OCR=options['process_ocr']
+        loader.PROCESS_COORDINATES=options['process_coordinates']
+
         batch_list = file(batch_list_filename)
         _logger.info("batch_list_filename: %s" % batch_list_filename)
         for line in batch_list:
             batch_name = line.strip()
             _logger.info("batch_name: %s" % batch_name)
-            parts = batch_name.split("_")
-            if len(parts)==4 and parts[0]=="batch":
-                loader.load_batch(batch_name, strict=False)
-            else:
-                _logger.warning("invalid batch name '%s'" % batch_name)
-
+            loader.load_batch(batch_name, strict=False)
