@@ -108,7 +108,7 @@ import multiprocessing
 TOO_BUSY_LOAD_AVERAGE = 64 
 
 SOLR = "http://localhost:8983/solr"
-SOLR_LANGUAGES = ("eng", "fre", "spa", "ger", "ita",)
+SOLR_LANGUAGES = ("ara", "cze", "dan", "eng", "fin", "fre", "ger", "ita", "nor", "pol", "rum", "spa",)
 
 STORAGE = '/opt/chronam/data/'
 BATCH_STORAGE = os.path.join(STORAGE, "batches")
