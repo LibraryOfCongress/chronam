@@ -211,6 +211,7 @@
     <field name="ocr_pol" type="text_pol" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_rom" type="text_rom" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_spa" type="text_spa" indexed="true" stored="true" required="false" multiValued="false" />
+    <field name="ocr_swe" type="text_swe" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr" type="text" indexed="true" stored="true" required="false" multiValued="true" />
     <field name="batch" type="string" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="edition_label" type="text" indexed="true" stored="true" required="false" multiValued="false" />
