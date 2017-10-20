@@ -29,7 +29,10 @@ def cors(request):
 
 def newspaper_info(request):
     info = cache.get("newspaper_info")
-    if info is None:
+    # If the site is installed anew then info will be a dictionary with empty values
+    # which is always true. I added additional condition info.get() ... to make sure
+    # cache is going to be repopulated
+    if info.get is None or info.get('total_page_count', '') == 0:
         total_page_count = index.page_count()
         titles_with_issues = models.Title.objects.filter(has_issues=True)
         titles_with_issues_count = titles_with_issues.count()
@@ -39,6 +42,8 @@ def newspaper_info(request):
 
         _languages = models.Language.objects.filter(titles__in=titles_with_issues)
         languages_with_issues = sorted(set((lang.code, lang.name) for lang in _languages))
+        print "titles_with_issues: %s "  % titles_with_issues
+        print "languages_with_issues: %s " % languages_with_issues
 
         # TODO: might make sense to add a Ethnicity.has_issue model field
         # to save having to recompute this all the time, eventhough it
