@@ -32,7 +32,7 @@ def newspaper_info(request):
     # If the site is installed anew then info will be a dictionary with empty values
     # which is always true. I added additional condition info.get() ... to make sure
     # cache is going to be repopulated
-    if info.get is None or info.get('total_page_count', '') == 0:
+    if info is None or info.get('total_page_count', '') == 0:
         total_page_count = index.page_count()
         titles_with_issues = models.Title.objects.filter(has_issues=True)
         titles_with_issues_count = titles_with_issues.count()
