@@ -57,7 +57,7 @@ TEMPLATES = [
                 'chronam.core.context_processors.extra_request_info',
                 'chronam.core.context_processors.newspaper_info',
             ],
-            'debug' : DEBUG,
+            'debug': DEBUG,
         },
     },
 ]
@@ -117,10 +117,11 @@ OCR_DUMP_STORAGE = os.path.join(STORAGE, "ocr")
 COORD_STORAGE = os.path.join(STORAGE, "word_coordinates")
 
 
-BASE_CRUMBS = [{'label':'Home', 'href': '/'}]
+BASE_CRUMBS = [{'label': 'Home', 'href': '/'}]
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['*']
+
 import djcelery
 djcelery.setup_loader()

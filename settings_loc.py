@@ -7,7 +7,7 @@ INSTALLED_APPS = (
 
 
 BASE_CRUMBS = [
-    {'label':'Chronicling America', 'href': '/'}
+    {'label': 'Chronicling America', 'href': '/'}
 ]
 
 THUMBNAIL_WIDTH = 200
