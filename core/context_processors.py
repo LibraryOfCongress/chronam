@@ -42,8 +42,6 @@ def newspaper_info(request):
 
         _languages = models.Language.objects.filter(titles__in=titles_with_issues)
         languages_with_issues = sorted(set((lang.code, lang.name) for lang in _languages))
-        print "titles_with_issues: %s "  % titles_with_issues
-        print "languages_with_issues: %s " % languages_with_issues
 
         # TODO: might make sense to add a Ethnicity.has_issue model field
         # to save having to recompute this all the time, eventhough it
