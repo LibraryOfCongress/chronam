@@ -89,7 +89,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': '/var/tmp/django_cache',
-        'TIMEOUT': 86400,  # 1 day
+        'TIMEOUT': 4838400, # 2 months
     }
 }
 
@@ -104,8 +104,8 @@ CTS_URL = "https://cts.loc.gov/transfer/"
 MAX_BATCHES = 0
 
 import multiprocessing
-#TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
-TOO_BUSY_LOAD_AVERAGE = 64 
+TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
+#TOO_BUSY_LOAD_AVERAGE = 64 
 
 SOLR = "http://localhost:8983/solr"
 SOLR_LANGUAGES = ("eng", "fre", "spa", "ger", "ita",)
