@@ -1,29 +1,4 @@
-User-Agent: Googlebot
+User-Agent: *
+Disallow: /*thumbnail.jpg$
 Disallow: /data/
-
-User-Agent: Googlebot-Image
-Disallow: /data/
-
-User-Agent: Baiduspider
-Disallow: /data/
-
-User-Agent: Bingbot
-Disallow: /data/
-
-User-Agent: YandexBot
-Disallow: /data/
-
-User-Agent: Blekkobot
-Disallow: /data/
-
-User-Agent: discoverybot
-Disallow: /data/
-
-User-Agent: ia_archiver
-Disallow: /data/
-
-User-Agent: msnbot
-Disallow: /data/
-
-User-Agent: Yahoo! Slurp
-Disallow: /data/
+Disallow: /images/tiles/
