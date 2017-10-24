@@ -8,6 +8,7 @@ from django import forms as django_forms
 from django.conf import settings
 from django.core.paginator import Paginator, InvalidPage
 from django.core import urlresolvers
+from solr import SolrConnection
 from django.forms import fields
 from django.http import HttpResponse, HttpResponseNotFound, Http404, \
     HttpResponseRedirect, HttpResponsePermanentRedirect
@@ -256,6 +257,7 @@ def page(request, lccn, date, edition, sequence, words=None):
     profile_uri = 'http://www.openarchives.org/ore/html/'
 
     template = "page.html"
+    text = get_text_from_solr(page)
     response = render_to_response(template, dictionary=locals(),
                                   context_instance=RequestContext(request))
     return response
@@ -467,6 +469,13 @@ def _search_engine_words(request):
     words = index.word_matches_for_page(request.path, words)
     return words
 
+def get_text_from_solr(page):
+    solr = SolrConnection(settings.SOLR)
+    title, date = page.issue.title, page.issue.date_issued
+    query = 'title:"' + str(title) + '" and date:' + str(date).replace('-', '') + \
+            ' and sequence:' + str(page.sequence)
+    solr_results = solr.query(query)
+    return solr_results.results[0]['ocr']
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def page_ocr(request, lccn, date, edition, sequence):
@@ -474,6 +483,7 @@ def page_ocr(request, lccn, date, edition, sequence):
     page_title = "%s, %s, %s" % (label(title), label(issue), label(page))
     crumbs = create_crumbs(title, issue, date, edition, page)
     host = request.get_host()
+    text = get_text_from_solr(page)
     return render_to_response('page_text.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
@@ -492,11 +502,10 @@ def page_ocr_xml(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     return _stream_file(page.ocr_abs_filename, 'application/xml')
 
-
 def page_ocr_txt(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     try:
-        text = page.ocr.text
+        text = get_text_from_solr(page)
         return HttpResponse(text, content_type='text/plain')
     except models.OCR.DoesNotExist:
         raise Http404("No OCR for %s" % page)
@@ -558,3 +567,4 @@ def issues_first_pages(request, lccn, page_number=1):
     crumbs = create_crumbs(title)
     return render_to_response('issue_pages.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+

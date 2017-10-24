@@ -4,7 +4,7 @@
 {% block javascript %}
 {{ block.super }}
     <script type="text/javascript" src="{% static 'js/openseadragon.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script> 
+    <script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/page.js' %}"></script>
 
     <div id="page_data"
@@ -19,7 +19,11 @@
 
     <noscript><!-- without javascript the pageviewer does not work; display OCR in this case instead. -->
         <h3>Newspaper Page Text</h3>
+        {% if text %}
+        <pre>{{ text.0|linebreaks }} </pre>
+        {% else %}
         <pre>{{ page.ocr.text }}</pre>
+        {% endif %}
     </noscript>
 
     {% endblock %}
@@ -60,7 +64,7 @@
        .overlay
        {
            border: 1px solid red;
-           opacity: 0.4;      
+           opacity: 0.4;
            -moz-opacity: 0.4;
            -webkit-opacity: 0.4;
            background: red;
@@ -77,8 +81,8 @@
           padding: 0px;
           margin: 0px;
       }
-    </style>  
-      
+    </style>
+
 {% endblock %}
 
 {% block sharetool_container_left %}
@@ -112,7 +116,7 @@
     meta: '',
 },
 {% endblock %}
-                      
+
 {% block page_head %}
 <h1>
 {{ page_head_heading }}<br />
@@ -127,44 +131,48 @@
 {% block subcontent %}
 
   <div class="clear"></div>
-  <p class="gray nomargin-bottom2">Image provided by: {{image_credit}}</p> 
-  <div id="item-wrapper"> 
+  <p class="gray nomargin-bottom2">Image provided by: {{image_credit}}</p>
+  <div id="item-wrapper">
     <div id="imageViewer_nav">
       <div id="item-ctrl">
         <div style="padding-left: 160px; padding-top: 10px;">
-        <span class="c-images"> 
-          <label for="pageNum">Image:</label> 
+        <span class="c-images">
+          <label for="pageNum">Image:</label>
           <select name="pageNum" id="pageNum" class="input-small">
             {% for p in issue.pages.all %}
             <option value="{% url 'chronam_page' title.lccn issue.date_issued issue.edition p.sequence %}" {% ifequal p.sequence page.sequence %}selected="selected"{% endifequal %}>{{p.sequence}}</option>
             {% endfor %}
           </select>
           of {{issue.pages.all|length}}.
-        </span> 
-        <span class="c-pages"> 
+        </span>
+        <span class="c-pages">
           {% if page.previous %}
-          <a rel="previous" href="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.previous.sequence %}"><img src="{% static 'images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Page"></a> 
+          <a rel="previous" href="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.previous.sequence %}">
+              <img src="{% static 'images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Page"></a>
           {% endif %}
-          <strong>Page</strong> 
+          <strong>Page</strong>
           {% if page.next %}
-          <a rel="next" href="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.next.sequence %}"><img src="{% static 'images/item_btn_next.png' %}" width="17" height="17" alt="Next Page"></a>
+          <a rel="next" href="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.next.sequence %}">
+              <img src="{% static 'images/item_btn_next.png' %}" width="17" height="17" alt="Next Page"></a>
           {% endif %}
-          <a rel="up" href="{% url 'chronam_issue_pages' title.lccn issue.date_issued issue.edition %}"><small>All Pages</small></a> 
-        </span> 
-        <span class="c-issues"> 
+          <a rel="up" href="{% url 'chronam_issue_pages' title.lccn issue.date_issued issue.edition %}">
+              <small>All Pages</small></a>
+        </span>
+        <span class="c-issues">
           {% if previous_issue_first_page %}
-          <a rel="previous" href="{% url 'chronam_page' title.lccn previous_issue_first_page.issue.date_issued previous_issue_first_page.issue.edition previous_issue_first_page.sequence %}"><img src="{% static 'images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Issue" /></a> 
+          <a rel="previous" href="{% url 'chronam_page' title.lccn previous_issue_first_page.issue.date_issued previous_issue_first_page.issue.edition previous_issue_first_page.sequence %}"><img src="{% static 'images/item_btn_prev.png' %}" width="17" height="17" alt="Previous Issue" /></a>
           {% endif %}
-          <strong>Issues</strong> 
+          <strong>Issues</strong>
           {% if next_issue_first_page %}
-          <a rel="next" href="{% url 'chronam_page' title.lccn next_issue_first_page.issue.date_issued next_issue_first_page.issue.edition next_issue_first_page.sequence %}"><img src="{% static 'images/item_btn_next.png' %}" width="17" height="17" alt="Next Issue" /></a><a class="all" href="{% url 'chronam_issues' title.lccn %}"><small>All Issues</small></a> 
+          <a rel="next" href="{% url 'chronam_page' title.lccn next_issue_first_page.issue.date_issued next_issue_first_page.issue.edition next_issue_first_page.sequence %}"><img src="{% static 'images/item_btn_next.png' %}" width="17" height="17" alt="Next Issue" /></a><a class="all" href="{% url 'chronam_issues' title.lccn %}"><small>All Issues</small></a>
           {% endif %}
         </span>
         {% if page.jp2_filename %}
-        <span class="c-view"> 
-          <!-- view --> 
-          <a class="text" href="{% url 'chronam_page_ocr' title.lccn issue.date_issued issue.edition page.sequence %}">Text</a> <span>|</span> <a href="{% url 'chronam_page_pdf' title.lccn issue.date_issued issue.edition page.sequence %}">PDF</a> 
-          <!-- download --> 
+        <span class="c-view">
+          <!-- view -->
+          <a class="text" href="{% url 'chronam_page_ocr' title.lccn issue.date_issued issue.edition page.sequence %}">Text</a>
+            <span>|</span> <a href="{% url 'chronam_page_pdf' title.lccn issue.date_issued issue.edition page.sequence %}">PDF</a>
+          <!-- download -->
           <span>|</span> <a href="{% url 'chronam_page_jp2' title.lccn issue.date_issued issue.edition page.sequence %}" download="{{ title.lccn }}-{{ issue.date_issued|date:"Ymd" }}.jp2">JP2 ({{ image_size }})</a>
         </span>
         <span class="c-clip">
@@ -181,16 +189,16 @@
         <h3>Missing Page: {{explanation}}</h3>
       </div>
       {% endif %}
-      
-      <div class="item-foot"> 
-        <ul class="plain"> 
-          <li><i>{{title.display_name}}</i> ({{title.place_of_publication}}), {{issue.date_issued|date:"d N Y"}}. <i>Chronicling America: Historic American Newspapers</i>. Lib. of Congress.  &lt;<a href="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}">http://{{host}}{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}</a>&gt;</li> 
-          {% if page.on_flickr %}
-          <li><strong>Flickr Link</strong> <a href="{{ page.first_flickr_url }}">{{ page.first_flickr_url }}</a></li> 
-          {% endif %}
-        </ul> 
-      </div>
-    </div><!-- end id:imageViewer_nav --> 
 
-  </div><!-- end id:item-wrapper --> 
+      <div class="item-foot">
+        <ul class="plain">
+          <li><i>{{title.display_name}}</i> ({{title.place_of_publication}}), {{issue.date_issued|date:"d N Y"}}. <i>Chronicling America: Historic American Newspapers</i>. Lib. of Congress.  &lt;<a href="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}">http://{{host}}{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}</a>&gt;</li>
+          {% if page.on_flickr %}
+          <li><strong>Flickr Link</strong> <a href="{{ page.first_flickr_url }}">{{ page.first_flickr_url }}</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div><!-- end id:imageViewer_nav -->
+
+  </div><!-- end id:item-wrapper -->
 {% endblock %}
