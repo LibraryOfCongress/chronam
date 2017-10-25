@@ -50,16 +50,18 @@ LOGGING = {
     },
     'handlers': {
         'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'verbose',
-            'filename': '/var/log/httpd/chronam.log'
+            'filename': '/var/log/httpd/chronam.log',
+            'maxBytes': 1024*1024*50, #50MB
+            'backupCount': 5,
         },
     },
     'loggers': {
         'django': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
         'utils': {
