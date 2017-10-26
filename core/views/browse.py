@@ -480,15 +480,24 @@ def page_ocr(request, lccn, date, edition, sequence):
 
 def page_pdf(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
-    return sendfile(request, page.pdf_abs_filename)
+    if page.pdf_abs_filename:
+        return sendfile(request, page.pdf_abs_filename)
+    else:
+        raise Http404("No pdf for page %s" % page)
 
 def page_jp2(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
-    return sendfile(request, page.jp2_abs_filename)
+    if page.jp2_abs_filename:
+        return sendfile(request, page.jp2_abs_filename)
+    else:
+        raise Http404("No jp2 for page %s" % page)
 
 def page_ocr_xml(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
-    return sendfile(request, page.ocr_abs_filename)
+    if page.ocr_abs_filename:
+        return sendfile(request, page.ocr_abs_filename)
+    else:
+        raise Http404("No ocr for page %s" % page)
 
 def page_ocr_txt(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
