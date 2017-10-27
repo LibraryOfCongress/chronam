@@ -79,7 +79,6 @@ LOGGING = {
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.http.ConditionalGetMiddleware',
     'chronam.core.middleware.TooBusyMiddleware',
 )
 

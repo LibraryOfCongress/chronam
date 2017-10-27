@@ -10,7 +10,7 @@ DATABASES = {
     }
 }
 
-ESSAYS_FEED = "http://rdccavld04.loctest.gov/feed/"
+ESSAYS_FEED = "http://essyedtrrvlt01.loctest.gov/feed/"
 
 CTS_URL = "https://transferqa.loctest.gov/transfer/"
 

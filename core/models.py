@@ -737,7 +737,7 @@ class Page(models.Model):
         try:
             ocr_texts = self.ocr.language_texts.select_related().values('language__code', 'text')
         except OCR.DoesNotExist:
-            ocr_texts = None
+            ocr_texts = []
         for ocr_text in ocr_texts:
             # make sure Solr is configured to handle the language and if it's
             # not just treat it as English
