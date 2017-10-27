@@ -428,15 +428,17 @@ class BatchLoader(object):
         ocr = OCR()
         ocr.page = page
         ocr.save()
+        lang_text_solr = {}
         for lang, text in lang_text.iteritems():
             try:
                 language = models.Language.objects.get(Q(code=lang) | Q(lingvoj__iendswith=lang))
             except models.Language.DoesNotExist:
                 # default to english as per requirement
                 language = models.Language.objects.get(code='eng')
-            ocr.language_texts.create(language=language,
-                                      text=text)
+            lang_text_solr[str(language.code)] = text
+
         page.ocr = ocr
+        page.lang_text = lang_text_solr
         if index:
             _logger.debug("indexing ocr for: %s" % page.url)
             self.solr.add(**page.solr_doc)

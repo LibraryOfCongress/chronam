@@ -37,13 +37,13 @@
     <br />
     </div>
 
+    <div>
     {% if text %}
     {{ text.0|linebreaks }}
     {% else %}
-    <div>
     {{page.ocr.text|escape|linebreaks}}
-    </div>
     {% endif %}
+    </div>
 
     <p>
     <a href="{% url 'chronam_page_ocr_xml' title.lccn issue.date_issued issue.edition page.sequence %}">xml</a> |

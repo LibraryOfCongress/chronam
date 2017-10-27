@@ -666,3 +666,10 @@ def _solrize_date(d, is_start=True):
     else:
         return None
 
+def get_page_text(page):
+    solr = SolrConnection(settings.SOLR)
+    title, date = page.issue.title, page.issue.date_issued
+    query = 'title:"' + str(title) + '" and date:' + str(date).replace('-', '') + \
+            ' and sequence:' + str(page.sequence)
+    solr_results = solr.query(query)
+    return solr_results.results[0]['ocr']
