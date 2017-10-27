@@ -117,7 +117,7 @@
             <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
         </analyzer>
     </fieldType>
-    <fieldType name="text_nor" class="solr.TextField">
+    <fieldType name="text_nob" class="solr.TextField">
         <analyzer>
             <tokenizer class="solr.WhitespaceTokenizerFactory" />
             <filter class="solr.LowerCaseFilterFactory" />
@@ -207,7 +207,7 @@
     <field name="ocr_fre" type="text_fre" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_ger" type="text_ger" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_ita" type="text_ita" indexed="true" stored="true" required="false" multiValued="false" />
-    <field name="ocr_nor" type="text_nor" indexed="true" stored="true" required="false" multiValued="false" />
+    <field name="ocr_nob" type="text_nob" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_pol" type="text_pol" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_rum" type="text_rum" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_spa" type="text_spa" indexed="true" stored="true" required="false" multiValued="false" />
