@@ -13,7 +13,7 @@ settings.OCR_DUMP_STORAGE = "/tmp/test_ocr_dumps"
 dumps_dir = settings.OCR_DUMP_STORAGE
 
 class OcrDumpTests(TestCase):
-    fixtures = ["titles.json", "uuml_thys_sample1.json", "countries.json", "awardee.json"]
+    fixtures = ["titles.json", "uuml_thys_sample.json", "countries.json", "awardee.json"]
 
     def setUp(self):
         if os.path.isdir(dumps_dir):
