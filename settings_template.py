@@ -37,6 +37,9 @@ DATABASES = {
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'px2@!q2(m5alb$0=)h@u*80mmf9cd-nn**^y4j2j&+_8h^n_0f'
 
+#persist the database connections instead of closing after each request
+CONN_MAX_AGE = None
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
