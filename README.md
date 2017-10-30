@@ -66,24 +66,44 @@ start MySQL and assign it a root password:
 
     sudo service mysqld start
     /usr/bin/mysqladmin -u root password '' # pick a real password
-    
+
 You will probably want to change the password 'pick_one' in the example below
 to something else:
 
     echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one'; GRANT ALL ON test_chronam.* TO 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root -p
 
-You will need to use the settings template to create your application settings.
-Add your database password to the settings.py file:
+You will need to create a Django settings file which uses the default settings
+and sets custom values specific to your site:
 
-    cp /opt/chronam/settings_template.py /opt/chronam/settings.py
+1. Create a `settings.py` file in the chronam directory which imports the default values
+   from the provided template for possible customization:
 
-For Django management commands to work you will need to have the
-DJANGO_SETTINGS_MODULE environment variable set. You may want to add 
-this to your ~/.profile so you do not need to remember to do it 
-everytime you log in.
+        echo 'from chronam.settings_template import *' > /opt/chronam/settings.py
 
-    export DJANGO_SETTINGS_MODULE=chronam.settings
+1. Ensure that the `DJANGO_SETTINGS_MODULE` environment variable is set to
+   `chronam.settings` before you start a Django management command. This can be
+   set as a user-wide default in your `~/.profile` or but the recommended way is
+   simply to make it part of the virtualenv activation process::
 
+        echo 'export DJANGO_SETTINGS_MODULE=chronam.settings' >> /opt/chronam/ENV/bin/activate
+
+1. Add your database password to the settings.py file following the standard
+   Django [settings documentation](https://docs.djangoproject.com/en/1.8/ref/settings/#databases):
+
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': 'chronam_db',
+                'USER': 'chronam_user',
+                'HOST': 'mysql.example.org',
+                'PASSWORD': 'NotTheRealPassword',
+            }
+        }
+
+You should never edit the `settings_template.py` file since that may change in
+the next release but you may wish to periodically review the list of
+[changes to that file](https://github.com/LibraryOfCongress/chronam/commits/master/settings_template.py)
+in case you need to update your local settings.
 
 Next you will need to initialize database schema and load some initial data:
 
