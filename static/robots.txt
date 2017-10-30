@@ -9,6 +9,7 @@ Disallow: /data/
 
 User-Agent: Bingbot
 Disallow: /data/
+Crawl-delay: 5
 
 User-Agent: YandexBot
 Disallow: /data/
