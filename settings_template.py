@@ -141,6 +141,8 @@ CTS_URL = "https://cts.loc.gov/transfer/"
 
 MAX_BATCHES = 0
 
+SENDFILE_BACKEND = 'sendfile.backends.xsendfile'
+
 import multiprocessing
 TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
 #TOO_BUSY_LOAD_AVERAGE = 64 
