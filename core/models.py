@@ -835,10 +835,6 @@ class OCR(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     page = models.OneToOneField('Page', null=True, related_name='ocr')
 
-    @property
-    def text(self):
-        return (' '.join([str(obj.language) for obj in self.language.all()]))
-
 
 class PublicationDate(models.Model):
     text = models.CharField(max_length=500)
