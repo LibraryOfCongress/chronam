@@ -1,8 +1,31 @@
+import json
+import os
+import time
+
 from django.conf import settings
 from django.core import urlresolvers
-from chronam.core.decorator import cache_page
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.views.decorators.cache import never_cache
+
+from chronam.core.decorator import cache_page
+from chronam.core.models import Language
+
+
+@never_cache
+def healthz(request):
+    status = {
+        'current_time': time.time(),
+        'load_average': os.getloadavg()
+    }
+
+    # We don't want to query a large table but we do want to hit the database
+    # at last once:
+    status['database_has_data'] = Language.objects.count() > 0
+
+    return HttpResponse(content=json.dumps(status), content_type='application/json')
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def about(request):
