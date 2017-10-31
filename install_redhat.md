@@ -11,7 +11,7 @@ Enable Extra Packages if you need to (for example, you're using RHEL6 on EC2:
 
 Install system dependencies:
 
-    sudo yum install mysql-server mysql-devel httpd python27 python27-devel python27-setuptools gcc libxml2-devel libxslt-devel libjpeg-devel zlib-devel mod_wsgi  git
+    sudo yum install mysql-server mysql-devel httpd python27 python27-devel python27-setuptools gcc libxml2-devel libxslt-devel libjpeg-devel zlib-devel mod_wsgi  git mod_xsendfile
     easy_install-2.7 pip
     pip2.7 install virtualenv
 
