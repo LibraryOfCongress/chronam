@@ -3,7 +3,7 @@ chronam Ubuntu
 
 The following are instructions for installing system level dependencies on Ubuntu:
 
-    sudo apt-get install python-dev python-virtualenv mysql-server libmysqlclient-dev apache2 libapache2-mod-wsgi jetty openjdk-8-jdk libxml2-dev libxslt-dev libjpeg-dev git-core graphicsmagick
+    sudo apt-get install python-dev python-virtualenv mysql-server libmysqlclient-dev apache2 libapache2-mod-wsgi libapache2-mod-xsendfile jetty openjdk-8-jdk libxml2-dev libxslt-dev libjpeg-dev git-core graphicsmagick
 
 When you install mysql-server, you will be prompted for a root password. If you choose one, make a note of what it is. Later you will be asked to enter the password when you create the database for the project.
 
