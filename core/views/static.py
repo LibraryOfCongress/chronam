@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.decorators.cache import never_cache
+from psutil import Process
 
 from chronam.core.decorator import cache_page
 from chronam.core.models import Language
@@ -17,7 +18,8 @@ from chronam.core.models import Language
 def healthz(request):
     status = {
         'current_time': time.time(),
-        'load_average': os.getloadavg()
+        'load_average': os.getloadavg(),
+        'process_creation_time': Process().create_time()
     }
 
     # We don't want to query a large table but we do want to hit the database
