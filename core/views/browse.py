@@ -18,6 +18,8 @@ from django.template.defaultfilters import filesizeformat
 from django.utils import html
 from django.views.decorators.vary import vary_on_headers
 
+from sendfile import sendfile
+
 from chronam.core.utils.url import unpack_url_path
 from chronam.core import models, index
 from chronam.core.rdf import title_to_graph, issue_to_graph, page_to_graph
