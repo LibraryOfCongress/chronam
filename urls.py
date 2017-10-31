@@ -1,3 +1,8 @@
+# encoding: utf-8
+
+from __future__ import absolute_import
+
+import functools
 import os
 
 from django.conf.urls import url
@@ -13,12 +18,15 @@ handler500 = 'django.views.defaults.server_error'
 
 
 def cache_page(function, ttl):
+    """Decorate the provided function by adding Cache-Control and Expires headers to responses"""
+
+    @functools.wraps(function)
     def decorated_function(*args, **kwargs):
-        request = args[0]
         response = function(*args, **kwargs)
         cache.patch_response_headers(response, ttl)
         cache.patch_cache_control(response, public=True)
         return response
+
     return decorated_function
 
 urlpatterns = [
