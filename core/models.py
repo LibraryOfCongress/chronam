@@ -828,7 +828,7 @@ class Page(models.Model):
 
 class LanguageText(models.Model):
     language = models.ForeignKey('Language', null=True)
-    ocr = models.ForeignKey('OCR', related_name="language")
+    ocr = models.ForeignKey('OCR', related_name="language_texts")
 
 
 class OCR(models.Model):
@@ -1208,12 +1208,14 @@ class OcrDump(models.Model):
         return "path=%s size=%s sha1=%s" % (self.path, self.size, self.sha1)
 
     def _add_page(self, page, tar):
+        from index import get_page_text
+
         d = page.issue.date_issued
         relative_dir = "%s/%i/%02i/%02i/ed-%i/seq-%i/" % (page.issue.title_id, d.year, d.month, d.day, page.issue.edition, page.sequence)
 
         # add ocr text
         txt_filename = relative_dir + "ocr.txt"
-        ocr_text = page.ocr.text.encode('utf-8')
+        ocr_text = get_page_text(page)[0].encode('utf-8')
         info = tarfile.TarInfo(name=txt_filename)
         info.size = len(ocr_text)
         info.mtime = time.time()

@@ -53,6 +53,7 @@ class BatchLoaderTest(TestCase):
         # extract ocr data just for this page
         loader.process_ocr(page, index=False)
         self.assertTrue(page.ocr != None)
+        self.assertTrue(len(page.lang_text) > 0)
 
         p = Title.objects.get(lccn='sn83045396').issues.all()[0].pages.all()[0]
         self.assertTrue(p.ocr != None)

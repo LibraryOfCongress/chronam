@@ -51,8 +51,7 @@ class OcrDumpTests(TestCase):
         t = tarfile.open(dump.path, "r:bz2")
         members = t.getmembers()
         self.assertEqual(len(members), 112) # ocr xml and txt for each page
-        # Now each record is much shorter because the text field is removed
-        self.assertEqual(members[0].size, 7)
+        self.assertEqual(members[0].size, 26282)
 
         # mtime on files in the archive should be just after we
         # created the OcrDump object from the batch
