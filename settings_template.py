@@ -37,10 +37,51 @@ DATABASES = {
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'px2@!q2(m5alb$0=)h@u*80mmf9cd-nn**^y4j2j&+_8h^n_0f'
 
+#persist the database connections instead of closing after each request
+CONN_MAX_AGE = None
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'verbose',
+            'filename': '/var/log/httpd/chronam.log',
+            'maxBytes': 1024*1024*50, #50MB
+            'backupCount': 5,
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'utils': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+    'root': {
+        'handlers': ['file'],
+            'level': 'DEBUG'
+    },
+}
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.http.ConditionalGetMiddleware',
     'chronam.core.middleware.TooBusyMiddleware',
 )
 
@@ -89,7 +130,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': '/var/tmp/django_cache',
-        'TIMEOUT': 86400,  # 1 day
+        'TIMEOUT': 4838400, # 2 months
     }
 }
 
@@ -103,9 +144,11 @@ CTS_URL = "https://cts.loc.gov/transfer/"
 
 MAX_BATCHES = 0
 
+SENDFILE_BACKEND = 'sendfile.backends.xsendfile'
+
 import multiprocessing
-#TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
-TOO_BUSY_LOAD_AVERAGE = 64 
+TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
+#TOO_BUSY_LOAD_AVERAGE = 64 
 
 SOLR = "http://localhost:8983/solr"
 SOLR_LANGUAGES = ("eng", "fre", "spa", "ger", "ita",)

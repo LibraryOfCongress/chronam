@@ -18,12 +18,13 @@ from django.template.defaultfilters import filesizeformat
 from django.utils import html
 from django.views.decorators.vary import vary_on_headers
 
+from sendfile import sendfile
+
 from chronam.core.utils.url import unpack_url_path
 from chronam.core import models, index
 from chronam.core.rdf import title_to_graph, issue_to_graph, page_to_graph
-from chronam.core.index import get_page_text
 
-from chronam.core.utils.utils import HTMLCalendar, _get_tip, _stream_file, \
+from chronam.core.utils.utils import HTMLCalendar, _get_tip, \
     _page_range_short, _rdf_base, get_page, label, create_crumbs
 from chronam.core.decorator import cache_page, rdf_view
 
@@ -257,7 +258,6 @@ def page(request, lccn, date, edition, sequence, words=None):
     profile_uri = 'http://www.openarchives.org/ore/html/'
 
     template = "page.html"
-    text = get_page_text(page)
     response = render_to_response(template, dictionary=locals(),
                                   context_instance=RequestContext(request))
     return response
@@ -469,35 +469,42 @@ def _search_engine_words(request):
     words = index.word_matches_for_page(request.path, words)
     return words
 
+
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def page_ocr(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     page_title = "%s, %s, %s" % (label(title), label(issue), label(page))
     crumbs = create_crumbs(title, issue, date, edition, page)
     host = request.get_host()
-    text = get_page_text(page)
     return render_to_response('page_text.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
 
 def page_pdf(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
-    return _stream_file(page.pdf_abs_filename, 'application/pdf')
-
+    if page.pdf_abs_filename:
+        return sendfile(request, page.pdf_abs_filename)
+    else:
+        raise Http404("No pdf for page %s" % page)
 
 def page_jp2(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
-    return _stream_file(page.jp2_abs_filename, 'image/jp2')
-
+    if page.jp2_abs_filename:
+        return sendfile(request, page.jp2_abs_filename)
+    else:
+        raise Http404("No jp2 for page %s" % page)
 
 def page_ocr_xml(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
-    return _stream_file(page.ocr_abs_filename, 'application/xml')
+    if page.ocr_abs_filename:
+        return sendfile(request, page.ocr_abs_filename)
+    else:
+        raise Http404("No ocr for page %s" % page)
 
 def page_ocr_txt(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     try:
-        text = get_page_text(page)
+        text = page.ocr.text
         return HttpResponse(text, content_type='text/plain')
     except models.OCR.DoesNotExist:
         raise Http404("No OCR for %s" % page)
@@ -559,4 +566,3 @@ def issues_first_pages(request, lccn, page_number=1):
     crumbs = create_crumbs(title)
     return render_to_response('issue_pages.html', dictionary=locals(),
                               context_instance=RequestContext(request))
-

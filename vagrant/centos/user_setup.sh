@@ -17,11 +17,11 @@ if [ ! -d $CHRONAM_HOME/data/bib ]; then
     mkdir $CHRONAM_HOME/data/bib
 fi
 
-echo "CREATE DATABASE chronam CHARACTER SET utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root 
+echo "CREATE DATABASE chronam CHARACTER SET utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root
 
 # config env
 if [ ! -f $CHRONAM_HOME/settings.py ]; then
-    ln -s $CHRONAM_HOME/settings_template.py $CHRONAM_HOME/settings.py 
+    echo 'from chronam.settings_template import *' > $CHRONAM_HOME/settings.py
 fi
 
 echo "export DJANGO_SETTINGS_MODULE=chronam.settings" >> /home/vagrant/.bashrc
