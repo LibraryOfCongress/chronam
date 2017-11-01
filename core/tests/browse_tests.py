@@ -11,6 +11,12 @@ from chronam.core.models import Title, LanguageText
 
 
 class BrowseTests(TestCase):
+    """
+    Tests related to core/views/browse.py.
+    test_full_text_deleted - 'sanity' check that 'text' column is removed
+    test_getting_text_from_solr_utah and test_getting_text_from_solr_slovenia
+    tests get_page_text() with two different batches
+    """
     fixtures = ['countries.json', 'languages.json', 'awardee.json']
 
     def test_full_text_deleted(self):

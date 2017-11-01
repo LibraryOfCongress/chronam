@@ -1211,7 +1211,11 @@ class OcrDump(models.Model):
 
         # add ocr text
         txt_filename = relative_dir + "ocr.txt"
-        ocr_text = get_page_text(page)[0].encode('utf-8')
+        ocr_text = get_page_text(page)
+        if len(ocr_text) > 0:
+            ocr_text = ocr_text[0].encode('utf-8')
+        else:
+            ocr_text = ['Text not available']
         info = tarfile.TarInfo(name=txt_filename)
         info.size = len(ocr_text)
         info.mtime = time.time()
