@@ -18,3 +18,4 @@ kombu<4
 django-kombu==0.9.4
 worldcat==0.3.6
 django-sendfile==0.3.11
+psutil>=5.4.0
