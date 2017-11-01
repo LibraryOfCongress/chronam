@@ -12,14 +12,12 @@ from chronam.core.models import Title, LanguageText
 
 class BrowseTests(TestCase):
     """
-    Tests related to core/views/browse.py.
-    test_full_text_deleted - 'sanity' check that 'text' column is removed
-    test_getting_text_from_solr_utah and test_getting_text_from_solr_slovenia
-    tests get_page_text() with two different batches
+    Tests related to core/views/browse.py
     """
     fixtures = ['countries.json', 'languages.json', 'awardee.json']
 
     def test_full_text_deleted(self):
+        #'sanity' check that 'text' column is removed
         check = False
         with connection.cursor() as cursor:
             cursor.execute("SHOW COLUMNS FROM core_languagetext")
@@ -30,6 +28,11 @@ class BrowseTests(TestCase):
         self.assertEqual(check, False)
 
     def test_getting_text_from_solr_utah(self):
+        """
+        tests get_page_text() with batch batch_uuml_thys_ver01.
+        First creates a page object 'page' with _get_tip()
+        then uses it as an argument to get_page_text()
+        """
         batch_dir = os.path.join(settings.BATCH_STORAGE, 'batch_uuml_thys_ver01')
         self.assertTrue(os.path.isdir(batch_dir))
         loader = BatchLoader(process_ocr=False)
@@ -47,6 +50,11 @@ class BrowseTests(TestCase):
         self.assertEqual(Title.objects.get(lccn='sn83045396').has_issues, False)
 
     def test_getting_text_from_solr_slovenia(self):
+        """
+        tests get_page_text() with batch batch_iune_oriole_ver01.
+        First creates a page object 'page' with _get_tip()
+        then uses it as an argument to get_page_text()
+        """
         batch_dir = os.path.join(settings.BATCH_STORAGE, 'batch_iune_oriole_ver01')
         self.assertTrue(os.path.isdir(batch_dir))
         loader = BatchLoader(process_ocr=False)
