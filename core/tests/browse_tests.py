@@ -4,10 +4,10 @@ from django.test import TestCase
 from django.db import connection
 from django.conf import settings
 
-from chronam.core.views.browse import get_page_text
+from chronam.core.index import get_page_text
 from chronam.core.utils.utils import _get_tip
 from chronam.core.batch_loader import BatchLoader, Batch
-from chronam.core.models import Title, LanguageText
+from chronam.core.models import Title
 
 
 class BrowseTests(TestCase):
@@ -18,14 +18,13 @@ class BrowseTests(TestCase):
 
     def test_full_text_deleted(self):
         #'sanity' check that 'text' column is removed
-        check = False
         with connection.cursor() as cursor:
             cursor.execute("SHOW COLUMNS FROM core_languagetext")
             rows = cursor.fetchall()
             for row in rows:
                 if row[0] == 'text':
-                    check = True
-        self.assertEqual(check, False)
+                    self.fail("core_languagetext.text should not exist. "
+                              "Did you run the migrations?")
 
     def test_getting_text_from_solr_utah(self):
         """

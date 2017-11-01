@@ -1204,18 +1204,14 @@ class OcrDump(models.Model):
         return "path=%s size=%s sha1=%s" % (self.path, self.size, self.sha1)
 
     def _add_page(self, page, tar):
-        from index import get_page_text
+        from .index import get_page_text
 
         d = page.issue.date_issued
         relative_dir = "%s/%i/%02i/%02i/ed-%i/seq-%i/" % (page.issue.title_id, d.year, d.month, d.day, page.issue.edition, page.sequence)
 
         # add ocr text
         txt_filename = relative_dir + "ocr.txt"
-        ocr_text = get_page_text(page)
-        if len(ocr_text) > 0:
-            ocr_text = ocr_text[0].encode('utf-8')
-        else:
-            ocr_text = ['Text not available']
+        ocr_text = get_page_text(page)[0].encode('utf-8')
         info = tarfile.TarInfo(name=txt_filename)
         info.size = len(ocr_text)
         info.mtime = time.time()

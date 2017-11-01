@@ -53,7 +53,7 @@ class BatchLoaderTest(TestCase):
         # extract ocr data just for this page
         loader.process_ocr(page, index=False)
         self.assertTrue(page.ocr != None)
-        self.assertTrue(len(page.lang_text) > 0)
+        self.assertGreater(len(page.lang_text), 0)
 
         p = Title.objects.get(lccn='sn83045396').issues.all()[0].pages.all()[0]
         self.assertTrue(p.ocr != None)
@@ -89,6 +89,3 @@ class BatchLoaderTest(TestCase):
         loader.purge_batch('batch_uuml_thys_ver01')
         self.assertEqual(Batch.objects.all().count(), 0)
         self.assertEqual(Title.objects.get(lccn='sn83045396').has_issues, False)
-
-
-
