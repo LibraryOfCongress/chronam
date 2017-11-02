@@ -34,8 +34,8 @@ class OcrDumpTests(TestCase):
         self.assertEqual(dump.path, os.path.join(dumps_dir, "batch_uuml_thys_ver01.tar.bz2"))
         # size can actually vary based on the compression of the different dates
         # that are in the tarfile
-        self.assertTrue(dump.size > 3000000)
-        self.assertTrue(dump.size < 4000000)
+        self.assertGreater(dump.size, 3000000)
+        self.assertGreater(dump.size, 4000000)
 
 
         # make sure the sha1 looks good

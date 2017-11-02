@@ -39,7 +39,7 @@
 
     <div>
     {% if text %}
-    {{ text.0|linebreaks }}
+    {{ text|join:" // "|linebreaks }}
     {% endif %}
     </div>
 

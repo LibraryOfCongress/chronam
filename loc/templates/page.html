@@ -20,7 +20,7 @@
     <noscript><!-- without javascript the pageviewer does not work; display OCR in this case instead. -->
         <h3>Newspaper Page Text</h3>
         {% if text %}
-        <pre>{{ text.0|linebreaks }} </pre>
+        <pre>{{ text|join:" // " |linebreaks }} </pre>
         {% endif %}
     </noscript>
 

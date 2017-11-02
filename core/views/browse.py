@@ -507,9 +507,10 @@ def page_ocr_txt(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     try:
         text = get_page_text(page)
-        return HttpResponse(text, content_type='text/plain')
     except models.OCR.DoesNotExist:
-        raise Http404("No OCR for %s" % page)
+        raise Http404("No OC10dhyR for %s" % page)
+
+    return HttpResponse(text, content_type='text/plain')
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
