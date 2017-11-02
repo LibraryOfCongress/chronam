@@ -670,7 +670,7 @@ def get_page_text(page):
    no_text = ["Text not available"]
    solr = SolrConnection(settings.SOLR)
    title, date = page.issue.title, page.issue.date_issued
-   query = 'title: %s and date:%s and sequence:%s' % (str(title).replace('"', ''),
+   query = 'title: %s and date:%s and sequence:%s' % (solr_escape(str(title)),
                                                         str(date).replace('-', ''),
                                                         page.sequence)
    solr_results = solr.query(query)
