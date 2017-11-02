@@ -4,30 +4,27 @@ import re
 import urlparse
 
 from django import forms as django_forms
-
 from django.conf import settings
-from django.core.paginator import Paginator, InvalidPage
 from django.core import urlresolvers
+from django.core.paginator import InvalidPage, Paginator
 from django.forms import fields
-from django.http import HttpResponse, HttpResponseNotFound, Http404, \
-    HttpResponseRedirect, HttpResponsePermanentRedirect
-from django.shortcuts import render_to_response
-from django.shortcuts import get_object_or_404
+from django.http import (Http404, HttpResponse, HttpResponseNotFound,
+                         HttpResponsePermanentRedirect, HttpResponseRedirect,)
+from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.template.defaultfilters import filesizeformat
 from django.utils import html
 from django.views.decorators.vary import vary_on_headers
-
 from sendfile import sendfile
 
-from chronam.core.utils.url import unpack_url_path
-from chronam.core import models, index
-from chronam.core.rdf import title_to_graph, issue_to_graph, page_to_graph
-from chronam.core.index import get_page_text
-
-from chronam.core.utils.utils import HTMLCalendar, _get_tip, \
-    _page_range_short, _rdf_base, get_page, label, create_crumbs
+from chronam.core import index, models
 from chronam.core.decorator import cache_page, rdf_view
+from chronam.core.index import get_page_text
+from chronam.core.rdf import issue_to_graph, page_to_graph, title_to_graph
+from chronam.core.utils.url import unpack_url_path
+from chronam.core.utils.utils import (HTMLCalendar, _get_tip,
+                                      _page_range_short, _rdf_base,
+                                      create_crumbs, get_page, label,)
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -569,4 +566,3 @@ def issues_first_pages(request, lccn, page_number=1):
     crumbs = create_crumbs(title)
     return render_to_response('issue_pages.html', dictionary=locals(),
                               context_instance=RequestContext(request))
-
