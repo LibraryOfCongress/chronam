@@ -4,6 +4,7 @@ from title_loader_tests import *
 from holding_loader_tests import *
 from title_pull_tests import *
 from batch_loader_tests import *
+from browse_tests import *
 from ocr_extractor_tests import *
 from essay_loader_tests import *
 from index_tests import *

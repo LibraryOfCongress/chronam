@@ -666,3 +666,16 @@ def _solrize_date(d, is_start=True):
     else:
         return None
 
+def get_page_text(page):
+   no_text = ["Text not available"]
+   solr = SolrConnection(settings.SOLR)
+   title, date = page.issue.title, page.issue.date_issued
+   query = 'title: %s and date:%s and sequence:%s' % (solr_escape(str(title)),
+                                                        str(date).replace('-', ''),
+                                                        page.sequence)
+   solr_results = solr.query(query)
+   results_attribute = getattr(solr_results, 'results', None)
+   if isinstance(results_attribute, list) and len(results_attribute) > 0:
+       return results_attribute[0].get('ocr', no_text)
+   else:
+       return no_text
