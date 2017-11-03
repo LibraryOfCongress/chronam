@@ -1,10 +1,10 @@
 import datetime
 
 from django import forms
-from django.forms import fields
 from django.conf import settings
 from django.core.cache import cache
-from django.db.models import Min, Max
+from django.db.models import Max, Min
+from django.forms import fields
 
 from chronam.core import models
 
@@ -39,7 +39,7 @@ def _titles_states():
     returns a tuple of two elements (list of titles, list of states)
 
     example return value:
-    ([('', 'All newspapers'), (u'sn83030214', u'New-York tribune. (New York [N.Y.])')], 
+    ([('', 'All newspapers'), (u'sn83030214', u'New-York tribune. (New York [N.Y.])')],
      [('', 'All states'), (u'New York', u'New York')])
     """
     titles_states = cache.get("titles_states")
