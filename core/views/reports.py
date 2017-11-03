@@ -12,6 +12,7 @@ from django.template import RequestContext
 from django.core.paginator import Paginator, InvalidPage
 from django.db import connection
 from django.utils import datetime_safe
+from django.views.decorators.cache import never_cache
 
 from chronam.core import index, models
 from chronam.core.rdf import batch_to_graph, awardee_to_graph
@@ -183,7 +184,7 @@ def event(request, event_id):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@never_cache
 def events(request, page_number=1):
     page_title = 'Events'
     events = models.LoadBatchEvent.objects.all().order_by('-created')
