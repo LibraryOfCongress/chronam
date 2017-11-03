@@ -23,7 +23,7 @@ if settings.USE_TIFF:
 else:
     import NativeImaging
 
-    for backend in ('aware_cext', 'aware', 'graphicsmagick'):
+    for backend in ('aware', 'graphicsmagick'):
         try:
             Image = NativeImaging.get_image_class(backend)
             LOGGER.info("Using NativeImage backend '%s'", backend)
