@@ -51,7 +51,6 @@ def write_sitemaps():
         # add a url to the sitemap
         sitemap.write("<url><loc>http://chroniclingamerica.loc.gov%s</loc><lastmod>%s</lastmod></url>\n" % (loc, rfc3339(last_mod)))
         url_count += 1
-
         # necessary to avoid memory bloat when settings.DEBUG = True
         if url_count % 1000 == 0:
             reset_queries()

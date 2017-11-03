@@ -4,10 +4,7 @@ import codecs
 
 from django.core.management.base import BaseCommand
 
-from chronam.core.management.commands import configure_logging
 from chronam.core.models import Institution
-
-configure_logging("load_intitutions_logging.config", "load_institutions.log")
 
 """
 Loads the institutions based on a CSV file in the form of:

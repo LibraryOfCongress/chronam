@@ -6,12 +6,9 @@ from django.core.management.base import BaseCommand
 
 from chronam.core import models
 from chronam.core.holding_loader import HoldingLoader
-from chronam.core.management.commands import configure_logging
 from chronam.core.utils.utils import validate_bib_dir
 
-configure_logging('load_holdings_logging.config', 'load_holdings.log')
 _logger = logging.getLogger(__name__)
-
 
 class Command(BaseCommand):
     help = "Load a holdings records after title records are all loaded"

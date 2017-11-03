@@ -18,11 +18,8 @@ import feedparser
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from chronam.core.management.commands import configure_logging
 from chronam.core.rdf import rdf_uri
 from chronam.core import models as m
-
-configure_logging("release.config", "release.log")
 
 _logger = logging.getLogger(__name__)
 

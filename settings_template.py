@@ -48,7 +48,7 @@ LOGGING = {
             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
         },
         'simple': {
-            'format': '%(levelname)s %(message)s'
+            'format': '[%(asctime)s %(levelname)s %(name)s] %(message)s'
         },
     },
     'handlers': {
@@ -59,6 +59,11 @@ LOGGING = {
             'filename': '/var/log/httpd/chronam.log',
             'maxBytes': 1024 * 1024 * 50,  # 50MB
             'backupCount': 5,
+        },
+        'console':{
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
         },
     },
     'loggers': {
@@ -72,6 +77,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'management': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        }
     },
     'root': {
         'handlers': ['file'],

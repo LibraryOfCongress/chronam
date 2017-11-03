@@ -2,10 +2,7 @@ import logging
 
 from django.core.management.base import BaseCommand
     
-from chronam.core.management.commands import configure_logging
 from chronam.core.index import index_titles, index_pages
-
-configure_logging("index_logging.config", "index.log")
 
 _logger = logging.getLogger(__name__)
 

@@ -7,29 +7,27 @@ from urlparse import urlparse
 
 from django.core.management.base import BaseCommand
 
-from chronam.core.management.commands import configure_logging
 from chronam.core.models import Page, FlickrUrl
 
-configure_logging("chronam_flickr.config", "chronam_flickr.log")
-_log = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     args = '<flickr_key>'
     help = 'load links for content that has been pushed to flickr.'
 
     def handle(self, key, **options):
-        _log.debug("looking for chronam page content on flickr")
+        _logger.debug("looking for chronam page content on flickr")
         create_count = 0
 
         for flickr_url, chronam_url in flickr_chronam_links(key):
-            _log.info("found flickr/chronam link: %s, %s" % 
+            _logger.info("found flickr/chronam link: %s, %s" % 
                          (flickr_url, chronam_url))
 
             # use the page url to locate the Page model
             path = urlparse(chronam_url).path
             page = Page.lookup(path)
             if not page:
-                _log.error("page for %s not found" % chronam_url)
+                _logger.error("page for %s not found" % chronam_url)
                 continue
 
             # create the FlickrUrl attached to the apprpriate page
@@ -38,12 +36,12 @@ class Command(BaseCommand):
             if created:
                 create_count += 1
                 f.save()
-                _log.info("updated page (%s) with flickr url (%s)" % 
+                _logger.info("updated page (%s) with flickr url (%s)" % 
                           (page, flickr_url))
             else:
-                _log.info("already knew about %s" % flickr_url)
+                _logger.info("already knew about %s" % flickr_url)
 
-        _log.info("created %s flickr urls" % create_count)
+        _logger.info("created %s flickr urls" % create_count)
     
 
 def photos_in_set(key, set_id):

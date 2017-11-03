@@ -4,14 +4,9 @@ import logging
 from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
 
-from chronam.core.management.commands import configure_logging
 from chronam.core import tasks
 
-configure_logging('queue_process_coordinates.config',
-                  'queue_process_coordinates_%s.log' % os.getpid())
-
-LOGGER = logging.getLogger(__name__)
-
+_logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
@@ -25,5 +20,5 @@ class Command(BaseCommand):
         try:
             tasks.process_coordinates.delay(batch_name)
         except Exception, e:
-            LOGGER.exception(e)
+            _logger.exception(e)
             raise CommandError("unable to process coordinates. check the queue_load_batch log for clues")

@@ -6,13 +6,8 @@ from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
 
 from chronam.core import models
-from chronam.core.management.commands import configure_logging
     
-configure_logging('diff_batches_logging.config', 
-                  'diff_batches_%s.log' % os.getpid())
-
 _logger = logging.getLogger(__name__)
-
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
