@@ -59,7 +59,7 @@ def _titles_states():
         for state in _states:
             states.append((state, state))
         states = sorted(states)
-        cache.set("titles_states", (titles, states))
+        cache.set("titles_states", (titles, states), settings.METADATA_TTL_SECONDS)
     else:
         titles, states = titles_states
     return (titles, states)
@@ -91,7 +91,7 @@ def _fulltext_range():
         #max_year = min(max_year, MAX_YEAR)
 
         fulltext_range = (min_year, max_year)
-        cache.set('fulltext_range', fulltext_range)
+        cache.set('fulltext_range', fulltext_range, settings.METADATA_TTL_SECONDS)
     return fulltext_range
 
 
