@@ -56,6 +56,6 @@ def newspaper_info(request):
                 'ethnicities_with_issues': ethnicities_with_issues,
                 'total_page_count': total_page_count}
 
-        cache.set("newspaper_info", info)
+        cache.set("newspaper_info", info, settings.METADATA_TTL_SECONDS)
 
     return info
