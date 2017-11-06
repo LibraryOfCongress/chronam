@@ -31,13 +31,13 @@ DATABASES = {
         'NAME': 'chronam',
         'USER': 'chronam',
         'PASSWORD': 'pick_one',
-        }
     }
+}
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'px2@!q2(m5alb$0=)h@u*80mmf9cd-nn**^y4j2j&+_8h^n_0f'
 
-#persist the database connections instead of closing after each request
+# persist the database connections instead of closing after each request
 CONN_MAX_AGE = None
 
 LOGGING = {
@@ -57,7 +57,7 @@ LOGGING = {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'verbose',
             'filename': '/var/log/httpd/chronam.log',
-            'maxBytes': 1024*1024*50, #50MB
+            'maxBytes': 1024 * 1024 * 50,  # 50MB
             'backupCount': 5,
         },
     },
@@ -75,7 +75,7 @@ LOGGING = {
     },
     'root': {
         'handlers': ['file'],
-            'level': 'DEBUG'
+        'level': 'DEBUG'
     },
 }
 
@@ -98,7 +98,7 @@ TEMPLATES = [
                 'chronam.core.context_processors.extra_request_info',
                 'chronam.core.context_processors.newspaper_info',
             ],
-            'debug' : DEBUG,
+            'debug': DEBUG,
         },
     },
 ]
@@ -117,6 +117,8 @@ BROKER_URL = 'django://'
 THUMBNAIL_WIDTH = 360
 
 DEFAULT_TTL_SECONDS = 86400  # 1 day
+#: Used to cache metadata about publishers, issues, etc. as distinct from HTML pages, images, search results, etc.
+METADATA_TTL_SECONDS = DEFAULT_TTL_SECONDS
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24 * 7 * 2  # 2 weeks
 API_TTL_SECONDS = 60 * 60  # 1 hour
 FEED_TTL_SECONDS = 60 * 60 * 24 * 7
@@ -130,7 +132,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': '/var/tmp/django_cache',
-        'TIMEOUT': 4838400, # 2 months
+        'TIMEOUT': 4838400,  # 2 months
     }
 }
 
@@ -148,7 +150,7 @@ SENDFILE_BACKEND = 'sendfile.backends.xsendfile'
 
 import multiprocessing
 TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
-#TOO_BUSY_LOAD_AVERAGE = 64 
+#TOO_BUSY_LOAD_AVERAGE = 64
 
 SOLR = "http://localhost:8983/solr"
 SOLR_LANGUAGES = ("ara", "cze", "dan", "eng", "fin", "fre", "ger", "ita", "nob", "pol", "rum", "spa", "swe",)
@@ -160,7 +162,7 @@ OCR_DUMP_STORAGE = os.path.join(STORAGE, "ocr")
 COORD_STORAGE = os.path.join(STORAGE, "word_coordinates")
 
 
-BASE_CRUMBS = [{'label':'Home', 'href': '/'}]
+BASE_CRUMBS = [{'label': 'Home', 'href': '/'}]
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts

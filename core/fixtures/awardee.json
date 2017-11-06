@@ -22,5 +22,13 @@
       "name": "University of Utah, Marriott Library",
       "created": "2009-02-09 06:44:45"
     }
+  },
+  {
+    "pk": "iune",
+    "model": "core.awardee",
+    "fields": {
+      "name": "University of Illinois at Urbana-Champaign Library, Urbana, IL",
+      "created": "2009-02-09 06:44:45"
+    }
   }
 ]

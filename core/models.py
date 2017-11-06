@@ -601,6 +601,10 @@ class Issue(models.Model):
 
 
 class Page(models.Model):
+    def __init__(self, *args, **kw):
+        super(Page, self).__init__(*args, **kw)
+        self.lang_text = {}
+
     sequence = models.IntegerField(db_index=True)
     number = models.CharField(max_length=50)
     section_label = models.CharField(max_length=250)
@@ -734,17 +738,15 @@ class Page(models.Model):
             'section_label': self.section_label,
             'edition_label': self.issue.edition_label,
         })
-        try:
-            ocr_texts = self.ocr.language_texts.select_related().values('language__code', 'text')
-        except OCR.DoesNotExist:
-            ocr_texts = []
-        for ocr_text in ocr_texts:
+
+        ocr_texts = self.lang_text
+
+        for lang, ocr_text in ocr_texts.items():
             # make sure Solr is configured to handle the language and if it's
             # not just treat it as English
-            lang = ocr_text['language__code']
             if lang not in settings.SOLR_LANGUAGES:
                 lang = "eng"
-            doc['ocr_%s' % lang] = ocr_text['text']
+            doc['ocr_%s' % lang] = ocr_text
         return doc
 
     def previous(self):
@@ -825,7 +827,6 @@ class Page(models.Model):
 
 
 class LanguageText(models.Model):
-    text = models.TextField()
     language = models.ForeignKey('Language', null=True)
     ocr = models.ForeignKey('OCR', related_name="language_texts")
 
@@ -833,10 +834,6 @@ class LanguageText(models.Model):
 class OCR(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     page = models.OneToOneField('Page', null=True, related_name='ocr')
-
-    @property
-    def text(self):
-        return (' '.join([obj.text for obj in self.language_texts.all()]))
 
 
 class PublicationDate(models.Model):
@@ -1207,12 +1204,14 @@ class OcrDump(models.Model):
         return "path=%s size=%s sha1=%s" % (self.path, self.size, self.sha1)
 
     def _add_page(self, page, tar):
+        from .index import get_page_text
+
         d = page.issue.date_issued
         relative_dir = "%s/%i/%02i/%02i/ed-%i/seq-%i/" % (page.issue.title_id, d.year, d.month, d.day, page.issue.edition, page.sequence)
 
         # add ocr text
         txt_filename = relative_dir + "ocr.txt"
-        ocr_text = page.ocr.text.encode('utf-8')
+        ocr_text = get_page_text(page)[0].encode('utf-8')
         info = tarfile.TarInfo(name=txt_filename)
         info.size = len(ocr_text)
         info.mtime = time.time()

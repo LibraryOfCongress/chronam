@@ -53,7 +53,7 @@ class BatchLoaderTest(TestCase):
         # extract ocr data just for this page
         loader.process_ocr(page, index=False)
         self.assertTrue(page.ocr != None)
-        self.assertTrue(len(page.ocr.text) > 0)
+        self.assertGreater(len(page.lang_text), 0)
 
         p = Title.objects.get(lccn='sn83045396').issues.all()[0].pages.all()[0]
         self.assertTrue(p.ocr != None)
@@ -84,7 +84,6 @@ class BatchLoaderTest(TestCase):
         f = os.path.join(os.path.dirname(chronam.core.__file__), 'test-data', 
             'uuml_thys_ocr.txt')
         self.assertEqual(solr_doc['ocr_eng'], file(f).read().decode('utf-8'))
-
 
         # purge the batch and make sure it's gone from the db
         loader.purge_batch('batch_uuml_thys_ver01')
