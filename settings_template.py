@@ -77,7 +77,7 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
-        'management': {
+        'chronam': {
             'handlers': ['file', 'console'],
             'level': 'INFO',
             'propagate': True,
