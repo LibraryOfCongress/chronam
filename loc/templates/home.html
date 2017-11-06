@@ -3,6 +3,12 @@
 {% load static from staticfiles %}
 {% load humanize %}
  
+
+{% block extrahead %}
+    <link rel="preload" as="html" href="/tabs">
+    {{ block.super }}
+{% endblock extrahead %}
+
 {% block javascript %}
 {{ block.super }}
 <!-- jCarousel --> 
