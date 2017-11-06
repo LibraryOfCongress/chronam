@@ -41,6 +41,12 @@
             <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
         </analyzer>
     </fieldType>
+    <fieldType name="text_dak" class="solr.TextField">
+        <analyzer>
+            <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+        </analyzer>
+    </fieldType>
     <fieldType name="text_dan" class="solr.TextField">
         <analyzer>
             <tokenizer class="solr.WhitespaceTokenizerFactory" />
@@ -105,6 +111,18 @@
             <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
         </analyzer>
     </fieldType>
+    <fieldType name="text_hrv" class="solr.TextField">
+        <analyzer>
+            <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+        </analyzer>
+    </fieldType>
+    <fieldType name="text_ice" class="solr.TextField">
+        <analyzer>
+            <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+        </analyzer>
+    </fieldType>
     <fieldType name="text_ita" class="solr.TextField">
         <analyzer>
             <tokenizer class="solr.WhitespaceTokenizerFactory" />
@@ -115,6 +133,12 @@
             <filter class="solr.WordDelimiterFilterFactory" />
             <filter class="solr.SnowballPorterFilterFactory" language="Italian" />
             <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
+        </analyzer>
+    </fieldType>
+    <fieldType name="text_lit" class="solr.TextField">
+        <analyzer>
+            <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
         </analyzer>
     </fieldType>
     <fieldType name="text_nob" class="solr.TextField">
@@ -145,6 +169,18 @@
             <filter class="solr.WordDelimiterFilterFactory" />
             <filter class="solr.SnowballPorterFilterFactory" language="Romanian" />
             <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
+        </analyzer>
+    </fieldType>
+    <fieldType name="text_slv" class="solr.TextField">
+        <analyzer>
+            <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+        </analyzer>
+    </fieldType>
+    <fieldType name="text_slo" class="solr.TextField">
+        <analyzer>
+            <tokenizer class="solr.WhitespaceTokenizerFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
         </analyzer>
     </fieldType>
     <fieldType name="text_spa" class="solr.TextField">
@@ -202,14 +238,20 @@
     <field name="ocr_ara" type="text_ara" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_cze" type="text_cze" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_dan" type="text_dan" indexed="true" stored="true" required="false" multiValued="false" />
+    <field name="ocr_dak" type="text_dak" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_eng" type="text_eng" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_fin" type="text_fin" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_fre" type="text_fre" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_ger" type="text_ger" indexed="true" stored="true" required="false" multiValued="false" />
+    <field name="ocr_hrv" type="text_hrv" indexed="true" stored="true" required="false" multiValued="false" />
+    <field name="ocr_ice" type="text_ice" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_ita" type="text_ita" indexed="true" stored="true" required="false" multiValued="false" />
+    <field name="ocr_lit" type="text_lit" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_nob" type="text_nob" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_pol" type="text_pol" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_rum" type="text_rum" indexed="true" stored="true" required="false" multiValued="false" />
+    <field name="ocr_slv" type="text_slv" indexed="true" stored="true" required="false" multiValued="false" />
+    <field name="ocr_slo" type="text_slo" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_spa" type="text_spa" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr_swe" type="text_swe" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="ocr" type="text" indexed="true" stored="true" required="false" multiValued="true" />
