@@ -168,8 +168,8 @@ SOLR_LANGUAGES = ("ara", "cze", "dak", "dan", "eng", "fin", "fre", "ger", "hrv",
 STORAGE = '/opt/chronam/data/'
 BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
-OCR_DUMP_STORAGE = os.path.join(STORAGE, "ocr")
 COORD_STORAGE = os.path.join(STORAGE, "word_coordinates")
+OCR_DUMP_STORAGE = os.path.join(COORD_STORAGE, "ocr")
 
 
 BASE_CRUMBS = [{'label': 'Home', 'href': '/'}]
