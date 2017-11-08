@@ -433,6 +433,7 @@ class BatchLoader(object):
             try:
                 language = models.Language.objects.get(Q(code=lang) | Q(lingvoj__iendswith=lang))
             except models.Language.DoesNotExist:
+                _logger.warn("Language %s does not exist in the database. Defaulting to English.", language.name)
                 # default to english as per requirement
                 language = models.Language.objects.get(code='eng')
             lang_text_solr[language.code] = text
