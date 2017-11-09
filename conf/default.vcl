@@ -5,10 +5,16 @@ import directors;
 
 backend app1 {
     .host = "ndnpappvlp01.loc.gov";
+    .connect_timeout = 15s;
+    .first_byte_timeout = 120s;
+    .between_bytes_timeout = 120s;
 }
 
 backend app2 {
     .host = "ndnpappvlp02.loc.gov";
+    .connect_timeout = 15s;
+    .first_byte_timeout = 120s;
+    .between_bytes_timeout = 120s;
 }
 
 #create a virtual group for use when we do the load balancing
