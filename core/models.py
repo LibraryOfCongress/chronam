@@ -280,6 +280,9 @@ class Title(models.Model):
 
     @property
     def solr_doc(self):
+        language = [l.name for l in self.languages.all()]
+        if not language:
+            language = ['English']
         doc = {
             'id': self.url,
             'type': 'title',
@@ -292,7 +295,7 @@ class Title(models.Model):
             'publisher': self.publisher,
             'start_year': self.start_year_int,
             'end_year': self.end_year_int,
-            'language': [l.name for l in self.languages.all()],
+            'language': language,
             'alt_title': [t.name for t in self.alt_titles.all()],
             'subject': [s.heading for s in self.subjects.all()],
             'note': [n.text for n in self.notes.all()],
