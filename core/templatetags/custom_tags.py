@@ -3,6 +3,7 @@ from urllib2 import urlopen
 
 from django import template
 from django.core.cache import cache
+from django.conf import settings
 
 register = template.Library()
 
@@ -32,5 +33,5 @@ def get_ext_url(url, timeout=None):
         except:
             content = ''
         # store in cache for 1 day
-        cache.set(url, content, 86400)
+        cache.set(url, content, settings.DEFAULT_TTL_SECONDS)
     return content

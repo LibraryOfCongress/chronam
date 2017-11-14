@@ -89,7 +89,7 @@ def title_rdf(request, lccn):
     return response
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@cache_page(settings.API_TTL_SECONDS)
 def title_atom(request, lccn, page_number=1):
     title = get_object_or_404(models.Title, lccn=lccn)
     issues = title.issues.all().order_by('-batch__released', '-date_issued')
