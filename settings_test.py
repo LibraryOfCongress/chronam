@@ -12,8 +12,6 @@ DATABASES = {
 
 ESSAYS_FEED = "http://essyedtrrvlt01.loctest.gov/feed/"
 
-CTS_URL = "https://transferqa.loctest.gov/transfer/"
-
 # Use different storage pathes to avoid interference with the actual storage for the web app
 # some tests purge batch and deletes data (such as word coordinates) 
 BIB_STORAGE = os.path.join(STORAGE, "test_bib")

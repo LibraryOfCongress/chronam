@@ -137,12 +137,6 @@ CACHES = {
 }
 
 IS_PRODUCTION = False
-CTS_USERNAME = 'username'
-CTS_PASSWORD = 'password'
-CTS_PROJECT_ID = 'ndnp'
-CTS_QUEUE = 'ndnpingestqueue'
-CTS_SERVICE_TYPE = 'ingest.NdnpIngest.ingest'
-CTS_URL = "https://cts.loc.gov/transfer/"
 
 MAX_BATCHES = 0
 
