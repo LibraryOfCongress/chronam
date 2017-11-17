@@ -147,8 +147,12 @@ via the Web:
 Run Unit Tests
 --------------
 
-For the unit tests to work you will need to have the batch_uuml_thys_ver01
-available. You can use the wget command in the previous section to get get it.
+For the unit tests to work you will need:
+* to have the batch_uuml_thys_ver01 available. You can use the wget command in the previous section to get get it.
+* A local SOLR instance running
+* A local MySQL database
+* Access to the Essay Editor Feed
+
 After that you should be able to:
 
     cd /opt/chronam/
