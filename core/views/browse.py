@@ -265,7 +265,7 @@ def page(request, lccn, date, edition, sequence, words=None):
     return response
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@cache_page
 def titles(request, start=None, page_number=1):
     page_title = 'Newspaper Titles'
     if start:

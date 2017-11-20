@@ -18,7 +18,7 @@ from chronam.core.rdf import titles_to_graph
 from chronam.core.utils.url import unpack_url_path
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS)
 def newspapers(request, state=None, format='html'):
     if state and state != "all_states":
         state = unpack_url_path(state)

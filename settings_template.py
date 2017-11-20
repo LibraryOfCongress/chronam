@@ -131,10 +131,9 @@ DEFAULT_TTL_SECONDS = 86400  # 1 day
 METADATA_TTL_SECONDS = DEFAULT_TTL_SECONDS
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24 * 7 * 2  # 2 weeks
 API_TTL_SECONDS = 60 * 60  # 1 hour
-FEED_TTL_SECONDS = 60 * 60 * 24 * 7
+FEED_TTL_SECONDS = 60 * 60 * 24 * 7 # 1 week
 
 USE_TIFF = False
-
 
 ESSAYS_FEED = "http://essays.loc.gov/feed/"
 

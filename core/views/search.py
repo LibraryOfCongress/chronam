@@ -118,7 +118,7 @@ def search_pages_results(request, view_type='gallery'):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS)
 def search_titles(request):
     browse_val = [chr(n) for n in range(65, 91)]
     browse_val.extend([str(i) for i in range(10)])
@@ -133,7 +133,7 @@ def search_titles(request):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS)
 def search_titles_opensearch(request):
     host = request.get_host()
     return render_to_response('search_titles_opensearch.xml',

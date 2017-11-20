@@ -21,7 +21,7 @@ from chronam.core.decorator import cache_page, rdf_view, cors
 from chronam.core.utils.utils import _page_range_short, _rdf_base, _get_tip
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page
 def reports(request):
     page_title = 'Reports'
     return render_to_response('reports/reports.html', dictionary=locals(),
@@ -212,7 +212,7 @@ def events_atom(request, page_number=1):
                               content_type='application/atom+xml')
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@cache_page
 def states(request, format='html'):
     page_title = 'States'
     # custom SQL to eliminate spelling errors and the like in cataloging data
@@ -257,7 +257,7 @@ def counties_in_state(request, state, format='html'):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@cache_page
 def states_counties(request, format='html'):
     page_title = 'Counties by State'
 
@@ -274,7 +274,7 @@ GROUP BY state, county HAVING total >= 1 ORDER BY state, county")
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@cache_page
 def cities_in_county(request, state, county, format='html'):
     state, county = map(unpack_url_path, (state, county))
     if state is None or county is None:
@@ -294,7 +294,7 @@ def cities_in_county(request, state, county, format='html'):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@cache_page
 def cities_in_state(request, state, format='html'):
     state = unpack_url_path(state)
     if state is None:
@@ -314,7 +314,7 @@ def cities_in_state(request, state, format='html'):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page
 def institutions(request, page_number=1):
     page_title = 'Institutions'
     institutions = models.Institution.objects.all()
@@ -328,7 +328,7 @@ def institutions(request, page_number=1):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page
 def institution(request, code):
     institution = get_object_or_404(models.Institution, code=code)
     page_title = institution
@@ -340,7 +340,7 @@ def institution(request, code):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page
 def institution_titles(request, code, page_number=1):
     institution = get_object_or_404(models.Institution, code=code)
     page_title = 'Titles held by %s' % institution
@@ -370,7 +370,7 @@ def status(request):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS)
 def awardees(request):
     page_title = 'Awardees'
     awardees = models.Awardee.objects.all().order_by('name')
@@ -379,7 +379,7 @@ def awardees(request):
 
 
 @cors
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS)
 def awardees_json(request):
     awardees = {"awardees": []}
     host = request.get_host()
@@ -392,7 +392,7 @@ def awardees_json(request):
                         content_type='application/json')
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS)
 def awardee(request, institution_code):
     awardee = get_object_or_404(models.Awardee, org_code=institution_code)
     page_title = 'Awardee: %s' % awardee.name
@@ -402,7 +402,7 @@ def awardee(request, institution_code):
 
 
 @cors
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS)
 def awardee_json(request, institution_code):
     awardee = get_object_or_404(models.Awardee, org_code=institution_code)
     host = request.get_host()
@@ -413,7 +413,7 @@ def awardee_json(request, institution_code):
     return HttpResponse(json.dumps(j, indent=2), content_type='application/json')
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS)
 @rdf_view
 def awardee_rdf(request, institution_code):
     awardee = get_object_or_404(models.Awardee, org_code=institution_code)
@@ -424,7 +424,7 @@ def awardee_rdf(request, institution_code):
     return response
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@cache_page
 def terms(request):
     return render_to_response('reports/terms.html', dictionary=locals(),
                               context_instance=RequestContext(request))
@@ -466,7 +466,7 @@ def batch_summary(request, format='html'):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page
 def reels(request, page_number=1):
     page_title = 'Reels'
     reels = models.Reel.objects.all().order_by('number')
@@ -478,7 +478,7 @@ def reels(request, page_number=1):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page
 def reel(request, reel_number):
     crumbs = list(settings.BASE_CRUMBS)
     crumbs.extend([
@@ -496,7 +496,7 @@ def reel(request, reel_number):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS)
 def essays(request):
     page_title = "Newspaper Essays"
     essays = models.Essay.objects.all().order_by('title')
@@ -504,7 +504,7 @@ def essays(request):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS)
 def essay(request, essay_id):
     essay = get_object_or_404(models.Essay, id=essay_id)
     title = essay.first_title()
@@ -513,7 +513,7 @@ def essay(request, essay_id):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS)
 def ocr(request):
     page_title = "OCR Data"
     dumps = models.OcrDump.objects.all().order_by('-created')
@@ -521,7 +521,7 @@ def ocr(request):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS)
 def ocr_atom(request):
     dumps = models.OcrDump.objects.all().order_by("-created")
     if dumps.count() > 0:
@@ -534,7 +534,7 @@ def ocr_atom(request):
 
 
 @cors
-@cache_page(settings.API_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS)
 def ocr_json(request):
     j = {"ocr": []}
     host = request.get_host()
