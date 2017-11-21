@@ -435,6 +435,7 @@ class BatchLoader(object):
             except models.Language.DoesNotExist:
                 # default to english as per requirement
                 language = models.Language.objects.get(code='eng')
+            ocr.language_texts.create(language=language)
             lang_text_solr[language.code] = text
 
         page.ocr = ocr
