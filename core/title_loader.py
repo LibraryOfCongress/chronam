@@ -55,7 +55,8 @@ class TitleLoader(object):
                 _logger.info("processed %sk records in %.2f seconds" %
                              (self.records_processed / 1000, seconds))
 
-        map_xml(load_record, urllib2.urlopen(location))
+        request = urllib2.Request(location, headers={'User-Agent': 'chronam-title-loader'})
+        map_xml(load_record, urllib2.urlopen(request))
 
     def load_bib(self, record):
         title = None
