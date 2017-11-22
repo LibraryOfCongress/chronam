@@ -264,8 +264,7 @@ def page(request, lccn, date, edition, sequence, words=None):
                                   context_instance=RequestContext(request))
     return response
 
-
-@cache_page
+@cache_page(settings.LONG_TTL_SECONDS)
 def titles(request, start=None, page_number=1):
     page_title = 'Newspaper Titles'
     if start:

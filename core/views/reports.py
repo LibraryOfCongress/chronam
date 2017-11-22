@@ -20,8 +20,7 @@ from chronam.core.utils.url import unpack_url_path
 from chronam.core.decorator import cache_page, rdf_view, cors
 from chronam.core.utils.utils import _page_range_short, _rdf_base, _get_tip
 
-
-@cache_page
+@cache_page(settings.LONG_TTL_SECONDS)
 def reports(request):
     page_title = 'Reports'
     return render_to_response('reports/reports.html', dictionary=locals(),
@@ -211,8 +210,7 @@ def events_atom(request, page_number=1):
                               context_instance=RequestContext(request),
                               content_type='application/atom+xml')
 
-
-@cache_page
+@cache_page(settings.LONG_TTL_SECONDS)
 def states(request, format='html'):
     page_title = 'States'
     # custom SQL to eliminate spelling errors and the like in cataloging data
@@ -256,8 +254,7 @@ def counties_in_state(request, state, format='html'):
     return render_to_response('reports/counties.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
-@cache_page
+@cache_page(settings.LONG_TTL_SECONDS)
 def states_counties(request, format='html'):
     page_title = 'Counties by State'
 
@@ -273,8 +270,7 @@ GROUP BY state, county HAVING total >= 1 ORDER BY state, county")
     return render_to_response('reports/states_counties.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
-@cache_page
+@cache_page(settings.LONG_TTL_SECONDS)
 def cities_in_county(request, state, county, format='html'):
     state, county = map(unpack_url_path, (state, county))
     if state is None or county is None:
@@ -293,8 +289,7 @@ def cities_in_county(request, state, county, format='html'):
     return render_to_response('reports/cities.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
-@cache_page
+@cache_page(settings.LONG_TTL_SECONDS)
 def cities_in_state(request, state, format='html'):
     state = unpack_url_path(state)
     if state is None:
@@ -313,8 +308,7 @@ def cities_in_state(request, state, format='html'):
     return render_to_response('reports/cities.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
-@cache_page
+@cache_page(settings.LONG_TTL_SECONDS)
 def institutions(request, page_number=1):
     page_title = 'Institutions'
     institutions = models.Institution.objects.all()
@@ -327,8 +321,7 @@ def institutions(request, page_number=1):
     return render_to_response('reports/institutions.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
-@cache_page
+@cache_page(settings.LONG_TTL_SECONDS)
 def institution(request, code):
     institution = get_object_or_404(models.Institution, code=code)
     page_title = institution
@@ -339,8 +332,7 @@ def institution(request, code):
     return render_to_response('reports/institution.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
-@cache_page
+@cache_page(settings.LONG_TTL_SECONDS)
 def institution_titles(request, code, page_number=1):
     institution = get_object_or_404(models.Institution, code=code)
     page_title = 'Titles held by %s' % institution
@@ -423,8 +415,7 @@ def awardee_rdf(request, institution_code):
                             content_type='application/rdf+xml')
     return response
 
-
-@cache_page
+@cache_page(settings.LONG_TTL_SECONDS)
 def terms(request):
     return render_to_response('reports/terms.html', dictionary=locals(),
                               context_instance=RequestContext(request))
@@ -465,8 +456,7 @@ def batch_summary(request, format='html'):
                               dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
-@cache_page
+@cache_page(settings.METADATA_TTL_SECONDS)
 def reels(request, page_number=1):
     page_title = 'Reels'
     reels = models.Reel.objects.all().order_by('number')
@@ -477,8 +467,7 @@ def reels(request, page_number=1):
     return render_to_response('reports/reels.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
-@cache_page
+@cache_page(settings.METADATA_TTL_SECONDS)
 def reel(request, reel_number):
     crumbs = list(settings.BASE_CRUMBS)
     crumbs.extend([

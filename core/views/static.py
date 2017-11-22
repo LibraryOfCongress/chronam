@@ -28,8 +28,7 @@ def healthz(request):
 
     return HttpResponse(content=json.dumps(status), content_type='application/json')
 
-
-@cache_page
+@cache_page(settings.LONG_TTL_SECONDS)
 def about(request):
     page_title = "About Chronicling America"
     crumbs = list(settings.BASE_CRUMBS)
@@ -41,8 +40,7 @@ def about(request):
     return render_to_response('about.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
-@cache_page
+@cache_page(settings.LONG_TTL_SECONDS)
 def about_api(request):
     page_title = "About the Site and API"
     crumbs = list(settings.BASE_CRUMBS)
@@ -54,8 +52,7 @@ def about_api(request):
     return render_to_response('about_api.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
-
-@cache_page
+@cache_page(settings.LONG_TTL_SECONDS)
 def help(request):
     page_title = "Help"
     crumbs = list(settings.BASE_CRUMBS)

@@ -127,6 +127,7 @@ BROKER_URL = 'django://'
 THUMBNAIL_WIDTH = 360
 
 DEFAULT_TTL_SECONDS = 86400  # 1 day
+LONG_TTL_SECONDS = 60 * 60 * 24 * 7 * 8 # 8 weeks
 #: Used to cache metadata about publishers, issues, etc. as distinct from HTML pages, images, search results, etc.
 METADATA_TTL_SECONDS = DEFAULT_TTL_SECONDS
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24 * 7 * 2  # 2 weeks
