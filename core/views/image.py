@@ -139,8 +139,11 @@ def image_tile(request, path, width, height, x1, y1, x2, y2):
 def coordinates(request, lccn, date, edition, sequence, words=None):
     url_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
 
+    file_path = models.coordinates_path(url_parts)
+
     try:
-        with gzip.open(models.coordinates_path(url_parts), 'rb') as i:
+        with gzip.open(file_path, 'rb') as i:
             return HttpResponse(i.read(), content_type='application/json')
     except IOError:
+        LOGGER.warning('Word coordinates file %s does not exist', file_path)
         raise Http404
