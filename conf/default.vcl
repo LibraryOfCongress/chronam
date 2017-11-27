@@ -57,6 +57,32 @@ sub vcl_recv {
     if (req.url ~ "\.pdf$") {
         return (pass);
     }
+    
+    if(client.ip != "127.0.0.1"){
+        #redirect http to https
+        if (req.http.X-Forwarded-Proto == "http" && req.http.host ~ "chroniclingamerica.loc.gov") {
+            set req.http.x-redir = "https://chroniclingamerica.loc.gov" + req.url;
+            return(synth(850, ""));
+        }
+        #redirect chroniclingamerica.com vanity site to chroniclingamerica.loc.gov
+        if (req.http.host ~ "chroniclingamerica.com") {
+               set req.http.x-redir = "https://chroniclingamerica.loc.gov" + req.url;
+            return(synth(850, ""));
+        }
+        #redirect chroniclingamerica.org vanity site to chroniclingamerica.loc.gov
+        if (req.http.host ~ "chroniclingamerica.org") {
+               set req.http.x-redir = "https://chroniclingamerica.loc.gov" + req.url;
+            return(synth(850, ""));
+        }
+    }
+}
+
+sub vcl_synth {
+    if (resp.status == 850) {
+        set resp.http.Location = req.http.x-redir;
+        set resp.status = 301;
+        return (deliver);
+    }
 }
 
 #prefer a fresh object, but when one cannot be found Varnish will look for stale one. This replaces req.grace in vcl_recv()
