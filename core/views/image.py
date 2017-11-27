@@ -4,8 +4,6 @@ import gzip
 import logging
 import os.path
 import urllib2
-import json
-import re
 import urlparse
 from cStringIO import StringIO
 
@@ -140,20 +138,9 @@ def image_tile(request, path, width, height, x1, y1, x2, y2):
 @cors
 def coordinates(request, lccn, date, edition, sequence, words=None):
     url_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
+
     try:
-        file_data = gzip.open(models.coordinates_path(url_parts), 'rb')
+        with gzip.open(models.coordinates_path(url_parts), 'rb') as i:
+            return HttpResponse(i.read(), content_type='application/json')
     except IOError:
-        return HttpResponse()
-
-    data = json.load(file_data)
-
-    non_lexemes = re.compile('''^[^a-zA-Z0-9]+|[^a-zA-Z0-9]+$|'s$''')
-    return_coords = data.copy()
-    # reset coords to {} and build afresh, getting rid of unwanted punctuations
-    return_coords['coords'] = {}
-    for key in data.get('coords'):
-        return_coords['coords'][re.sub(non_lexemes, '', key)] = data['coords'][key]
-
-    r = HttpResponse(content_type='application/json')
-    r.write(json.dumps(return_coords))
-    return r
+        raise Http404
