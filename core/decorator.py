@@ -2,6 +2,7 @@ import hotshot
 import os
 import re
 import time
+from functools import wraps
 
 from django.core import urlresolvers
 from django.http import HttpResponse
@@ -89,6 +90,8 @@ def cors(f, *args, **kwargs):
     developers to use our JSON in their JavaScript applications without
     forcing them to proxy it.
     """
+
+    @wraps(f)
     def new_f(*args, **kwargs):
         response = f(*args, **kwargs)
         response['Access-Control-Allow-Origin'] = '*'
