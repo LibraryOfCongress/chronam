@@ -1,14 +1,13 @@
+import hotshot
 import os
 import re
 import time
-import hotshot
+from functools import wraps
 
-from mimeparse import best_match
-
-from django.utils import cache
-from django.utils import encoding
-from django.http import HttpResponse
 from django.core import urlresolvers
+from django.http import HttpResponse
+from django.utils import cache, encoding
+from mimeparse import best_match
 
 
 class HttpResponseSeeOther(HttpResponse):
@@ -58,7 +57,7 @@ def rdf_view(f):
             response['Vary'] = 'Accept'
             return response
         elif match == 'text/html':
-            return html_redirect 
+            return html_redirect
         else:
             return HttpResponseUnsupportedMediaType()
     return f1
@@ -67,10 +66,10 @@ def opensearch_clean(f):
     """
     Some opensearch clients send along optional parameters from the opensearch
     description when they're not needed. For example:
-    
+
         state={chronam:state?}
 
-    These can cause search results not to come back, and even can cause Solr's 
+    These can cause search results not to come back, and even can cause Solr's
     query parsing to throw an exception, so it's best to remove them when
     present.
     """
@@ -85,12 +84,14 @@ def opensearch_clean(f):
 
 def cors(f, *args, **kwargs):
     """
-    Adds CORS header to allow a response to be loaded by JavaScript that 
+    Adds CORS header to allow a response to be loaded by JavaScript that
     may have originated from somewhere other than chroniclingamerica.loc.gov
     which is useful for some API response like AutoSuggest. Basically allows
     developers to use our JSON in their JavaScript applications without
     forcing them to proxy it.
     """
+
+    @wraps(f)
     def new_f(*args, **kwargs):
         response = f(*args, **kwargs)
         response['Access-Control-Allow-Origin'] = '*'
@@ -122,4 +123,3 @@ def profile(log_file):
 
         return _inner
     return _outer
-
