@@ -1,19 +1,18 @@
+from __future__ import absolute_import
+
+import gzip
 import logging
 import os.path
-import urlparse
 import urllib2
-import json
-import gzip
-import re
-
+import urlparse
 from cStringIO import StringIO
 
 from django.conf import settings
 from django.http import Http404, HttpResponse, HttpResponseServerError
 
 from chronam.core import models
-from chronam.core.utils.utils import get_page
 from chronam.core.decorator import cors
+from chronam.core.utils.utils import get_page
 
 LOGGER = logging.getLogger(__name__)
 
@@ -28,11 +27,10 @@ else:
             Image = NativeImaging.get_image_class(backend)
             LOGGER.info("Using NativeImage backend '%s'", backend)
             break
-        except ImportError, e:
+        except ImportError as e:
             LOGGER.info("NativeImage backend '%s' not available.", backend)
     else:
         raise Exception("No suitable NativeImage backend found.")
-
 
 
 def _get_image(page):
@@ -47,7 +45,7 @@ def _get_image(page):
     try:
         fp = urllib2.urlopen(url)
         stream = StringIO(fp.read())
-    except IOError, e:
+    except IOError as e:
         e.message += " (while trying to open %s)" % url
         raise e
     im = Image.open(stream)
@@ -57,7 +55,7 @@ def _get_image(page):
 def _get_resized_image(page, width):
     try:
         im = _get_image(page)
-    except IOError, e:
+    except IOError as e:
         return HttpResponseServerError("Unable to create image: %s" % e)
     actual_width, actual_height = im.size
     height = int(round(width / float(actual_width) * float(actual_height)))
@@ -69,7 +67,7 @@ def thumbnail(request, lccn, date, edition, sequence):
     page = get_page(lccn, date, edition, sequence)
     try:
         im = _get_resized_image(page, settings.THUMBNAIL_WIDTH)
-    except IOError, e:
+    except IOError as e:
         return HttpResponseServerError("Unable to create thumbnail: %s" % e)
     response = HttpResponse(content_type="image/jpeg")
     im.save(response, "JPEG")
@@ -80,7 +78,7 @@ def medium(request, lccn, date, edition, sequence):
     page = get_page(lccn, date, edition, sequence)
     try:
         im = _get_resized_image(page, 550)
-    except IOError, e:
+    except IOError as e:
         return HttpResponseServerError("Unable to create thumbnail: %s" % e)
     response = HttpResponse(content_type="image/jpeg")
     im.save(response, "JPEG")
@@ -106,7 +104,7 @@ def page_image_tile(request, lccn, date, edition, sequence,
     x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
     try:
         im = _get_image(page)
-    except IOError, e:
+    except IOError as e:
         return HttpResponseServerError("Unable to create image tile: %s" % e)
 
     width = min(width, (x2-x1))
@@ -129,7 +127,7 @@ def image_tile(request, path, width, height, x1, y1, x2, y2):
     try:
         p = os.path.join(settings.BATCH_STORAGE, path)
         im = Image.open(p)
-    except IOError, e:
+    except IOError as e:
         return HttpResponseServerError("Unable to create image tile: %s" % e)
     c = im.crop((x1, y1, x2, y2))
     f = c.resize((width, height))
@@ -140,20 +138,12 @@ def image_tile(request, path, width, height, x1, y1, x2, y2):
 @cors
 def coordinates(request, lccn, date, edition, sequence, words=None):
     url_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
+
+    file_path = models.coordinates_path(url_parts)
+
     try:
-        file_data = gzip.open(models.coordinates_path(url_parts), 'rb')
+        with gzip.open(file_path, 'rb') as i:
+            return HttpResponse(i.read(), content_type='application/json')
     except IOError:
-        return HttpResponse()
-
-    data = json.load(file_data)
-
-    non_lexemes = re.compile('''^[^a-zA-Z0-9]+|[^a-zA-Z0-9]+$|'s$''')
-    return_coords = data.copy()
-    # reset coords to {} and build afresh, getting rid of unwanted punctuations
-    return_coords['coords'] = {}
-    for key in data.get('coords'):
-        return_coords['coords'][re.sub(non_lexemes, '', key)] = data['coords'][key]
-
-    r = HttpResponse(content_type='application/json')
-    r.write(json.dumps(return_coords))
-    return r
+        LOGGER.warning('Word coordinates file %s does not exist', file_path)
+        raise Http404
