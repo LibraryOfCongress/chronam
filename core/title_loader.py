@@ -10,7 +10,7 @@ from django.db import reset_queries
 
 from chronam.core import models
 
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 class TitleLoader(object):
@@ -37,22 +37,22 @@ class TitleLoader(object):
                 if record:
                     self.records_processed += 1
                     if skip > self.records_processed:
-                        _logger.info("skipped %i" % self.records_processed)
+                        LOGGER.info("skipped %i" % self.records_processed)
                     elif record.leader[5] == 'd':
                         self.delete_bib(record)
                     elif record.leader[6] == 'a':
                         self.load_bib(record)
 
             except Exception, e:
-                _logger.error("unable to load: %s" % e)
-                _logger.exception(e)
+                LOGGER.error("unable to load: %s" % e)
+                LOGGER.exception(e)
                 self.errors += 1
 
             seconds = time() - t0
             times.append(seconds)
 
             if self.records_processed % 1000 == 0:
-                _logger.info("processed %sk records in %.2f seconds" %
+                LOGGER.info("processed %sk records in %.2f seconds" %
                              (self.records_processed / 1000, seconds))
 
         request = urllib2.Request(location, headers={'User-Agent': 'chronam-title-loader'})
@@ -66,9 +66,9 @@ class TitleLoader(object):
         lccn = _normal_lccn(lccn_orig)
 
         if not lccn:
-            #_logger.info("###### LCCN in OCLC pull, \
+            #LOGGER.info("###### LCCN in OCLC pull, \
             #              but not in database. Missing LCCN. ######")
-            #_logger.info(record)
+            #LOGGER.info(record)
             self.missing_lccns += 1
             return
 
@@ -86,19 +86,19 @@ class TitleLoader(object):
         # it's remotely possible that a title with the LCCN already exists
         try:
             title = models.Title.objects.get(lccn=lccn)
-            _logger.debug("Found another record for lccn: %s" % lccn)
+            LOGGER.debug("Found another record for lccn: %s" % lccn)
             if title.version == dt:
-                _logger.debug("    with the same timestamp: %s" % title.version)
+                LOGGER.debug("    with the same timestamp: %s" % title.version)
                 return  # skip over this record with same timestamp
             elif title.version < dt:
-                _logger.debug("    with newer timestamp: %s vs %s" % (title.version, dt))
+                LOGGER.debug("    with newer timestamp: %s vs %s" % (title.version, dt))
                 title.version = dt
                 self.records_updated += 1
             elif title.version > dt:
-                _logger.debug("    with older timestamp: %s vs %s" % (title.version, dt))
+                LOGGER.debug("    with older timestamp: %s vs %s" % (title.version, dt))
                 return  # skip over older record
             else:
-                _logger.error("Logic error... this should be unreachable.")
+                LOGGER.error("Logic error... this should be unreachable.")
         except models.Title.DoesNotExist:
             self.records_created += 1
             title = models.Title(lccn=lccn)
@@ -167,7 +167,7 @@ class TitleLoader(object):
 
         # for context see: https://rdc.lctl.gov/trac/ndnp/ticket/375
         if _is_chronam_electronic_resource(title, record):
-            _logger.info("deleting title record for chronam electronic resource: %s" % title)
+            LOGGER.info("deleting title record for chronam electronic resource: %s" % title)
             title.delete()
 
         # this is for long running processes so the query cache
@@ -178,19 +178,19 @@ class TitleLoader(object):
 
     def delete_bib(self, record):
         lccn = _normal_lccn(_extract(record, '010', 'a'))
-        _logger.info("trying to delete title record for %s" % lccn)
+        LOGGER.info("trying to delete title record for %s" % lccn)
         try:
             title = models.Title.objects.get(lccn=lccn)
             # XXX: a safety to avoid deleting issue data that is
             # attached to a title
             if title.issues.count() == 0:
-                _logger.info("deleting title for %s" % lccn)
+                LOGGER.info("deleting title for %s" % lccn)
                 title.delete()
                 self.records_deleted += 1
             else:
-                _logger.warn("not deleting title %s it has issue data" % lccn)
+                LOGGER.warn("not deleting title %s it has issue data" % lccn)
         except models.Title.DoesNotExist:
-            _logger.warn("no such title %s to delete" % lccn)
+            LOGGER.warn("no such title %s to delete" % lccn)
         return
 
     def _set_name(self, record, title):
@@ -226,7 +226,7 @@ class TitleLoader(object):
                     try:
                         field_langs.append(models.Language.objects.get(code=c))
                     except models.Language.DoesNotExist:
-                        _logger.error('missing language for %s' % c)
+                        LOGGER.error('missing language for %s' % c)
             return field_langs
 
         code = _extract(record, '008')[35:38]
@@ -234,7 +234,7 @@ class TitleLoader(object):
             langs = [models.Language.objects.get(code=code)]
         except models.Language.DoesNotExist:
             langs = []
-            _logger.error("Code %s, not found in language table." % code)
+            LOGGER.error("Code %s, not found in language table." % code)
 
         subfields_to_eval = ['a', 'b']
         for f041 in record.get_fields('041'):
@@ -409,7 +409,7 @@ class TitleLoader(object):
 
         else:
             # if the script makes it here, we have a problem
-            _logger.info("003 value is not handled by this load script")
+            LOGGER.info("003 value is not handled by this load script")
 
         return _normal_oclc(oclc)
 
@@ -503,16 +503,16 @@ class TitleLoaderException(RuntimeError):
 def load(location, bulk_load=True):
     loader = TitleLoader()
 
-    _logger.info("loading titles from: %s" % location)
+    LOGGER.info("loading titles from: %s" % location)
 
     loader.load_file(location)
 
     if not bulk_load:
-        _logger.info("records processed: %i" % loader.records_processed)
-        _logger.info("records created: %i" % loader.records_created)
-        _logger.info("records updated: %i" % loader.records_updated)
-        _logger.info("errors: %i" % loader.errors)
-        _logger.info("missing lccns: %i" % loader.missing_lccns)
+        LOGGER.info("records processed: %i" % loader.records_processed)
+        LOGGER.info("records created: %i" % loader.records_created)
+        LOGGER.info("records updated: %i" % loader.records_updated)
+        LOGGER.info("errors: %i" % loader.errors)
+        LOGGER.info("missing lccns: %i" % loader.missing_lccns)
 
     return (loader.records_processed,
             loader.records_created,

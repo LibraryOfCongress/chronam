@@ -2,7 +2,7 @@ from rfc3339 import rfc3339
 from datetime import datetime
 
 import logging
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 from django.core.management.base import BaseCommand
 from django.core.paginator import Paginator
@@ -43,7 +43,7 @@ def write_sitemaps():
                 sitemap.close()
             sitemap_file = 'sitemap-%05d.xml' % page_count
             sitemap_path = 'static/sitemaps/%s' % sitemap_file
-            _logger.info("writing %s" % sitemap_path)
+            LOGGER.info("writing %s" % sitemap_path)
             sitemap = open(sitemap_path, 'w')
             sitemap.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
             sitemap_index.write('<sitemap><loc>http://chroniclingamerica.loc.gov/%s</loc></sitemap>\n' % sitemap_file)
@@ -61,7 +61,7 @@ def write_sitemaps():
         sitemap.write('</urlset>\n')
         sitemap.close()
     except NameError:
-        _logger.info("No release candidates this time.")
+        LOGGER.info("No release candidates this time.")
         pass
 
     sitemap_index.write('</sitemapindex>\n')

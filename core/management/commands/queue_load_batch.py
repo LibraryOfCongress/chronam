@@ -7,7 +7,7 @@ from django.core.management.base import CommandError
 
 from chronam.core import tasks
     
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
@@ -26,5 +26,5 @@ class Command(BaseCommand):
         try:
             tasks.load_batch.delay(batch_name, process_coordinates=options['process_coordinates'])
         except Exception, e:
-            _logger.exception(e)
+            LOGGER.exception(e)
             raise CommandError("unable to queue load batch. check the queue_load_batch log for clues")

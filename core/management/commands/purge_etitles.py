@@ -9,7 +9,7 @@ import pymarc
 from chronam.core import index
 from chronam.core.models import Title
 
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     """
@@ -36,9 +36,9 @@ class Command(BaseCommand):
                 if options['pretend']:
                     print title
                 else:
-                    _logger.info("deleting %s [%s] from solr index")
+                    LOGGER.info("deleting %s [%s] from solr index")
                     index.delete_title(title)
-                    _logger.info("purging %s [%s]" % (title, title.lccn))
+                    LOGGER.info("purging %s [%s]" % (title, title.lccn))
                     title.delete()
         if not options['pretend']:
             index.commit()

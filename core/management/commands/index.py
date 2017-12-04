@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
     
 from chronam.core.index import index_titles, index_pages
 
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     help = "index all titles and pages ; " + \
@@ -12,11 +12,11 @@ class Command(BaseCommand):
 
     def handle(self, **options):
 
-        _logger.info("indexing titles")
+        LOGGER.info("indexing titles")
         index_titles()
-        _logger.info("finished indexing titles")
+        LOGGER.info("finished indexing titles")
 
-        _logger.info("indexing pages")
+        LOGGER.info("indexing pages")
         index_pages()
-        _logger.info("finished indexing pages")
+        LOGGER.info("finished indexing pages")
 

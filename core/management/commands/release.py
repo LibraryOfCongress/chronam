@@ -21,7 +21,7 @@ from django.conf import settings
 from chronam.core.rdf import rdf_uri
 from chronam.core import models as m
 
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     help = "Updates (Resets if --reset option is used) release datetime on batches from one of following sources (in order of preference) 1. bag-info.txt, if found in the batch source 2. If path to a file is provided with the command, datetime is extracted from the file 3. current public feed 4. current server datetime"
@@ -37,7 +37,7 @@ class Command(BaseCommand):
         if options['reset']:
             for batch in m.Batch.objects.all():
                 batch.released = None
-                _logger.info("unsetting release time for %s" % batch.name)
+                LOGGER.info("unsetting release time for %s" % batch.name)
                 batch.save()
 
         input_file_path = None

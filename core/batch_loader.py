@@ -43,7 +43,7 @@ ns = {
     'xhtml' : 'http://www.w3.org/1999/xhtml'
 }
 
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 def gzip_compress(data):
     bio = io.BytesIO()
@@ -113,7 +113,7 @@ class BatchLoader(object):
             batch_source = None
             link_name = os.path.join(settings.BATCH_STORAGE, batch_name)
             if batch_path != link_name and not os.path.islink(link_name):
-                _logger.info("creating symlink %s -> %s", batch_path, link_name)
+                LOGGER.info("creating symlink %s -> %s", batch_path, link_name)
                 os.symlink(batch_path, link_name)
         else:
             batch_source = urlparse.urljoin(settings.BATCH_STORAGE, batch_name)
@@ -124,12 +124,12 @@ class BatchLoader(object):
         if not strict:
             try:
                 batch = Batch.objects.get(name=batch_name)
-                _logger.info("Batch already loaded: %s" % batch_name)
+                LOGGER.info("Batch already loaded: %s" % batch_name)
                 return batch
             except Batch.DoesNotExist, e:
                 pass
 
-        _logger.info("loading batch: %s" % batch_name)
+        LOGGER.info("loading batch: %s" % batch_name)
         t0 = time()
         times = []
 
@@ -164,7 +164,7 @@ class BatchLoader(object):
                 try:
                     issue = self._load_issue(mets_url)
                 except ValueError, e:
-                    _logger.exception(e)
+                    LOGGER.exception(e)
                     continue
                 reset_queries()
                 times.append((time() - t0, self.pages_processed))
@@ -176,21 +176,21 @@ class BatchLoader(object):
             batch.save()
             msg = "processed %s pages" % batch.page_count
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
-            _logger.info(msg)
+            LOGGER.info(msg)
             event.save()
 
             _chart(times)
         except Exception, e:
             msg = "unable to load batch: %s" % e
-            _logger.error(msg)
-            _logger.exception(e)
+            LOGGER.error(msg)
+            LOGGER.exception(e)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
             try:
                 self.purge_batch(batch_name)
             except Exception, pbe:
-                _logger.error("purge batch failed for failed load batch: %s" % pbe)
-                _logger.exception(pbe)
+                LOGGER.error("purge batch failed for failed load batch: %s" % pbe)
+                LOGGER.exception(pbe)
             raise BatchLoaderException(msg)
 
         if settings.IS_PRODUCTION:
@@ -220,13 +220,13 @@ class BatchLoader(object):
             batch.awardee = Awardee.objects.get(org_code=awardee_org_code)
         except Awardee.DoesNotExist, e:
             msg = "no awardee for org code: %s" % awardee_org_code
-            _logger.error(msg)
+            LOGGER.error(msg)
             raise BatchLoaderException(msg)
         batch.save()
         return batch
 
     def _load_issue(self, mets_file):
-        _logger.debug("parsing issue mets file: %s" % mets_file)
+        LOGGER.debug("parsing issue mets file: %s" % mets_file)
         doc = etree.parse(mets_file)
 
         # get the mods for the issue
@@ -267,7 +267,7 @@ class BatchLoader(object):
 
         issue.batch = self.current_batch
         issue.save()
-        _logger.debug("saved issue: %s" % issue.url)
+        LOGGER.debug("saved issue: %s" % issue.url)
 
         notes = []
         for mods_note in mods.xpath('.//mods:note', namespaces=ns):
@@ -286,7 +286,7 @@ class BatchLoader(object):
                 page = self._load_page(doc, page_div, issue)
                 self.pages_processed += 1
             except BatchLoaderException, e:
-                _logger.exception(e)
+                LOGGER.exception(e)
 
         return issue
 
@@ -322,9 +322,9 @@ class BatchLoader(object):
                 reel.save()
                 page.reel = reel
             else:
-                _logger.warn("unable to find reel number in page metadata")
+                LOGGER.warn("unable to find reel number in page metadata")
 
-        _logger.info("Assigned page sequence: %s" % page.sequence)
+        LOGGER.info("Assigned page sequence: %s" % page.sequence)
 
         _section_dmdid = div.xpath(
             'string(ancestor::mets:div[@TYPE="np:section"]/@DMDID)',
@@ -339,7 +339,7 @@ class BatchLoader(object):
 
         page.issue = issue
 
-        _logger.info("Saving page. issue date: %s, page sequence: %s" % (issue.date_issued, page.sequence))
+        LOGGER.info("Saving page. issue date: %s, page sequence: %s" % (issue.date_issued, page.sequence))
 
         # TODO - consider the possibility of executing the file name
         #        assignments (below) before this page.save().
@@ -386,7 +386,7 @@ class BatchLoader(object):
                             page.jp2_length = length
                             break
                 except KeyError, e:
-                    _logger.info("Could not determine dimensions of jp2 for issue: %s page: %s... trying harder..." % (page.issue, page))
+                    LOGGER.info("Could not determine dimensions of jp2 for issue: %s page: %s... trying harder..." % (page.issue, page))
                     if j2k:
                         width, length = j2k.dimensions(page.jp2_abs_filename)
                         page.jp2_width = width
@@ -407,14 +407,14 @@ class BatchLoader(object):
             if self.PROCESS_OCR:
                 self.process_ocr(page)
         else:
-            _logger.info("No ocr filename for issue: %s page: %s" % (page.issue, page))
+            LOGGER.info("No ocr filename for issue: %s page: %s" % (page.issue, page))
 
-        _logger.debug("saving page: %s" % page.url)
+        LOGGER.debug("saving page: %s" % page.url)
         page.save()
         return page
 
     def process_ocr(self, page, index=True):
-        _logger.debug("extracting ocr text and word coords for %s" %
+        LOGGER.debug("extracting ocr text and word coords for %s" %
             page.url)
 
         url = urlparse.urljoin(self.current_batch.storage_url,
@@ -433,7 +433,7 @@ class BatchLoader(object):
             try:
                 language = models.Language.objects.get(Q(code=lang) | Q(lingvoj__iendswith=lang))
             except models.Language.DoesNotExist:
-                _logger.warn("Language %s does not exist in the database. Defaulting to English.", language.name)
+                LOGGER.warn("Language %s does not exist in the database. Defaulting to English.", language.name)
                 # default to english as per requirement
                 language = models.Language.objects.get(code='eng')
             ocr.language_texts.create(language=language)
@@ -442,13 +442,13 @@ class BatchLoader(object):
         page.ocr = ocr
         page.lang_text = lang_text_solr
         if index:
-            _logger.debug("indexing ocr for: %s" % page.url)
+            LOGGER.debug("indexing ocr for: %s" % page.url)
             self.solr.add(**page.solr_doc)
             page.indexed = True
         page.save()
 
     def _process_coordinates(self, page, coords):
-        _logger.debug("writing out word coords for %s" %
+        LOGGER.debug("writing out word coords for %s" %
             page.url)
 
         f = open(models.coordinates_path(page._url_parts()), "w")
@@ -480,8 +480,8 @@ class BatchLoader(object):
                         self._process_coordinates(page, coords)
         except Exception, e:
             msg = "unable to process coordinates for batch: %s" % e
-            _logger.error(msg)
-            _logger.exception(e)
+            LOGGER.error(msg)
+            LOGGER.exception(e)
             raise BatchLoaderException(msg)
 
     def storage_relative_path(self, path):
@@ -503,12 +503,12 @@ class BatchLoader(object):
             # clean up symlinks if exists
             link_name = os.path.join(settings.BATCH_STORAGE, batch_name)
             if os.path.islink(link_name):
-                _logger.info("Removing symlink %s", link_name)
+                LOGGER.info("Removing symlink %s", link_name)
                 os.remove(link_name)
         except Exception, e:
             msg = "purge failed: %s" % e
-            _logger.error(msg)
-            _logger.exception(e)
+            LOGGER.error(msg)
+            LOGGER.exception(e)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
             raise BatchLoaderException(msg)
@@ -561,14 +561,14 @@ def _chart(times):
     step = max(num/100, 1) # we only want around a 100 datapoints for our chart
     f_times = ["%.2f" % (times[i][0]) for i in range(0, num, step)]
     counts = ["%s" % (times[i][1]) for i in range(0, num, step)]
-    _logger.info("\n    http://chart.apis.google.com/chart?cht=lxy&chs=200x125&chd=t:%s|%s&chds=%s,%s,%s,%s" % (",".join(f_times), ",".join(counts), f_times[0], f_times[-1], counts[0], counts[-1]))
+    LOGGER.info("\n    http://chart.apis.google.com/chart?cht=lxy&chs=200x125&chd=t:%s|%s&chds=%s,%s,%s,%s" % (",".join(f_times), ",".join(counts), f_times[0], f_times[-1], counts[0], counts[-1]))
 
 def _normalize_batch_name(batch_name):
     batch_name = batch_name.rstrip('/')
     batch_name = os.path.basename(batch_name)
     if not re.match(r'(batch_)?\w+_\w+_ver\d\d', batch_name):
         msg = 'unrecognized format for batch name %s' % batch_name
-        _logger.error(msg)
+        LOGGER.error(msg)
         raise BatchLoaderException(msg)
     return batch_name
 

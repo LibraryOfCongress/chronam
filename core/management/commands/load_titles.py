@@ -10,7 +10,7 @@ from chronam.core import title_loader
 from chronam.core.index import index_titles
 from chronam.core.models import Title
 
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     help = "Load a marcxml file of title records"
@@ -44,7 +44,7 @@ class Command(BaseCommand):
 
         if not skip_index:
             # need to index any titles that we just created
-            _logger.info("indexing new titles")
+            LOGGER.info("indexing new titles")
             index_titles(since=self.xml_start)
 
         
@@ -62,26 +62,26 @@ class Command(BaseCommand):
         self.total_missing_lccns += results[4]
 
     def log_stats(self):
-        _logger.info("############### TOTAL RESULTS ############")
-        _logger.info("TITLE RECORDS PROCESSED: %i" % self.total_processed)
-        _logger.info("NEW TITLES CREATED: %i" % self.total_created)
-        _logger.info("EXISTING TITLES UPDATED: %i" % self.total_updated)
-        _logger.info("ERRORS: %i" % self.total_errors)
-        _logger.info("MISSING LCCNS: %i" % self.total_missing_lccns)
-        _logger.info("FILES PROCESSED: %i" % self.files_processed)
+        LOGGER.info("############### TOTAL RESULTS ############")
+        LOGGER.info("TITLE RECORDS PROCESSED: %i" % self.total_processed)
+        LOGGER.info("NEW TITLES CREATED: %i" % self.total_created)
+        LOGGER.info("EXISTING TITLES UPDATED: %i" % self.total_updated)
+        LOGGER.info("ERRORS: %i" % self.total_errors)
+        LOGGER.info("MISSING LCCNS: %i" % self.total_missing_lccns)
+        LOGGER.info("FILES PROCESSED: %i" % self.files_processed)
 
         end = datetime.now()
 
         # Document titles that are not being updated.
         ts = Title.objects.filter(version__lt=self.start_time)
         not_updated = ts.count()
-        _logger.info("TITLES NOT UPDATED: %i" % not_updated)
+        LOGGER.info("TITLES NOT UPDATED: %i" % not_updated)
 
         # Total time to run.
-        _logger.info("START TIME: %s" % str(self.start_time))
-        _logger.info("END TIME: %s" % str(end))
+        LOGGER.info("START TIME: %s" % str(self.start_time))
+        LOGGER.info("END TIME: %s" % str(end))
         total_time = end - self.start_time
-        _logger.info("TOTAL TIME: %s" % str(total_time))
+        LOGGER.info("TOTAL TIME: %s" % str(total_time))
 
     def handle(self, marc_xml_source, *args, **options):
         skip_index = options['skip_index']

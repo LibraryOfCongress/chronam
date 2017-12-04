@@ -11,7 +11,7 @@ from solr import SolrConnection
 
 from chronam.core.batch_loader import BatchLoader, BatchLoaderException
     
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
@@ -29,16 +29,16 @@ class Command(BaseCommand):
 
         loader = BatchLoader()
         try:
-            _logger.info("purging batch %s", batch_location)
+            LOGGER.info("purging batch %s", batch_location)
             loader.purge_batch(batch_location)
             if options['optimize']:
-                _logger.info("optimizing solr")
+                LOGGER.info("optimizing solr")
                 solr = SolrConnection(settings.SOLR)
                 solr.optimize()
-                _logger.info("optimizing MySQL OCR table")
+                LOGGER.info("optimizing MySQL OCR table")
                 cursor = connection.cursor()
                 cursor.execute("OPTIMIZE TABLE core_ocr")
-                _logger.info("finished optimizing")
+                LOGGER.info("finished optimizing")
         except BatchLoaderException, e:
-            _logger.exception(e)
+            LOGGER.exception(e)
             raise CommandError("unable to purge batch. check the log for clues")

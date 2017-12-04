@@ -6,7 +6,7 @@ from django.core.management.base import CommandError
 
 from chronam.core import batch_loader
 
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
@@ -20,13 +20,13 @@ class Command(BaseCommand):
 
         loader = batch_loader.BatchLoader()
         batch_list = file(batch_list_filename)
-        _logger.info("batch_list_filename: %s" % batch_list_filename)
+        LOGGER.info("batch_list_filename: %s" % batch_list_filename)
         for line in batch_list:
             batch_name = line.strip()
-            _logger.info("batch_name: %s" % batch_name)
+            LOGGER.info("batch_name: %s" % batch_name)
             parts = batch_name.split("_")
             if len(parts)==4:
                 loader.process_coordinates(batch_name)
             else:
-                _logger.warning("invalid batch name '%s'" % batch_name)
+                LOGGER.warning("invalid batch name '%s'" % batch_name)
 

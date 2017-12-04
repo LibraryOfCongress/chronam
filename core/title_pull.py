@@ -9,7 +9,7 @@ from django.conf import settings
 from worldcat.request.search import SRURequest
 from worldcat.util.extract import extract_elements
 
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 WSKEY = settings.WORLDCAT_KEY
 sortkeys = 'Date,,0'
@@ -195,7 +195,7 @@ class TitlePuller(object):
         Most of the values are static, except for query.
         '''
 
-        _logger.debug("The query for OCLC is '%s'" % query)
+        LOGGER.debug("The query for OCLC is '%s'" % query)
         bib_rec = SRURequest(wskey=WSKEY,
                              sortKeys=sortkeys,
                              recordSchema=recordschema,
@@ -247,12 +247,12 @@ class TitlePuller(object):
                     cntry_count = self.initial_total_count(cntry_req)
                     request_able = self.check_for_doable_bulk_request(cntry_count)
 
-                    _logger.info("%s request totals: %s" % (country.title(),
+                    LOGGER.info("%s request totals: %s" % (country.title(),
                                                         cntry_count))
 
                 if request_able == 0:
                     # There is no valid requests at all. So, we exit.
-                    _logger.warning('No records returned for: %s' % (country))
+                    LOGGER.warning('No records returned for: %s' % (country))
                 elif request_able:
                     # If we can pull the whole country at once, we will
                     # otherwise we break it up into multiple requests.
@@ -273,7 +273,7 @@ class TitlePuller(object):
                         yr_count = self.initial_total_count(yr_request)
                         yr_request_able = self.check_for_doable_bulk_request(yr_count)
 
-                        _logger.info("%s - %s %s total: %s" % (
+                        LOGGER.info("%s - %s %s total: %s" % (
                             country.title(), year, operator, yr_request_able))
 
                         if yr_request_able or year == str(datetime.datetime.now().year):
@@ -282,17 +282,17 @@ class TitlePuller(object):
                                                 )))
                             total += yr_request_able
                         else:
-                            _logger.warning("There is a problem with request. Exiting.")
-                            _logger.warning('yr_request: %s' % yr_request)
-                            _logger.warning('yr_request_able: %s' % yr_request_able)
-                            _logger.warning('country: %s' % country.strip('*'))
-                            _logger.warning('year: %s' % year)
-                            _logger.warning('operator: %s' % operator)
+                            LOGGER.warning("There is a problem with request. Exiting.")
+                            LOGGER.warning('yr_request: %s' % yr_request)
+                            LOGGER.warning('yr_request_able: %s' % yr_request_able)
+                            LOGGER.warning('country: %s' % country.strip('*'))
+                            LOGGER.warning('year: %s' % year)
+                            LOGGER.warning('operator: %s' % operator)
 
                             continue
 
                 grand_total += total
-            _logger.info('GRAND TOTAL: %s' % (grand_total))
+            LOGGER.info('GRAND TOTAL: %s' % (grand_total))
 
         return bibs_to_req
 
@@ -357,7 +357,7 @@ class TitlePuller(object):
                 filename = '_'.join((search_name, batch_name, str_value(start), str_value(end))) + '.xml'
 
                 if counter == 1 and len(bib_requests) > 1:
-                    _logger.info('Batch: %s = %s total' % (filename, total))
+                    LOGGER.info('Batch: %s = %s total' % (filename, total))
 
                 file_location = save_path + '/' + filename
 
@@ -389,7 +389,7 @@ class TitlePuller(object):
         The API could misfire when requesting more than 10k, so we make sure that are requests aren't that large.
         '''
         if not test_totals:
-            _logger.error("The total is %s but should be a integer. Check the query to make sure API isn't broken." % test_totals)
+            LOGGER.error("The total is %s but should be a integer. Check the query to make sure API isn't broken." % test_totals)
             return None
         else:
             # check that the request is managable.
@@ -398,7 +398,7 @@ class TitlePuller(object):
             if total < 10000:
                 return total
         
-        _logger.warning("The total [%s] is > 10,000 and a split needs to occur" % total)
+        LOGGER.warning("The total [%s] is > 10,000 and a split needs to occur" % total)
         return None
 
     def run(self, save_path, lccn=None, oclc=None,
@@ -419,12 +419,12 @@ class TitlePuller(object):
             try:
                 os.makedirs(save_path)
             except OSError:
-                _logger.exception('Issue creating the directory %s.' % save_path)
+                LOGGER.exception('Issue creating the directory %s.' % save_path)
                 sys.exit()
         else:
             # Make sure the directory is empty
             if len([f for f in os.listdir(save_path) if os.path.isfile(f)]):
-                _logger.exception('Destination directory %s is not empty.' % save_path)
+                LOGGER.exception('Destination directory %s is not empty.' % save_path)
                 sys.exit()
 
         files_saved = 0
