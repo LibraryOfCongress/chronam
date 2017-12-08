@@ -1,3 +1,6 @@
+# encoding: utf-8
+from __future__ import absolute_import
+
 import gzip
 import io
 import logging
@@ -73,9 +76,9 @@ class BatchLoader(object):
                 u = urllib2.urlopen(url)
                 validated_batch_file = alias
                 break
-            except urllib2.HTTPError, e:
+            except urllib2.HTTPError as e:
                 continue
-            except urllib2.URLError, e:
+            except urllib2.URLError as e:
                 continue
         else:
             raise BatchLoaderException(
@@ -116,7 +119,7 @@ class BatchLoader(object):
                 batch = Batch.objects.get(name=batch_name)
                 LOGGER.info("Batch already loaded: %s", batch_name)
                 return batch
-            except Batch.DoesNotExist, e:
+            except Batch.DoesNotExist as e:
                 pass
 
         LOGGER.info("loading batch: %s", batch_name)
@@ -144,7 +147,7 @@ class BatchLoader(object):
                 try:
                     reel = models.Reel.objects.get(number=reel_number,
                                                    batch=batch)
-                except models.Reel.DoesNotExist, e:
+                except models.Reel.DoesNotExist as e:
                     reel = models.Reel(number=reel_number, batch=batch)
                     reel.save()
 
@@ -152,7 +155,7 @@ class BatchLoader(object):
                 mets_url = urlparse.urljoin(batch.storage_url, e.text)
                 try:
                     issue = self._load_issue(mets_url)
-                except ValueError, e:
+                except ValueError as e:
                     LOGGER.exception(e)
                     continue
                 reset_queries()
@@ -165,14 +168,14 @@ class BatchLoader(object):
             LOGGER.info("processed %s pages", batch.page_count)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
-        except Exception, e:
+        except Exception as e:
             LOGGER.error("unable to load batch: %s", e)
             LOGGER.exception(e)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
             try:
                 self.purge_batch(batch_name)
-            except Exception, pbe:
+            except Exception as pbe:
                 LOGGER.error("purge batch failed for failed load batch: %s", pbe)
                 LOGGER.exception(pbe)
             raise BatchLoaderException(msg)
@@ -202,7 +205,7 @@ class BatchLoader(object):
                 parts = parts[1:]
             awardee_org_code, name_part, version = parts
             batch.awardee = Awardee.objects.get(org_code=awardee_org_code)
-        except Awardee.DoesNotExist, e:
+        except Awardee.DoesNotExist as e:
             LOGGER.error("no awardee for org code: %s", awardee_org_code)
             raise BatchLoaderException(msg)
         batch.save()
@@ -241,7 +244,7 @@ class BatchLoader(object):
             namespaces=ns).strip()
         try:
             title = Title.objects.get(lccn=lccn)
-        except Exception, e:
+        except Exception as e:
             url = 'http://chroniclingamerica.loc.gov/lccn/%s/marc.xml' % lccn
             logging.info("attempting to load marc record from %s", url)
             management.call_command('load_titles', url)
@@ -268,7 +271,7 @@ class BatchLoader(object):
             try:
                 page = self._load_page(doc, page_div, issue)
                 self.pages_processed += 1
-            except BatchLoaderException, e:
+            except BatchLoaderException as e:
                 LOGGER.exception(e)
 
         return issue
@@ -282,7 +285,7 @@ class BatchLoader(object):
             'string(.//mods:extent/mods:start)', namespaces=ns)
         try:
             page.sequence = int(seq_string)
-        except ValueError, e:
+        except ValueError as e:
             raise BatchLoaderException("could not determine sequence number for page from '%s'" % seq_string)
         page.number = mods.xpath(
             'string(.//mods:detail[@type="page number"])',
@@ -297,7 +300,7 @@ class BatchLoader(object):
             reel = models.Reel.objects.get(number=reel_number,
                                            batch=self.current_batch)
             page.reel = reel
-        except models.Reel.DoesNotExist, e:
+        except models.Reel.DoesNotExist as e:
             if reel_number:
                 reel = models.Reel(number=reel_number,
                                    batch=self.current_batch,
@@ -368,7 +371,7 @@ class BatchLoader(object):
                             page.jp2_width = width
                             page.jp2_length = length
                             break
-                except KeyError, e:
+                except KeyError as e:
                     LOGGER.info("Could not determine dimensions of jp2 for issue: %s page: %s... trying harder...", page.issue, page)
                 
                 if not page.jp2_width:
@@ -455,7 +458,7 @@ class BatchLoader(object):
                         logging.debug("Extracting OCR from url %s" % url)
                         lang_text, coords = ocr_extractor(url)
                         self._process_coordinates(page, coords)
-        except Exception, e:
+        except Exception as e:
             LOGGER.error("unable to process coordinates for batch: %s", e)
             LOGGER.exception(e)
             raise BatchLoaderException(msg)
@@ -481,7 +484,7 @@ class BatchLoader(object):
             if os.path.islink(link_name):
                 LOGGER.info("Removing symlink %s", link_name)
                 os.remove(link_name)
-        except Exception, e:
+        except Exception as e:
             LOGGER.error("purge failed: %s", e)
             LOGGER.exception(e)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
