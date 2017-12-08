@@ -168,8 +168,8 @@ class BatchLoader(object):
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
         except Exception as e:
-            LOGGER.error("unable to load batch: %s", e)
-            LOGGER.exception(e)
+            msg = "unable to load batch: %s" % e
+            LOGGER.exception(msg)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
             try:
