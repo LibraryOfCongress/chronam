@@ -74,12 +74,10 @@ class BatchLoader(object):
             # minimize impact.
             url = urlparse.urljoin(batch.storage_url, alias)
             try:
-                u = urllib2.urlopen(url)
+                urllib2.urlopen(url)
                 validated_batch_file = alias
                 break
-            except urllib2.HTTPError as e:
-                continue
-            except urllib2.URLError as e:
+            except (urllib2.HTTPError, urllib2.URLError):
                 continue
         else:
             raise BatchLoaderException(
@@ -124,7 +122,6 @@ class BatchLoader(object):
                 pass
 
         LOGGER.info("loading batch: %s", batch_name)
-        t0 = time()
 
         event = LoadBatchEvent(batch_name=batch_name, message="starting load")
         event.save()
@@ -154,8 +151,9 @@ class BatchLoader(object):
 
             for e in doc.xpath('ndnp:issue', namespaces=ns):
                 mets_url = urlparse.urljoin(batch.storage_url, e.text)
+
                 try:
-                    issue = self._load_issue(mets_url)
+                    self._load_issue(mets_url)
                 except ValueError as e:
                     LOGGER.exception(e)
                     continue
@@ -374,7 +372,7 @@ class BatchLoader(object):
                             break
                 except KeyError as e:
                     LOGGER.info("Could not determine dimensions of jp2 for issue: %s page: %s... trying harder...", page.issue, page)
-                
+
                 if not page.jp2_width:
                     raise BatchLoaderException("No jp2 width for issue: %s page: %s" % (page.issue, page))
                 if not page.jp2_length:
