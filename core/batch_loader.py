@@ -163,7 +163,8 @@ class BatchLoader(object):
                 self.solr.commit()
 
             batch.save()
-            LOGGER.info("processed %s pages", batch.page_count)
+            msg = "processed %s pages" % batch.page_count
+            LOGGER.info(msg)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
         except Exception as e:
@@ -203,8 +204,9 @@ class BatchLoader(object):
                 parts = parts[1:]
             awardee_org_code, name_part, version = parts
             batch.awardee = Awardee.objects.get(org_code=awardee_org_code)
-        except Awardee.DoesNotExist as e:
-            LOGGER.error("no awardee for org code: %s", awardee_org_code)
+        except Awardee.DoesNotExist:
+            msg = "no awardee for org code: %s" % awardee_org_code
+            LOGGER.error(msg)
             raise BatchLoaderException(msg)
         batch.save()
         return batch
@@ -457,8 +459,8 @@ class BatchLoader(object):
                         lang_text, coords = ocr_extractor(url)
                         self._process_coordinates(page, coords)
         except Exception as e:
-            LOGGER.error("unable to process coordinates for batch: %s", e)
-            LOGGER.exception(e)
+            msg = "unable to process coordinates for batch: %s" % e
+            LOGGER.exception(msg)
             raise BatchLoaderException(msg)
 
     def storage_relative_path(self, path):
@@ -483,8 +485,8 @@ class BatchLoader(object):
                 LOGGER.info("Removing symlink %s", link_name)
                 os.remove(link_name)
         except Exception as e:
-            LOGGER.error("purge failed: %s", e)
-            LOGGER.exception(e)
+            msg = "purge failed: %s" % e
+            LOGGER.exception(msg)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
             raise BatchLoaderException(msg)
@@ -534,6 +536,7 @@ def _normalize_batch_name(batch_name):
     batch_name = batch_name.rstrip('/')
     batch_name = os.path.basename(batch_name)
     if not re.match(r'(batch_)?\w+_\w+_ver\d\d', batch_name):
-        LOGGER.error('unrecognized format for batch name %s', batch_name)
+        msg = 'unrecognized format for batch name %s' % batch_name
+        LOGGER.error(msg)
         raise BatchLoaderException(msg)
     return batch_name
