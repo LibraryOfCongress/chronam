@@ -192,7 +192,7 @@ class BatchLoader(object):
         return batch
 
     def _create_batch(self, batch_name, batch_source):
-        if Batch.objects.filter(name=batch_name).count()!=0:
+        if Batch.objects.filter(name=batch_name).count() != 0:
             raise BatchLoaderException("batch %s already loaded" % batch_name)
         batch = Batch()
         batch.name = batch_name
@@ -239,7 +239,7 @@ class BatchLoader(object):
 
         # attach the Issue to the appropriate Title
         lccn = mods.xpath('string(.//mods:identifier[@type="lccn"])',
-            namespaces=ns).strip()
+                          namespaces=ns).strip()
         try:
             title = Title.objects.get(lccn=lccn)
         except Exception as e:
@@ -506,6 +506,7 @@ class BatchLoader(object):
             self.solr.delete_query('batch:"%s"' % batch_name)
             self.solr.commit()
 
+
 class BatchLoaderException(RuntimeError):
     pass
 
@@ -513,8 +514,9 @@ class BatchLoaderException(RuntimeError):
 def dmd_mods(doc, dmdid):
     """a helper that returns mods inside a dmdSec with a given ID
     """
-    xpath ='.//mets:dmdSec[@ID="%s"]/descendant::mods:mods' % dmdid
+    xpath = './/mets:dmdSec[@ID="%s"]/descendant::mods:mods' % dmdid
     return doc.xpath(xpath, namespaces=ns)[0]
+
 
 def get_dimensions(doc, admid):
     """return length, width for an image from techincal metadata with a given
@@ -526,6 +528,7 @@ def get_dimensions(doc, admid):
     if length and width:
         return length[0].text, width[0].text
     return None, None
+
 
 def _normalize_batch_name(batch_name):
     batch_name = batch_name.rstrip('/')
