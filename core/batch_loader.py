@@ -22,11 +22,6 @@ from django.db.models import Q
 from django.conf import settings
 from django.core import management
 
-try:
-    import j2k
-except ImportError:
-    j2k = None
-
 from chronam.core import models
 from chronam.core.models import Batch, Issue, Title, Awardee, Page, OCR
 from chronam.core.models import LoadBatchEvent
@@ -380,11 +375,7 @@ class BatchLoader(object):
                             break
                 except KeyError, e:
                     LOGGER.info("Could not determine dimensions of jp2 for issue: %s page: %s... trying harder...", page.issue, page)
-                    if j2k:
-                        width, length = j2k.dimensions(page.jp2_abs_filename)
-                        page.jp2_width = width
-                        page.jp2_length = length
-                    #raise BatchLoaderException("Could not determine dimensions of jp2 for issue: %s page: %s" % (page.issue, page))
+                
                 if not page.jp2_width:
                     raise BatchLoaderException("No jp2 width for issue: %s page: %s" % (page.issue, page))
                 if not page.jp2_length:
