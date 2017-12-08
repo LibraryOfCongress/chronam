@@ -27,7 +27,7 @@ class OCRHandler(ContentHandler):
             # solr's WordDelimiterFilterFactory tokenizes based on punctuation
             # which removes it from highlighting, so it's important to remove
             # it here as well or else we'll look up words that don't match
-            word = re.sub(non_lexemes, '', content)
+            word = non_lexemes.sub('', content)
             if word == "":
                 pass
             elif word in self._coords:
