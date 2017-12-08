@@ -124,14 +124,13 @@ class BatchLoader(object):
         if not strict:
             try:
                 batch = Batch.objects.get(name=batch_name)
-                LOGGER.info("Batch already loaded: %s" % batch_name)
+                LOGGER.info("Batch already loaded: %s", batch_name)
                 return batch
             except Batch.DoesNotExist, e:
                 pass
 
-        LOGGER.info("loading batch: %s" % batch_name)
+        LOGGER.info("loading batch: %s", batch_name)
         t0 = time()
-        times = []
 
         event = LoadBatchEvent(batch_name=batch_name, message="starting load")
         event.save()
@@ -167,29 +166,24 @@ class BatchLoader(object):
                     LOGGER.exception(e)
                     continue
                 reset_queries()
-                times.append((time() - t0, self.pages_processed))
 
             # commit new changes to the solr index, if we are indexing
             if self.PROCESS_OCR:
                 self.solr.commit()
 
             batch.save()
-            msg = "processed %s pages" % batch.page_count
+            LOGGER.info("processed %s pages", batch.page_count)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
-            LOGGER.info(msg)
             event.save()
-
-            _chart(times)
         except Exception, e:
-            msg = "unable to load batch: %s" % e
-            LOGGER.error(msg)
+            LOGGER.error("unable to load batch: %s", e)
             LOGGER.exception(e)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
             try:
                 self.purge_batch(batch_name)
             except Exception, pbe:
-                LOGGER.error("purge batch failed for failed load batch: %s" % pbe)
+                LOGGER.error("purge batch failed for failed load batch: %s", pbe)
                 LOGGER.exception(pbe)
             raise BatchLoaderException(msg)
 
@@ -219,14 +213,13 @@ class BatchLoader(object):
             awardee_org_code, name_part, version = parts
             batch.awardee = Awardee.objects.get(org_code=awardee_org_code)
         except Awardee.DoesNotExist, e:
-            msg = "no awardee for org code: %s" % awardee_org_code
-            LOGGER.error(msg)
+            LOGGER.error("no awardee for org code: %s", awardee_org_code)
             raise BatchLoaderException(msg)
         batch.save()
         return batch
 
     def _load_issue(self, mets_file):
-        LOGGER.debug("parsing issue mets file: %s" % mets_file)
+        LOGGER.debug("parsing issue mets file: %s", mets_file)
         doc = etree.parse(mets_file)
 
         # get the mods for the issue
@@ -267,7 +260,7 @@ class BatchLoader(object):
 
         issue.batch = self.current_batch
         issue.save()
-        LOGGER.debug("saved issue: %s" % issue.url)
+        LOGGER.debug("saved issue: %s", issue.url)
 
         notes = []
         for mods_note in mods.xpath('.//mods:note', namespaces=ns):
@@ -324,7 +317,7 @@ class BatchLoader(object):
             else:
                 LOGGER.warn("unable to find reel number in page metadata")
 
-        LOGGER.info("Assigned page sequence: %s" % page.sequence)
+        LOGGER.info("Assigned page sequence: %s", page.sequence)
 
         _section_dmdid = div.xpath(
             'string(ancestor::mets:div[@TYPE="np:section"]/@DMDID)',
@@ -339,7 +332,7 @@ class BatchLoader(object):
 
         page.issue = issue
 
-        LOGGER.info("Saving page. issue date: %s, page sequence: %s" % (issue.date_issued, page.sequence))
+        LOGGER.info("Saving page. issue date: %s, page sequence: %s", issue.date_issued, page.sequence)
 
         # TODO - consider the possibility of executing the file name
         #        assignments (below) before this page.save().
@@ -386,7 +379,7 @@ class BatchLoader(object):
                             page.jp2_length = length
                             break
                 except KeyError, e:
-                    LOGGER.info("Could not determine dimensions of jp2 for issue: %s page: %s... trying harder..." % (page.issue, page))
+                    LOGGER.info("Could not determine dimensions of jp2 for issue: %s page: %s... trying harder...", page.issue, page)
                     if j2k:
                         width, length = j2k.dimensions(page.jp2_abs_filename)
                         page.jp2_width = width
@@ -407,15 +400,14 @@ class BatchLoader(object):
             if self.PROCESS_OCR:
                 self.process_ocr(page)
         else:
-            LOGGER.info("No ocr filename for issue: %s page: %s" % (page.issue, page))
+            LOGGER.info("No ocr filename for issue: %s page: %s", page.issue, page)
 
-        LOGGER.debug("saving page: %s" % page.url)
+        LOGGER.debug("saving page: %s", page.url)
         page.save()
         return page
 
     def process_ocr(self, page, index=True):
-        LOGGER.debug("extracting ocr text and word coords for %s" %
-            page.url)
+        LOGGER.debug("extracting ocr text and word coords for %s", page.url)
 
         url = urlparse.urljoin(self.current_batch.storage_url,
                                page.ocr_filename)
@@ -442,14 +434,13 @@ class BatchLoader(object):
         page.ocr = ocr
         page.lang_text = lang_text_solr
         if index:
-            LOGGER.debug("indexing ocr for: %s" % page.url)
+            LOGGER.debug("indexing ocr for: %s", page.url)
             self.solr.add(**page.solr_doc)
             page.indexed = True
         page.save()
 
     def _process_coordinates(self, page, coords):
-        LOGGER.debug("writing out word coords for %s" %
-            page.url)
+        LOGGER.debug("writing out word coords for %s", page.url)
 
         f = open(models.coordinates_path(page._url_parts()), "w")
         f.write(gzip_compress(json.dumps(coords)))
@@ -479,8 +470,7 @@ class BatchLoader(object):
                         lang_text, coords = ocr_extractor(url)
                         self._process_coordinates(page, coords)
         except Exception, e:
-            msg = "unable to process coordinates for batch: %s" % e
-            LOGGER.error(msg)
+            LOGGER.error("unable to process coordinates for batch: %s", e)
             LOGGER.exception(e)
             raise BatchLoaderException(msg)
 
@@ -506,8 +496,7 @@ class BatchLoader(object):
                 LOGGER.info("Removing symlink %s", link_name)
                 os.remove(link_name)
         except Exception, e:
-            msg = "purge failed: %s" % e
-            LOGGER.error(msg)
+            LOGGER.error("purge failed: %s", e)
             LOGGER.exception(e)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
@@ -551,24 +540,11 @@ def get_dimensions(doc, admid):
         return length[0].text, width[0].text
     return None, None
 
-def _chart(times):
-    """
-    Creates a google chart given a list of times as floats.
-    """
-    num = len(times)
-    if num == 0:
-        return
-    step = max(num/100, 1) # we only want around a 100 datapoints for our chart
-    f_times = ["%.2f" % (times[i][0]) for i in range(0, num, step)]
-    counts = ["%s" % (times[i][1]) for i in range(0, num, step)]
-    LOGGER.info("\n    http://chart.apis.google.com/chart?cht=lxy&chs=200x125&chd=t:%s|%s&chds=%s,%s,%s,%s" % (",".join(f_times), ",".join(counts), f_times[0], f_times[-1], counts[0], counts[-1]))
-
 def _normalize_batch_name(batch_name):
     batch_name = batch_name.rstrip('/')
     batch_name = os.path.basename(batch_name)
     if not re.match(r'(batch_)?\w+_\w+_ver\d\d', batch_name):
-        msg = 'unrecognized format for batch name %s' % batch_name
-        LOGGER.error(msg)
+        LOGGER.error('unrecognized format for batch name %s', batch_name)
         raise BatchLoaderException(msg)
     return batch_name
 
