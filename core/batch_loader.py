@@ -10,7 +10,6 @@ import re
 import urllib2
 import urlparse
 from datetime import datetime
-from time import time
 
 import simplejson as json
 from django.conf import settings
