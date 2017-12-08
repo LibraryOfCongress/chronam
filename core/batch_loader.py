@@ -10,7 +10,6 @@ import re
 import urllib2
 import urlparse
 from datetime import datetime
-from time import time
 
 import simplejson as json
 from django.conf import settings
@@ -37,6 +36,7 @@ ns = {
 }
 
 LOGGER = logging.getLogger(__name__)
+
 
 def gzip_compress(data):
     bio = io.BytesIO()
@@ -73,12 +73,10 @@ class BatchLoader(object):
             # minimize impact.
             url = urlparse.urljoin(batch.storage_url, alias)
             try:
-                u = urllib2.urlopen(url)
+                urllib2.urlopen(url)
                 validated_batch_file = alias
                 break
-            except urllib2.HTTPError as e:
-                continue
-            except urllib2.URLError as e:
+            except (urllib2.HTTPError, urllib2.URLError):
                 continue
         else:
             raise BatchLoaderException(
@@ -123,7 +121,6 @@ class BatchLoader(object):
                 pass
 
         LOGGER.info("loading batch: %s", batch_name)
-        t0 = time()
 
         event = LoadBatchEvent(batch_name=batch_name, message="starting load")
         event.save()
@@ -153,8 +150,9 @@ class BatchLoader(object):
 
             for e in doc.xpath('ndnp:issue', namespaces=ns):
                 mets_url = urlparse.urljoin(batch.storage_url, e.text)
+
                 try:
-                    issue = self._load_issue(mets_url)
+                    self._load_issue(mets_url)
                 except ValueError as e:
                     LOGGER.exception(e)
                     continue
@@ -165,12 +163,13 @@ class BatchLoader(object):
                 self.solr.commit()
 
             batch.save()
-            LOGGER.info("processed %s pages", batch.page_count)
+            msg = "processed %s pages" % batch.page_count
+            LOGGER.info(msg)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
         except Exception as e:
-            LOGGER.error("unable to load batch: %s", e)
-            LOGGER.exception(e)
+            msg = "unable to load batch: %s" % e
+            LOGGER.exception(msg)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
             try:
@@ -194,7 +193,7 @@ class BatchLoader(object):
         return batch
 
     def _create_batch(self, batch_name, batch_source):
-        if Batch.objects.filter(name=batch_name).count()!=0:
+        if Batch.objects.filter(name=batch_name).count() != 0:
             raise BatchLoaderException("batch %s already loaded" % batch_name)
         batch = Batch()
         batch.name = batch_name
@@ -205,8 +204,9 @@ class BatchLoader(object):
                 parts = parts[1:]
             awardee_org_code, name_part, version = parts
             batch.awardee = Awardee.objects.get(org_code=awardee_org_code)
-        except Awardee.DoesNotExist as e:
-            LOGGER.error("no awardee for org code: %s", awardee_org_code)
+        except Awardee.DoesNotExist:
+            msg = "no awardee for org code: %s" % awardee_org_code
+            LOGGER.error(msg)
             raise BatchLoaderException(msg)
         batch.save()
         return batch
@@ -241,7 +241,7 @@ class BatchLoader(object):
 
         # attach the Issue to the appropriate Title
         lccn = mods.xpath('string(.//mods:identifier[@type="lccn"])',
-            namespaces=ns).strip()
+                          namespaces=ns).strip()
         try:
             title = Title.objects.get(lccn=lccn)
         except Exception as e:
@@ -269,7 +269,7 @@ class BatchLoader(object):
         for page_div in div.xpath('.//mets:div[@TYPE="np:page"]',
                                   namespaces=ns):
             try:
-                page = self._load_page(doc, page_div, issue)
+                self._load_page(doc, page_div, issue)
                 self.pages_processed += 1
             except BatchLoaderException as e:
                 LOGGER.exception(e)
@@ -300,7 +300,7 @@ class BatchLoader(object):
             reel = models.Reel.objects.get(number=reel_number,
                                            batch=self.current_batch)
             page.reel = reel
-        except models.Reel.DoesNotExist as e:
+        except models.Reel.DoesNotExist:
             if reel_number:
                 reel = models.Reel(number=reel_number,
                                    batch=self.current_batch,
@@ -340,7 +340,6 @@ class BatchLoader(object):
             notes.append(note)
         page.notes = notes
 
-
         # there's a level indirection between the METS structmap and the
         # details about specific files in this package ...
         # so we have to first get the FILEID from the issue div in the
@@ -371,9 +370,9 @@ class BatchLoader(object):
                             page.jp2_width = width
                             page.jp2_length = length
                             break
-                except KeyError as e:
+                except KeyError:
                     LOGGER.info("Could not determine dimensions of jp2 for issue: %s page: %s... trying harder...", page.issue, page)
-                
+
                 if not page.jp2_width:
                     raise BatchLoaderException("No jp2 width for issue: %s page: %s" % (page.issue, page))
                 if not page.jp2_length:
@@ -454,13 +453,13 @@ class BatchLoader(object):
                         logging.warn("Batch [%s] has page [%s] that has no OCR. Skipping processing coordinates for page." % (batch_name, page))
                     else:
                         url = urlparse.urljoin(self.current_batch.storage_url,
-                                           page.ocr_filename)
-                        logging.debug("Extracting OCR from url %s" % url)
+                                               page.ocr_filename)
+                        logging.debug("Extracting OCR from url %s", url)
                         lang_text, coords = ocr_extractor(url)
                         self._process_coordinates(page, coords)
         except Exception as e:
-            LOGGER.error("unable to process coordinates for batch: %s", e)
-            LOGGER.exception(e)
+            msg = "unable to process coordinates for batch: %s" % e
+            LOGGER.exception(msg)
             raise BatchLoaderException(msg)
 
     def storage_relative_path(self, path):
@@ -485,8 +484,8 @@ class BatchLoader(object):
                 LOGGER.info("Removing symlink %s", link_name)
                 os.remove(link_name)
         except Exception as e:
-            LOGGER.error("purge failed: %s", e)
-            LOGGER.exception(e)
+            msg = "purge failed: %s" % e
+            LOGGER.exception(msg)
             event = LoadBatchEvent(batch_name=batch_name, message=msg)
             event.save()
             raise BatchLoaderException(msg)
@@ -508,6 +507,7 @@ class BatchLoader(object):
             self.solr.delete_query('batch:"%s"' % batch_name)
             self.solr.commit()
 
+
 class BatchLoaderException(RuntimeError):
     pass
 
@@ -515,8 +515,9 @@ class BatchLoaderException(RuntimeError):
 def dmd_mods(doc, dmdid):
     """a helper that returns mods inside a dmdSec with a given ID
     """
-    xpath ='.//mets:dmdSec[@ID="%s"]/descendant::mods:mods' % dmdid
+    xpath = './/mets:dmdSec[@ID="%s"]/descendant::mods:mods' % dmdid
     return doc.xpath(xpath, namespaces=ns)[0]
+
 
 def get_dimensions(doc, admid):
     """return length, width for an image from techincal metadata with a given
@@ -529,10 +530,12 @@ def get_dimensions(doc, admid):
         return length[0].text, width[0].text
     return None, None
 
+
 def _normalize_batch_name(batch_name):
     batch_name = batch_name.rstrip('/')
     batch_name = os.path.basename(batch_name)
     if not re.match(r'(batch_)?\w+_\w+_ver\d\d', batch_name):
-        LOGGER.error('unrecognized format for batch name %s', batch_name)
+        msg = 'unrecognized format for batch name %s' % batch_name
+        LOGGER.error(msg)
         raise BatchLoaderException(msg)
     return batch_name
