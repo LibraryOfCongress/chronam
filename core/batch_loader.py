@@ -1,30 +1,25 @@
+import gzip
+import io
+import logging
 import os
 import os.path
 import re
-import logging
 import urllib2
 import urlparse
-
-import io
-import gzip
-
-from time import time
 from datetime import datetime
+from time import time
 
 import simplejson as json
-
-from lxml import etree
-from solr import SolrConnection
-
+from django.conf import settings
 from django.core import management
 from django.db import reset_queries
 from django.db.models import Q
-from django.conf import settings
-from django.core import management
+from lxml import etree
+from solr import SolrConnection
 
 from chronam.core import models
-from chronam.core.models import Batch, Issue, Title, Awardee, Page, OCR
-from chronam.core.models import LoadBatchEvent
+from chronam.core.models import (OCR, Awardee, Batch, Issue, LoadBatchEvent,
+                                 Page, Title,)
 from chronam.core.ocr_extractor import ocr_extractor
 
 # some xml namespaces used in batch metadata
@@ -538,4 +533,3 @@ def _normalize_batch_name(batch_name):
         LOGGER.error('unrecognized format for batch name %s', batch_name)
         raise BatchLoaderException(msg)
     return batch_name
-
