@@ -38,6 +38,7 @@ ns = {
 
 LOGGER = logging.getLogger(__name__)
 
+
 def gzip_compress(data):
     bio = io.BytesIO()
     f = gzip.GzipFile(mode='wb', fileobj=bio, compresslevel=9)
