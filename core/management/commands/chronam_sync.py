@@ -8,11 +8,9 @@ from django.core.management.base import BaseCommand
 
 from chronam.core import models
 from chronam.core import index
-from chronam.core.management.commands import configure_logging
 from chronam.core.utils.utils import validate_bib_dir
 
-configure_logging("chronam_sync_logging.config", "chronam_sync.log")
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     verbose = make_option('--verbose',
@@ -46,7 +44,7 @@ class Command(BaseCommand):
                 models.Page.objects.all().count() == 0 and
                 index.page_count() == 0 and
                 index.title_count() == 0):
-            _logger.warn("Database or index not empty as expected.")
+            LOGGER.warn("Database or index not empty as expected.")
             return
 
         start = datetime.now()
@@ -70,7 +68,7 @@ class Command(BaseCommand):
 
         end = datetime.now()
         total_time = end - start
-        _logger.info('start time: %s' % start)
-        _logger.info('end time: %s' % end)
-        _logger.info('total time: %s' % total_time)
-        _logger.info("chronam_sync done.")
+        LOGGER.info('start time: %s' % start)
+        LOGGER.info('end time: %s' % end)
+        LOGGER.info('total time: %s' % total_time)
+        LOGGER.info("chronam_sync done.")

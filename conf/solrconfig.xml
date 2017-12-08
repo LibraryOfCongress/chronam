@@ -72,6 +72,9 @@
        with their external dependencies.
     -->
 
+  <!-- add in polish and other analyzers -->
+  <lib dir="../../contrib" regex=".*\.jar" />
+
   <!-- chronam: don't need these
   <lib dir="../../../contrib/extraction/lib" regex=".*\.jar" />
   <lib dir="../../../dist/" regex="solr-cell-\d.*\.jar" />

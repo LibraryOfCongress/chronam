@@ -6,12 +6,10 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 import pymarc
 
-from chronam.core.management.commands import configure_logging
 from chronam.core import index
 from chronam.core.models import Title
 
-configure_logging("chronam_purge_titles.config", "chronam_purge_etitles.log")
-_log = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     """
@@ -38,9 +36,9 @@ class Command(BaseCommand):
                 if options['pretend']:
                     print title
                 else:
-                    _log.info("deleting %s [%s] from solr index")
+                    LOGGER.info("deleting %s [%s] from solr index")
                     index.delete_title(title)
-                    _log.info("purging %s [%s]" % (title, title.lccn))
+                    LOGGER.info("purging %s [%s]" % (title, title.lccn))
                     title.delete()
         if not options['pretend']:
             index.commit()

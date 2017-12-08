@@ -48,7 +48,7 @@ LOGGING = {
             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
         },
         'simple': {
-            'format': '%(levelname)s %(message)s'
+            'format': '[%(asctime)s %(levelname)s %(name)s] %(message)s'
         },
     },
     'handlers': {
@@ -59,6 +59,11 @@ LOGGING = {
             'filename': '/var/log/httpd/chronam.log',
             'maxBytes': 1024 * 1024 * 50,  # 50MB
             'backupCount': 5,
+        },
+        'console':{
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
         },
     },
     'loggers': {
@@ -72,6 +77,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'chronam': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        }
     },
     'root': {
         'handlers': ['file'],
@@ -153,13 +163,13 @@ TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
 #TOO_BUSY_LOAD_AVERAGE = 64
 
 SOLR = "http://localhost:8983/solr"
-SOLR_LANGUAGES = ("eng", "fre", "spa", "ger", "ita",)
+SOLR_LANGUAGES = ("ara", "cze", "dak", "dan", "eng", "fin", "fre", "ger", "hrv", "ice", "ita", "lit", "nob", "pol", "rum", "slo", "slv", "spa", "swe",)
 
 STORAGE = '/opt/chronam/data/'
 BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
-OCR_DUMP_STORAGE = os.path.join(STORAGE, "ocr")
 COORD_STORAGE = os.path.join(STORAGE, "word_coordinates")
+OCR_DUMP_STORAGE = os.path.join(COORD_STORAGE, "ocr")
 
 
 BASE_CRUMBS = [{'label': 'Home', 'href': '/'}]

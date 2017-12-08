@@ -6,13 +6,8 @@ from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
 
 from chronam.core import batch_loader
-from chronam.core.management.commands import configure_logging
     
-configure_logging('load_batches_logging.config', 
-                  'load_batches_%s.log' % os.getpid())
-
-_logger = logging.getLogger(__name__)
-
+LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
@@ -37,8 +32,8 @@ class Command(BaseCommand):
         loader.PROCESS_COORDINATES=options['process_coordinates']
 
         batch_list = file(batch_list_filename)
-        _logger.info("batch_list_filename: %s" % batch_list_filename)
+        LOGGER.info("batch_list_filename: %s" % batch_list_filename)
         for line in batch_list:
             batch_name = line.strip()
-            _logger.info("batch_name: %s" % batch_name)
+            LOGGER.info("batch_name: %s" % batch_name)
             loader.load_batch(batch_name, strict=False)

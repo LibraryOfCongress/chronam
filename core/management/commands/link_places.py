@@ -10,10 +10,8 @@ except ImportError:
     import json
 
 from chronam.core import models
-from chronam.core.management.commands import configure_logging
 
-configure_logging("chronam_link_places.config", "chronam_link_places.log")
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 geo = Namespace('http://www.w3.org/2003/01/geo/wgs84_pos#')
 owl = Namespace('http://www.w3.org/2002/07/owl#')
@@ -23,7 +21,7 @@ dbpedia = Namespace('http://dbpedia.org/ontology/')
 class Command(BaseCommand):
 
     def handle(self, **options):
-        _logger.debug("linking places")
+        LOGGER.debug("linking places")
         for place in models.Place.objects.filter(dbpedia__isnull=True):
             if not place.city or not place.state:
                 continue
@@ -36,10 +34,10 @@ class Command(BaseCommand):
             # attempt to get a graph from it
             graph = ConjunctiveGraph()
             try: 
-                _logger.debug("looking up %s" % url)
+                LOGGER.debug("looking up %s" % url)
                 graph.load(url)
             except urllib2.HTTPError, e:
-                _logger.error(e)
+                LOGGER.error(e)
 
             # if we've got more than 3 assertions extract some stuff from 
             # the graph and save back some info to the db, would be nice
@@ -54,14 +52,14 @@ class Command(BaseCommand):
                     if object.startswith('http://sws.geonames.org'):
                         place.geonames = object
                 place.save()
-                _logger.info("found dbpedia resource %s" % url)
+                LOGGER.info("found dbpedia resource %s" % url)
             else:
-                _logger.warn("couldn't find dbpedia resource for %s" % url)
+                LOGGER.warn("couldn't find dbpedia resource for %s" % url)
 
             reset_queries()
-        _logger.info("finished looking up places in dbpedia")
+        LOGGER.info("finished looking up places in dbpedia")
 
-        _logger.info("dumping place_links.json fixture")
+        LOGGER.info("dumping place_links.json fixture")
 
         # so it would be nice to use django.core.serializer here
         # but it serializes everything about the model, including
@@ -80,7 +78,7 @@ class Command(BaseCommand):
                          'latitude': p.latitude})
             reset_queries()
         json.dump(json_src, file('core/fixtures/place_links.json', 'w'), indent=2)
-        _logger.info("finished dumping place_links.json fixture")
+        LOGGER.info("finished dumping place_links.json fixture")
 
 def _clean(u):
     return u.strip().replace(' ', '_').encode('ascii', 'ignore')

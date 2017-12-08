@@ -9,7 +9,7 @@ from django.db import reset_queries
 from chronam.core.title_loader import _normal_oclc, _extract
 from chronam.core import models
 
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 class HoldingLoader:
@@ -38,22 +38,22 @@ class HoldingLoader:
             times.append(seconds)
 
             if self.records_processed % 1000 == 0:
-                _logger.info("processed %sk records in %.2f seconds" %
+                LOGGER.info("processed %sk records in %.2f seconds" %
                              (self.records_processed / 1000, seconds))
 
         def load_xml_record(record):
             try:
                 self.records_processed += 1
                 if skip > self.records_processed:
-                    _logger.info("skipped %i" % self.records_processed)
+                    LOGGER.info("skipped %i" % self.records_processed)
                     return
                 if record.leader[6] == 'y':
                     self.load_xml_holding(record)
 
             except Exception, e:
-                _logger.error("unable to load record %s: %s" %
+                LOGGER.error("unable to load record %s: %s" %
                               (self.records_processed, e))
-                _logger.exception(e)
+                LOGGER.exception(e)
                 self.errors += 1
 
             _process_time()
@@ -68,7 +68,7 @@ class HoldingLoader:
             titles = models.Title.objects.filter(oclc=oclc)
             return titles
         except models.Title.DoesNotExist:
-            _logger.error("Holding missing Title to link: record %s, oclc %s" %
+            LOGGER.error("Holding missing Title to link: record %s, oclc %s" %
                           (self.records_processed, oclc))
             self.missing_title += 1
             self.errors += 1
@@ -80,7 +80,7 @@ class HoldingLoader:
             inst = models.Institution.objects.get(code=inst_code)
             return inst
         except models.Institution.DoesNotExist:
-            _logger.error("Holding missing Institution to link to: %s" %
+            LOGGER.error("Holding missing Institution to link to: %s" %
                           inst_code)
             self.errors += 1
             return None
@@ -118,7 +118,7 @@ class HoldingLoader:
         # get the oclc number to link to
         oclc = _normal_oclc(_extract(record, '004'))
         if not oclc:
-            _logger.error("holding record missing title: record %s, oclc %s" %
+            LOGGER.error("holding record missing title: record %s, oclc %s" %
                          (self.records_processed, oclc))
             self.errors += 1
             return
@@ -164,7 +164,7 @@ class HoldingLoader:
 
         # a holdings source can be one file or a directory of files.
         loader = HoldingLoader()
-        _logger.info("loading holdings from: %s" % holdings_source)
+        LOGGER.info("loading holdings from: %s" % holdings_source)
 
         # check if arg passed is a file or a directory of files
         if os.path.isdir(holdings_source):
@@ -177,12 +177,12 @@ class HoldingLoader:
             loader.load_file(holdings_source)
             loader.files_processed += 1
 
-        _logger.info("records processed: %i" % loader.records_processed)
-        _logger.info("missing title: %i" % loader.missing_title)
-        _logger.info("skipped: %i" % loader.skipped)
-        _logger.info("errors: %i" % loader.errors)
-        _logger.info("holdings saved: %i" % loader.holding_created)
-        _logger.info("files processed: %i" % loader.files_processed)
+        LOGGER.info("records processed: %i" % loader.records_processed)
+        LOGGER.info("missing title: %i" % loader.missing_title)
+        LOGGER.info("skipped: %i" % loader.skipped)
+        LOGGER.info("errors: %i" % loader.errors)
+        LOGGER.info("holdings saved: %i" % loader.holding_created)
+        LOGGER.info("files processed: %i" % loader.files_processed)
 
 
 def _holdings_type(s):

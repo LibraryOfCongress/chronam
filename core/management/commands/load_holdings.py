@@ -6,12 +6,9 @@ from django.core.management.base import BaseCommand
 
 from chronam.core import models
 from chronam.core.holding_loader import HoldingLoader
-from chronam.core.management.commands import configure_logging
 from chronam.core.utils.utils import validate_bib_dir
 
-configure_logging('load_holdings_logging.config', 'load_holdings.log')
-_logger = logging.getLogger(__name__)
-
+LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     help = "Load a holdings records after title records are all loaded"
@@ -26,11 +23,11 @@ class Command(BaseCommand):
     def handle(self, holdings_source=default_location, *args, **options):
         
         if not os.path.exists(holdings_source): 
-            _logger.error("There is no valid holdings source folder defined.")
+            LOGGER.error("There is no valid holdings source folder defined.")
             set_holdings = ['To load holdings - Add a folder called "holdings"',
             'to the bib directory that is set in settings',
             'or pass the location of holdings as an arguement to the loader.',]
-            _logger.error(' '.join(set_holdings))
+            LOGGER.error(' '.join(set_holdings))
             return
 
         # First we want to make sure that our material types are up to date

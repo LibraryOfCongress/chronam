@@ -4,14 +4,9 @@ import logging
 from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
 
-from chronam.core.management.commands import configure_logging
 from chronam.core import tasks
     
-configure_logging('queue_purge_batch_logging.config', 
-                  'queue_purge_batch_%s.log' % os.getpid())
-
 LOGGER = logging.getLogger(__name__)
-
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (

@@ -8,10 +8,7 @@ from django.conf import settings
 
 from chronam.core import title_pull
 
-from chronam.core.management.commands import configure_logging
-    
-configure_logging('pull_titles_logging.config', 'pull_titles.log')
-_logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     help = "Retrieve a fresh pull of titles from OCLC. \
@@ -54,14 +51,14 @@ class Command(BaseCommand):
         if lccn:
             start, end = self.run_pull(path + '/lccn/', lccn, oclc)
             if start and end:
-                _logger.info("lccn: %s, oclc: %s" % (lccn, oclc))
+                LOGGER.info("lccn: %s, oclc: %s" % (lccn, oclc))
         else:
-            _logger.info("started pulling titles from OCLC.")
+            LOGGER.info("started pulling titles from OCLC.")
             start, end = self.run_pull(path + 'bulk/') 
-            _logger.info("finished pulling titles from OCLC.")
-            _logger.info("start time: %s" % start)
-            _logger.info("end time: %s" % end)
+            LOGGER.info("finished pulling titles from OCLC.")
+            LOGGER.info("start time: %s" % start)
+            LOGGER.info("end time: %s" % end)
 
         total = end - start
-        _logger.info("total time: %s" % total)
-        _logger.info("#######################################")
+        LOGGER.info("total time: %s" % total)
+        LOGGER.info("#######################################")
