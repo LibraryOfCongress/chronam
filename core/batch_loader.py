@@ -453,8 +453,8 @@ class BatchLoader(object):
                         logging.warn("Batch [%s] has page [%s] that has no OCR. Skipping processing coordinates for page." % (batch_name, page))
                     else:
                         url = urlparse.urljoin(self.current_batch.storage_url,
-                                           page.ocr_filename)
-                        logging.debug("Extracting OCR from url %s" % url)
+                                               page.ocr_filename)
+                        logging.debug("Extracting OCR from url %s", url)
                         lang_text, coords = ocr_extractor(url)
                         self._process_coordinates(page, coords)
         except Exception as e:
