@@ -269,7 +269,7 @@ class BatchLoader(object):
         for page_div in div.xpath('.//mets:div[@TYPE="np:page"]',
                                   namespaces=ns):
             try:
-                page = self._load_page(doc, page_div, issue)
+                self._load_page(doc, page_div, issue)
                 self.pages_processed += 1
             except BatchLoaderException as e:
                 LOGGER.exception(e)
@@ -300,7 +300,7 @@ class BatchLoader(object):
             reel = models.Reel.objects.get(number=reel_number,
                                            batch=self.current_batch)
             page.reel = reel
-        except models.Reel.DoesNotExist as e:
+        except models.Reel.DoesNotExist:
             if reel_number:
                 reel = models.Reel(number=reel_number,
                                    batch=self.current_batch,
@@ -340,7 +340,6 @@ class BatchLoader(object):
             notes.append(note)
         page.notes = notes
 
-
         # there's a level indirection between the METS structmap and the
         # details about specific files in this package ...
         # so we have to first get the FILEID from the issue div in the
@@ -371,7 +370,7 @@ class BatchLoader(object):
                             page.jp2_width = width
                             page.jp2_length = length
                             break
-                except KeyError as e:
+                except KeyError:
                     LOGGER.info("Could not determine dimensions of jp2 for issue: %s page: %s... trying harder...", page.issue, page)
 
                 if not page.jp2_width:
