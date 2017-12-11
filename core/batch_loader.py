@@ -90,7 +90,6 @@ class BatchLoader(object):
         #b = urllib2.urlopen(batch.url)
         batch.validated_batch_file = self._find_batch_file(batch)
 
-    @transaction.atomic
     def load_batch(self, batch_path, strict=True):
         """Load a batch, and return a Batch instance for the batch
         that was loaded.
@@ -150,26 +149,20 @@ class BatchLoader(object):
                     reel = models.Reel(number=reel_number, batch=batch)
                     reel.save()
 
-            issue_args = []
             threadpool = ThreadPool(20)
-#            for e in doc.xpath('ndnp:issue', namespaces=ns):
-#                mets_url = urlparse.urljoin(batch.storage_url, e.text)
-#
-#                try:
-#                    self._load_issue(mets_url)
-#                except ValueError as e:
-#                    LOGGER.exception(e)
-#                    continue
-            for e in doc.xpath('ndnp:issue', namespaces=ns): 
-                # Push the args tuple into the queue:
-                issue_args.append(urlparse.urljoin(batch.storage_url, e.text))
+            results = []
+            for e in doc.xpath('ndnp:issue', namespaces=ns):
+                results.append(threadpool.apply_async(self._load_issue, (urlparse.urljoin(batch.storage_url, e.text), )))
 
-            for result in threadpool.imap_unordered(self._load_issue, issue_args):
+            for result in results:
                 try:
                     result.get()
                 except Exception as e:
-                    LOGGER.exception(e)
-                    continue
+                    # Maybe scrape a better log message out of the result parameters?
+                    LOGGER.exception('Unable to load issue: %s', e)
+
+            threadpool.close()
+            threadpool.join()
 
             # commit new changes to the solr index, if we are indexing
             if self.PROCESS_OCR:
@@ -224,6 +217,7 @@ class BatchLoader(object):
         batch.save()
         return batch
 
+    @transaction.atomic
     def _load_issue(self, mets_file):
         LOGGER.debug("parsing issue mets file: %s", mets_file)
         doc = etree.parse(mets_file)
