@@ -14,9 +14,10 @@ from datetime import datetime
 import simplejson as json
 from django.conf import settings
 from django.core import management
-from django.db import reset_queries
+from django.db import transaction
 from django.db.models import Q
 from lxml import etree
+from multiprocessing.pool import ThreadPool
 from solr import SolrConnection
 
 from chronam.core import models
@@ -89,6 +90,7 @@ class BatchLoader(object):
         #b = urllib2.urlopen(batch.url)
         batch.validated_batch_file = self._find_batch_file(batch)
 
+    @transaction.atomic
     def load_batch(self, batch_path, strict=True):
         """Load a batch, and return a Batch instance for the batch
         that was loaded.
@@ -148,15 +150,26 @@ class BatchLoader(object):
                     reel = models.Reel(number=reel_number, batch=batch)
                     reel.save()
 
-            for e in doc.xpath('ndnp:issue', namespaces=ns):
-                mets_url = urlparse.urljoin(batch.storage_url, e.text)
+            issue_args = []
+            threadpool = ThreadPool(20)
+#            for e in doc.xpath('ndnp:issue', namespaces=ns):
+#                mets_url = urlparse.urljoin(batch.storage_url, e.text)
+#
+#                try:
+#                    self._load_issue(mets_url)
+#                except ValueError as e:
+#                    LOGGER.exception(e)
+#                    continue
+            for e in doc.xpath('ndnp:issue', namespaces=ns): 
+                # Push the args tuple into the queue:
+                issue_args.append(urlparse.urljoin(batch.storage_url, e.text))
 
+            for result in threadpool.imap_unordered(self._load_issue, issue_args):
                 try:
-                    self._load_issue(mets_url)
-                except ValueError as e:
+                    result.get()
+                except Exception as e:
                     LOGGER.exception(e)
                     continue
-                reset_queries()
 
             # commit new changes to the solr index, if we are indexing
             if self.PROCESS_OCR:
@@ -469,6 +482,7 @@ class BatchLoader(object):
         rel_path = path.replace(self.current_batch.storage_url, '')
         return rel_path
 
+    @transaction.atomic
     def purge_batch(self, batch_name):
         event = LoadBatchEvent(batch_name=batch_name, message="starting purge")
         event.save()
@@ -500,7 +514,6 @@ class BatchLoader(object):
                 # remove coordinates
                 if os.path.exists(models.coordinates_path(page._url_parts())):
                     os.remove(models.coordinates_path(page._url_parts()))
-                reset_queries()
             issue.delete()
         batch.delete()
         if self.PROCESS_OCR:
