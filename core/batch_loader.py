@@ -97,8 +97,6 @@ class BatchLoader(object):
           loader.load_batch('/path/to/batch_curiv_ahwahnee_ver01')
 
         """
-        self.pages_processed = 0
-
         logging.info("loading batch at %s", batch_path)
         dirname, batch_name = os.path.split(batch_path.rstrip("/"))
         if dirname:
@@ -149,7 +147,7 @@ class BatchLoader(object):
                     reel = models.Reel(number=reel_number, batch=batch)
                     reel.save()
 
-            threadpool = ThreadPool(20)
+            threadpool = ThreadPool(40)
             results = []
             for e in doc.xpath('ndnp:issue', namespaces=ns):
                 results.append(threadpool.apply_async(self._load_issue, (urlparse.urljoin(batch.storage_url, e.text), )))
@@ -277,7 +275,6 @@ class BatchLoader(object):
                                   namespaces=ns):
             try:
                 self._load_page(doc, page_div, issue)
-                self.pages_processed += 1
             except BatchLoaderException as e:
                 LOGGER.exception(e)
 
