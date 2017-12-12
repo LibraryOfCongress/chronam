@@ -97,7 +97,12 @@ class BatchLoader(object):
           loader.load_batch('/path/to/batch_curiv_ahwahnee_ver01')
 
         """
-        logging.info("loading batch at %s", batch_path)
+        #TODO DEBUGING
+        import cProfile
+        pr = cProfile.Profile()
+        pr.enable()
+
+        LOGGER.info("loading batch at %s", batch_path)
         dirname, batch_name = os.path.split(batch_path.rstrip("/"))
         if dirname:
             batch_source = None
@@ -147,10 +152,12 @@ class BatchLoader(object):
                     reel = models.Reel(number=reel_number, batch=batch)
                     reel.save()
 
-            threadpool = ThreadPool(40)
+            threadpool = ThreadPool()
             results = []
             for e in doc.xpath('ndnp:issue', namespaces=ns):
                 results.append(threadpool.apply_async(self._load_issue, (urlparse.urljoin(batch.storage_url, e.text), )))
+            threadpool.close()
+            threadpool.join()
 
             for result in results:
                 try:
@@ -158,9 +165,6 @@ class BatchLoader(object):
                 except Exception as e:
                     # Maybe scrape a better log message out of the result parameters?
                     LOGGER.exception('Unable to load issue: %s', e)
-
-            threadpool.close()
-            threadpool.join()
 
             # commit new changes to the solr index, if we are indexing
             if self.PROCESS_OCR:
@@ -187,6 +191,9 @@ class BatchLoader(object):
             batch.released = datetime.now()
             batch.save()
 
+        #TODO stop collecting debugging info
+        pr.disable()
+        pr.dump_stats('batch_loader.pstats')
         return batch
 
     def _get_batch(self, batch_name, batch_source=None, create=False):
@@ -215,7 +222,7 @@ class BatchLoader(object):
         batch.save()
         return batch
 
-    @transaction.atomic
+#    @transaction.atomic
     def _load_issue(self, mets_file):
         LOGGER.debug("parsing issue mets file: %s", mets_file)
         doc = etree.parse(mets_file)
@@ -251,7 +258,7 @@ class BatchLoader(object):
             title = Title.objects.get(lccn=lccn)
         except Exception as e:
             url = 'http://chroniclingamerica.loc.gov/lccn/%s/marc.xml' % lccn
-            logging.info("attempting to load marc record from %s", url)
+            LOGGER.info("attempting to load marc record from %s", url)
             management.call_command('load_titles', url)
             title = Title.objects.get(lccn=lccn)
         issue.title = title
@@ -276,6 +283,7 @@ class BatchLoader(object):
             try:
                 self._load_page(doc, page_div, issue)
             except BatchLoaderException as e:
+                LOGGER.error("Failed to load page. doc: %s, page div: %s, issue: %s", doc, page_div, issue)
                 LOGGER.exception(e)
 
         return issue
@@ -439,7 +447,7 @@ class BatchLoader(object):
         f.close()
 
     def process_coordinates(self, batch_path):
-        logging.info("process word coordinates for batch at %s", batch_path)
+        LOGGER.info("process word coordinates for batch at %s", batch_path)
         dirname, batch_name = os.path.split(batch_path.rstrip("/"))
         if dirname:
             batch_source = None
@@ -454,11 +462,11 @@ class BatchLoader(object):
             for issue in batch.issues.all():
                 for page in issue.pages.all():
                     if not page.ocr_filename:
-                        logging.warn("Batch [%s] has page [%s] that has no OCR. Skipping processing coordinates for page." % (batch_name, page))
+                        LOGGER.warn("Batch [%s] has page [%s] that has no OCR. Skipping processing coordinates for page." % (batch_name, page))
                     else:
                         url = urlparse.urljoin(self.current_batch.storage_url,
                                                page.ocr_filename)
-                        logging.debug("Extracting OCR from url %s", url)
+                        LOGGER.debug("Extracting OCR from url %s", url)
                         lang_text, coords = ocr_extractor(url)
                         self._process_coordinates(page, coords)
         except Exception as e:
