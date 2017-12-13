@@ -60,7 +60,7 @@ class BatchLoader(object):
         """
         self.PROCESS_OCR = process_ocr
         if self.PROCESS_OCR:
-            self.solr = SolrConnection(settings.SOLR)
+            self.solr = SolrConnection(settings.SOLR, persistent=False)
         self.PROCESS_COORDINATES = process_coordinates
 
     def _find_batch_file(self, batch):
@@ -161,7 +161,13 @@ class BatchLoader(object):
 
             for result in results:
                 try:
-                    result.get()
+                    issue = result.get()
+                    if self.PROCESS_OCR:
+                        for page in issue.pages.all():
+                            LOGGER.debug("indexing ocr for: %s", page.url)
+                            self.solr.add(**page.solr_doc)
+                            page.indexed = True
+                            page.save()
                 except Exception as e:
                     # Maybe scrape a better log message out of the result parameters?
                     LOGGER.exception('Unable to load issue: %s', e)
@@ -406,7 +412,7 @@ class BatchLoader(object):
         page.save()
         return page
 
-    def process_ocr(self, page, index=True):
+    def process_ocr(self, page):
         LOGGER.debug("extracting ocr text and word coords for %s", page.url)
 
         url = urlparse.urljoin(self.current_batch.storage_url,
@@ -433,10 +439,6 @@ class BatchLoader(object):
 
         page.ocr = ocr
         page.lang_text = lang_text_solr
-        if index:
-            LOGGER.debug("indexing ocr for: %s", page.url)
-            self.solr.add(**page.solr_doc)
-            page.indexed = True
         page.save()
 
     def _process_coordinates(self, page, coords):
