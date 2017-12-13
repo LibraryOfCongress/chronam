@@ -60,8 +60,9 @@ class BatchLoader(object):
         """
         self.PROCESS_OCR = process_ocr
         if self.PROCESS_OCR:
-            self.solr = SolrConnection(settings.SOLR, persistent=False)
+            self.solr = SolrConnection(settings.SOLR)
         self.PROCESS_COORDINATES = process_coordinates
+        self.solr_pages = []
 
     def _find_batch_file(self, batch):
         """
@@ -97,10 +98,6 @@ class BatchLoader(object):
           loader.load_batch('/path/to/batch_curiv_ahwahnee_ver01')
 
         """
-        #TODO DEBUGING
-        import cProfile
-        pr = cProfile.Profile()
-        pr.enable()
 
         LOGGER.info("loading batch at %s", batch_path)
         dirname, batch_name = os.path.split(batch_path.rstrip("/"))
@@ -161,19 +158,20 @@ class BatchLoader(object):
 
             for result in results:
                 try:
-                    issue = result.get()
-                    if self.PROCESS_OCR:
-                        for page in issue.pages.all():
-                            LOGGER.debug("indexing ocr for: %s", page.url)
-                            self.solr.add(**page.solr_doc)
-                            page.indexed = True
-                            page.save()
+                    result.get()
                 except Exception as e:
                     # Maybe scrape a better log message out of the result parameters?
                     LOGGER.exception('Unable to load issue: %s', e)
 
             # commit new changes to the solr index, if we are indexing
             if self.PROCESS_OCR:
+                for page in self.solr_pages:
+                    LOGGER.debug("indexing ocr for: %s", page.url)
+                    self.solr.add(**page.solr_doc)
+                    page.indexed = True
+                    page.save()
+                self.solr_pages = []
+                LOGGER.info("Committing solr index")
                 self.solr.commit()
 
             batch.save()
@@ -197,9 +195,6 @@ class BatchLoader(object):
             batch.released = datetime.now()
             batch.save()
 
-        #TODO stop collecting debugging info
-        pr.disable()
-        pr.dump_stats('batch_loader.pstats')
         return batch
 
     def _get_batch(self, batch_name, batch_source=None, create=False):
@@ -404,7 +399,7 @@ class BatchLoader(object):
             # don't incurr overhead of extracting ocr text, word coordinates
             # and indexing unless the batch loader has been set up to do it
             if self.PROCESS_OCR:
-                self.process_ocr(page)
+                page = self.process_ocr(page)
         else:
             LOGGER.info("No ocr filename for issue: %s page: %s", page.issue, page)
 
@@ -440,6 +435,8 @@ class BatchLoader(object):
         page.ocr = ocr
         page.lang_text = lang_text_solr
         page.save()
+        self.solr_pages.append(page)
+        return page
 
     def _process_coordinates(self, page, coords):
         LOGGER.debug("writing out word coords for %s", page.url)
