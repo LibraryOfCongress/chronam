@@ -157,10 +157,10 @@ class BatchLoader(object):
 
             for result in results:
                 try:
-                    _, pages = result.get()
+                    issue, pages = result.get()
                     # commit new changes to the solr index, if we are indexing
                     if self.PROCESS_OCR:
-                        LOGGER.info("Adding pages to solr index from issue %s", page.issue)
+                        LOGGER.info("Adding pages to solr index from issue %s", issue.lccn)
                         for page in pages:
                             LOGGER.debug("indexing ocr for: %s", page.url)
                             self.solr.add(**page.solr_doc)
@@ -222,7 +222,6 @@ class BatchLoader(object):
         batch.save()
         return batch
 
-#    @transaction.atomic
     def _load_issue(self, mets_file):
         LOGGER.debug("parsing issue mets file: %s", mets_file)
         doc = etree.parse(mets_file)
