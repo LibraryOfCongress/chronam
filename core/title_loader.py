@@ -143,8 +143,17 @@ class TitleLoader(object):
 
         title.issn = _extract(record, '022', 'a')
         f008 = record['008'].data
+
         title.start_year = _normal_year(f008[7:11])
         title.end_year = _normal_year(f008[11:15])
+        #check to make sure start and end years are not blank
+        if not title.start_year:
+            LOGGER.error("lccn %s title has blank start year! Defaulting to 0", title.lccn)
+            title.start_year = '0'
+        if not title.end_year:
+            LOGGER.error("lccn %s title has blank end year! Defaulting to 9999", title.lccn)
+            title.end_year = '9999'
+
         title.country = self._extract_country(record)
         title.save()
 
