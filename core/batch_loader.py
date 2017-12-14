@@ -160,7 +160,7 @@ class BatchLoader(object):
                     issue, pages = result.get()
                     # commit new changes to the solr index, if we are indexing
                     if self.PROCESS_OCR:
-                        LOGGER.info("Adding pages to solr index from issue %s", issue.lccn)
+                        LOGGER.info("Adding pages to solr index from issue %s", issue.title)
                         for page in pages:
                             LOGGER.debug("indexing ocr for: %s", page.url)
                             self.solr.add(**page.solr_doc)
