@@ -62,7 +62,6 @@ class BatchLoader(object):
         if self.PROCESS_OCR:
             self.solr = SolrConnection(settings.SOLR)
         self.PROCESS_COORDINATES = process_coordinates
-        self.solr_pages = []
 
     def _find_batch_file(self, batch):
         """
@@ -158,22 +157,21 @@ class BatchLoader(object):
 
             for result in results:
                 try:
-                    result.get()
+                    _, pages = result.get()
+                    # commit new changes to the solr index, if we are indexing
+                    if self.PROCESS_OCR:
+                        LOGGER.info("Adding pages to solr index from issue %s", page.issue)
+                        for page in pages:
+                            LOGGER.debug("indexing ocr for: %s", page.url)
+                            self.solr.add(**page.solr_doc)
+                            page.indexed = True
+                            page.save()
                 except Exception as e:
                     # Maybe scrape a better log message out of the result parameters?
                     LOGGER.exception('Unable to load issue: %s', e)
 
-            # commit new changes to the solr index, if we are indexing
-            if self.PROCESS_OCR:
-                LOGGER.info("Adding pages to solr index")
-                for page in self.solr_pages:
-                    LOGGER.debug("indexing ocr for: %s", page.url)
-                    self.solr.add(**page.solr_doc)
-                    page.indexed = True
-                    page.save()
-                self.solr_pages = []
-                LOGGER.info("Committing solr index")
-                self.solr.commit()
+            LOGGER.info("Committing solr index")
+            self.solr.commit()
 
             batch.save()
             msg = "processed %s pages" % batch.page_count
@@ -280,15 +278,16 @@ class BatchLoader(object):
         issue.save()
 
         # attach pages: lots of logging because it's expensive
+        pages = []
         for page_div in div.xpath('.//mets:div[@TYPE="np:page"]',
                                   namespaces=ns):
             try:
-                self._load_page(doc, page_div, issue)
+                pages.append(self._load_page(doc, page_div, issue))
             except BatchLoaderException as e:
                 LOGGER.error("Failed to load page. doc: %s, page div: %s, issue: %s", doc, page_div, issue)
                 LOGGER.exception(e)
 
-        return issue
+        return issue, pages
 
     def _load_page(self, doc, div, issue):
         dmdid = div.attrib['DMDID']
@@ -436,7 +435,6 @@ class BatchLoader(object):
         page.ocr = ocr
         page.lang_text = lang_text_solr
         page.save()
-        self.solr_pages.append(page)
         return page
 
     def _process_coordinates(self, page, coords):
