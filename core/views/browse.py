@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os
 import re
 import urlparse
@@ -26,6 +27,7 @@ from chronam.core.utils.utils import (HTMLCalendar, _get_tip,
                                       _page_range_short, _rdf_base,
                                       create_crumbs, get_page, label,)
 
+LOGGER = logging.getLogger(__name__)
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 def issues(request, lccn, year=None):
@@ -209,6 +211,7 @@ def page(request, lccn, date, edition, sequence, words=None):
                                            kwargs=path_parts)
                 return HttpResponseRedirect(url)
         except Exception, e:
+            LOGGER.exception(e)
             if settings.DEBUG:
                 raise e
             # else squish the exception so the page will still get
