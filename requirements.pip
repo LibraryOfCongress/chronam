@@ -9,7 +9,7 @@ feedparser==5.2.1
 rfc3339==5
 mimeparse==0.1.3
 NativeImaging==0.0.7
-html5lib==0.95
+html5lib==1.0.1
 rdflib==3.2.3
 requests==2.9.1
 django-celery<4
