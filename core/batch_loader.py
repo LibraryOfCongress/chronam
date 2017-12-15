@@ -14,9 +14,10 @@ from datetime import datetime
 import simplejson as json
 from django.conf import settings
 from django.core import management
-from django.db import reset_queries
+from django.db import transaction
 from django.db.models import Q
 from lxml import etree
+from multiprocessing.pool import ThreadPool
 from solr import SolrConnection
 
 from chronam.core import models
@@ -96,9 +97,8 @@ class BatchLoader(object):
           loader.load_batch('/path/to/batch_curiv_ahwahnee_ver01')
 
         """
-        self.pages_processed = 0
 
-        logging.info("loading batch at %s", batch_path)
+        LOGGER.info("loading batch at %s", batch_path)
         dirname, batch_name = os.path.split(batch_path.rstrip("/"))
         if dirname:
             batch_source = None
@@ -148,19 +148,30 @@ class BatchLoader(object):
                     reel = models.Reel(number=reel_number, batch=batch)
                     reel.save()
 
+            threadpool = ThreadPool()
+            results = []
             for e in doc.xpath('ndnp:issue', namespaces=ns):
-                mets_url = urlparse.urljoin(batch.storage_url, e.text)
+                results.append(threadpool.apply_async(self._load_issue, (urlparse.urljoin(batch.storage_url, e.text), )))
+            threadpool.close()
+            threadpool.join()
 
+            for result in results:
                 try:
-                    self._load_issue(mets_url)
-                except ValueError as e:
-                    LOGGER.exception(e)
-                    continue
-                reset_queries()
+                    issue, pages = result.get()
+                    # commit new changes to the solr index, if we are indexing
+                    if self.PROCESS_OCR:
+                        LOGGER.info("Adding pages to solr index from issue %s", issue.title)
+                        for page in pages:
+                            LOGGER.debug("indexing ocr for: %s", page.url)
+                            self.solr.add(**page.solr_doc)
+                            page.indexed = True
+                            page.save()
+                except Exception as e:
+                    # Maybe scrape a better log message out of the result parameters?
+                    LOGGER.exception('Unable to load issue: %s', e)
 
-            # commit new changes to the solr index, if we are indexing
-            if self.PROCESS_OCR:
-                self.solr.commit()
+            LOGGER.info("Committing solr index")
+            self.solr.commit()
 
             batch.save()
             msg = "processed %s pages" % batch.page_count
@@ -246,7 +257,7 @@ class BatchLoader(object):
             title = Title.objects.get(lccn=lccn)
         except Exception as e:
             url = 'http://chroniclingamerica.loc.gov/lccn/%s/marc.xml' % lccn
-            logging.info("attempting to load marc record from %s", url)
+            LOGGER.info("attempting to load marc record from %s", url)
             management.call_command('load_titles', url)
             title = Title.objects.get(lccn=lccn)
         issue.title = title
@@ -266,15 +277,16 @@ class BatchLoader(object):
         issue.save()
 
         # attach pages: lots of logging because it's expensive
+        pages = []
         for page_div in div.xpath('.//mets:div[@TYPE="np:page"]',
                                   namespaces=ns):
             try:
-                self._load_page(doc, page_div, issue)
-                self.pages_processed += 1
+                pages.append(self._load_page(doc, page_div, issue))
             except BatchLoaderException as e:
+                LOGGER.error("Failed to load page. doc: %s, page div: %s, issue: %s", doc, page_div, issue)
                 LOGGER.exception(e)
 
-        return issue
+        return issue, pages
 
     def _load_page(self, doc, div, issue):
         dmdid = div.attrib['DMDID']
@@ -386,7 +398,7 @@ class BatchLoader(object):
             # don't incurr overhead of extracting ocr text, word coordinates
             # and indexing unless the batch loader has been set up to do it
             if self.PROCESS_OCR:
-                self.process_ocr(page)
+                page = self.process_ocr(page)
         else:
             LOGGER.info("No ocr filename for issue: %s page: %s", page.issue, page)
 
@@ -394,7 +406,7 @@ class BatchLoader(object):
         page.save()
         return page
 
-    def process_ocr(self, page, index=True):
+    def process_ocr(self, page):
         LOGGER.debug("extracting ocr text and word coords for %s", page.url)
 
         url = urlparse.urljoin(self.current_batch.storage_url,
@@ -421,11 +433,8 @@ class BatchLoader(object):
 
         page.ocr = ocr
         page.lang_text = lang_text_solr
-        if index:
-            LOGGER.debug("indexing ocr for: %s", page.url)
-            self.solr.add(**page.solr_doc)
-            page.indexed = True
         page.save()
+        return page
 
     def _process_coordinates(self, page, coords):
         LOGGER.debug("writing out word coords for %s", page.url)
@@ -435,7 +444,7 @@ class BatchLoader(object):
         f.close()
 
     def process_coordinates(self, batch_path):
-        logging.info("process word coordinates for batch at %s", batch_path)
+        LOGGER.info("process word coordinates for batch at %s", batch_path)
         dirname, batch_name = os.path.split(batch_path.rstrip("/"))
         if dirname:
             batch_source = None
@@ -450,11 +459,11 @@ class BatchLoader(object):
             for issue in batch.issues.all():
                 for page in issue.pages.all():
                     if not page.ocr_filename:
-                        logging.warn("Batch [%s] has page [%s] that has no OCR. Skipping processing coordinates for page." % (batch_name, page))
+                        LOGGER.warn("Batch [%s] has page [%s] that has no OCR. Skipping processing coordinates for page." % (batch_name, page))
                     else:
                         url = urlparse.urljoin(self.current_batch.storage_url,
                                                page.ocr_filename)
-                        logging.debug("Extracting OCR from url %s", url)
+                        LOGGER.debug("Extracting OCR from url %s", url)
                         lang_text, coords = ocr_extractor(url)
                         self._process_coordinates(page, coords)
         except Exception as e:
@@ -469,6 +478,7 @@ class BatchLoader(object):
         rel_path = path.replace(self.current_batch.storage_url, '')
         return rel_path
 
+    @transaction.atomic
     def purge_batch(self, batch_name):
         event = LoadBatchEvent(batch_name=batch_name, message="starting purge")
         event.save()
@@ -500,7 +510,6 @@ class BatchLoader(object):
                 # remove coordinates
                 if os.path.exists(models.coordinates_path(page._url_parts())):
                     os.remove(models.coordinates_path(page._url_parts()))
-                reset_queries()
             issue.delete()
         batch.delete()
         if self.PROCESS_OCR:
