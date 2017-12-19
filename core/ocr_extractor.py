@@ -4,7 +4,7 @@ from xml.sax.handler import ContentHandler, feature_namespaces
 from xml.sax import make_parser
 
 # trash leading/trailing punctuation and apostropes
-non_lexemes = re.compile('''^[^a-zA-Z0-9]+|[^a-zA-Z0-9]+$|'s$''')
+non_lexemes = re.compile('''^[/.,\/#!$%\^&\*;:{}=\-_`~()]+|[/.,\/#!$%\^&\*;:{}=\-_`~()]+$|'s$''')
 
 class OCRHandler(ContentHandler):
 
