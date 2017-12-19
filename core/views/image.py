@@ -53,10 +53,7 @@ def _get_image(page):
 
 
 def _get_resized_image(page, width):
-    try:
-        im = _get_image(page)
-    except IOError as e:
-        return HttpResponseServerError("Unable to create image: %s" % e)
+    im = _get_image(page)
     actual_width, actual_height = im.size
     height = int(round(width / float(actual_width) * float(actual_height)))
     im = im.resize((width, height), Image.ANTIALIAS)
