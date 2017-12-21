@@ -109,17 +109,20 @@
             
             $.each(words.split(" "), function(index, word) {
                 if (word!="") {
-                    var boxes = [];
-
-                    var coordinates = all_coordinates["coords"][word];
-                    if(coordinates !== undefined){
-                        $.each(coordinates, function(index, value) {
-                            addOverlay(viewer,
-                                       value[0]*scale,
-                                       value[1]*scale,
-                                       value[2]*scale,
-                                       value[3]*scale);
-                        });
+                    for (word_on_page in all_coordinates["coords"]){
+                        //check if the word on the page starts or ends with the word we are looking for
+                        if(word_on_page.toLowerCase().indexOf(word.toLowerCase()) > -1){
+                            var coordinates = all_coordinates["coords"][word];
+                            if(coordinates !== undefined){
+                                $.each(coordinates, function(index, value) {
+                                    addOverlay(viewer,
+                                        value[0]*scale,
+                                        value[1]*scale,
+                                        value[2]*scale,
+                                        value[3]*scale);
+                                });
+                            }
+                        }
                     }
                 }
             });
