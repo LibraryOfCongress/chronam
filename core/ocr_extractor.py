@@ -3,9 +3,6 @@ import re
 from xml.sax.handler import ContentHandler, feature_namespaces
 from xml.sax import make_parser
 
-# trash leading/trailing punctuation and apostropes
-non_lexemes = re.compile('''^[/.,\/#!$%\^&\*;:{}=\-_`~()]+|[/.,\/#!$%\^&\*;:{}=\-_`~()]+$|'s$''')
-
 class OCRHandler(ContentHandler):
 
     def __init__(self):
@@ -18,16 +15,12 @@ class OCRHandler(ContentHandler):
 
     def startElement(self, tag, attrs):
         if tag == 'String':
-            content = attrs.get("CONTENT")
+            word = attrs.get("CONTENT")
             coord = (attrs.get('HPOS'), attrs.get('VPOS'),
                      attrs.get('WIDTH'),attrs.get('HEIGHT'))
 
-            self._line.append(content)
+            self._line.append(word)
 
-            # solr's WordDelimiterFilterFactory tokenizes based on punctuation
-            # which removes it from highlighting, so it's important to remove
-            # it here as well or else we'll look up words that don't match
-            word = non_lexemes.sub('', content)
             if word == "":
                 pass
             elif word in self._coords:
