@@ -1896,10 +1896,10 @@ img.highlite {
     margin: 0px;
 }
 div.overlay {
-    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
-    filter:alpha(opacity=60);
-    opacity: 0.6;
-    -moz-opacity: 0.6;
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+    filter:alpha(opacity=30);
+    opacity: 0.3;
+    -moz-opacity: 0.3;
 }
 .imageViewer .regionhighlite {
 position: absolute;
