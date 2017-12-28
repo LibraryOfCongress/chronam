@@ -925,7 +925,7 @@ class Essay(models.Model):
     creator = models.ForeignKey('Awardee', related_name='essays')
     essay_editor_url = models.TextField()
     html = models.TextField()
-    loaded = models.DateTimeField(auto_now_add=True)
+    loaded = models.DateTimeField(auto_now=True)
     titles = models.ManyToManyField('Title', related_name='essays')
 
     def first_title(self):
