@@ -46,10 +46,10 @@ jQuery(function($){
         $(this).unbind('submit').submit();
     });
 
-    // init datepickers
-    var start_year = $("#id_date1").val();
-    var end_year = $("#id_date2").val();
-
+    var max_year = $("#id_date2 option:last-child").val();
+    var min_year = $("#id_date1 option:first-child").val();
+    var selected_start_year = $("#id_date1").val();
+    var selected_end_year = $("#id_date2").val();
 
     // disable options in 'from' year dropdown based on option selected in 'to' dropdown
     $("select#id_date1").change(function(){
@@ -66,9 +66,8 @@ jQuery(function($){
         });
     });
 
-
-    $('#id_date_from').datepicker({defaultDate: new Date(start_year, 1-1, 1), showOn: "focus", yearRange: start_year+":"+end_year, currentText: '', changeMonth: true, changeYear: true, closeText: 'Done'});
-    $('#id_date_to').datepicker({defaultDate: new Date(end_year, 12-1, 31), showOn: "focus", yearRange: start_year+":"+end_year, currentText: '', changeMonth: true, changeYear: true});
+    $('#id_date_from').datepicker({defaultDate: new Date(selected_start_year, 1-1, 1), showOn: "focus", yearRange: min_year+":"+ max_year, currentText: '', changeMonth: true, changeYear: true, closeText: 'Done'});
+    $('#id_date_to').datepicker({defaultDate: new Date(selected_end_year, 12-1, 31), showOn: "focus", yearRange: min_year+":"+max_year, currentText: '', changeMonth: true, changeYear: true});
 
     // bind form field .click's
     $('#id_date_from, #id_date_to').click( function() {
@@ -76,8 +75,8 @@ jQuery(function($){
     $('#id_radioyear').click( function() {
         $('#id_date_to, #id_date_from').val('');});
     $('#id_radiorange').click( function() {
-        $('#id_date_from').val('01/01/'+start_year); 
-        $('#id_date_to').val('12/31/'+end_year);
+        $('#id_date_from').val('01/01/'+min_year); 
+        $('#id_date_to').val('12/31/'+max_year);
     });
 
     $("input#id_sequence").val(1);
@@ -90,13 +89,13 @@ jQuery(function($){
 
     if (vars["dateFilterType"]=="range"){ 
         $('#id_radiorange').attr('checked', 'checked');
-        $("select#id_date2 option[value='"+end_year+"']").attr("selected", true);
+        $("select#id_date2 option[value='"+selected_end_year+"']").attr("selected", true);
     } else if (vars["dateFilterType"]=="yearRange"){
         $('#id_radioyear').attr('checked', 'checked');
         $('#id_date_to, #id_date_from').val('');
     } else {
         $('#id_radioyear').attr('checked', 'checked');
-        $("select#id_date2 option[value='"+end_year+"']").attr("selected", true);
+        $("select#id_date2 option[value='"+selected_end_year+"']").attr("selected", true);
     }
 
     // hide adv search tab
@@ -135,7 +134,7 @@ jQuery(function($){
         .removeAttr('checked')
         .removeAttr('selected');
         $('#id_radioyear').attr('checked', 'checked');
-        $("select#id_date2 option[value='"+end_year+"']").attr("selected", true);
+        $("select#id_date2 option[value='"+selected_end_year+"']").attr("selected", true);
     });
     });
 }); 
