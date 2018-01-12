@@ -28,3 +28,5 @@ Disallow: /data/
 
 User-Agent: Yahoo! Slurp
 Disallow: /data/
+
+Sitemap: https://chroniclingamerica.loc.gov/sitemap.xml

@@ -117,10 +117,13 @@ TEMPLATES = [
 INSTALLED_APPS = (
     'django.contrib.humanize',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'djcelery',
     'kombu.transport.django',
     'chronam.core',
 )
+
+SITE_ID = 1
 
 BROKER_URL = 'django://'
 

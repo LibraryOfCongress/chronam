@@ -8,10 +8,12 @@ import os
 from django.conf import settings
 from django.conf.urls import url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.contrib.sitemaps import views as django_views
 from django.utils import cache
 from django.views.static import serve
 
 import chronam.core.views as views
+from chronam.core.sitemaps import (BatchesSitemap, IssuesSitemap, PagesSitemap, TitlesSitemap)
 
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
@@ -29,7 +31,17 @@ def cache_page(function, ttl):
 
     return decorated_function
 
+sitemaps = {
+    'batches': BatchesSitemap,
+    'issues': IssuesSitemap,
+    'pages': PagesSitemap,
+    'titles': TitlesSitemap,
+}
+
 urlpatterns = [
+    url(r'^sitemap\.xml$', django_views.index, {'sitemaps': sitemaps}),
+    url(r'^sitemap-(?P<section>.+)\.xml$', django_views.sitemap, {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'),
     url(r'^healthz$', views.static.healthz, name='health-check'),
     url(r'^$',
         cache_page(views.home.home, settings.DEFAULT_TTL_SECONDS),
@@ -665,11 +677,6 @@ urlpatterns += [
         serve,
         {'document_root': _MEDIA_ROOT},
         name="chronam_data_files"),
-
-    url(r'^(?P<path>sitemap.*)$',
-        serve,
-        {'document_root': _MEDIA_ROOT + '/sitemaps'},
-        name="chronam_sitemaps"),
 ]
 
 if settings.DEBUG:
