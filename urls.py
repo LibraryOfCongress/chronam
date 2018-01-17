@@ -8,7 +8,7 @@ import os
 from django.conf import settings
 from django.conf.urls import url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.contrib.sitemaps import views as django_views
+from django.contrib.sitemaps import views as sitemap_views
 from django.utils import cache
 from django.views.static import serve
 
@@ -39,8 +39,8 @@ sitemaps = {
 }
 
 urlpatterns = [
-    url(r'^sitemap\.xml$', django_views.index, {'sitemaps': sitemaps}),
-    url(r'^sitemap-(?P<section>.+)\.xml$', django_views.sitemap, {'sitemaps': sitemaps},
+    url(r'^sitemap\.xml$', sitemap_views.index, {'sitemaps': sitemaps}),
+    url(r'^sitemap-(?P<section>.+)\.xml$', sitemap_views.sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'),
     url(r'^healthz$', views.static.healthz, name='health-check'),
     url(r'^$',
