@@ -18,7 +18,7 @@ class IssuesSitemap(sitemaps.Sitemap):
     changefreq = 'daily'
 
     def items(self):
-        return Issue.objects.filter(batch__released__isnull=False)
+        return Issue.objects.filter(batch__released__isnull=False).select_related('title')
 
     def lastmod(self, issue):
         return issue.created
@@ -30,7 +30,7 @@ class PagesSitemap(sitemaps.Sitemap):
     changefreq = 'daily'
 
     def items(self):
-        return Page.objects.filter(issue__batch__released__isnull=False)
+        return Page.objects.filter(issue__batch__released__isnull=False).select_related('issue__title')
 
     def lastmod(self, page):
         return page.created
