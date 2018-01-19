@@ -31,6 +31,7 @@ sub vcl_backend_response {
     if (beresp.http.content-type ~ "(text|application)") {
         set beresp.do_gzip = true;
     }
+    set beresp.do_gzip = false;
 }
 
 sub vcl_recv {
@@ -56,6 +57,15 @@ sub vcl_recv {
     }
     if (req.url ~ "\.pdf$") {
         return (pass);
+    }
+
+    if (req.restarts == 0) {
+        if (req.http.Accept-Encoding ~ "gzip") {
+            # Normalize this to avoid caching multiple compressed objects:
+            set req.http.Accept-Encoding = "gzip";
+        } else {
+            unset req.http.Accept-Encoding;
+        }
     }
     
     if(client.ip != "127.0.0.1"){
