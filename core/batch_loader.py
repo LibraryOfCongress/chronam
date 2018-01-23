@@ -59,8 +59,7 @@ class BatchLoader(object):
         want to spend time actually extracting ocr text and indexing.
         """
         self.PROCESS_OCR = process_ocr
-        if self.PROCESS_OCR:
-            self.solr = SolrConnection(settings.SOLR)
+        self.solr = SolrConnection(settings.SOLR)
         self.PROCESS_COORDINATES = process_coordinates
 
     def _find_batch_file(self, batch):
