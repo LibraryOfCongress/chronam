@@ -544,8 +544,10 @@ def index_missing_pages():
     """
     solr = SolrConnection(settings.SOLR)
     count = 0
-    for page in models.Page.objects.filter(indexed=False).all():
-        LOGGER.info("[%s] indexing page: %s", count, page.url)
+    pages = models.Page.objects.filter(indexed=False).all()
+    number_of_pages = len(pages)
+    for page in pages:
+        LOGGER.info("[%s of %s] indexing page: %s", count, number_of_pages, page.url)
         solr.add(**page.solr_doc)
         count += 1
         page.indexed = True
