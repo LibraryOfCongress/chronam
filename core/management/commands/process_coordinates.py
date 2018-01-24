@@ -24,9 +24,5 @@ class Command(BaseCommand):
         for line in batch_list:
             batch_name = line.strip()
             LOGGER.info("batch_name: %s" % batch_name)
-            parts = batch_name.split("_")
-            if len(parts)==4:
-                loader.process_coordinates(batch_name)
-            else:
-                LOGGER.warning("invalid batch name '%s'" % batch_name)
+            loader.process_coordinates(batch_name)
 
