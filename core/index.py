@@ -15,7 +15,7 @@ from chronam.core import models
 from chronam.core.forms import _fulltext_range
 from chronam.core.title_loader import _normal_lccn
 
-_log = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 PROX_DISTANCE_DEFAULT = 5
 
@@ -24,7 +24,7 @@ PROX_DISTANCE_DEFAULT = 5
 
 ESCAPE_CHARS_RE = re.compile(r'(?<!\\)(?P<char>[&|+\-!(){}[\]^"~*?:])')
 def solr_escape(value):
-    _log.debug("value: %s", value)
+    LOGGER.debug("value: %s", value)
     if not value:
         value=""
 
@@ -518,7 +518,7 @@ def index_titles(since=None):
         index_title(title, solr)
         count += 1
         if count % 100 == 0:
-            _log.info("indexed %s titles" % count)
+            LOGGER.info("indexed %s titles" % count)
             reset_queries()
             solr.commit()
     solr.commit()
@@ -526,22 +526,21 @@ def index_titles(since=None):
 def index_title(title, solr=None):
     if solr==None:
         solr = SolrConnection(settings.SOLR)
-    _log.info("indexing title: lccn=%s" % title.lccn)
+    LOGGER.info("indexing title: lccn=%s" % title.lccn)
     try:
         solr.add(**title.solr_doc)
     except Exception, e:
-        _log.exception(e)
+        LOGGER.exception(e)
 
 def delete_title(title):
     solr = SolrConnection(settings.SOLR)
     q = '+type:title +id:%s' % title.solr_doc['id']
     r = solr.delete_query(q)
-    _log.info("deleted title %s from the index" % title)
+    LOGGER.info("deleted title %s from the index" % title)
 
 def index_pages():
     """index all the pages that are modeled in the database
     """
-    _log = logging.getLogger(__name__)
     solr = SolrConnection(settings.SOLR)
     solr.delete_query('type:page')
     cursor = connection.cursor()
@@ -552,7 +551,7 @@ def index_pages():
         if row == None:
             break
         page = models.Page.objects.get(id=row[0])
-        _log.info("[%s] indexing page: %s" % (count, page.url))
+        LOGGER.info("[%s] indexing page: %s" % (count, page.url))
         solr.add(**page.solr_doc)
         count += 1
         if count % 100 == 0:
