@@ -9,7 +9,6 @@
       "created": "2016-05-02T09:35:12", 
       "end_year": "current", 
       "issn": "0746-3502", 
-      "sitemap_indexed": null, 
       "uri": "http://www.loc.gov/chroniclingamerica/lccn/sn83045396/issues", 
       "edition": null, 
       "version": "2016-05-02T09:35:12", 
@@ -28,7 +27,6 @@
     "fields": {
       "released": null, 
       "created": "2016-05-02T09:35:11", 
-      "sitemap_indexed": null, 
       "awardee": "uuml", 
       "source": null, 
       "validated_batch_file": "batch_1.xml"

@@ -17,7 +17,6 @@ from django.core import management
 from django.db import transaction
 from django.db.models import Q
 from lxml import etree
-from multiprocessing.pool import ThreadPool
 from solr import SolrConnection
 
 from chronam.core import models
@@ -147,30 +146,26 @@ class BatchLoader(object):
                     reel = models.Reel(number=reel_number, batch=batch)
                     reel.save()
 
-            threadpool = ThreadPool()
-            results = []
             for e in doc.xpath('ndnp:issue', namespaces=ns):
-                results.append(threadpool.apply_async(self._load_issue, (urlparse.urljoin(batch.storage_url, e.text), )))
-            threadpool.close()
-            threadpool.join()
+                mets_url = urlparse.urljoin(batch.storage_url, e.text)
 
-            for result in results:
                 try:
-                    issue, pages = result.get()
-                    # commit new changes to the solr index, if we are indexing
-                    if self.PROCESS_OCR:
-                        LOGGER.info("Adding pages to solr index from issue %s", issue.title)
-                        for page in pages:
-                            LOGGER.debug("indexing ocr for: %s", page.url)
-                            self.solr.add(**page.solr_doc)
-                            page.indexed = True
-                            page.save()
-                except Exception as e:
-                    # Maybe scrape a better log message out of the result parameters?
-                    LOGGER.exception('Unable to load issue: %s', e)
+                    issue, pages = self._load_issue(mets_url)
+                except ValueError as e:
+                    LOGGER.exception(e)
+                    continue
 
-            LOGGER.info("Committing solr index")
-            self.solr.commit()
+                # commit new changes to the solr index, if we are indexing
+                if self.PROCESS_OCR:
+                    LOGGER.info("Adding pages to solr index from issue %s", issue.title)
+                    for page in pages:
+                        LOGGER.debug("indexing ocr for: %s", page.url)
+                        self.solr.add(**page.solr_doc)
+                        page.indexed = True
+                        page.save()
+
+                    LOGGER.info("Committing solr index")
+                    self.solr.commit()
 
             batch.save()
             msg = "processed %s pages" % batch.page_count

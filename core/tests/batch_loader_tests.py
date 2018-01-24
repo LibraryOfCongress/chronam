@@ -51,7 +51,7 @@ class BatchLoaderTest(TestCase):
         self.assertEqual(page.pdf_filename, 'sn83045396/print/1911091701/0001.pdf')
 
         # extract ocr data just for this page
-        loader.process_ocr(page, index=False)
+        loader.process_ocr(page)
         self.assertTrue(page.ocr != None)
         self.assertGreater(len(page.lang_text), 0)
 
