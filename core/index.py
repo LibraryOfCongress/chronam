@@ -538,6 +538,20 @@ def delete_title(title):
     r = solr.delete_query(q)
     LOGGER.info("deleted title %s from the index", title)
 
+def index_missing_pages():
+    """
+    index all pages that are missing from solr in the database
+    """
+    solr = SolrConnection(settings.SOLR)
+    count = 0
+    for page in models.Page.objects.filter(indexed=False).all():
+        LOGGER.info("[%s] indexing page: %s", count, page.url)
+        solr.add(**page.solr_doc)
+        count += 1
+        page.indexed = True
+        page.save()
+    solr.commit()
+
 def index_pages():
     """index all the pages that are modeled in the database
     """
