@@ -24,3 +24,4 @@ DATA_DIR = os.path.join(DIRNAME, "data")
 BATCH_STORAGE = os.path.join(DATA_DIR, "batches")
 
 # DO NOT CHECK-IN WORLDCAT_KEY TO REPO
+from settings import WORLDCAT_KEY
