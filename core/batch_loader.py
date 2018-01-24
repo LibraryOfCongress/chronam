@@ -7,6 +7,8 @@ import logging
 import os
 import os.path
 import re
+import shutil
+import tempfile
 import urllib2
 import urlparse
 from datetime import datetime
@@ -433,9 +435,12 @@ class BatchLoader(object):
     def _process_coordinates(self, page, coords):
         LOGGER.debug("writing out word coords for %s", page.url)
 
-        f = open(models.coordinates_path(page._url_parts()), "w")
+        fd, path = tempfile.mkstemp(text="w", suffix=".coordinates", dir="/var/cache") #get a temp file in case the coordinates dir is a NFS or S3 mount which have poor multiple write performance
+        f = open(path, "w")
         f.write(gzip_compress(json.dumps(coords)))
         f.close()
+        os.close(fd)
+        shutil.move(path, models.coordinates_path(page._url_parts()))
 
     def process_coordinates(self, batch_path):
         LOGGER.info("process word coordinates for batch at %s", batch_path)

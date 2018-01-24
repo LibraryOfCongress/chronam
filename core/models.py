@@ -1158,14 +1158,14 @@ class OcrDump(models.Model):
         dump = OcrDump(batch=batch)
 
         # add each page to a tar ball
-        tempDir = "/var/cache/%s" % dump.name #write to a temp dir first in case the ocr dump folder is a NFS or S3 mount
-        tar = tarfile.open(tempDir, "w:bz2")
+        tempFile = "/var/cache/%s" % dump.name #write to a temp dir first in case the ocr dump folder is a NFS or S3 mount
+        tar = tarfile.open(tempFile, "w:bz2")
         for issue in batch.issues.all():
             for page in issue.pages.filter(ocr__isnull=False):
                 dump._add_page(page, tar)
         tar.close()
 
-        shutil.move(tempDir, dump.path)
+        shutil.move(tempFile, dump.path)
 
         dump._calculate_size()
         dump._calculate_sha1()
