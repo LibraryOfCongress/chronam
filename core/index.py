@@ -518,7 +518,7 @@ def index_titles(since=None):
         index_title(title, solr)
         count += 1
         if count % 100 == 0:
-            LOGGER.info("indexed %s titles" % count)
+            LOGGER.info("indexed %s titles", count)
             reset_queries()
             solr.commit()
     solr.commit()
@@ -526,7 +526,7 @@ def index_titles(since=None):
 def index_title(title, solr=None):
     if solr==None:
         solr = SolrConnection(settings.SOLR)
-    LOGGER.info("indexing title: lccn=%s" % title.lccn)
+    LOGGER.info("indexing title: lccn=%s", title.lccn)
     try:
         solr.add(**title.solr_doc)
     except Exception, e:
@@ -536,7 +536,7 @@ def delete_title(title):
     solr = SolrConnection(settings.SOLR)
     q = '+type:title +id:%s' % title.solr_doc['id']
     r = solr.delete_query(q)
-    LOGGER.info("deleted title %s from the index" % title)
+    LOGGER.info("deleted title %s from the index", title)
 
 def index_pages():
     """index all the pages that are modeled in the database
@@ -551,7 +551,7 @@ def index_pages():
         if row == None:
             break
         page = models.Page.objects.get(id=row[0])
-        LOGGER.info("[%s] indexing page: %s" % (count, page.url))
+        LOGGER.info("[%s] indexing page: %s", count, page.url)
         solr.add(**page.solr_doc)
         count += 1
         if count % 100 == 0:
