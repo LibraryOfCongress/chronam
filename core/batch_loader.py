@@ -9,6 +9,7 @@ import os.path
 import re
 import shutil
 import tempfile
+import time
 import urllib2
 import urlparse
 from datetime import datetime
@@ -440,7 +441,13 @@ class BatchLoader(object):
         f.write(gzip_compress(json.dumps(coords)))
         f.close()
         os.close(fd)
-        shutil.move(path, models.coordinates_path(page._url_parts()))
+        final_path = models.coordinates_path(page._url_parts())
+        try:
+            shutil.move(path, final_path)
+        except Exception:
+            LOGGER.warn("Could not move coordinates to [%s]. Waiting 5 seconds and trying again in case of network mount", final_path)
+            time.sleep(5)
+            shutil.move(path, final_path)
 
     def process_coordinates(self, batch_path):
         LOGGER.info("process word coordinates for batch at %s", batch_path)
