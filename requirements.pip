@@ -8,7 +8,7 @@ simplejson==3.8.2
 feedparser==5.2.1
 rfc3339==5
 mimeparse==0.1.3
-NativeImaging==0.0.7
+NativeImaging==0.0.10
 html5lib==1.0.1
 rdflib==3.2.3
 requests==2.9.1
