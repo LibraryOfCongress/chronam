@@ -134,8 +134,7 @@ def delete_django_cache():
     cache.delete('titles_states')
 
 @task
-def dump_ocr(batch_name):
-    batch = Batch.objects.get(name=batch_name)
+def dump_ocr(batch):
     try:
         if batch.ocr_dump:
             logger.info("ocr already generated for %s", batch)
