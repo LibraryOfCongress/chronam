@@ -2,11 +2,11 @@ import os
 import os.path
 import re
 import json
-import time
 import hashlib
 import logging
 import shutil
 import tarfile
+import time
 import textwrap
 import urlparse
 from cStringIO import StringIO
@@ -1165,7 +1165,12 @@ class OcrDump(models.Model):
                 dump._add_page(page, tar)
         tar.close()
 
-        shutil.move(tempFile, dump.path)
+        try:
+            shutil.move(tempFile, dump.path)
+        except Exception:
+            logging.warn("Couldn't move %s to %s. Waiting 5 seconds and trying again.", tempFile, dump.path)
+            time.sleep(5)
+            shutil.move(tempFile, dump.path)
 
         dump._calculate_size()
         dump._calculate_sha1()
