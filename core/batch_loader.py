@@ -167,8 +167,9 @@ class BatchLoader(object):
                         page.indexed = True
                         page.save()
 
-                    LOGGER.info("Committing solr index")
-                    self.solr.commit()
+            if self.PROCESS_OCR:
+                LOGGER.info("Committing solr index")
+                self.solr.commit()
 
             batch.save()
             msg = "processed %s pages" % batch.page_count
