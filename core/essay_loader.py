@@ -11,15 +11,15 @@ from rdflib import Graph, Namespace, URIRef
 from chronam.core.index import index_title
 from chronam.core.models import Essay, Title, Awardee
 
+LOGGER = logging.getLogger(__name__)
 
 DC = Namespace('http://purl.org/dc/terms/')
 NDNP = Namespace('http://chroniclingamerica.loc.gov/terms#')
 
-
 def load_essays(feed_url, index=True):
-    logging.info("loading feed %s" % feed_url)
+    LOGGER.info("loading feed %s" % feed_url)
     feed = feedparser.parse(feed_url)
-    logging.info("got %s entries" % len(feed.entries))
+    LOGGER.info("got %s entries" % len(feed.entries))
     for e in feed.entries:
         url = e.links[0]['href']
         t = calendar.timegm(e.modified_parsed)
@@ -27,14 +27,14 @@ def load_essays(feed_url, index=True):
 
         q = Essay.objects.filter(essay_editor_url=url)
         if q.count() == 0:
-            logging.info("found a new essay: %s" % url)
+            LOGGER.info("found a new essay: %s" % url)
             load_essay(url, index)
         elif q.filter(modified__lt=modified).count() > 0:
-            logging.info("found updated essay: %s" % url)
+            LOGGER.info("found updated essay: %s" % url)
             purge_essay(url, index)
             load_essay(url, index)
         else:
-            logging.info("essay already up to date: %s" % url)
+            LOGGER.info("essay already up to date: %s" % url)
 
 
 def load_essay(essay_url, index=True):
@@ -42,7 +42,7 @@ def load_essay(essay_url, index=True):
     Load an essay from an RDFa HTML document.
     """
     # extract metadata from the html
-    logging.info("loading essay %s" % essay_url)
+    LOGGER.info("loading essay %s" % essay_url)
     g = Graph()
     g.parse(essay_url, format='rdfa')
 
@@ -78,7 +78,7 @@ def load_essay(essay_url, index=True):
         if index:
             index_title(title)
 
-    logging.info("loaded essay: %s" % essay_url)
+    LOGGER.info("loaded essay: %s" % essay_url)
     return essay
 
 
@@ -90,7 +90,7 @@ def purge_essay(essay_url, index=True):
         essay = Essay.objects.get(essay_editor_url=essay_url)
         titles = list(essay.titles.all())
         essay.delete()
-        logging.info("deleted essay %s" % essay_url)
+        LOGGER.info("deleted essay %s" % essay_url)
 
         # reindex titles
         if index:
