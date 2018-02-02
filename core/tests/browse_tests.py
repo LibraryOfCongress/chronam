@@ -34,7 +34,7 @@ class BrowseTests(TestCase):
         """
         batch_dir = os.path.join(settings.BATCH_STORAGE, 'batch_uuml_thys_ver01')
         self.assertTrue(os.path.isdir(batch_dir))
-        loader = BatchLoader(process_ocr=False)
+        loader = BatchLoader(process_ocr=True)
         batch = loader.load_batch(batch_dir)
         self.assertEqual(batch.name, 'batch_uuml_thys_ver01')
         title, issue, page = _get_tip('sn83045396', '1911-09-17', 1, 1)
@@ -56,7 +56,7 @@ class BrowseTests(TestCase):
         """
         batch_dir = os.path.join(settings.BATCH_STORAGE, 'batch_iune_oriole_ver01')
         self.assertTrue(os.path.isdir(batch_dir))
-        loader = BatchLoader(process_ocr=False)
+        loader = BatchLoader(process_ocr=True)
         batch = loader.load_batch(batch_dir)
         self.assertEqual(batch.name, 'batch_iune_oriole_ver01')
         title, issue, page = _get_tip('sn83045377', '1906-03-01', 1, 1)
