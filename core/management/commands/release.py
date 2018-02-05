@@ -95,7 +95,7 @@ def preprocess_public_feed():
     and returns a dictionary of {batch name: released datetime}
     """
     LOGGER.info("processing public feed for released datetime")
-    feed = feedparser.parse("http://chroniclingamerica.loc.gov/batches.xml")
+    feed = feedparser.parse("http://chroniclingamerica.loc.gov/batches/feed/")
     batch_release_times = {}
 
     if len(feed.entries) == 0:
