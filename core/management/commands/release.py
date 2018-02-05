@@ -42,6 +42,7 @@ class Command(BaseCommand):
 
         input_file_path = None
         if args and os.path.isfile(args[0]):
+            LOGGER.info("using file %s for release dates", args[0])
             input_file_path = args[0]               
             # turn content from input file into a dictionary for easy lookup
             batch_release_from_file = preprocess_input_file(input_file_path)
@@ -54,6 +55,7 @@ class Command(BaseCommand):
                 # if released datetime is successfully set from the bag-info file,
                 # move on to the next batch, else try other options
                 if set_batch_released_from_bag_info(batch):
+                    LOGGER.info("set release datetime from bag-info file") 
                     continue
             if input_file_path:
                 batch_release_datetime = batch_release_from_file.get(batch.name, None)
@@ -63,10 +65,12 @@ class Command(BaseCommand):
                     continue
             batch_release_datetime = batch_release_from_feed.get(batch.name, None)
             if batch_release_datetime:
+                LOGGER.info("set release datetime from feed for %s", batch.name)
                 batch.released = batch_release_datetime
                 batch.save()
                 continue
             # well, none of the earlier options worked, current timestamp it is.
+            LOGGER.info("couldn't determine the release time, so using current time")
             batch.released = datetime.now()
             batch.save()
 
@@ -90,8 +94,12 @@ def preprocess_public_feed():
     reads the public feed - http://chroniclingamerica.loc.gov/batches/feed/
     and returns a dictionary of {batch name: released datetime}
     """
+    LOGGER.info("processing public feed for released datetime")
     feed = feedparser.parse("http://chroniclingamerica.loc.gov/batches.xml")
     batch_release_times = {}
+
+    if len(feed.entries) == 0:
+        LOGGER.error("public feed did not return any batches! Check to make sure chroniclingamerica.loc.gov is running correctly")
 
     cont = True
     while cont:
