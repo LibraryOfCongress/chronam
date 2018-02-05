@@ -1,20 +1,19 @@
-import re
 import calendar
-import logging
 import datetime
-
 import feedparser
+import logging
+import re
+import requests
+import urlparse
+
+from bs4 import BeautifulSoup
 
 from django.core import management
-from rdflib import Graph, Namespace, URIRef
 
 from chronam.core.index import index_title
 from chronam.core.models import Essay, Title, Awardee
 
 LOGGER = logging.getLogger(__name__)
-
-DC = Namespace('http://purl.org/dc/terms/')
-NDNP = Namespace('http://chroniclingamerica.loc.gov/terms#')
 
 def load_essays(feed_url, index=True):
     LOGGER.info("loading feed %s" % feed_url)
@@ -43,26 +42,28 @@ def load_essay(essay_url, index=True):
     """
     # extract metadata from the html
     LOGGER.info("loading essay %s" % essay_url)
-    g = Graph()
-    g.parse(essay_url, format='rdfa')
 
     # create the essay instance
-    essay_uri = URIRef(essay_url)
-    essay_id = _essay_id(essay_uri)
-    modified = g.value(essay_uri, DC.modified).toPython()
+    url_parts = urlparse.urlparse(essay_url)
+    essay_id = url_parts[2].split("/")[2]
+
+    r = requests.get(essay_url)
+    doc = BeautifulSoup(r.text, 'html.parser')
 
     essay = Essay(id=essay_id)
-    essay.title = unicode(g.value(essay_uri, DC.title)).strip()
-    essay.created = g.value(essay_uri, DC.created).toPython()
-    essay.modified = g.value(essay_uri, DC.modified).toPython()
-    essay.creator = _lookup_awardee((g.value(essay_uri, DC.creator)))
-    essay.html = unicode(g.value(essay_uri, DC.description))
+    essay.title = doc.title.text.strip()
+    essay.created = doc.find_all(property="dcterms:created")[0]['content']
+    essay.modified = doc.find_all(property="dcterms:modified")[0]['content']
+    essay.creator = _lookup_awardee(doc.find_all(property="dcterms:creator")[0]['content'])
+    bodytags = doc.body.find_all(True)
+    description = ''.join(map(str, bodytags))
+    essay.html = description
     essay.essay_editor_url = essay_url
     essay.save()  # so we can assign titles
 
     # attach any titles that the essay is about
-    for title_uri in g.objects(essay_uri, DC.subject):
-        lccn = _lccn_from_title_uri(title_uri)
+    for title_uri in doc.find_all(property="dcterms:subject"):
+        lccn = _lccn_from_title_uri(title_uri['content'])
 
         # load titles from web if not available
         try:
