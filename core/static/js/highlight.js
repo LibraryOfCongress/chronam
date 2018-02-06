@@ -21,7 +21,7 @@
                 $.each(words.split(" "), function(index, word) {
                     for (word_on_page in all_coordinates["coords"]){
                         //check if the word on the page starts or ends with the word we are looking for
-                        if(word_on_page.toLowerCase().indexOf(word.toLowerCase()) > -1 )){
+                        if(word_on_page.toLowerCase().indexOf(word.toLowerCase()) > -1 ){
                             var coordinates = all_coordinates["coords"][word_on_page];
                             for (k in coordinates) {
                                 var v = coordinates[k];
