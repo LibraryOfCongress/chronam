@@ -48,16 +48,20 @@ function add_highlights(div) {
             var vScale = height / all_coordinates["height"];
             var hScale = width / all_coordinates["width"];
             $.each(words.split(" "), function(index, word) {
-                    var boxes = [];
-                    var coordinates = all_coordinates["coords"][word];
-                    for (k in coordinates) {
-                        var v = coordinates[k];
-                        div.append("<img class='highlite' src='"+"{% static 'images/red_60.png' %}" +
+                for (word_on_page in all_coordinates["coords"]){
+                        //check if the word on the page starts or ends with the word we are looking for
+                        if(word_on_page.toLowerCase().indexOf(word.toLowerCase()) > -1 ){
+                            var coordinates = all_coordinates["coords"][word_on_page];
+                            for (k in coordinates) {
+                                var v = coordinates[k];
+                                div.append("<img class='highlite' src='"+"{% static 'images/red_60.png' %}" +
     "' style='TOP: " +  (v[1] * vScale - padding/2.0 + offset) + 'px;' +
     " LEFT: " +       (v[0] * hScale - padding/2.0 + offset) + 'px;' +
     " HEIGHT: " +     (v[3] * vScale + padding) + 'px;' +
     " WIDTH: " +      (v[2] * hScale + padding) + "px;'/>");
 
+                            }
+                        }
                     }
                 });
             });
