@@ -176,6 +176,7 @@ def page(request, lccn, date, edition, sequence, words=None):
     mutable_copy_of_get = request.GET.copy()
     if words:
         mutable_copy_of_get["words"] = words
+    if mutable_copy_of_get:
         path_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
         url = urlresolvers.reverse('chronam_page', kwargs=path_parts)
         redirect = "%s?%s" % (url, mutable_copy_of_get.urlencode())
