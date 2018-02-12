@@ -21,3 +21,4 @@ django-sendfile==0.3.11
 psutil>=5.4.0
 beautifulsoup4==4.6.0
 requests==2.9.1
+deprecated==1.1.0

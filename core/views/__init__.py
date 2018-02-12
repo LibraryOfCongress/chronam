@@ -7,7 +7,7 @@ from search import search_pages_results, search_titles, \
 
 from browse import issues, title_holdings, title_marc, \
     issues_first_pages, title_rdf, title_atom, title_marcxml, issue_pages, \
-    page, title, titles, titles_in_city, titles_in_county, titles_in_state, \
+    page, page_words, title, titles, titles_in_city, titles_in_county, titles_in_state, \
     title_essays, page_ocr, page_pdf, page_jp2, page_ocr_xml, page_ocr_txt, \
     issue_pages_rdf, page_rdf, page_print
 
