@@ -173,14 +173,13 @@ def issue_pages_rdf(request, lccn, date, edition):
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @vary_on_headers('Referer')
 def page(request, lccn, date, edition, sequence, words=None):
-    mutable_copy_of_get = request.GET.copy()
-    # for the case where we have ;words= in the url convert it to a fragment but 
-    #keep everything else the same so we don't mess up campain codes
+    # for the case where we have ;words= in the url convert it to a fragment but
+    # keep everything else the same so we don't mess up campain codes
     if words:
         path_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
         url = urlresolvers.reverse('chronam_page', kwargs=path_parts)
-        redirect = "%s?%s#words=%s" % (url, mutable_copy_of_get.urlencode(), words)
-        return HttpResponseRedirect(redirect )
+        redirect = "%s?%s#words=%s" % (url, request.GET.urlencode(), words)
+        return HttpResponseRedirect(redirect)
 
     title, issue, page = _get_tip(lccn, date, edition, sequence)
 
