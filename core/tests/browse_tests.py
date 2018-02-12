@@ -9,12 +9,31 @@ from chronam.core.utils.utils import _get_tip
 from chronam.core.batch_loader import BatchLoader, Batch
 from chronam.core.models import Title
 
-
 class BrowseTests(TestCase):
     """
     Tests related to core/views/browse.py
     """
     fixtures = ['countries.json', 'languages.json', 'awardee.json']
+
+    def test_words_redirect(self):
+        """
+        the url /lccn/sn85066387/1907-03-17/ed-1/seq-4/;words=foo
+        should redirect to /lccn/sn85066387/1907-03-17/ed-1/seq-4/#words=foo
+        """
+        r = self.client.get("/lccn/sn83045396/1911-09-17/ed-1/seq-12/;words=foo")
+        self.assertEquals(r.status_code, 302)
+        self.assertIn("/lccn/sn83045396/1911-09-17/ed-1/seq-12/#words=foo", r.url)
+
+    def test_query_preserved(self):
+        """
+        query parameters should be preserved for page
+        ex: /lccn/sn85066387/1907-03-17/ed-1/seq-4/;words=foo?bar=ham
+        should redirect to /lccn/sn85066387/1907-03-17/ed-1/seq-4/?bar=ham#words=foo
+        This is needed so that campain codes work properly
+        """
+        r = self.client.get("/lccn/sn83045396/1911-09-17/ed-1/seq-12/;words=foo?bar=ham")
+        self.assertEquals(r.status_code, 302)
+        self.assertIn("/lccn/sn83045396/1911-09-17/ed-1/seq-12/?bar=ham#words=foo", r.url)
 
     def test_full_text_deleted(self):
         #'sanity' check that 'text' column is removed
