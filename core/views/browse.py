@@ -212,6 +212,7 @@ def page(request, lccn, date, edition, sequence):
         words = _search_engine_words(request)
         words = '+'.join(words)
         if len(words) > 0:
+            path_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
             url = '%s?%s#%s' % (urlresolvers.reverse('chronam_page_words', kwargs=path_parts), request.GET.urlencode(), words)
             return HttpResponseRedirect(url)
     except Exception, e:
