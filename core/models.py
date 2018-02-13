@@ -1268,5 +1268,10 @@ def coordinates_path(url_parts):
         path = path[1:]
     full_path = os.path.join(settings.COORD_STORAGE, path)
     if not os.path.exists(full_path):
-        os.makedirs(full_path)
+        try:
+            os.makedirs(full_path)
+        except os.error:
+            # wait 5 seconds and try again in case of mounted filesystem
+            time.sleep(5)
+            os.makedirs(full_path)
     return os.path.join(full_path, "coordinates.json.gz")
