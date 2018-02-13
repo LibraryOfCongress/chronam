@@ -172,7 +172,7 @@ BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
 COORD_STORAGE = os.path.join(STORAGE, "word_coordinates")
 OCR_DUMP_STORAGE = os.path.join(COORD_STORAGE, "ocr")
-
+TEMP_STORAGE = '/opt/chronam/temp' #because /tmp is often too small...
 
 BASE_CRUMBS = [{'label': 'Home', 'href': '/'}]
 

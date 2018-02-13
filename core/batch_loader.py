@@ -437,7 +437,7 @@ class BatchLoader(object):
     def _process_coordinates(self, page, coords):
         LOGGER.debug("writing out word coords for %s", page.url)
 
-        fd, path = tempfile.mkstemp(text="w", suffix=".coordinates", dir="/var/cache") #get a temp file in case the coordinates dir is a NFS or S3 mount which have poor multiple write performance
+        fd, path = tempfile.mkstemp(text="w", suffix=".coordinates", dir=settings.TEMP_STORAGE) #get a temp file in case the coordinates dir is a NFS or S3 mount which have poor multiple write performance
         f = open(path, "w")
         f.write(gzip_compress(json.dumps(coords)))
         f.close()
