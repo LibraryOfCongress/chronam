@@ -205,22 +205,21 @@ def page(request, lccn, date, edition, sequence):
         else:
             explanation = ""
 
-    # if no word highlights were requests, see if the user came
-    # from search engine results and attempt to highlight words from their
-    # query by redirecting to a url that has the highlighted words in it
-    if not words:
-        try:
-            words = _search_engine_words(request)
-            words = '+'.join(words)
-            if len(words) > 0:
-                url = '%s?%s#%s' % (urlresolvers.reverse('chronam_page_words', kwargs=path_parts), request.GET.urlencode(), words)
-                return HttpResponseRedirect(url)
-        except Exception, e:
-            LOGGER.exception(e)
-            if settings.DEBUG:
-                raise e
-            # else squish the exception so the page will still get
-            # served up minus the highlights
+    # see if the user came from search engine results and attempt to 
+    # highlight words from their query by redirecting to a url that 
+    # has the highlighted words in it
+    try:
+        words = _search_engine_words(request)
+        words = '+'.join(words)
+        if len(words) > 0:
+            url = '%s?%s#%s' % (urlresolvers.reverse('chronam_page_words', kwargs=path_parts), request.GET.urlencode(), words)
+            return HttpResponseRedirect(url)
+    except Exception, e:
+        LOGGER.exception(e)
+        if settings.DEBUG:
+            raise e
+        # else squish the exception so the page will still get
+        # served up minus the highlights
 
     # Calculate the previous_issue_first_page. Note: it was decided
     # that we want to skip over issues with missing pages. See ticket
