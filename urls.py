@@ -217,7 +217,7 @@ urlpatterns += [
 
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/;words=
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/;words=(?P<words>.+)$',
-        views.page,
+        views.page_words,
         name="chronam_page_words"),
 
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/print/image_813x1024_from_0,0_to_6504,8192

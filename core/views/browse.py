@@ -3,6 +3,7 @@ import logging
 import os
 import re
 import urlparse
+import warnings
 
 from django import forms as django_forms
 from django.conf import settings
@@ -15,6 +16,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.template.defaultfilters import filesizeformat
 from django.utils import html
+from django.utils.http import urlencode
 from django.views.decorators.vary import vary_on_headers
 from sendfile import sendfile
 
@@ -172,21 +174,29 @@ def issue_pages_rdf(request, lccn, date, edition):
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @vary_on_headers('Referer')
-def page(request, lccn, date, edition, sequence, words=None):
-    fragments = []
-    if words:
-        fragments.append("words=" + words)
-    qs = request.META.get('QUERY_STRING')
-    if qs:
-        fragments.append(qs)
-    if fragments:
-        path_parts = dict(lccn=lccn, date=date, edition=edition,
-                          sequence=sequence)
-        url = urlresolvers.reverse('chronam_page',
-                                   kwargs=path_parts)
+def page_words(request, lccn, date, edition, sequence, words=None):
+    """
+    for the case where we have ;words= in the url convert it to a fragment but
+    keep everything else the same so we don't mess up campain codes
+    
+    example:
+    /lccn/sn83045396/1911-09-17/ed-1/seq-12/;words=foo?bar=ham
+    becomes:
+    /lccn/sn83045396/1911-09-17/ed-1/seq-12/?bar=ham#words=foo
 
-        return HttpResponseRedirect(url + "#" + "&".join(fragments))
+    see https://github.com/LibraryOfCongress/chronam/issues/126
+    """
+    warnings.warn('url with ";words=" was called which is deprecated!', category=DeprecationWarning)
 
+    path_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
+    url = urlresolvers.reverse('chronam_page', kwargs=path_parts)
+    fragment = urlencode({'words': words})
+    redirect = "%s?%s#%s" % (url, request.GET.urlencode(), fragment)
+    return HttpResponseRedirect(redirect)
+
+@cache_page(settings.DEFAULT_TTL_SECONDS)
+@vary_on_headers('Referer')
+def page(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
 
     if not page.jp2_filename:
@@ -197,25 +207,22 @@ def page(request, lccn, date, edition, sequence, words=None):
         else:
             explanation = ""
 
-    # if no word highlights were requests, see if the user came
-    # from search engine results and attempt to highlight words from their
-    # query by redirecting to a url that has the highlighted words in it
-    if not words:
-        try:
-            words = _search_engine_words(request)
-            words = '+'.join(words)
-            if len(words) > 0:
-                path_parts = dict(lccn=lccn, date=date, edition=edition,
-                                  sequence=sequence, words=words)
-                url = urlresolvers.reverse('chronam_page_words',
-                                           kwargs=path_parts)
-                return HttpResponseRedirect(url)
-        except Exception, e:
-            LOGGER.exception(e)
-            if settings.DEBUG:
-                raise e
-            # else squish the exception so the page will still get
-            # served up minus the highlights
+    # see if the user came from search engine results and attempt to
+    # highlight words from their query by redirecting to a url that
+    # has the highlighted words in it
+    try:
+        words = _search_engine_words(request)
+        words = '+'.join(words)
+        if len(words) > 0:
+            path_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
+            url = '%s?%s#%s' % (urlresolvers.reverse('chronam_page_words', kwargs=path_parts), request.GET.urlencode(), words)
+            return HttpResponseRedirect(url)
+    except Exception, e:
+        LOGGER.exception(e)
+        if settings.DEBUG:
+            raise e
+        # else squish the exception so the page will still get
+        # served up minus the highlights
 
     # Calculate the previous_issue_first_page. Note: it was decided
     # that we want to skip over issues with missing pages. See ticket
