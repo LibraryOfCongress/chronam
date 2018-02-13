@@ -1173,8 +1173,10 @@ class OcrDump(models.Model):
             shutil.move(tempFile, dump.path)
 
         dump._calculate_size()
-        dump._calculate_sha1()
-        dump.save()
+        #sanity check, if something went wrong it tends to be about 45 bytes, so check to make sure it is bigger than that before saving it.
+        if dump.size > 100:
+            dump._calculate_sha1()
+            dump.save()
 
         return dump
 
