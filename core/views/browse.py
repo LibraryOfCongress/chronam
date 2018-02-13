@@ -16,6 +16,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.template.defaultfilters import filesizeformat
 from django.utils import html
+from django.utils.http import urlencode
 from django.views.decorators.vary import vary_on_headers
 from sendfile import sendfile
 
@@ -189,7 +190,8 @@ def page_words(request, lccn, date, edition, sequence, words=None):
 
     path_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
     url = urlresolvers.reverse('chronam_page', kwargs=path_parts)
-    redirect = "%s?%s#words=%s" % (url, request.GET.urlencode(), words)
+    fragment = urlencode({'words': words})
+    redirect = "%s?%s#%s" % (url, request.GET.urlencode(), fragment)
     return HttpResponseRedirect(redirect)
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -205,8 +207,8 @@ def page(request, lccn, date, edition, sequence):
         else:
             explanation = ""
 
-    # see if the user came from search engine results and attempt to 
-    # highlight words from their query by redirecting to a url that 
+    # see if the user came from search engine results and attempt to
+    # highlight words from their query by redirecting to a url that
     # has the highlighted words in it
     try:
         words = _search_engine_words(request)
