@@ -3,8 +3,7 @@ import logging
 import os
 import re
 import urlparse
-
-from deprecated import deprecated
+import warnings
 
 from django import forms as django_forms
 from django.conf import settings
@@ -174,10 +173,20 @@ def issue_pages_rdf(request, lccn, date, edition):
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @vary_on_headers('Referer')
-@deprecated
 def page_words(request, lccn, date, edition, sequence, words=None):
-    # for the case where we have ;words= in the url convert it to a fragment but
-    # keep everything else the same so we don't mess up campain codes
+    """
+    for the case where we have ;words= in the url convert it to a fragment but
+    keep everything else the same so we don't mess up campain codes
+    
+    example:
+    /lccn/sn83045396/1911-09-17/ed-1/seq-12/;words=foo?bar=ham
+    becomes:
+    /lccn/sn83045396/1911-09-17/ed-1/seq-12/?bar=ham#words=foo
+
+    see https://github.com/LibraryOfCongress/chronam/issues/126
+    """
+    warnings.warn('url with ";words=" was called which is deprecated!', category=DeprecationWarning)
+
     path_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
     url = urlresolvers.reverse('chronam_page', kwargs=path_parts)
     redirect = "%s?%s#words=%s" % (url, request.GET.urlencode(), words)
@@ -195,6 +204,23 @@ def page(request, lccn, date, edition, sequence):
             explanation = notes[0].text
         else:
             explanation = ""
+
+    # if no word highlights were requests, see if the user came
+    # from search engine results and attempt to highlight words from their
+    # query by redirecting to a url that has the highlighted words in it
+    if not words:
+        try:
+            words = _search_engine_words(request)
+            words = '+'.join(words)
+            if len(words) > 0:
+                url = '%s?%s#%s' % (urlresolvers.reverse('chronam_page_words', kwargs=path_parts), request.GET.urlencode(), words)
+                return HttpResponseRedirect(url)
+        except Exception, e:
+            LOGGER.exception(e)
+            if settings.DEBUG:
+                raise e
+            # else squish the exception so the page will still get
+            # served up minus the highlights
 
     # Calculate the previous_issue_first_page. Note: it was decided
     # that we want to skip over issues with missing pages. See ticket
