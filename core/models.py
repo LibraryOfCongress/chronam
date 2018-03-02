@@ -172,7 +172,7 @@ class Batch(models.Model):
     def __unicode__(self):
         return self.full_name
 
-
+#TODO rename because it is used for more than just loading batches event notification
 class LoadBatchEvent(models.Model):
     # intentionally not a Foreign Key to batches
     # so that batches can be purged while preserving the event history
@@ -1156,6 +1156,8 @@ class OcrDump(models.Model):
         """Does the work of creating a new OcrDump based on a Batch
         """
         dump = OcrDump(batch=batch)
+        event = LoadBatchEvent(batch_name=batch.name, message="starting OCR dump")
+        event.save()
 
         # add each page to a tar ball
         tempFile = os.path.join(settings.TEMP_STORAGE, dump.name) #write to a temp dir first in case the ocr dump folder is a NFS or S3 mount
@@ -1177,6 +1179,11 @@ class OcrDump(models.Model):
         if dump.size > 100:
             dump._calculate_sha1()
             dump.save()
+            event = LoadBatchEvent(batch_name=batch.name, message="Created OCR dump")
+            event.save()
+        else:
+            event = LoadBatchEvent(batch_name=batch.name, message="Failed to create OCR dump!")
+            event.save()
 
         return dump
 
