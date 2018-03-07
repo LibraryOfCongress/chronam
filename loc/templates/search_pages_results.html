@@ -48,7 +48,8 @@ function add_highlights(div) {
             var vScale = height / all_coordinates["height"];
             var hScale = width / all_coordinates["width"];
             $.each(words.split(" "), function(index, word) {
-                for (word_on_page in all_coordinates["coords"]){
+                if( word ){ //don't do anything if the word is blank
+                    for (word_on_page in all_coordinates["coords"]){
                         //check if the word on the page starts or ends with the word we are looking for
                         if(word_on_page.toLowerCase().indexOf(word.toLowerCase()) > -1 ){
                             var coordinates = all_coordinates["coords"][word_on_page];
@@ -63,8 +64,9 @@ function add_highlights(div) {
                             }
                         }
                     }
-                });
+                }
             });
+        });
     }
 }
 
