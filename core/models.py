@@ -1179,10 +1179,10 @@ class OcrDump(models.Model):
         if dump.size > 100:
             dump._calculate_sha1()
             dump.save()
-            event = LoadBatchEvent(batch_name=batch.name, message="Created OCR dump")
+            event = LoadBatchEvent(batch_name=batch.name, message="created OCR dump")
             event.save()
         else:
-            event = LoadBatchEvent(batch_name=batch.name, message="Failed to create OCR dump!")
+            event = LoadBatchEvent(batch_name=batch.name, message="failed to create OCR dump!")
             event.save()
 
         return dump
