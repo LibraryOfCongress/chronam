@@ -6,7 +6,7 @@ class BatchesSitemap(sitemaps.Sitemap):
     changefreq = 'daily'
 
     def items(self):
-        return Batch.objects.filter(released__isnull=False)
+        return Batch.objects.all()
 
     def lastmod(self, batch):
         return batch.released
@@ -18,7 +18,7 @@ class IssuesSitemap(sitemaps.Sitemap):
     changefreq = 'daily'
 
     def items(self):
-        return Issue.objects.filter(batch__released__isnull=False).select_related('title')
+        return Issue.objects.all()
 
     def lastmod(self, issue):
         return issue.created
@@ -28,9 +28,10 @@ class IssuesSitemap(sitemaps.Sitemap):
 
 class PagesSitemap(sitemaps.Sitemap):
     changefreq = 'daily'
+    limit = 5000 #default is 50,000 which takes forever to load
 
     def items(self):
-        return Page.objects.filter(issue__batch__released__isnull=False).select_related('issue__title')
+        return Page.objects.all()
 
     def lastmod(self, page):
         return page.created
