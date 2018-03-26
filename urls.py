@@ -10,6 +10,7 @@ from django.conf.urls import url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.sitemaps import views as sitemap_views
 from django.utils import cache
+from django.views.decorators.cache import cache_page
 from django.views.static import serve
 
 import chronam.core.views as views
@@ -17,19 +18,6 @@ from chronam.core.sitemaps import (BatchesSitemap, IssuesSitemap, PagesSitemap, 
 
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
-
-
-def cache_page(function, ttl):
-    """Decorate the provided function by adding Cache-Control and Expires headers to responses"""
-
-    @functools.wraps(function)
-    def decorated_function(*args, **kwargs):
-        response = function(*args, **kwargs)
-        cache.patch_response_headers(response, ttl)
-        cache.patch_cache_control(response, public=True)
-        return response
-
-    return decorated_function
 
 sitemaps = {
     'batches': BatchesSitemap,
@@ -39,57 +27,57 @@ sitemaps = {
 }
 
 urlpatterns = [
-    url(r'^sitemap\.xml$', sitemap_views.index, {'sitemaps': sitemaps}),
-    url(r'^sitemap-(?P<section>.+)\.xml$', sitemap_views.sitemap, {'sitemaps': sitemaps},
+    url(r'^sitemap\.xml$', cache_page(settings.DEFAULT_TTL_SECONDS)(sitemap_views.index), {'sitemaps': sitemaps}),
+    url(r'^sitemap-(?P<section>.+)\.xml$', cache_page(settings.DEFAULT_TTL_SECONDS)(sitemap_views.sitemap), {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'),
     url(r'^healthz$', views.static.healthz, name='health-check'),
     url(r'^$',
-        cache_page(views.home.home, settings.DEFAULT_TTL_SECONDS),
+        cache_page(settings.DEFAULT_TTL_SECONDS)(views.home.home),
         name="chronam_home"),
 
     url(r'^(?P<date>\d{4}-\d{2}-\d{2})/$',
-        cache_page(views.home.home, settings.DEFAULT_TTL_SECONDS),
+        cache_page(settings.DEFAULT_TTL_SECONDS)(views.home.home),
         name="chronam_home_date"),
 
     url(r'^frontpages/(?P<date>\d{4}-\d{1,2}-\d{1,2}).json$',
-        cache_page(views.home.frontpages, settings.DEFAULT_TTL_SECONDS),
+        cache_page(settings.DEFAULT_TTL_SECONDS)(views.home.frontpages),
         name="chronam_frontpages_date_json"),
 
     url(r'^tabs$',
-        cache_page(views.home.tabs, settings.DEFAULT_TTL_SECONDS),
+        cache_page(settings.DEFAULT_TTL_SECONDS)(views.home.tabs),
         name="chronam_tabs"),
 
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/thumbnail.jpg$',
-        cache_page(views.image.thumbnail, settings.PAGE_IMAGE_TTL_SECONDS),
+        cache_page(settings.PAGE_IMAGE_TTL_SECONDS)(views.image.thumbnail),
         name="chronam_page_thumbnail"),
 
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/medium.jpg$',
-        cache_page(views.image.medium, settings.PAGE_IMAGE_TTL_SECONDS),
+        cache_page(settings.PAGE_IMAGE_TTL_SECONDS)(views.image.medium),
         name="chronam_page_medium"),
 
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/image_813x1024_from_0,0_to_6504,8192.jpg
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/image_(?P<width>\d+)x(?P<height>\d+)_from_(?P<x1>\d+),(?P<y1>\d+)_to_(?P<x2>\d+),(?P<y2>\d+).jpg$',
-        cache_page(views.image.page_image_tile, settings.PAGE_IMAGE_TTL_SECONDS),
+        cache_page(settings.PAGE_IMAGE_TTL_SECONDS)(views.image.page_image_tile),
         name="chronam_page_image_tile"),
 
     # example: /tiles/batch_dlc_jamaica_ver01/data/sn83030214/00175042143/1903051701/0299.jp2/image_813x1024_from_0,0_to_6504,8192.jpg
     url(r'^images/tiles/(?P<path>.+)/image_(?P<width>\d+)x(?P<height>\d+)_from_(?P<x1>\d+),(?P<y1>\d+)_to_(?P<x2>\d+),(?P<y2>\d+).jpg$',
-        cache_page(views.image.image_tile, settings.PAGE_IMAGE_TTL_SECONDS),
+        cache_page(settings.PAGE_IMAGE_TTL_SECONDS)(views.image.image_tile),
         name="chronam_image_tile"),
 
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/image_813x1024.jpg
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/image_(?P<width>\d+)x(?P<height>\d+).jpg$',
-        cache_page(views.image.page_image, settings.PAGE_IMAGE_TTL_SECONDS),
+        cache_page(settings.PAGE_IMAGE_TTL_SECONDS)(views.image.page_image),
         name="chronam_page_image"),
 
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/coordinates/
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/coordinates/$',
-        cache_page(views.image.coordinates, settings.PAGE_IMAGE_TTL_SECONDS),
+        cache_page(settings.PAGE_IMAGE_TTL_SECONDS)(views.image.coordinates),
         name="chronam_page_coordinates"),
 
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/coordinates/;words=corn+peas+cigars
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/coordinates/;words=(?P<words>.+)$',
-        cache_page(views.image.coordinates, settings.DEFAULT_TTL_SECONDS),
+        cache_page(settings.DEFAULT_TTL_SECONDS)(views.image.coordinates),
         name="chronam_page_coordinates_words"),
 ]
 
