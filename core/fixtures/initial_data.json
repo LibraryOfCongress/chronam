@@ -361,6 +361,22 @@
       "created": "2017-04-03 06:44:45"
     }
   },
+    {
+    "pk": "arhi",
+    "model": "core.awardee",
+    "fields": {
+      "name": "Arkansas State Archives",
+      "created": "2018-04-05 06:44:45"
+    }
+  },
+    {
+    "pk": "gu",
+    "model": "core.awardee",
+    "fields": {
+      "name": "Digital Library of Georgia, a project of GALILEO located at the University of Georgia Libraries",
+      "created": "2018-04-05 06:44:45"
+    }
+  },
   {
     "pk": "Online Resource",
     "model": "core.materialtype",
