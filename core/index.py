@@ -311,7 +311,8 @@ def get_titles_from_solr_documents(solr_response):
             title = models.Title.objects.get(lccn=lccn)
             results.append(title)
         except models.Title.DoesNotExist, e:
-            pass # TODO: log exception
+            LOGGER.error("Title does not exist!", e)
+            pass
     return results
 
 
@@ -392,8 +393,6 @@ def page_search(d):
     if d.get('lccn', None):
         q.append(query_join(d.getlist('lccn'), 'lccn'))
 
-
-
     if d.get('state', None):
         q.append(query_join(d.getlist('state'), 'state'))
 
@@ -410,6 +409,11 @@ def page_search(d):
     ocrs = ['ocr_%s' % l for l in settings.SOLR_LANGUAGES]
 
     lang = d.get('language', None)
+
+    lang_full = models.Language.objects.get(code=str(lang)) if lang else None
+    if lang_full:
+        q.append('+language:%s' % lang_full)
+
     ocr_lang = 'ocr_' + lang if lang else 'ocr'
     if d.get('ortext', None):
         q.append('+((' + query_join(solr_escape(d['ortext']).split(' '), "ocr"))
@@ -457,7 +461,10 @@ def page_search(d):
         q.append(')')
     if d.get('sequence', None):
         q.append('+sequence:"%s"' % d['sequence'])
-    return ' '.join(q)
+
+    solr_query = ' '.join(q)
+    LOGGER.debug("Solr query is [%s]", solr_query)
+    return solr_query
 
 def query_join(values, field, and_clause=False):
     """
