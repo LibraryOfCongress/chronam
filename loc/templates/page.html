@@ -136,7 +136,7 @@
         <div style="padding-left: 160px; padding-top: 10px;">
         <span class="c-images">
           <label for="pageNum">Image:</label>
-          <select name="pageNum" id="pageNum" class="input-small">
+          <select name="pageNum" id="pageNum" class="input-small" onChange="window.location.href=this.value">
             {% for p in issue.pages.all %}
             <option value="{% url 'chronam_page' title.lccn issue.date_issued issue.edition p.sequence %}" {% ifequal p.sequence page.sequence %}selected="selected"{% endifequal %}>{{p.sequence}}</option>
             {% endfor %}
