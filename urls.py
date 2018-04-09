@@ -8,7 +8,8 @@ import os
 from django.conf import settings
 from django.conf.urls import url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.contrib.sitemaps import views as sitemap_views
+from django.contrib.sitemaps.views import index as sitemap_index
+from django.contrib.sitemaps.views import sitemap as subsitemap_index
 from django.utils import cache
 from django.views.static import serve
 
@@ -18,7 +19,7 @@ from chronam.core.sitemaps import (BatchesSitemap, IssuesSitemap, PagesSitemap, 
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
 
-
+#replace with cache_control in django 1.10+
 def cache_page(function, ttl):
     """Decorate the provided function by adding Cache-Control and Expires headers to responses"""
 
@@ -38,10 +39,14 @@ sitemaps = {
     'titles': TitlesSitemap,
 }
 
+# replace it with decorated version
+sitemap_index_cached = cache_page(sitemap_index, settings.DEFAULT_TTL_SECONDS)
+subsitemap_index_cached = cache_page(subsitemap_index, settings.DEFAULT_TTL_SECONDS)
+
 urlpatterns = [
-    url(r'^sitemap\.xml$', sitemap_views.index, {'sitemaps': sitemaps}),
-    url(r'^sitemap-(?P<section>.+)\.xml$', sitemap_views.sitemap, {'sitemaps': sitemaps},
-        name='django.contrib.sitemaps.views.sitemap'),
+    url(r'^sitemap\.xml$', sitemap_index_cached, {'sitemaps': sitemaps}),
+    url(r'^sitemap-(?P<section>.+)\.xml$', subsitemap_index_cached, {'sitemaps': sitemaps},
+        name='sitemaps'),
     url(r'^healthz$', views.static.healthz, name='health-check'),
     url(r'^$',
         cache_page(views.home.home, settings.DEFAULT_TTL_SECONDS),
