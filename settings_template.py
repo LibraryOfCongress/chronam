@@ -93,6 +93,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'chronam.core.middleware.TooBusyMiddleware',
+    'chronam.core.middleware.CloudflareCacheHeader',
 )
 
 

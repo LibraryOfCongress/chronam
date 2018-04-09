@@ -27,7 +27,7 @@ from chronam.core.rdf import issue_to_graph, page_to_graph, title_to_graph
 from chronam.core.utils.url import unpack_url_path
 from chronam.core.utils.utils import (HTMLCalendar, _get_tip,
                                       _page_range_short, _rdf_base,
-                                      create_crumbs, get_page, label,)
+                                      create_crumbs, get_page, label, cache_tag)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -53,8 +53,9 @@ def issues(request, lccn, year=None):
     page_title = "Browse Issues: %s" % title.display_name
     page_name = "issues"
     crumbs = create_crumbs(title)
-    return render_to_response('issues.html', dictionary=locals(),
+    response = render_to_response('issues.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -66,8 +67,9 @@ def title_holdings(request, lccn):
 
     holdings = title.holdings.select_related('institution').order_by('institution__name')
 
-    return render_to_response('holdings.html', dictionary=locals(),
+    response = render_to_response('holdings.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -76,8 +78,9 @@ def title_marc(request, lccn):
     page_title = "MARC Bibliographic Record: %s" % label(title)
     page_name = "marc"
     crumbs = create_crumbs(title)
-    return render_to_response('marc.html', dictionary=locals(),
+    response = render_to_response('marc.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -88,7 +91,7 @@ def title_rdf(request, lccn):
     response = HttpResponse(graph.serialize(base=_rdf_base(request),
                                             include_base=True),
                             content_type='application/rdf+xml')
-    return response
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 @cache_page(settings.API_TTL_SECONDS)
@@ -115,9 +118,10 @@ def title_atom(request, lccn, page_number=1):
         feed_updated = title.created
 
     host = request.get_host()
-    return render_to_response('title.xml', dictionary=locals(),
+    response = render_to_response('title.xml', dictionary=locals(),
                               content_type='application/atom+xml',
                               context_instance=RequestContext(request))
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -158,7 +162,7 @@ def issue_pages(request, lccn, date, edition, page_number=1):
     profile_uri = 'http://www.openarchives.org/ore/html/'
     response = render_to_response('issue_pages.html', dictionary=locals(),
                                   context_instance=RequestContext(request))
-    return response
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -169,7 +173,7 @@ def issue_pages_rdf(request, lccn, date, edition):
     response = HttpResponse(graph.serialize(base=_rdf_base(request),
                                             include_base=True),
                             content_type='application/rdf+xml')
-    return response
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -192,7 +196,9 @@ def page_words(request, lccn, date, edition, sequence, words=None):
     url = urlresolvers.reverse('chronam_page', kwargs=path_parts)
     fragment = urlencode({'words': words})
     redirect = "%s?%s#%s" % (url, request.GET.urlencode(), fragment)
-    return HttpResponseRedirect(redirect)
+    response = HttpResponseRedirect(redirect)
+    return cache_tag(response, "lccn=%s" % lccn)
+
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
 @vary_on_headers('Referer')
@@ -216,7 +222,8 @@ def page(request, lccn, date, edition, sequence):
         if len(words) > 0:
             path_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
             url = '%s?%s#%s' % (urlresolvers.reverse('chronam_page_words', kwargs=path_parts), request.GET.urlencode(), words)
-            return HttpResponseRedirect(url)
+            response = HttpResponseRedirect(url)
+            return cache_tag(response, "lccn=%s" % lccn)
     except Exception, e:
         LOGGER.exception(e)
         if settings.DEBUG:
@@ -269,7 +276,8 @@ def page(request, lccn, date, edition, sequence):
     text = get_page_text(page)
     response = render_to_response(template, dictionary=locals(),
                                   context_instance=RequestContext(request))
-    return response
+    return cache_tag(response, "lccn=%s" % lccn)
+
 
 @cache_page(settings.LONG_TTL_SECONDS)
 def titles(request, start=None, page_number=1):
@@ -334,7 +342,7 @@ def title(request, lccn):
     crumbs = create_crumbs(title)
     response = render_to_response('title.html', dictionary=locals(),
                                   context_instance=RequestContext(request))
-    return response
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -425,7 +433,7 @@ def title_essays(request, lccn):
     # if there's only one essay might as well redirect to it
     if len(title.essays.all()) >= 1:
         url = title.essays.all()[0].url
-        return HttpResponsePermanentRedirect(url)
+        return cacne_tag(HttpResponsePermanentRedirect(url), "lccn=%s" % lccn)
     else:
         return HttpResponseNotFound()
 
@@ -484,28 +492,32 @@ def page_ocr(request, lccn, date, edition, sequence):
     crumbs = create_crumbs(title, issue, date, edition, page)
     host = request.get_host()
     text = get_page_text(page)
-    return render_to_response('page_text.html', dictionary=locals(),
+    response = render_to_response('page_text.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 def page_pdf(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     if page.pdf_abs_filename:
-        return sendfile(request, page.pdf_abs_filename)
+        response = sendfile(request, page.pdf_abs_filename)
+        return cache_tag(response, "lccn=%s" % lccn)
     else:
         raise Http404("No pdf for page %s" % page)
 
 def page_jp2(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     if page.jp2_abs_filename:
-        return sendfile(request, page.jp2_abs_filename)
+        response = sendfile(request, page.jp2_abs_filename)
+        return cache_tag(response, "lccn=%s" % lccn)
     else:
         raise Http404("No jp2 for page %s" % page)
 
 def page_ocr_xml(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     if page.ocr_abs_filename:
-        return sendfile(request, page.ocr_abs_filename)
+        response = sendfile(request, page.ocr_abs_filename)
+        return cache_tag(response, "lccn=%s" % lccn)
     else:
         raise Http404("No ocr for page %s" % page)
 
@@ -516,7 +528,8 @@ def page_ocr_txt(request, lccn, date, edition, sequence):
     except models.OCR.DoesNotExist:
         raise Http404("No OCR for %s" % page)
 
-    return HttpResponse(text, content_type='text/plain')
+    response = HttpResponse(text, content_type='text/plain')
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -527,7 +540,7 @@ def page_rdf(request, lccn, date, edition, sequence):
     response = HttpResponse(graph.serialize(base=_rdf_base(request),
                                             include_base=True),
                             content_type='application/rdf+xml')
-    return response
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -547,8 +560,9 @@ def page_print(request, lccn, date, edition, sequence,
     url = urlresolvers.reverse('chronam_page_print',
                                kwargs=path_parts)
 
-    return render_to_response('page_print.html', dictionary=locals(),
+    response = render_to_response('page_print.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 @cache_page(settings.DEFAULT_TTL_SECONDS)
@@ -573,5 +587,6 @@ def issues_first_pages(request, lccn, page_number=1):
     page_head_heading = "Browse Issues: %s" % title.display_name
     page_head_subheading = label(title)
     crumbs = create_crumbs(title)
-    return render_to_response('issue_pages.html', dictionary=locals(),
+    response = render_to_response('issue_pages.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+    return cache_tag(response, "lccn=%s" % lccn)

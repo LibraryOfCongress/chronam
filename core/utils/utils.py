@@ -276,3 +276,14 @@ def validate_bib_dir():
         return settings.BIB_STORAGE
     else:
         return None
+
+def cache_tag(response, tag_name):
+    """
+    Adds Cache-Tag header or appends to it if it already exists. This is
+    useful for cloudflare so that we can purge based on the tag
+    """
+    if response.has_header('Cache-Tag'):
+        response['Cache-Tag'] += ',%s' % tag_name
+    else:
+        response['Cache-Tag'] = tag_name
+    return response
