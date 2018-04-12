@@ -3,10 +3,14 @@ import os
 from django.conf import settings
 from django.http import HttpResponse
 
+from chronam.core.utils.utils import cache_tag
+
+class CloudflareCacheHeader(object):
+    def process_response(self, request, response):
+        return cache_tag(response, "project=chronam")
 
 class HttpResponseServiceUnavailable(HttpResponse):
     status_code = 503
-
 
 class TooBusyMiddleware(object):
 
