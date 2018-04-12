@@ -12,7 +12,7 @@ from django.http import Http404, HttpResponse, HttpResponseServerError
 
 from chronam.core import models
 from chronam.core.decorator import cors
-from chronam.core.utils.utils import get_page
+from chronam.core.utils.utils import get_page, cache_tag
 
 LOGGER = logging.getLogger(__name__)
 
@@ -68,7 +68,7 @@ def thumbnail(request, lccn, date, edition, sequence):
         return HttpResponseServerError("Unable to create thumbnail: %s" % e)
     response = HttpResponse(content_type="image/jpeg")
     im.save(response, "JPEG")
-    return response
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 def medium(request, lccn, date, edition, sequence):
@@ -79,7 +79,7 @@ def medium(request, lccn, date, edition, sequence):
         return HttpResponseServerError("Unable to create thumbnail: %s" % e)
     response = HttpResponse(content_type="image/jpeg")
     im.save(response, "JPEG")
-    return response
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 def page_image(request, lccn, date, edition, sequence, width, height):
@@ -110,7 +110,7 @@ def page_image_tile(request, lccn, date, edition, sequence,
     c = im.crop((x1, y1, x2, y2))
     f = c.resize((width, height))
     f.save(response, "JPEG")
-    return response
+    return cache_tag(response, "lccn=%s" % lccn)
 
 
 def image_tile(request, path, width, height, x1, y1, x2, y2):
@@ -140,7 +140,8 @@ def coordinates(request, lccn, date, edition, sequence, words=None):
 
     try:
         with gzip.open(file_path, 'rb') as i:
-            return HttpResponse(i.read(), content_type='application/json')
+            response = HttpResponse(i.read(), content_type='application/json')
+            return cache_tag(response, "lccn=%s" % lccn)
     except IOError:
         LOGGER.warning('Word coordinates file %s does not exist', file_path)
         raise Http404
