@@ -277,10 +277,16 @@ def validate_bib_dir():
     else:
         return None
 
-def cache_tag(response, tag_name):
+def add_cache_tag(response, tag_name):
     """
     Adds Cache-Tag header or appends to it if it already exists. This is
     useful for cloudflare so that we can purge based on the tag
+
+    only first 255 bytes will be repected
+
+    values must be escaped before sending
+
+    see https://support.cloudflare.com/hc/en-us/articles/206596608-How-to-Purge-Cache-Using-Cache-Tags-Enterprise-only- for more information
     """
     if response.has_header('Cache-Tag'):
         response['Cache-Tag'] += ',%s' % tag_name
