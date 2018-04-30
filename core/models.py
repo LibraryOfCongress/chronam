@@ -18,11 +18,10 @@ from urllib import url2pathname
 from django.db import models
 from django.db.models import permalink, Q
 from django.conf import settings
-
-from chronam.core.utils import strftime
-
 from django.core import urlresolvers
 
+from chronam.core.utils import strftime
+from chronam.core.ocr_extractor import ocr_extractor
 
 class Awardee(models.Model):
     org_code = models.CharField(max_length=50, primary_key=True)
@@ -741,7 +740,11 @@ class Page(models.Model):
             'edition_label': self.issue.edition_label,
         })
 
-        ocr_texts = self.lang_text
+        #This is needed when building the solr index.
+        #TODO this is also used when visiting a page like http://127.0.0.1:8000/search/pages/results/?state=&date1=1789&date2=1963&proxtext=&x=0&y=0&dateFilterType=yearRange&rows=20&searchType=basic&format=json
+        # In that case we might want to break it from using this and pull directly from SOLR for performance reasons
+        logging.debug("extracting ocr for solr page")
+        ocr_texts,_ = ocr_extractor(self.ocr_abs_filename)
 
         for lang, ocr_text in ocr_texts.items():
             # make sure Solr is configured to handle the language and if it's
