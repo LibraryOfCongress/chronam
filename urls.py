@@ -13,6 +13,7 @@ from django.utils import cache
 from django.views.static import serve
 
 import chronam.core.views as views
+import chronam.core.feeds as feeds
 from chronam.core.decorator import add_cache_headers
 from chronam.core.sitemaps import (BatchesSitemap, IssuesSitemap, PagesSitemap, TitlesSitemap)
 
@@ -227,7 +228,7 @@ urlpatterns += [
         name='chronam_newspapers'),
 
     url(r'^newspapers/feed/$',
-        views.newspapers_atom,
+        feeds.newspaperFeedAtom(),
         name='chronam_newspapers_atom'),
 
     url(r'^newspapers.(?P<format>csv)$',
