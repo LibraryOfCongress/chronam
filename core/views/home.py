@@ -60,7 +60,7 @@ def frontpages(request, date):
     results = _frontpages(request, date)
     return HttpResponse(json.dumps(results), content_type="application/json")
 
-@cache_page(settings.METADATA_TTL_SECONDS)
+@cache_page(settings.METADATA_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def tabs(request, date=None):
     params = request.GET if request.GET else None
     form = forms.SearchPagesForm(params)

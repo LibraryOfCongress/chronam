@@ -23,21 +23,22 @@ class HttpResponseUnsupportedMediaType(HttpResponse):
     status_code = 415
 
 #replace with cache_control in django 1.10+
-def cache_page_function(function, ttl):
+def cache_page_function(function, ttl, shared_cache_maxage=None):
     """Decorate the provided function by adding Cache-Control and Expires headers to responses"""
 
     @functools.wraps(function)
     def decorated_function(*args, **kwargs):
         response = function(*args, **kwargs)
         cache.patch_response_headers(response, ttl)
-        cache.patch_cache_control(response, public=True, s_maxage=ttl)
+        maxage = ttl if shared_cache_maxage is None else shared_cache_maxage
+        cache.patch_cache_control(response, public=True, s_maxage=maxage)
         return response
 
     return decorated_function
 
-def cache_page(ttl):
+def cache_page(ttl, shared_cache_maxage=None):
     def decorator(function):
-        return cache_page_function(function, ttl)
+        return cache_page_function(function, ttl, shared_cache_maxage)
     return decorator
 
 def rdf_view(f):
