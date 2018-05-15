@@ -13,7 +13,7 @@ from django.template import RequestContext
 
 from chronam.core import index, models
 from chronam.core import forms
-from chronam.core.decorator import opensearch_clean, cache_page, cors
+from chronam.core.decorator import opensearch_clean, add_cache_headers, cors
 from chronam.core.utils.utils import _page_range_short
 
 
@@ -36,7 +36,7 @@ def search_pages_paginator(request):
 
 
 @cors
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 @opensearch_clean
 def search_pages_results(request, view_type='gallery'):
     page_title = "Search Results"
@@ -118,7 +118,7 @@ def search_pages_results(request, view_type='gallery'):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.METADATA_TTL_SECONDS)
+@add_cache_headers(settings.METADATA_TTL_SECONDS)
 def search_titles(request):
     browse_val = [chr(n) for n in range(65, 91)]
     browse_val.extend([str(i) for i in range(10)])
@@ -133,7 +133,7 @@ def search_titles(request):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.METADATA_TTL_SECONDS)
+@add_cache_headers(settings.METADATA_TTL_SECONDS)
 def search_titles_opensearch(request):
     host = request.get_host()
     return render_to_response('search_titles_opensearch.xml',
@@ -142,7 +142,7 @@ def search_titles_opensearch(request):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 def search_pages_opensearch(request):
     host = request.get_host()
     return render_to_response('search_pages_opensearch.xml',
@@ -152,7 +152,7 @@ def search_pages_opensearch(request):
 
 
 @cors
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 def suggest_titles(request):
     q = request.GET.get('q', '')
     q = q.lower()
@@ -184,7 +184,7 @@ def suggest_titles(request):
     return HttpResponse(json_text, content_type='application/x-suggestions+json')
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 def search_pages_navigation(request):
     """Search results navigation data
 
@@ -209,7 +209,7 @@ def search_pages_navigation(request):
     return HttpResponse(json.dumps(search), content_type="application/json")
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 def search_advanced(request):
     adv_search_form = forms.AdvSearchPagesForm()
     template = "search_advanced.html"

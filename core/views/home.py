@@ -9,7 +9,7 @@ from django.core import urlresolvers
 
 from chronam.core import models
 from chronam.core import forms
-from chronam.core.decorator import cache_page
+from chronam.core.decorator import add_cache_headers
 
 def home(request, date=None):
     context = RequestContext(request, {})
@@ -60,7 +60,7 @@ def frontpages(request, date):
     results = _frontpages(request, date)
     return HttpResponse(json.dumps(results), content_type="application/json")
 
-@cache_page(settings.METADATA_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.METADATA_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def tabs(request, date=None):
     params = request.GET if request.GET else None
     form = forms.SearchPagesForm(params)

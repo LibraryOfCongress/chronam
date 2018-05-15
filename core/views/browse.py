@@ -21,7 +21,7 @@ from django.views.decorators.vary import vary_on_headers
 from sendfile import sendfile
 
 from chronam.core import index, models
-from chronam.core.decorator import cache_page, rdf_view
+from chronam.core.decorator import add_cache_headers, rdf_view
 from chronam.core.index import get_page_text
 from chronam.core.rdf import issue_to_graph, page_to_graph, title_to_graph
 from chronam.core.utils.url import unpack_url_path
@@ -31,7 +31,7 @@ from chronam.core.utils.utils import (HTMLCalendar, _get_tip,
 
 LOGGER = logging.getLogger(__name__)
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def issues(request, lccn, year=None):
     title = get_object_or_404(models.Title, lccn=lccn)
     issues = title.issues.all()
@@ -58,7 +58,7 @@ def issues(request, lccn, year=None):
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def title_holdings(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
     page_title = "Libraries that Have It: %s" % label(title)
@@ -72,7 +72,7 @@ def title_holdings(request, lccn):
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def title_marc(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
     page_title = "MARC Bibliographic Record: %s" % label(title)
@@ -83,7 +83,7 @@ def title_marc(request, lccn):
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 @rdf_view
 def title_rdf(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
@@ -94,7 +94,7 @@ def title_rdf(request, lccn):
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@add_cache_headers(settings.API_TTL_SECONDS)
 def title_atom(request, lccn, page_number=1):
     title = get_object_or_404(models.Title, lccn=lccn)
     issues = title.issues.all().order_by('-batch__released', '-date_issued')
@@ -124,13 +124,13 @@ def title_atom(request, lccn, page_number=1):
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def title_marcxml(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
     return HttpResponse(title.marc.xml, content_type='application/marc+xml')
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def issue_pages(request, lccn, date, edition, page_number=1):
     title = get_object_or_404(models.Title, lccn=lccn)
     _year, _month, _day = date.split("-")
@@ -165,7 +165,7 @@ def issue_pages(request, lccn, date, edition, page_number=1):
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 @rdf_view
 def issue_pages_rdf(request, lccn, date, edition):
     title, issue, page = _get_tip(lccn, date, edition)
@@ -176,7 +176,7 @@ def issue_pages_rdf(request, lccn, date, edition):
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 @vary_on_headers('Referer')
 def page_words(request, lccn, date, edition, sequence, words=None):
     """
@@ -200,7 +200,7 @@ def page_words(request, lccn, date, edition, sequence, words=None):
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 @vary_on_headers('Referer')
 def page(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
@@ -279,7 +279,7 @@ def page(request, lccn, date, edition, sequence):
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
-@cache_page(settings.LONG_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.LONG_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def titles(request, start=None, page_number=1):
     page_title = 'Newspaper Titles'
     if start:
@@ -304,7 +304,7 @@ def titles(request, start=None, page_number=1):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def title(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
     page_title = "About %s" % label(title)
@@ -345,7 +345,7 @@ def title(request, lccn):
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def titles_in_city(request, state, county, city,
                    page_number=1, order='name_normal'):
     state, county, city = map(unpack_url_path, (state, county, city))
@@ -374,7 +374,7 @@ def titles_in_city(request, state, county, city,
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def titles_in_county(request, state, county,
                      page_number=1, order='name_normal'):
     state, county = map(unpack_url_path, (state, county))
@@ -401,7 +401,7 @@ def titles_in_county(request, state, county,
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def titles_in_state(request, state, page_number=1, order='name_normal'):
     state = unpack_url_path(state)
     page_title = "Titles in State: %s" % state
@@ -427,7 +427,7 @@ def titles_in_state(request, state, page_number=1, order='name_normal'):
 
 # TODO: this redirect can go away some suitable time after 08/2010
 # it predates having explicit essay ids
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def title_essays(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
     # if there's only one essay might as well redirect to it
@@ -438,7 +438,7 @@ def title_essays(request, lccn):
         return HttpResponseNotFound()
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def awardees(request):
     page_title = 'Awardees'
     awardees = models.Awardee.objects.all().order_by('name')
@@ -446,7 +446,7 @@ def awardees(request):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def awardee(request, institution_code):
     awardee = get_object_or_404(models.Awardee, org_code=institution_code)
     page_title = 'Awardee: %s' % awardee.name
@@ -485,7 +485,7 @@ def _search_engine_words(request):
     words = index.word_matches_for_page(request.path, words)
     return words
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def page_ocr(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     page_title = "%s, %s, %s" % (label(title), label(issue), label(page))
@@ -532,7 +532,7 @@ def page_ocr_txt(request, lccn, date, edition, sequence):
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 @rdf_view
 def page_rdf(request, lccn, date, edition, sequence):
     page = get_page(lccn, date, edition, sequence)
@@ -543,7 +543,7 @@ def page_rdf(request, lccn, date, edition, sequence):
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def page_print(request, lccn, date, edition, sequence,
                width, height, x1, y1, x2, y2):
     page = get_page(lccn, date, edition, sequence)
@@ -565,7 +565,7 @@ def page_print(request, lccn, date, edition, sequence,
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def issues_first_pages(request, lccn, page_number=1):
     title = get_object_or_404(models.Title, lccn=lccn)
     issues = title.issues.all()
