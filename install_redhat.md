@@ -53,6 +53,11 @@ point to a directory for where the solr index will live.
     sudo cp /opt/chronam/conf/jetty7.sh /etc/init.d/jetty
     sudo chmod +x /etc/init.d/jetty
 
+Install the polish analyzer and stopwords
+    sudo mkdir -p /opt/solr/contrib
+    sudo wget --output-document=/opt/solr/contrib/lucene-analyzers-stempel-4.10.4.jar http://central.maven.org/maven2/org/apache/lucene/lucene-analyzers-stempel/4.10.4/lucene-analyzers-stempel-4.10.4.jar
+    sudo wget --output-document=/opt/solr/solr/collection1/conf/lang/stopwords_pl.txt https://raw.githubusercontent.com/apache/lucene-solr/master/lucene/analysis/stempel/src/resources/org/apache/lucene/analysis/pl/stopwords.txt"
+
 The jetty-redhat config file contains a default heap space allocation- "-Xms2g -Xmx2g".  Change the 2g 
 to a sensible default for your system if 2g is too much or too little.
 
