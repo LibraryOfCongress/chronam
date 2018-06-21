@@ -46,7 +46,7 @@ class Command(BaseCommand):
 
 
 def photos_in_set(key, set_id):
-    """A generator for all the photos in a set. 
+    """A generator for all the photos in a set.
     """
     u = 'http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=%s&format=json&nojsoncallback=1' % (key, set_id)
     photos = json.loads(urllib.urlopen(u).read())

@@ -14,11 +14,11 @@ LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     """
-    Management command for purging title records which have an 856 field 
-    containing a link to Chronicling America, and which appear to be records 
+    Management command for purging title records which have an 856 field
+    containing a link to Chronicling America, and which appear to be records
     for an electronic only version of a title 245 $h == [electronic resource].
 
-    The script is careful not to purge any records that have issues attached 
+    The script is careful not to purge any records that have issues attached
     to them.  See https://rdc.lctl.gov/trac/ndnp/ticket/375 for context.
 
     If you want to see the records that will be purged use the --pretend
