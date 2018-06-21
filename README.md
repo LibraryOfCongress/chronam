@@ -144,6 +144,44 @@ via the Web:
 
     http://www.example.org/batches/
 
+Caching
+--------------
+After loading data, you will need to clear the cache. If you are using a reverse proxie (like Varnish) you will need to also clear that, as well as any CDN you have. Below is a list of URLS that should be cleared based on what content you are loading.
+
+All pages that contain a LCCN are tagged with that LCCN in the cache headers. This allows for purging by specific LCCN tag if there is a update to a batch.
+
+  List of URLs to purge when loading new batch
+  ==============================================
+  all urls tagged with lccn=<LCCN>
+  chroniclingamerica.loc.gov/tabs
+  chroniclingamerica.loc.gov/sitemap*
+  chroniclingamerica.loc.gov/frontpages*
+  chroniclingamerica.loc.gov/titles*
+  chroniclingamerica.loc.gov/states*
+  chroniclingamerica.loc.gov/counties*
+  chroniclingamerica.loc.gov/states_counties*
+  chroniclingamerica.loc.gov/cities*
+  chroniclingamerica.loc.gov/batches/summary*
+  chroniclingamerica.loc.gov/reels*
+  chroniclingamerica.loc.gov/reel*
+  chroniclingamerica.loc.gov/essays*
+
+  List of URLs to purge when loading new Awardee
+  ==============================================
+  chroniclingamerica.loc.gov/awardees*
+
+  List of URLs to purge when loading new basic data
+  ==============================================
+  chroniclingamerica.loc.gov/institutions*
+
+  List of URLs to purge when loading code
+  ==============================================
+  chroniclingamerica.loc.gov/ocr
+  chroniclingamerica.loc.gov/about
+  chroniclingamerica.loc.gov/about/api
+  chroniclingamerica.loc.gov/help
+
+
 Run Unit Tests
 --------------
 

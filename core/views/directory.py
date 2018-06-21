@@ -11,14 +11,14 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.encoding import smart_str
 
-from chronam.core.decorator import cache_page, opensearch_clean, rdf_view, cors
+from chronam.core.decorator import add_cache_headers, opensearch_clean, rdf_view, cors
 from chronam.core.utils.utils import _page_range_short, _rdf_base
 from chronam.core import models, index
 from chronam.core.rdf import titles_to_graph
 from chronam.core.utils.url import unpack_url_path
 
 
-@cache_page(settings.METADATA_TTL_SECONDS)
+@add_cache_headers(settings.METADATA_TTL_SECONDS)
 def newspapers(request, state=None, format='html'):
     if state and state != "all_states":
         state = unpack_url_path(state)
@@ -119,7 +119,7 @@ def newspapers(request, state=None, format='html'):
         return HttpResponseServerError("unsupported format: %s" % format)
 
 
-@cache_page(settings.API_TTL_SECONDS)
+@add_cache_headers(settings.API_TTL_SECONDS)
 def newspapers_atom(request):
     # get a list of titles with issues that are in order by when they
     # were last updated
@@ -145,7 +145,7 @@ def newspapers_atom(request):
 
 
 @cors
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 @opensearch_clean
 def search_titles_results(request):
     page_title = 'US Newspaper Directory Search Results'
@@ -271,7 +271,7 @@ def search_titles_results(request):
                               context_instance=RequestContext(request))
 
 
-@cache_page(settings.DEFAULT_TTL_SECONDS)
+@add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 @rdf_view
 def newspapers_rdf(request):
     titles = models.Title.objects.filter(has_issues=True)

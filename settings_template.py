@@ -136,6 +136,7 @@ LONG_TTL_SECONDS = 60 * 60 * 24 * 7 * 8 # 8 weeks
 METADATA_TTL_SECONDS = DEFAULT_TTL_SECONDS
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24 * 7 * 2  # 2 weeks
 API_TTL_SECONDS = 60 * 60  # 1 hour
+SHARED_CACHE_MAXAGE_SECONDS = 60 * 60 * 24 * 365 # 1 year, purge from cloudflare and varnish if needed sooner
 
 USE_TIFF = False
 
