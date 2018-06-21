@@ -79,7 +79,7 @@ class BatchLoaderTest(TestCase):
             u'Publisher varies.', 
             u'Semiweekly ed.: Salt Lake semi-weekly tribune, 1894-1902.', 
             u'Weekly ed.: Salt Lake weekly tribune (Salt Lake City, Utah : 1902), 1902-< >.'])
-        self.assertTrue(not solr_doc.has_key('essay'))
+        self.assertTrue('essay' not in solr_doc)
 
         f = os.path.join(os.path.dirname(chronam.core.__file__), 'test-data', 
             'uuml_thys_ocr.txt')

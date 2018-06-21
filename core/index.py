@@ -595,7 +595,7 @@ def word_matches_for_page(page_id, words):
     params = {"hl.snippets": 100, "hl.requireFieldMatch": 'true', "hl.maxAnalyzedChars": '102400'}
     response = solr.query(q, fields=['id'], highlight=ocr_list, **params)
 
-    if not response.highlighting.has_key(page_id):
+    if page_id not in response.highlighting:
         return []
 
     words = set()
