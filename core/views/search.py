@@ -21,7 +21,7 @@ def search_pages_paginator(request):
     # front page only
     try:
         sequence = int(request.GET.get('sequence', '0'))
-    except ValueError as e:
+    except ValueError:
         sequence = 0
     # set results per page value
     try:

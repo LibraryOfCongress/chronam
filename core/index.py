@@ -110,7 +110,6 @@ class SolrPaginator(Paginator):
             p_page = previous_overall_index / self.per_page + 1
             p_index = previous_overall_index % self.per_page
             o = self.page(p_page).object_list[p_index]
-            q = self.query.copy()
             return self.highlight_url(o.url, o.words, p_page, p_index)
         else:
             return None
@@ -220,7 +219,6 @@ class SolrPaginator(Paginator):
         if d.get('phrasetext', None):
             parts.append('the phrase "%s"' % d['phrasetext'])
         if d.get('proxtext', None):
-            proxdistance = d.get('proxdistance', PROX_DISTANCE_DEFAULT)
             parts.append(d['proxtext'])
         return parts
 
@@ -534,7 +532,7 @@ def index_title(title, solr=None):
 def delete_title(title):
     solr = SolrConnection(settings.SOLR)
     q = '+type:title +id:%s' % title.solr_doc['id']
-    r = solr.delete_query(q)
+    solr.delete_query(q)
     LOGGER.info("deleted title %s from the index", title)
 
 def index_missing_pages():

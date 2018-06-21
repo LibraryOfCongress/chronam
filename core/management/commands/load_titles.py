@@ -94,7 +94,7 @@ class Command(BaseCommand):
                 results = None
                 xml_file_path = os.path.join(marc_xml_source, xml_file)
                 results = self.xml_file_handler(xml_file_path, skip_index)
-                total_results = self.add_results(results)
+                self.add_results(results)
                 self.files_processed += 1
 
             self.log_stats()

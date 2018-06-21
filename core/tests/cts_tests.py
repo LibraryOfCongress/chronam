@@ -20,7 +20,7 @@ class CTSTest(TestCase):
                   settings.CTS_PASSWORD,
                   settings.CTS_URL,
                   CTSTest.VERIFY_SSL)
-        project = cts.get_project(settings.CTS_PROJECT_ID)
+        cts.get_project(settings.CTS_PROJECT_ID)
 
     def test_bags(self):
         cts = CTS(settings.CTS_USERNAME,
