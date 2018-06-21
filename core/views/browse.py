@@ -227,10 +227,11 @@ def page(request, lccn, date, edition, sequence):
                                                      kwargs=path_parts), request.GET.urlencode(), words)
             response = HttpResponseRedirect(url)
             return add_cache_tag(response, "lccn=%s" % lccn)
-    except Exception as e:
-        LOGGER.exception(e)
+    except Exception as exc:
+        LOGGER.error("Failed to add search highlighting based on the referred search engine query: %s",
+                     exc, exc_info=True)
         if settings.DEBUG:
-            raise e
+            raise
         # else squish the exception so the page will still get
         # served up minus the highlights
 
