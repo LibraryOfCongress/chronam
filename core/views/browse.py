@@ -437,7 +437,7 @@ def title_essays(request, lccn):
     # if there's only one essay might as well redirect to it
     if len(title.essays.all()) >= 1:
         url = title.essays.all()[0].url
-        return cacne_tag(HttpResponsePermanentRedirect(url), "lccn=%s" % lccn)
+        return add_cache_tag(HttpResponsePermanentRedirect(url), "lccn=%s" % lccn)
     else:
         return HttpResponseNotFound()
 
