@@ -47,7 +47,8 @@ class OcrDumpTests(TestCase):
         fh = open(dump.path)
         while True:
             buff = fh.read(2**16)
-            if not buff: break
+            if not buff:
+                break
             sha1.update(buff)
         self.assertEqual(dump.sha1, sha1.hexdigest())
 
