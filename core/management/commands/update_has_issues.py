@@ -13,4 +13,3 @@ class Command(BaseCommand):
             print "%s has issues" % t
             t.has_issues = True
             t.save()
-

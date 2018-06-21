@@ -12,12 +12,12 @@ LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
-        make_option('--skip-process-ocr', 
-                    action='store_false', 
+        make_option('--skip-process-ocr',
+                    action='store_false',
                     dest='process_ocr', default=True,
                     help='Do not generate ocr, and index'),
-        make_option('--skip-process-coordinates', 
-                    action='store_false', 
+        make_option('--skip-process-coordinates',
+                    action='store_false',
                     dest='process_coordinates', default=True,
                     help='Do not write out word coordinates'),
     )

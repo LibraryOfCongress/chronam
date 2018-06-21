@@ -23,7 +23,7 @@ class Command(BaseCommand):
 
     def handle(self, holdings_source=default_location, *args, **options):
 
-        if not os.path.exists(holdings_source): 
+        if not os.path.exists(holdings_source):
             LOGGER.error("There is no valid holdings source folder defined.")
             set_holdings = ['To load holdings - Add a folder called "holdings"',
                             'to the bib directory that is set in settings',

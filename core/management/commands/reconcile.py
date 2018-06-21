@@ -22,9 +22,9 @@ class Command(BaseCommand):
                     if my_batch.page_count != batch['page_count']:
                         batch['my_page_count'] = my_batch.page_count
                         missing_pages.append(batch)
-                except Batch.DoesNotExist: 
+                except Batch.DoesNotExist:
                     missing_batches.append(batch)
-            url = batch_info.get('next', None) 
+            url = batch_info.get('next', None)
 
         if len(missing_batches) > 0:
             print "missing batches:"

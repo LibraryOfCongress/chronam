@@ -22,4 +22,3 @@ def pack_url(value, default='-'):
 @register.filter(name='label')
 def _label(value):
     return label(value)
-

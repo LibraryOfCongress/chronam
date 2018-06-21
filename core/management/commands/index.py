@@ -20,4 +20,3 @@ class Command(BaseCommand):
         LOGGER.info("indexing pages")
         index_pages()
         LOGGER.info("finished indexing pages")
-

@@ -20,5 +20,3 @@ class JsonTests(TestCase):
         j = b.json()
         x = json.loads(j)
         self.assertEqual(x['name'], 'batch_curiv_ahwahnee_ver01')
-
-

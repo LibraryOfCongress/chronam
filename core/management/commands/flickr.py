@@ -21,7 +21,7 @@ class Command(BaseCommand):
         create_count = 0
 
         for flickr_url, chronam_url in flickr_chronam_links(key):
-            LOGGER.info("found flickr/chronam link: %s, %s" % 
+            LOGGER.info("found flickr/chronam link: %s, %s" %
                         (flickr_url, chronam_url))
 
             # use the page url to locate the Page model
@@ -32,12 +32,12 @@ class Command(BaseCommand):
                 continue
 
             # create the FlickrUrl attached to the apprpriate page
-            f, created = FlickrUrl.objects.get_or_create(value=flickr_url, 
+            f, created = FlickrUrl.objects.get_or_create(value=flickr_url,
                                                          page=page)
             if created:
                 create_count += 1
                 f.save()
-                LOGGER.info("updated page (%s) with flickr url (%s)" % 
+                LOGGER.info("updated page (%s) with flickr url (%s)" %
                             (page, flickr_url))
             else:
                 LOGGER.info("already knew about %s" % flickr_url)

@@ -16,8 +16,8 @@ LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
-        make_option('--no-optimize', 
-                    action='store_false', 
+        make_option('--no-optimize',
+                    action='store_false',
                     dest='optimize', default=True,
                     help='Do not optimize Solr and MySQL after purge'),
     )

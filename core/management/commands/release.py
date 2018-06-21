@@ -44,7 +44,7 @@ class Command(BaseCommand):
         input_file_path = None
         if args and os.path.isfile(args[0]):
             LOGGER.info("using file %s for release dates", args[0])
-            input_file_path = args[0]               
+            input_file_path = args[0]
             # turn content from input file into a dictionary for easy lookup
             batch_release_from_file = preprocess_input_file(input_file_path)
 
@@ -56,7 +56,7 @@ class Command(BaseCommand):
                 # if released datetime is successfully set from the bag-info file,
                 # move on to the next batch, else try other options
                 if set_batch_released_from_bag_info(batch):
-                    LOGGER.info("set release datetime from bag-info file") 
+                    LOGGER.info("set release datetime from bag-info file")
                     continue
             if input_file_path:
                 batch_release_datetime = batch_release_from_file.get(batch.name, None)
@@ -85,7 +85,7 @@ def preprocess_input_file(file_path):
         tsv = csv.reader(open(file_path, 'rb'), delimiter='\t')
         for row in tsv:
             batch_release_times[row[0]] = row[1]
-    except: 
+    except:
         pass
     return batch_release_times
 

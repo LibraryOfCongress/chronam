@@ -26,4 +26,3 @@ class Command(BaseCommand):
             batch_name = line.strip()
             LOGGER.info("batch_name: %s" % batch_name)
             loader.process_coordinates(batch_name)
-

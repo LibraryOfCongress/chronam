@@ -18,4 +18,3 @@ from ocr_dump_tests import *
 
 
 logging.basicConfig(filename="test.log", level=logging.DEBUG)
-

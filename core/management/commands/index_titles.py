@@ -13,4 +13,3 @@ class Command(BaseCommand):
         LOGGER.info("indexing titles")
         index_titles()
         LOGGER.info("finished indexing titles")
-

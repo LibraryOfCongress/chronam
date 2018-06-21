@@ -73,5 +73,3 @@ if __name__ == '__main__':
             continue
 
     print "TOTAL # OF RECORDS: %s" % total
-
-

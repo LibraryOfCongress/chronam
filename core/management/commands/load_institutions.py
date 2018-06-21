@@ -1,5 +1,5 @@
 import os
-import csv 
+import csv
 import codecs
 
 from django.core.management.base import BaseCommand
@@ -17,7 +17,7 @@ class Command(BaseCommand):
     args = '<institution_csv_file>'
 
     def handle(self, csv_file, *args, **options):
-        for row in unicode_csv_reader(codecs.open(csv_file, encoding='utf-8')): 
+        for row in unicode_csv_reader(codecs.open(csv_file, encoding='utf-8')):
             i = Institution()
             i.code = row[0].upper()
             i.name = row[1]
@@ -33,7 +33,7 @@ class Command(BaseCommand):
 
 
 def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
-    csv_reader = csv.reader(utf8_encoder(unicode_csv_data), 
+    csv_reader = csv.reader(utf8_encoder(unicode_csv_data),
                             dialect=dialect, **kwargs)
     for row in csv_reader:
         yield [unicode(cell, 'utf-8') for cell in row]
