@@ -90,7 +90,6 @@ def preprocess_input_file(file_path):
     return batch_release_times
 
 
-
 def preprocess_public_feed():
     """
     reads the public feed - http://chroniclingamerica.loc.gov/batches/feed/

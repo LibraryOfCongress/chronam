@@ -6,7 +6,6 @@ from chronam.core.utils import url
 from chronam.core.utils.utils import label
 
 
-
 register = template.Library()
 
 

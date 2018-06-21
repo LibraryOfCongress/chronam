@@ -256,7 +256,6 @@ def search_titles_results(request):
             json_text = "%s(%s);" % (request.GET.get('callback'), json_text)
         return HttpResponse(json_text, content_type='application/json')
 
-
     sort = request.GET.get('sort', 'relevance')
 
     q = request.GET.copy()

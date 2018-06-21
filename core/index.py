@@ -174,7 +174,6 @@ class SolrPaginator(Paginator):
 
         return Page(pages, number, self)
 
-
     def pages(self):
         """
         pages creates a list of two element tuples (page_num, url)
@@ -226,8 +225,6 @@ class SolrPaginator(Paginator):
         if d.get('proxtext', None):
             parts.append(d['proxtext'])
         return parts
-
-
 
     # TODO: see ticket #176
     # i think this can be removed if the search pages results view uses
@@ -396,8 +393,6 @@ def page_search(d):
     if d.get('lccn', None):
         q.append(query_join(d.getlist('lccn'), 'lccn'))
 
-
-
     if d.get('state', None):
         q.append(query_join(d.getlist('state'), 'state'))
 
@@ -479,7 +474,6 @@ def query_join(values, field, and_clause=False):
 
     # quote values
     values = ['"%s"' % v for v in values]
-
 
     # add + to the beginnging of each value if we are doing an AND clause
     if and_clause:

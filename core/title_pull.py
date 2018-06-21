@@ -112,7 +112,6 @@ class TitlePuller(object):
     a generic pull for Chronam, unless a query is passed.
     """
 
-
     year_breaks = []
 
     def generate_year_dict(self, start=None, end=None):

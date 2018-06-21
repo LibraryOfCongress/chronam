@@ -48,7 +48,6 @@ class Command(BaseCommand):
             LOGGER.info("indexing new titles")
             index_titles(since=self.xml_start)
 
-
         return results
 
     def add_results(self, results):

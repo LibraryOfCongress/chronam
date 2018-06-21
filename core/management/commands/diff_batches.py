@@ -36,7 +36,6 @@ class Command(BaseCommand):
             else:
                 LOGGER.warning("invalid batch name '%s'" % batch_name)
 
-
         current_batches = set()
         for batch in models.Batch.objects.all().order_by('name'):
             current_batches.add(batch.name)

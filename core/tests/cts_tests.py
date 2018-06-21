@@ -42,6 +42,5 @@ class CTSTest(TestCase):
         project = cts.get_project(settings.CTS_PROJECT_ID)
         bag = list(project.get_bags())[0]
 
-
         instances = list(bag.get_bag_instances())
         self.assertTrue(len(instances) > 0)
