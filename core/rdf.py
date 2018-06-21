@@ -15,6 +15,7 @@ FRBR = Namespace('http://purl.org/vocab/frbr/core#')
 NDNP = Namespace('http://chroniclingamerica.loc.gov/terms#')
 DCTERMS = Namespace('http://purl.org/dc/terms/')
 
+
 def title_to_graph(t, g=None, include_issues=True):
     if not g:
         g = make_graph()
@@ -74,6 +75,7 @@ def title_to_graph(t, g=None, include_issues=True):
 
     return g
 
+
 def issue_to_graph(i, g=None):
     if not g:
         g = make_graph()
@@ -91,6 +93,7 @@ def issue_to_graph(i, g=None):
     add_rem(g, uri, rdf_uri(i))
 
     return g
+
 
 def page_to_graph(p, g=None):
     if not g:
@@ -140,11 +143,13 @@ def page_to_graph(p, g=None):
 
     return g
 
+
 def titles_to_graph(titles):
     g = make_graph()
     for title in titles:
         g = title_to_graph(title, g, include_issues=False)
     return g
+
 
 def batch_to_graph(b):
     g = make_graph()
@@ -161,6 +166,7 @@ def batch_to_graph(b):
     add_rem(g, uri, rdf_uri(b))
 
     return g
+
 
 def awardee_to_graph(a):
     g = make_graph()
@@ -180,6 +186,7 @@ def awardee_to_graph(a):
             URIRef("http://dbpedia.org/resource/Library_of_Congress")))
     return g
 
+
 def make_graph():
     g = ConjunctiveGraph()
     g.bind('dc', DC)
@@ -194,11 +201,14 @@ def make_graph():
     g.bind('dcterms', DCTERMS)
     return g
 
+
 def abstract_uri(m):
     return URIRef(m.abstract_url)
 
+
 def rdf_uri(m):
     return URIRef(m.url.rstrip('/') + '.rdf')
+
 
 def add_rem(g, uri_a, uri_r):
     """

@@ -3,6 +3,7 @@ from django.conf import settings
 
 from chronam.core.cts import CTS
 
+
 class Command(BaseCommand):
     help = "list service requests that are in the queue"
 

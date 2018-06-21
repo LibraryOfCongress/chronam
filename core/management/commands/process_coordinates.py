@@ -8,6 +8,7 @@ from chronam.core import batch_loader
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
     )

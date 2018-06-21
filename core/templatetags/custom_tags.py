@@ -7,6 +7,7 @@ from django.conf import settings
 
 register = template.Library()
 
+
 @register.simple_tag
 def get_ext_url(url, timeout=None):
     """

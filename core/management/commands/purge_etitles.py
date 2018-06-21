@@ -11,6 +11,7 @@ from chronam.core.models import Title
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     """
     Management command for purging title records which have an 856 field 

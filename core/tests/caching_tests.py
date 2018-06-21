@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+
 class BrowseTests(TestCase):
     """
     Tests to ensure that caching for specific pages stays correct

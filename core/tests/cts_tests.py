@@ -3,6 +3,7 @@ from django.conf import settings
 
 from chronam.core.cts import CTS
 
+
 class CTSTest(TestCase):
     VERIFY_SSL = False
 

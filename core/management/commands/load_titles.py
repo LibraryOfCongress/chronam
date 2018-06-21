@@ -12,6 +12,7 @@ from chronam.core.models import Title
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     help = "Load a marcxml file of title records"
     args = '<location of marcxml>'
@@ -47,7 +48,7 @@ class Command(BaseCommand):
             LOGGER.info("indexing new titles")
             index_titles(since=self.xml_start)
 
-        
+
         return results
 
     def add_results(self, results):

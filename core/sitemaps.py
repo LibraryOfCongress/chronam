@@ -2,6 +2,7 @@ from django.contrib import sitemaps
 
 from chronam.core.models import (Batch, Issue, Page, Title)
 
+
 class BatchesSitemap(sitemaps.Sitemap):
     changefreq = 'daily'
 
@@ -13,6 +14,7 @@ class BatchesSitemap(sitemaps.Sitemap):
 
     def location(self, batch):
         return batch.url
+
 
 class IssuesSitemap(sitemaps.Sitemap):
     changefreq = 'daily'
@@ -26,6 +28,7 @@ class IssuesSitemap(sitemaps.Sitemap):
     def location(self, issue):
         return issue.url
 
+
 class PagesSitemap(sitemaps.Sitemap):
     changefreq = 'daily'
     limit = 5000 #default is 50,000 which takes forever to load
@@ -38,6 +41,7 @@ class PagesSitemap(sitemaps.Sitemap):
 
     def location(self, page):
         return page.url
+
 
 class TitlesSitemap(sitemaps.Sitemap):
     changefreq = 'daily'

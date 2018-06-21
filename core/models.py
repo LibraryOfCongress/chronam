@@ -23,6 +23,7 @@ from django.core import urlresolvers
 from chronam.core.utils import strftime
 from chronam.core.ocr_extractor import ocr_extractor
 
+
 class Awardee(models.Model):
     org_code = models.CharField(max_length=50, primary_key=True)
     name = models.CharField(max_length=100)
@@ -172,6 +173,8 @@ class Batch(models.Model):
         return self.full_name
 
 #TODO rename because it is used for more than just loading batches event notification
+
+
 class LoadBatchEvent(models.Model):
     # intentionally not a Foreign Key to batches
     # so that batches can be purged while preserving the event history

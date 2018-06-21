@@ -7,6 +7,7 @@ import requests
 
 logger = logging.getLogger(__name__)
 
+
 class CTS(object):
 
     def __init__(self, username, password, base_url, verify_ssl=True):

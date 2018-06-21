@@ -20,6 +20,7 @@ from chronam.core.utils.utils import validate_bib_dir
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     skip_essays = make_option('--skip-essays',
                               action='store_true',

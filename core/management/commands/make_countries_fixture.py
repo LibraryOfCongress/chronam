@@ -8,6 +8,7 @@ except ImportError:
 
 from django.core.management.base import BaseCommand
 
+
 class Command(BaseCommand):
     help = "loads MARC Country list XML from the web, and dumps JSON fixture to stdout"
 

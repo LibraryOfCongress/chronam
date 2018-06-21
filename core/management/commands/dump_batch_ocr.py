@@ -8,6 +8,7 @@ from chronam.core.models import Batch, OcrDump
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     help = "dump ocr for a single batch"
     args = '<batch name>'

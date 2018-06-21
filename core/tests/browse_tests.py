@@ -9,6 +9,7 @@ from chronam.core.utils.utils import _get_tip
 from chronam.core.batch_loader import BatchLoader, Batch
 from chronam.core.models import Title
 
+
 class BrowseTests(TestCase):
     """
     Tests related to core/views/browse.py

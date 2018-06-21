@@ -80,5 +80,6 @@ class Command(BaseCommand):
         json.dump(json_src, file('core/fixtures/place_links.json', 'w'), indent=2)
         LOGGER.info("finished dumping place_links.json fixture")
 
+
 def _clean(u):
     return u.strip().replace(' ', '_').encode('ascii', 'ignore')

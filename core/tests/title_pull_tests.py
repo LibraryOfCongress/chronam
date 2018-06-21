@@ -46,6 +46,7 @@ def _chk_if_test_dir_exists(test_dir=None):
             _logging.warning(skip_warn)
     return test_dir
 
+
 def _clear_test_dir(test_dir=None):
     """
     Function to clear the test data directory.
@@ -58,6 +59,7 @@ def _clear_test_dir(test_dir=None):
     else:
         _logging.warning("Tried to delete files in test_dir, but something happened.")
     return cleared
+
 
 class TitlePullTests(TestCase):
 

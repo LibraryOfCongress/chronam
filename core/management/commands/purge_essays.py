@@ -3,6 +3,7 @@ from django.core.management.base import BaseCommand
 from chronam.core.models import Essay
 from chronam.core.essay_loader import purge_essay
 
+
 class Command(BaseCommand):
     help = "purge all the essays"
 

@@ -11,6 +11,7 @@ from chronam.core.models import Page, FlickrUrl
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     args = '<flickr_key>'
     help = 'load links for content that has been pushed to flickr.'
@@ -42,7 +43,7 @@ class Command(BaseCommand):
                 LOGGER.info("already knew about %s" % flickr_url)
 
         LOGGER.info("created %s flickr urls" % create_count)
-    
+
 
 def photos_in_set(key, set_id):
     """A generator for all the photos in a set. 
@@ -74,7 +75,7 @@ def chronam_url(photo):
     for tag in photo['photo']['tags']['tag']:
         if 'chroniclingamerica.loc.gov' in tag['raw']:
             return tag['raw'].replace('dc:identifier=', '')
-   
+
     # some other photos might have a link in the textual description
     m = re.search('"(http://chroniclingamerica.loc.gov/.+?)"',
     photo['photo']['description']['_content'])

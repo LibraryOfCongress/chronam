@@ -1,10 +1,11 @@
 import logging
 
 from django.core.management.base import BaseCommand
-    
+
 from chronam.core.index import index_titles, index_pages
 
 LOGGER = logging.getLogger(__name__)
+
 
 class Command(BaseCommand):
     help = "index all titles and pages ; " + \

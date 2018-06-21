@@ -8,6 +8,7 @@ from django.conf import settings
 from chronam.core.essay_loader import load_essay, purge_essay
 from chronam.core.models import Essay, Title
 
+
 class EssayLoaderTests(TestCase):
     fixtures = ['countries.json', 'essay_titles.json', 'awardee.json']
 

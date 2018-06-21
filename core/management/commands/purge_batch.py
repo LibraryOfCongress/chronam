@@ -10,8 +10,9 @@ from django.core.management.base import BaseCommand, CommandError
 from solr import SolrConnection
 
 from chronam.core.batch_loader import BatchLoader, BatchLoaderException
-    
+
 LOGGER = logging.getLogger(__name__)
+
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (

@@ -10,6 +10,7 @@ from chronam.core import title_pull
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     help = "Retrieve a fresh pull of titles from OCLC. \
             #TODO: add a list of example commands."

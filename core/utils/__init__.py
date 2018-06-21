@@ -2,6 +2,7 @@
 
 from django.utils import datetime_safe
 
+
 def strftime(d, fmt):
     """works with datetimes with years less than 1900
     """

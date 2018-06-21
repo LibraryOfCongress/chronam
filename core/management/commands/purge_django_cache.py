@@ -7,6 +7,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     purge_all = make_option('--all',
                           action='store_true',
@@ -31,8 +32,8 @@ class Command(BaseCommand):
                 # delete the advanced search title list
                 LOGGER.info('removing titles_states from cache')
                 cache.delete('titles_states')
-	
-	        # delete the fulltext date range
+
+                # delete the fulltext date range
                 LOGGER.info('removing fulltext_range')
                 cache.delete('fulltext_range')
 

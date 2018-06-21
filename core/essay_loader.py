@@ -15,6 +15,7 @@ from chronam.core.models import Essay, Title, Awardee
 
 LOGGER = logging.getLogger(__name__)
 
+
 def load_essays(feed_url, index=True):
     LOGGER.info("loading feed %s" % feed_url)
     feed = feedparser.parse(feed_url)

@@ -20,11 +20,13 @@ from chronam.core.utils.url import unpack_url_path
 from chronam.core.decorator import add_cache_headers, rdf_view, cors
 from chronam.core.utils.utils import _page_range_short, _rdf_base, _get_tip
 
+
 @add_cache_headers(settings.LONG_TTL_SECONDS)
 def reports(request):
     page_title = 'Reports'
     return render_to_response('reports/reports.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @never_cache
 def batches(request, page_number=1):
@@ -36,6 +38,7 @@ def batches(request, page_number=1):
 
     return render_to_response('reports/batches.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @never_cache
 def batches_atom(request, page_number=1):
@@ -69,6 +72,7 @@ def batches_json(request, page_number=1):
         j['previous'] = "http://" + host + url_prev
     return HttpResponse(json.dumps(j, indent=2), content_type='application/json')
 
+
 @never_cache
 def batches_csv(request):
     csv_header_labels = ('Created', 'Name', 'Awardee', 'Total Pages',
@@ -81,6 +85,7 @@ def batches_csv(request):
         writer.writerow((batch.created, batch.name, batch.awardee.name,
                          batch.page_count, batch.released))
     return response
+
 
 @never_cache
 def batch(request, batch_name):
@@ -171,12 +176,14 @@ def page_json(request, lccn, date, edition, sequence):
     else:
         return HttpResponseNotFound()
 
+
 @never_cache
 def event(request, event_id):
     page_title = 'Event'
     event = get_object_or_404(models.LoadBatchEvent, id=event_id)
     return render_to_response('reports/event.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @never_cache
 def events(request, page_number=1):
@@ -189,6 +196,7 @@ def events(request, page_number=1):
     return render_to_response('reports/events.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @never_cache
 def events_csv(request):
     csv_header_labels = ('Time', 'Batch name', 'Message',)
@@ -200,6 +208,7 @@ def events_csv(request):
         writer.writerow((event.created, event.batch_name, event.message,))
     return response
 
+
 @never_cache
 def events_atom(request, page_number=1):
     events = models.LoadBatchEvent.objects.all().order_by('-created')
@@ -209,6 +218,7 @@ def events_atom(request, page_number=1):
     return render_to_response('reports/events.xml', dictionary=locals(),
                               context_instance=RequestContext(request),
                               content_type='application/atom+xml')
+
 
 @add_cache_headers(settings.LONG_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def states(request, format='html'):
@@ -254,6 +264,7 @@ def counties_in_state(request, state, format='html'):
     return render_to_response('reports/counties.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @add_cache_headers(settings.LONG_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def states_counties(request, format='html'):
     page_title = 'Counties by State'
@@ -269,6 +280,7 @@ GROUP BY state, county HAVING total >= 1 ORDER BY state, county")
 
     return render_to_response('reports/states_counties.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @add_cache_headers(settings.LONG_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def cities_in_county(request, state, county, format='html'):
@@ -289,6 +301,7 @@ def cities_in_county(request, state, county, format='html'):
     return render_to_response('reports/cities.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @add_cache_headers(settings.LONG_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def cities_in_state(request, state, format='html'):
     state = unpack_url_path(state)
@@ -308,6 +321,7 @@ def cities_in_state(request, state, format='html'):
     return render_to_response('reports/cities.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @add_cache_headers(settings.LONG_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def institutions(request, page_number=1):
     page_title = 'Institutions'
@@ -321,6 +335,7 @@ def institutions(request, page_number=1):
     return render_to_response('reports/institutions.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @add_cache_headers(settings.LONG_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def institution(request, code):
     institution = get_object_or_404(models.Institution, code=code)
@@ -331,6 +346,7 @@ def institution(request, code):
         institution=institution).count()
     return render_to_response('reports/institution.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @add_cache_headers(settings.LONG_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def institution_titles(request, code, page_number=1):
@@ -346,6 +362,7 @@ def institution_titles(request, code, page_number=1):
     page_range_short = list(_page_range_short(paginator, page))
     return render_to_response('reports/institution_titles.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @never_cache
 def status(request):
@@ -415,6 +432,7 @@ def awardee_rdf(request, institution_code):
                             content_type='application/rdf+xml')
     return response
 
+
 @add_cache_headers(settings.LONG_TTL_SECONDS)
 def terms(request):
     return render_to_response('reports/terms.html', dictionary=locals(),
@@ -456,6 +474,7 @@ def batch_summary(request, format='html'):
                               dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @add_cache_headers(settings.METADATA_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def reels(request, page_number=1):
     page_title = 'Reels'
@@ -466,6 +485,7 @@ def reels(request, page_number=1):
 
     return render_to_response('reports/reels.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @add_cache_headers(settings.METADATA_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def reel(request, reel_number):
@@ -531,6 +551,7 @@ def ocr_json(request):
         j["ocr"].append(dump.json(host=host, serialize=False))
     return HttpResponse(json.dumps(j, indent=2), content_type="application/json")
 
+
 @never_cache
 def languages(request):
     page_title = 'Languages'
@@ -539,6 +560,7 @@ def languages(request):
 
     return render_to_response('reports/languages.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @never_cache
 def language_batches(request, language, page_number=1):
@@ -557,6 +579,7 @@ def language_batches(request, language, page_number=1):
     return render_to_response('reports/language_batches.html', dictionary=locals(),
                               context_instance=RequestContext(request))
 
+
 @never_cache
 def language_titles(request, language, page_number=1):
     language_name = models.Language.objects.get(code=language).name
@@ -573,6 +596,7 @@ def language_titles(request, language, page_number=1):
         page_range_short = list(_page_range_short(paginator, page))
     return render_to_response('reports/language_titles.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
 
 @never_cache
 def language_pages(request, language, batch, title=None, page_number=1):

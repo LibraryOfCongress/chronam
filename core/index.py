@@ -22,6 +22,8 @@ PROX_DISTANCE_DEFAULT = 5
 # http://groups.google.com/group/solrpy/browse_thread/thread/f4437b885ecb0037?pli=1
 
 ESCAPE_CHARS_RE = re.compile(r'(?<!\\)(?P<char>[&|+\-!(){}[\]^"~*?:])')
+
+
 def solr_escape(value):
     LOGGER.debug("value: %s", value)
     if not value:
@@ -40,15 +42,18 @@ def solr_escape(value):
 
 # TODO: prefix functions that are intended for local use only with _
 
+
 def page_count():
     solr = SolrConnection(settings.SOLR)
     return solr.query('type:page', fields=['id']).numFound
+
 
 def title_count():
     solr = SolrConnection(settings.SOLR)
     return solr.query('type:title', fields=['id']).numFound
 
 # TODO: use solr.SolrPaginator and update or remove SolrPaginator
+
 
 class SolrPaginator(Paginator):
     """
@@ -335,6 +340,7 @@ def execute_solr_query(query, fields, sort, sort_order, rows, start):
                                start=start)
     return solr_response
 
+
 def title_search(d):
     """
     Pass in form data for a given title search, and get back
@@ -378,6 +384,7 @@ def title_search(d):
     # keep the gap 10 for year range 100, 20 for year range 200 and so on
 
     return q
+
 
 def page_search(d):
     """
@@ -456,6 +463,7 @@ def page_search(d):
         q.append('+sequence:"%s"' % d['sequence'])
     return ' '.join(q)
 
+
 def query_join(values, field, and_clause=False):
     """
     helper to create a chunk of a lucene query, based on
@@ -530,11 +538,13 @@ def index_title(title, solr=None):
     except Exception as e:
         LOGGER.exception(e)
 
+
 def delete_title(title):
     solr = SolrConnection(settings.SOLR)
     q = '+type:title +id:%s' % title.solr_doc['id']
     solr.delete_query(q)
     LOGGER.info("deleted title %s from the index", title)
+
 
 def index_missing_pages():
     """
@@ -551,6 +561,7 @@ def index_missing_pages():
         page.indexed = True
         page.save()
     solr.commit()
+
 
 def index_pages():
     """index all the pages that are modeled in the database
@@ -571,6 +582,7 @@ def index_pages():
         if count % 100 == 0:
             reset_queries()
     solr.commit()
+
 
 def word_matches_for_page(page_id, words):
     """
@@ -628,6 +640,7 @@ def _get_sort(sort, in_pages=False):
         sort_order = 'asc'
     return sort_field, sort_order
 
+
 def _expand_ethnicity(e):
     """
     takes an ethnicity string, expands it out the query using the
@@ -639,6 +652,7 @@ def _expand_ethnicity(e):
         parts.append('subject:"%s"' % s.synonym)
     q = ' OR '.join(parts)
     return "(" + q + ")"
+
 
 def _solrize_date(d, is_start=True):
     """
@@ -679,13 +693,14 @@ def _solrize_date(d, is_start=True):
     else:
         return None
 
+
 def get_page_text(page):
-   no_text = ["Text not available"]
-   solr = SolrConnection(settings.SOLR)
-   query = 'id:"%s"' % page.url
-   solr_results = solr.query(query)
-   results_attribute = getattr(solr_results, 'results', None)
-   if isinstance(results_attribute, list) and len(results_attribute) > 0:
-       return results_attribute[0].get('ocr', no_text)
-   else:
-       return no_text
+    no_text = ["Text not available"]
+    solr = SolrConnection(settings.SOLR)
+    query = 'id:"%s"' % page.url
+    solr_results = solr.query(query)
+    results_attribute = getattr(solr_results, 'results', None)
+    if isinstance(results_attribute, list) and len(results_attribute) > 0:
+        return results_attribute[0].get('ocr', no_text)
+    else:
+        return no_text

@@ -8,6 +8,7 @@ from chronam.core.holding_loader import HoldingLoader
 
 import chronam.core
 
+
 class HoldingLoaderTests(TestCase):
     fixtures = ['countries.json', 'languages.json', 'institutions.json']
 

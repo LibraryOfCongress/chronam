@@ -23,6 +23,7 @@ from chronam.core import models as m
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     help = "Updates (Resets if --reset option is used) release datetime on batches from one of following sources (in order of preference) 1. bag-info.txt, if found in the batch source 2. If path to a file is provided with the command, datetime is extracted from the file 3. current public feed 4. current server datetime"
 
@@ -74,6 +75,7 @@ class Command(BaseCommand):
             batch.released = datetime.now()
             batch.save()
 
+
 def preprocess_input_file(file_path):
     """
     Input file format: batch_name\tbatch_date\n - one batch per line
@@ -119,11 +121,13 @@ def preprocess_public_feed():
             cont = False
     return batch_release_times
 
+
 def get_next_page(feed):
     for link in feed.feed.links:
         if link.rel == 'next':
             return link.href
     return None
+
 
 def set_batch_released_from_bag_info(batch):
     status = False

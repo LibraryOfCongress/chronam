@@ -3,6 +3,7 @@ import re
 from xml.sax.handler import ContentHandler, feature_namespaces
 from xml.sax import make_parser
 
+
 class OCRHandler(ContentHandler):
 
     def __init__(self):
@@ -47,6 +48,7 @@ class OCRHandler(ContentHandler):
         if tag == 'Page':
             for l in self._page.keys():
                 self._page[l] = '\n'.join(self._page[l])
+
     def text(self):
         return "\n".join(self._page.values())
 
@@ -56,6 +58,7 @@ class OCRHandler(ContentHandler):
     def coords(self):
         return {"width": self.width, "height": self.height,
                 "coords": self._coords}
+
 
 def ocr_extractor(ocr_file):
     """

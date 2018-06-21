@@ -8,6 +8,7 @@ from chronam.core import tasks
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     help = "manual command to process purge_batch requests  from CTS"
 

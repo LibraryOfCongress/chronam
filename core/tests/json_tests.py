@@ -7,6 +7,7 @@ except ImportError:
 
 from chronam.core import models as m
 
+
 class JsonTests(TestCase):
     fixtures = ['batch.json', "awardee.json"]
 

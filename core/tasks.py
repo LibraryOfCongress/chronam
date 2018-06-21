@@ -24,6 +24,7 @@ def process_coordinates(batch_dir):
     except Exception:
         logger.exception("unable to process batch %s" % batch_dir)
 
+
 @task
 def load_batch(batch_dir, service_request=None, process_coordinates=True):
     try:
@@ -40,12 +41,14 @@ def load_batch(batch_dir, service_request=None, process_coordinates=True):
             logger.info("marking service request as failed")
             service_request.fail(str(e))
 
+
 @task
 def load_essays():
     try:
-       management.call_command('load_essays')
+        management.call_command('load_essays')
     except:
         logger.error("Unable to load essays")
+
 
 @task
 def purge_batch(batch, service_request=None):
@@ -58,6 +61,7 @@ def purge_batch(batch, service_request=None):
         logger.exception("unable to purge batch: %s" % e)
         if service_request:
             service_request.fail(str(e))
+
 
 @task
 def poll_purge():
@@ -125,6 +129,7 @@ def poll_cts():
         logger.exception("loading batch failed!")
         sr.fail(str(e))
 
+
 @task
 def delete_django_cache():
     logger.info("deleting newspaper_info")
@@ -132,6 +137,7 @@ def delete_django_cache():
 
     logger.info("deleting titles_states")
     cache.delete('titles_states')
+
 
 @task
 def dump_ocr(batch):

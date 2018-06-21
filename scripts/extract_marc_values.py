@@ -38,6 +38,7 @@ except IndexError:
 
 values = []
 
+
 def parse_record(record, field=FIELD, subfield=SUBFIELD):
     value = extract(record, field, subfield)
     if value:
@@ -45,6 +46,7 @@ def parse_record(record, field=FIELD, subfield=SUBFIELD):
         if not rec_id:
             rec_id = extract(record, '004')
         values.append((rec_id, value))
+
 
 if __name__ == '__main__':
     if os.path.isdir(SOURCE):
