@@ -295,7 +295,7 @@ class BatchLoader(object):
             'string(.//mods:extent/mods:start)', namespaces=ns)
         try:
             page.sequence = int(seq_string)
-        except ValueError as e:
+        except ValueError:
             raise BatchLoaderException("could not determine sequence number for page from '%s'" % seq_string)
         page.number = mods.xpath(
             'string(.//mods:detail[@type="page number"])',

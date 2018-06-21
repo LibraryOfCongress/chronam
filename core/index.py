@@ -310,8 +310,8 @@ def get_titles_from_solr_documents(solr_response):
         try:
             title = models.Title.objects.get(lccn=lccn)
             results.append(title)
-        except models.Title.DoesNotExist as e:
-            pass # TODO: log exception
+        except models.Title.DoesNotExist:
+            pass  # TODO: log exception
     return results
 
 

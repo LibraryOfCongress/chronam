@@ -40,7 +40,7 @@ def _chk_if_test_dir_exists(test_dir=None):
         try:
             os.makedirs(dir_to_chk)
             test_dir = dir_to_chk
-        except OSError as e:
+        except OSError:
             warn = "Unable to create testing directory"
             _logging.warning("%s %s." % (warn, dir_to_chk))
             _logging.warning(skip_warn)
