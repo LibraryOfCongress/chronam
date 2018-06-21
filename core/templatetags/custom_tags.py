@@ -28,7 +28,7 @@ def get_ext_url(url, timeout=None):
         try:
             try:
                 content = urlopen(url).read()
-            finally: # reset socket timeout
+            finally:  # reset socket timeout
                 if timeout is not None:
                     socket.setdefaulttimeout(socket_default_timeout)
         except:

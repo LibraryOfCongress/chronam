@@ -172,7 +172,7 @@ class Batch(models.Model):
     def __unicode__(self):
         return self.full_name
 
-#TODO rename because it is used for more than just loading batches event notification
+# TODO rename because it is used for more than just loading batches event notification
 
 
 class LoadBatchEvent(models.Model):
@@ -743,8 +743,8 @@ class Page(models.Model):
             'edition_label': self.issue.edition_label,
         })
 
-        #This is needed when building the solr index.
-        #TODO this is also used when visiting a page like http://127.0.0.1:8000/search/pages/results/?state=&date1=1789&date2=1963&proxtext=&x=0&y=0&dateFilterType=yearRange&rows=20&searchType=basic&format=json
+        # This is needed when building the solr index.
+        # TODO this is also used when visiting a page like http://127.0.0.1:8000/search/pages/results/?state=&date1=1789&date2=1963&proxtext=&x=0&y=0&dateFilterType=yearRange&rows=20&searchType=basic&format=json
         # In that case we might want to break it from using this and pull directly from SOLR for performance reasons
         logging.debug("extracting ocr for solr page")
         ocr_texts, _ = ocr_extractor(self.ocr_abs_filename)
@@ -1166,7 +1166,7 @@ class OcrDump(models.Model):
         event.save()
 
         # add each page to a tar ball
-        tempFile = os.path.join(settings.TEMP_STORAGE, dump.name) #write to a temp dir first in case the ocr dump folder is a NFS or S3 mount
+        tempFile = os.path.join(settings.TEMP_STORAGE, dump.name)  # write to a temp dir first in case the ocr dump folder is a NFS or S3 mount
         tar = tarfile.open(tempFile, "w:bz2")
         for issue in batch.issues.all():
             for page in issue.pages.filter(ocr__isnull=False):
@@ -1181,7 +1181,7 @@ class OcrDump(models.Model):
             shutil.move(tempFile, dump.path)
 
         dump._calculate_size()
-        #sanity check, if something went wrong it tends to be about 45 bytes, so check to make sure it is bigger than that before saving it.
+        # sanity check, if something went wrong it tends to be about 45 bytes, so check to make sure it is bigger than that before saving it.
         if dump.size > 100:
             dump._calculate_sha1()
             dump.save()

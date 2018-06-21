@@ -110,7 +110,7 @@ def preprocess_public_feed():
             # convert time.struct from feedparser into a datetime for django
             released = datetime.fromtimestamp(mktime(entry.updated_parsed))
             batch_release_times[batch_name] = released
-            #if the batch starts with batch_ remove it, so that it works regardless of that prefix
+            # if the batch starts with batch_ remove it, so that it works regardless of that prefix
             if batch_name.startswith("batch_"):
                 batch_release_times[batch_name[6:]] = released
 

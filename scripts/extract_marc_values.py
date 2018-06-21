@@ -58,12 +58,12 @@ if __name__ == '__main__':
         map_xml(parse_record, open(SOURCE, 'r'))
 
     # all values
-    #for value in values:
+    # for value in values:
     #    print str(value[0]), ',',value[1]
 
     total = len(values)
 
-    #Get a sample of 50 random values for that field
+    # Get a sample of 50 random values for that field
     for i in range(50):
         try:
             random_value = choice(values)

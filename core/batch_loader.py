@@ -86,7 +86,7 @@ class BatchLoader(object):
         return validated_batch_file
 
     def _sanity_check_batch(self, batch):
-        #if not os.path.exists(batch.path):
+        # if not os.path.exists(batch.path):
         #    raise BatchLoaderException("batch does not exist at %s" % batch.path)
         #b = urllib2.urlopen(batch.url)
         batch.validated_batch_file = self._find_batch_file(batch)
@@ -437,7 +437,7 @@ class BatchLoader(object):
     def _process_coordinates(self, page, coords):
         LOGGER.debug("writing out word coords for %s", page.url)
 
-        fd, path = tempfile.mkstemp(text="w", suffix=".coordinates", dir=settings.TEMP_STORAGE) #get a temp file in case the coordinates dir is a NFS or S3 mount which have poor multiple write performance
+        fd, path = tempfile.mkstemp(text="w", suffix=".coordinates", dir=settings.TEMP_STORAGE)  # get a temp file in case the coordinates dir is a NFS or S3 mount which have poor multiple write performance
         f = open(path, "w")
         f.write(gzip_compress(json.dumps(coords)))
         f.close()

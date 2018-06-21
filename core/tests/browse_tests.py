@@ -37,7 +37,7 @@ class BrowseTests(TestCase):
         self.assertIn("/lccn/sn83045396/1911-09-17/ed-1/seq-12/?bar=ham#words=foo", r.url)
 
     def test_full_text_deleted(self):
-        #'sanity' check that 'text' column is removed
+        # 'sanity' check that 'text' column is removed
         with connection.cursor() as cursor:
             cursor.execute("SHOW COLUMNS FROM core_languagetext")
             rows = cursor.fetchall()

@@ -28,7 +28,7 @@ COUNTRIES = (
     '*northern mariana*',
     'american samoa',
 
-    #According to MARC states are also countries
+    # According to MARC states are also countries
     'Alabama',
     'Alaska',
     'Arizona',

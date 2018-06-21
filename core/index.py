@@ -96,7 +96,7 @@ class SolrPaginator(Paginator):
     def _get_count(self):
         "Returns the total number of objects, across all pages."
         if self._count is None:
-            solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
+            solr = SolrConnection(settings.SOLR)  # TODO: maybe keep connection around?
             solr_response = solr.query(self._q, fields=['id'])
             self._count = int(solr_response.results.numFound)
         return self._count
@@ -140,11 +140,11 @@ class SolrPaginator(Paginator):
         number = self.validate_number(number)
 
         # figure out the solr query and execute it
-        solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
+        solr = SolrConnection(settings.SOLR)  # TODO: maybe keep connection around?
         start = self.per_page * (number - 1)
-        params = {"hl.snippets": 100, # TODO: make this unlimited
-                  "hl.requireFieldMatch": 'true', # limits highlighting slop
-                  "hl.maxAnalyzedChars": '102400', # increased from default 51200
+        params = {"hl.snippets": 100,  # TODO: make this unlimited
+                  "hl.requireFieldMatch": 'true',  # limits highlighting slop
+                  "hl.maxAnalyzedChars": '102400',  # increased from default 51200
                   }
         sort_field, sort_order = _get_sort(self.query.get('sort'), in_pages=True)
         solr_response = solr.query(self._q,
@@ -327,7 +327,7 @@ def get_solr_request_params_from_query(query):
 def execute_solr_query(query, fields, sort, sort_order, rows, start):
     # default arg_separator - underscore wont work if fields to facet on
     # themselves have underscore in them
-    solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
+    solr = SolrConnection(settings.SOLR)  # TODO: maybe keep connection around?
     solr_response = solr.query(query,
                                fields=['lccn', 'title',
                                        'edition',
@@ -497,7 +497,7 @@ def query_join(values, field, and_clause=False):
 
 def find_words(s):
     ems = re.findall('<em>.+?</em>', s)
-    words = map(lambda em: em[4:-5], ems) # strip <em> and </em>
+    words = map(lambda em: em[4:-5], ems)  # strip <em> and </em>
     return words
 
 
@@ -624,7 +624,7 @@ def commit():
 def _get_sort(sort, in_pages=False):
     sort_field = sort_order = None
     if sort == 'state':
-        sort_field = 'country' # odd artifact of Title model
+        sort_field = 'country'  # odd artifact of Title model
         sort_order = 'asc'
     elif sort == 'title':
         # important to sort on title_facet since it's the original

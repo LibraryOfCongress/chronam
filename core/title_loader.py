@@ -66,9 +66,9 @@ class TitleLoader(object):
         lccn = _normal_lccn(lccn_orig)
 
         if not lccn:
-            #LOGGER.info("###### LCCN in OCLC pull, \
+            # LOGGER.info("###### LCCN in OCLC pull, \
             #              but not in database. Missing LCCN. ######")
-            #LOGGER.info(record)
+            # LOGGER.info(record)
             self.missing_lccns += 1
             return
 
@@ -81,7 +81,7 @@ class TitleLoader(object):
         except AttributeError:
             dt = datetime.datetime.now()
 
-        #dt.replace(microsecond=int(parts[1]))
+        # dt.replace(microsecond=int(parts[1]))
 
         # it's remotely possible that a title with the LCCN already exists
         try:
@@ -146,7 +146,7 @@ class TitleLoader(object):
 
         title.start_year = _normal_year(f008[7:11])
         title.end_year = _normal_year(f008[11:15])
-        #check to make sure start and end years are not blank
+        # check to make sure start and end years are not blank
         if not title.start_year:
             LOGGER.error("lccn %s title has blank start year! Defaulting to 0", title.lccn)
             title.start_year = '0'

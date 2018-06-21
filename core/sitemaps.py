@@ -31,7 +31,7 @@ class IssuesSitemap(sitemaps.Sitemap):
 
 class PagesSitemap(sitemaps.Sitemap):
     changefreq = 'daily'
-    limit = 5000 #default is 50,000 which takes forever to load
+    limit = 5000  # default is 50,000 which takes forever to load
 
     def items(self):
         return Page.objects.all()

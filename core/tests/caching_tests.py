@@ -6,7 +6,7 @@ class BrowseTests(TestCase):
     Tests to ensure that caching for specific pages stays correct
     """
 
-    #As per CHRONAM-372 make sure specific pages have specific cache times
+    # As per CHRONAM-372 make sure specific pages have specific cache times
     def test_caching_times(self):
         one_day = 86400
         two_months = 60 * 60 * 24 * 7 * 8

@@ -15,7 +15,7 @@ class Command(BaseCommand):
     help = "Retrieve a fresh pull of titles from OCLC. \
             #TODO: add a list of example commands."
     args = ''
-    #TODO: Remove default from lccn
+    # TODO: Remove default from lccn
     option_list = BaseCommand.option_list + (
         make_option('-l', '--lccn',
                     action='store',

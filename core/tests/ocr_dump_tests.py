@@ -22,7 +22,7 @@ class OcrDumpTests(TestCase):
         os.mkdir(dumps_dir)
 
     def tearDown(self):
-        pass #shutil.rmtree(dumps_dir)
+        pass  # shutil.rmtree(dumps_dir)
 
     def test_new_dump(self):
         batch = Batch.objects.get(name="batch_uuml_thys_ver01")
@@ -39,7 +39,7 @@ class OcrDumpTests(TestCase):
         self.assertEqual(dump.batch.name, "batch_uuml_thys_ver01")
         self.assertEqual(dump.name, "batch_uuml_thys_ver01.tar.bz2")
         self.assertEqual(dump.path, os.path.join(dumps_dir, "batch_uuml_thys_ver01.tar.bz2"))
-        #make sure it was actually compressed
+        # make sure it was actually compressed
         self.assertGreater(batch_size, dump.size)
 
         # make sure the sha1 looks good
