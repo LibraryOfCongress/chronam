@@ -1,10 +1,6 @@
-import hotshot
-import os
 import re
-import time
 from functools import wraps
 
-from django.conf import settings
 from django.core import urlresolvers
 from django.http import HttpResponse
 from django.utils import cache, encoding
@@ -106,30 +102,3 @@ def cors(f, *args, **kwargs):
         response['Access-Control-Allow-Headers'] = 'X-requested-with'
         return response
     return new_f
-
-
-try:
-    PROFILE_LOG_BASE = settings.PROFILE_LOG_BASE
-except AttributeError:
-    PROFILE_LOG_BASE = '/tmp'
-
-
-def profile(log_file):
-    if not os.path.isabs(log_file):
-        log_file = os.path.join(PROFILE_LOG_BASE, log_file)
-
-    def _outer(f):
-        def _inner(*args, **kwargs):
-            (base, ext) = os.path.splitext(log_file)
-            base = base + "-" + time.strftime("%Y%m%dT%H%M%S", time.gmtime())
-            final_log_file = base + ext
-
-            prof = hotshot.Profile(final_log_file)
-            try:
-                ret = prof.runcall(f, *args, **kwargs)
-            finally:
-                prof.close()
-            return ret
-
-        return _inner
-    return _outer
