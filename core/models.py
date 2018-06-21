@@ -272,7 +272,7 @@ class Title(models.Model):
         # This was added to take into consideration the 856$u field
         # values when electronic resource (online resource) is selected in search.
         ht = [h.type for h in self.holdings.all()]
-        if self.uri and not 'Online Resource' in ht:
+        if self.uri and 'Online Resource' not in ht:
             ht.append('Online Resource')
         return ht
 
