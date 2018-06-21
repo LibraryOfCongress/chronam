@@ -301,8 +301,8 @@ def get_titles_from_solr_documents(solr_response):
     solr_response: search result returned from SOLR in response to
     title search.
 
-    This function turns SOLR documents into chronam.models.Title 
-    instances 
+    This function turns SOLR documents into chronam.models.Title
+    instances
     """
     lccns = [d['lccn'] for d in solr_response.results]
     results = []
@@ -320,13 +320,13 @@ def get_solr_request_params_from_query(query):
     fields = ['id', 'title', 'date', 'sequence', 'edition_label', 'section_label']
     sort_field, sort_order = _get_sort(query.get('sort'))
     return q, fields, sort_field, sort_order
- 
+
 
 def execute_solr_query(query, fields, sort, sort_order, rows, start):
-    # default arg_separator - underscore wont work if fields to facet on 
+    # default arg_separator - underscore wont work if fields to facet on
     # themselves have underscore in them
     solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
-    solr_response = solr.query(query, 
+    solr_response = solr.query(query,
                                fields=['lccn', 'title',
                                        'edition',
                                        'place_of_publication',

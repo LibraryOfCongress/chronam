@@ -6,7 +6,7 @@ from xml.sax import make_parser
 class OCRHandler(ContentHandler):
 
     def __init__(self):
-        self._page = {} 
+        self._page = {}
         self._line = []
         self._coords = {}
         self._language = 'eng'
@@ -59,7 +59,7 @@ class OCRHandler(ContentHandler):
 
 def ocr_extractor(ocr_file):
     """
-    looks at the ocr xml file on disk, extracts the plain text and 
+    looks at the ocr xml file on disk, extracts the plain text and
     word coordinates from them.
     """
     handler = OCRHandler()
@@ -67,5 +67,5 @@ def ocr_extractor(ocr_file):
     parser.setContentHandler(handler)
     parser.setFeature(feature_namespaces, 0)
     parser.parse(ocr_file)
- 
+
     return handler.lang_text(), handler.coords()

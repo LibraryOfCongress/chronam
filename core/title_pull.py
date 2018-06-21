@@ -397,7 +397,7 @@ class TitlePuller(object):
             total = int(test_totals)
             if total < 10000:
                 return total
-        
+
         LOGGER.warning("The total [%s] is > 10,000 and a split needs to occur" % total)
         return None
 

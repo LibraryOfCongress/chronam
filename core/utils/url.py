@@ -20,7 +20,7 @@ def pack_url_path(value, none='-'):
     if isinstance(value, unicode):
         value = value.encode('utf-8')
     return quote_underscore(value)
-    
+
 def unpack_url_path(path, none='-'):
     if path == none:
         return None

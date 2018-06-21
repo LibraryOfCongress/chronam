@@ -78,7 +78,7 @@ def batches_csv(request):
     writer = csv.writer(response)
     writer.writerow(csv_header_labels)
     for batch in models.Batch.viewable_batches():
-        writer.writerow((batch.created, batch.name, batch.awardee.name, 
+        writer.writerow((batch.created, batch.name, batch.awardee.name,
                          batch.page_count, batch.released))
     return response
 
@@ -191,7 +191,7 @@ def events(request, page_number=1):
 
 @never_cache
 def events_csv(request):
-    csv_header_labels = ('Time', 'Batch name', 'Message',) 
+    csv_header_labels = ('Time', 'Batch name', 'Message',)
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="chronam_events.csv"'
     writer = csv.writer(response)

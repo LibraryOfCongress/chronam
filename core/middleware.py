@@ -22,7 +22,7 @@ class TooBusyMiddleware(object):
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Server Too Busy - Chronicling America - Chronicling America (The Library of Congress)</title> 
+  <title>Server Too Busy - Chronicling America - Chronicling America (The Library of Congress)</title>
   <style></style>
 </head>
 <body>

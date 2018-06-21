@@ -1,4 +1,4 @@
-import logging 
+import logging
 
 from title_loader_tests import *
 from holding_loader_tests import *

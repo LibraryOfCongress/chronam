@@ -13,11 +13,11 @@ class HoldingLoaderTests(TestCase):
 
     def test_holdings(self):
         # title data
-        titlexml = os.path.join(os.path.dirname(chronam.core.__file__), 
+        titlexml = os.path.join(os.path.dirname(chronam.core.__file__),
             'test-data', 'title.xml')
 
         # holdings data
-        holdingsxml = os.path.join(os.path.dirname(chronam.core.__file__), 
+        holdingsxml = os.path.join(os.path.dirname(chronam.core.__file__),
             'test-data', 'holdings.xml')
 
         # first need to load the titles so we can link against them
@@ -27,7 +27,7 @@ class HoldingLoaderTests(TestCase):
         # now load the holdings from the same file
         holding_loader = HoldingLoader()
         holding_loader.load_file(holdingsxml)
-        
+
         # fetch the title and see that holdings are attached
         t = Title.objects.get(lccn='sn83030846')
         holdings = list(t.holdings.all())

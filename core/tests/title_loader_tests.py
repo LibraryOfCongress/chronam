@@ -178,7 +178,7 @@ class TitleLoaderTests(TestCase):
         self.assertEqual(t.end_year_int, 1999)
 
     def test_etitle(self):
-        # we shouldn't load in [electronic resource] records for 
+        # we shouldn't load in [electronic resource] records for
         # chronicling america titles, since they muddle up search results
         # https://rdc.lctl.gov/trac/ndnp/ticket/375
         loader = TitleLoader()

@@ -30,7 +30,7 @@ class BatchLoaderTest(TestCase):
         self.assertEqual(issue.number, '156')
         self.assertEqual(issue.edition, 1)
         self.assertEqual(issue.title.lccn, 'sn83045396')
-        self.assertEqual(date.strftime(issue.date_issued, '%Y-%m-%d'), 
+        self.assertEqual(date.strftime(issue.date_issued, '%Y-%m-%d'),
             '1911-09-17')
         self.assertEqual(len(issue.pages.all()), 56)
 
@@ -68,20 +68,20 @@ class BatchLoaderTest(TestCase):
         self.assertEqual(solr_doc['date'], '19110917')
         self.assertEqual(solr_doc['batch'], 'batch_uuml_thys_ver01')
         self.assertEqual(solr_doc['subject'], [
-            u'Salt Lake City (Utah)--Newspapers.', 
+            u'Salt Lake City (Utah)--Newspapers.',
             u'Utah--Salt Lake City.--fast--(OCoLC)fst01205314'])
         self.assertEqual(solr_doc['place'], [
             u'Utah--Salt Lake--Salt Lake City'])
         self.assertEqual(solr_doc['note'], [
-            u'Archived issues are available in digital format as part of the Library of Congress Chronicling America online collection.', 
-            u'Continues the numbering of: Salt Lake daily tribune.', 
-            u'Other eds.: Salt Lake tribune (Salt Lake City, Utah : Idaho ed.), 1954-1973, and: Salt Lake tribune (Salt Lake City, Utah : Metropolitan ed.), 1960-1972, and: Salt Lake tribune (Salt Lake City, Utah : State ed.), 1954-1974.', 
-            u'Publisher varies.', 
-            u'Semiweekly ed.: Salt Lake semi-weekly tribune, 1894-1902.', 
+            u'Archived issues are available in digital format as part of the Library of Congress Chronicling America online collection.',
+            u'Continues the numbering of: Salt Lake daily tribune.',
+            u'Other eds.: Salt Lake tribune (Salt Lake City, Utah : Idaho ed.), 1954-1973, and: Salt Lake tribune (Salt Lake City, Utah : Metropolitan ed.), 1960-1972, and: Salt Lake tribune (Salt Lake City, Utah : State ed.), 1954-1974.',
+            u'Publisher varies.',
+            u'Semiweekly ed.: Salt Lake semi-weekly tribune, 1894-1902.',
             u'Weekly ed.: Salt Lake weekly tribune (Salt Lake City, Utah : 1902), 1902-< >.'])
         self.assertTrue('essay' not in solr_doc)
 
-        f = os.path.join(os.path.dirname(chronam.core.__file__), 'test-data', 
+        f = os.path.join(os.path.dirname(chronam.core.__file__), 'test-data',
             'uuml_thys_ocr.txt')
         self.assertEqual(solr_doc['ocr_eng'], file(f).read().decode('utf-8'))
 

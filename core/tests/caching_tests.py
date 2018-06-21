@@ -32,7 +32,7 @@ class BrowseTests(TestCase):
                 "/about/": two_months,
                 "/about/api/": two_months,
                 "/help/": two_months}
-        
+
         for url, cache_time in url_cache_times.iteritems():
             try:
                 response = self.client.get(url)
