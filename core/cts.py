@@ -58,7 +58,7 @@ class CTS(object):
     def _request(self, url, method='get', params={}, data=None):
         headers = {"accept": "application/json"}
         url = urlparse.urljoin(self.base_url, url)
-        if data != None:
+        if data is not None:
             data = urllib.urlencode(data)
             headers["content-type"] = "application/x-www-form-urlencoded"
 

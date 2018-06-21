@@ -69,7 +69,7 @@ def poll_purge():
     purge_service_type = "purge.NdnpPurge.purge"
     while True:
         req = cts.next_service_request(queue, purge_service_type)
-        if req == None:
+        if req is None:
             logger.info("no purge service requests")
             break
 

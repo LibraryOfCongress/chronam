@@ -509,7 +509,7 @@ def index_titles(since=None):
     count = 0
     while True:
         row = cursor.fetchone()
-        if row == None:
+        if row is None:
             break
         title = models.Title.objects.get(lccn=row[0])
         index_title(title, solr)
@@ -520,8 +520,9 @@ def index_titles(since=None):
             solr.commit()
     solr.commit()
 
+
 def index_title(title, solr=None):
-    if solr==None:
+    if solr is None:
         solr = SolrConnection(settings.SOLR)
     LOGGER.info("indexing title: lccn=%s", title.lccn)
     try:
@@ -561,7 +562,7 @@ def index_pages():
     count = 0
     while True:
         row = cursor.fetchone()
-        if row == None:
+        if row is None:
             break
         page = models.Page.objects.get(id=row[0])
         LOGGER.info("[%s] indexing page: %s", count, page.url)

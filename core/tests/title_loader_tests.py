@@ -41,7 +41,7 @@ class TitleLoaderTests(TestCase):
         # ordering of attributes and namespace prefixes isn't predictable
         # so lets just check that we can parse the xml and get the leader
         rec = etree.fromstring(t.marc.xml)
-        self.assertTrue(rec != None)
+        self.assertTrue(rec is not None)
         self.assertEqual(rec.find('.//leader').text,
                          '00000cas a22000007a 4500')
         self.assertEqual(t.country.code, 'nyu')
