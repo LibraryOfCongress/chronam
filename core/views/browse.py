@@ -27,9 +27,11 @@ from chronam.core.rdf import issue_to_graph, page_to_graph, title_to_graph
 from chronam.core.utils.url import unpack_url_path
 from chronam.core.utils.utils import (HTMLCalendar, _get_tip,
                                       _page_range_short, _rdf_base,
-                                      create_crumbs, get_page, label, add_cache_tag)
+                                      add_cache_tag, create_crumbs, get_page,
+                                      label,)
 
 LOGGER = logging.getLogger(__name__)
+
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def issues(request, lccn, year=None):
@@ -54,7 +56,7 @@ def issues(request, lccn, year=None):
     page_name = "issues"
     crumbs = create_crumbs(title)
     response = render_to_response('issues.html', dictionary=locals(),
-                                 context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
@@ -68,7 +70,7 @@ def title_holdings(request, lccn):
     holdings = title.holdings.select_related('institution').order_by('institution__name')
 
     response = render_to_response('holdings.html', dictionary=locals(),
-                              context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
@@ -79,7 +81,7 @@ def title_marc(request, lccn):
     page_name = "marc"
     crumbs = create_crumbs(title)
     response = render_to_response('marc.html', dictionary=locals(),
-                              context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
@@ -119,8 +121,8 @@ def title_atom(request, lccn, page_number=1):
 
     host = request.get_host()
     response = render_to_response('title.xml', dictionary=locals(),
-                              content_type='application/atom+xml',
-                              context_instance=RequestContext(request))
+                                  content_type='application/atom+xml',
+                                  context_instance=RequestContext(request))
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
@@ -136,12 +138,12 @@ def issue_pages(request, lccn, date, edition, page_number=1):
     _year, _month, _day = date.split("-")
     try:
         _date = datetime.date(int(_year), int(_month), int(_day))
-    except ValueError, e:
+    except ValueError:
         raise Http404
     try:
         issue = title.issues.filter(date_issued=_date,
                                     edition=edition).order_by("-created")[0]
-    except IndexError, e:
+    except IndexError:
         raise Http404
     paginator = Paginator(issue.pages.all(), 20)
     try:
@@ -182,7 +184,7 @@ def page_words(request, lccn, date, edition, sequence, words=None):
     """
     for the case where we have ;words= in the url convert it to a fragment but
     keep everything else the same so we don't mess up campain codes
-    
+
     example:
     /lccn/sn83045396/1911-09-17/ed-1/seq-12/;words=foo?bar=ham
     becomes:
@@ -221,10 +223,11 @@ def page(request, lccn, date, edition, sequence):
         words = '+'.join(words)
         if len(words) > 0:
             path_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
-            url = '%s?%s#%s' % (urlresolvers.reverse('chronam_page_words', kwargs=path_parts), request.GET.urlencode(), words)
+            url = '%s?%s#%s' % (urlresolvers.reverse('chronam_page_words',
+                                                     kwargs=path_parts), request.GET.urlencode(), words)
             response = HttpResponseRedirect(url)
             return add_cache_tag(response, "lccn=%s" % lccn)
-    except Exception, e:
+    except Exception as e:
         LOGGER.exception(e)
         if settings.DEBUG:
             raise e
@@ -485,6 +488,7 @@ def _search_engine_words(request):
     words = index.word_matches_for_page(request.path, words)
     return words
 
+
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def page_ocr(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
@@ -493,7 +497,7 @@ def page_ocr(request, lccn, date, edition, sequence):
     host = request.get_host()
     text = get_page_text(page)
     response = render_to_response('page_text.html', dictionary=locals(),
-                              context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
@@ -505,6 +509,7 @@ def page_pdf(request, lccn, date, edition, sequence):
     else:
         raise Http404("No pdf for page %s" % page)
 
+
 def page_jp2(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     if page.jp2_abs_filename:
@@ -513,6 +518,7 @@ def page_jp2(request, lccn, date, edition, sequence):
     else:
         raise Http404("No jp2 for page %s" % page)
 
+
 def page_ocr_xml(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     if page.ocr_abs_filename:
@@ -520,6 +526,7 @@ def page_ocr_xml(request, lccn, date, edition, sequence):
         return add_cache_tag(response, "lccn=%s" % lccn)
     else:
         raise Http404("No ocr for page %s" % page)
+
 
 def page_ocr_txt(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
@@ -561,7 +568,7 @@ def page_print(request, lccn, date, edition, sequence,
                                kwargs=path_parts)
 
     response = render_to_response('page_print.html', dictionary=locals(),
-                              context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
@@ -588,5 +595,5 @@ def issues_first_pages(request, lccn, page_number=1):
     page_head_subheading = label(title)
     crumbs = create_crumbs(title)
     response = render_to_response('issue_pages.html', dictionary=locals(),
-                              context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
     return add_cache_tag(response, "lccn=%s" % lccn)
