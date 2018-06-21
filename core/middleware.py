@@ -38,5 +38,4 @@ class TooBusyMiddleware(object):
     </article>
 </body>
 </html>
-""")
-        return None
+""".strip())
