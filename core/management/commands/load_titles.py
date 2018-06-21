@@ -18,10 +18,10 @@ class Command(BaseCommand):
     args = '<location of marcxml>'
     option_list = BaseCommand.option_list + (
         make_option('--skip-index',
-        action='store_true',
-        dest='skip_index',
-        default=False,
-        help="\
+                    action='store_true',
+                    dest='skip_index',
+                    default=False,
+                    help="\
                 Skip the index process. Use this if you call this from \
                 another process such as 'chronam_sync'. If you call this \
                 directly, you don't want to use this flag. \

@@ -71,7 +71,7 @@ class TitlePullTests(TestCase):
         cls.srw = '{http://www.loc.gov/zing/srw/}'
         cls.test_case_rec = cls.t.generate_requests(oclc='18475650')
         cls.test_case_recs_range = cls.t.generate_requests(start=1979,
-            end=1980, countries=['united states', 'puerto rico'])
+                                                           end=1980, countries=['united states', 'puerto rico'])
         cls.test_case_recs_fake_cntry = cls.t.generate_requests(
             countries=['not a real country', ])
 
@@ -182,7 +182,7 @@ class TitlePullTests(TestCase):
         self.assertFalse(bool(results))
 
     @skipUnless(test_dir,
-        "Skipping test_grab_content, because problem with test directory.")
+                "Skipping test_grab_content, because problem with test directory.")
     def test_run(self):
         results = self.t.grab_content(self.test_dir, [])
         self.assertIsNone(results)

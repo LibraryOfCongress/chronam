@@ -93,13 +93,13 @@ def newspapers(request, state=None, format='html'):
             for title in titles:
                 writer.writerow(('http://%s%s' % (request.get_host(),
                                                   reverse('chronam_issues',
-                                                           kwargs={'lccn': title.lccn}),),
+                                                          kwargs={'lccn': title.lccn}),),
                                  state, title, title.lccn or '', title.oclc or '',
                                  title.issn or '', title.issues.count(), title.first,
                                  title.last,
                                  'http://%s%s' % (request.get_host(),
                                                   reverse('chronam_title_essays',
-                                                           kwargs={'lccn': title.lccn}),),))
+                                                          kwargs={'lccn': title.lccn}),),))
         return response
 
     elif format == "json":
@@ -186,14 +186,14 @@ def search_titles_results(request):
         writer.writerow(csv_header_labels)
         for title in titles:
             writer.writerow(map(lambda val: smart_str(val or '--'),
-                               (title.lccn, title.name, title.place_of_publication,
-                                title.start_year, title.end_year, title.publisher,
-                                title.edition, title.frequency,
-                                map(str, title.subjects.all()),
-                                set(map(lambda p: p.state, title.places.all())),
-                                map(lambda p: p.city, title.places.all()),
-                                str(title.country), map(str, title.languages.all()),
-                                title.oclc, title.holding_types)))
+                                (title.lccn, title.name, title.place_of_publication,
+                                 title.start_year, title.end_year, title.publisher,
+                                 title.edition, title.frequency,
+                                 map(str, title.subjects.all()),
+                                 set(map(lambda p: p.state, title.places.all())),
+                                 map(lambda p: p.city, title.places.all()),
+                                 str(title.country), map(str, title.languages.all()),
+                                 title.oclc, title.holding_types)))
         return response
 
     try:

@@ -78,7 +78,7 @@ class CTS(object):
             return None
         else:
             logger.error("%s %s with %s resulted in %s", method, url, params,
-                    r.status_code)
+                         r.status_code)
             return None
 
 

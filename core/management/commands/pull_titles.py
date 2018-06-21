@@ -18,22 +18,22 @@ class Command(BaseCommand):
     #TODO: Remove default from lccn
     option_list = BaseCommand.option_list + (
         make_option('-l', '--lccn',
-        action='store',
-        dest='lccn',
-        default=None,
-        help="Pass a specific lccn to pull down updates from Worldcat."),
+                    action='store',
+                    dest='lccn',
+                    default=None,
+                    help="Pass a specific lccn to pull down updates from Worldcat."),
 
         make_option('-o', '--oclc',
-        action='store',
-        dest='oclc',
-        default=None,
-        help="Pass an oclc number when you pass an lccn."),
+                    action='store',
+                    dest='oclc',
+                    default=None,
+                    help="Pass an oclc number when you pass an lccn."),
 
         make_option('-p', '--path',
-        action='store',
-        dest='path',
-        default='/worldcat_titles/',
-        help="Path var that is appeneded to settings.BIB_STORAGE to save to"),
+                    action='store',
+                    dest='path',
+                    default='/worldcat_titles/',
+                    help="Path var that is appeneded to settings.BIB_STORAGE to save to"),
     )
 
     def run_pull(self, path, lccn=None, oclc=None, query=None):

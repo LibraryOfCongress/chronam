@@ -10,10 +10,10 @@ LOGGER = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     purge_all = make_option('--all',
-                          action='store_true',
-                          dest='purge_all',
-                          default=False,
-                          help='Purge everything from the django cache')
+                            action='store_true',
+                            dest='purge_all',
+                            default=False,
+                            help='Purge everything from the django cache')
 
     option_list = BaseCommand.option_list + (purge_all,)
     help = "Purge the django cache after ingest/purge of a batch"

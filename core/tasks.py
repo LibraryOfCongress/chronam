@@ -103,8 +103,8 @@ def poll_cts():
         return None
 
     c = cts.CTS(settings.CTS_USERNAME,
-                  settings.CTS_PASSWORD,
-                  settings.CTS_URL)
+                settings.CTS_PASSWORD,
+                settings.CTS_URL)
 
     # 'ndnpstagingingestqueue', 'ingest.NdnpIngest.ingest'
     sr = c.next_service_request(settings.CTS_QUEUE,

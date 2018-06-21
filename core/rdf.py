@@ -58,7 +58,7 @@ def title_to_graph(t, g=None, include_issues=True):
         if start == '????':
             start = 'unknown'
         g.add((uri, DCTERMS['date'], Literal('%s/%s' % (start, end),
-            datatype=URIRef('http://www.loc.gov/standards/datetime#edt'))))
+                                             datatype=URIRef('http://www.loc.gov/standards/datetime#edt'))))
 
     g.add((uri, DCTERMS.hasFormat, URIRef(t.marc.url)))
     g.add((uri, RDFS.seeAlso, URIRef('http://lccn.loc.gov/%s' % t.lccn)))
@@ -83,7 +83,7 @@ def issue_to_graph(i, g=None):
     uri = abstract_uri(i)
     g.add((uri, RDF.type, BIBO['Issue']))
     g.add((uri, DCTERMS['title'], Literal('%s - %s' % (i.title.display_name,
-        i.date_issued))))
+                                                       i.date_issued))))
     g.add((uri, DCTERMS['issued'], Literal(i.date_issued, datatype=XSD.date)))
     g.add((uri, ORE['isAggregatedBy'], abstract_uri(i.title)))
     g.add((uri, ORE['isAggregatedBy'], abstract_uri(i.batch)))
@@ -129,7 +129,7 @@ def page_to_graph(p, g=None):
     g.add((uri, DCTERMS['issued'], Literal(p.issue.date_issued,
                                            datatype=XSD.date)))
     g.add((uri, DCTERMS['title'], Literal('%s - %s - %s' %
-        (p.issue.title.display_name, p.issue.date_issued, p.sequence))))
+                                          (p.issue.title.display_name, p.issue.date_issued, p.sequence))))
 
     for flickr_url in p.flickr_urls.all():
         g.add((uri, ORE.aggregates, flickr_url.value))
@@ -183,7 +183,7 @@ def awardee_to_graph(a):
         # important for resource maps that reference loc as dc:creator
         g.add((uri, FOAF['mbox'], Literal('help@loc.gov')))
         g.add((uri, OWL['sameAs'],
-            URIRef("http://dbpedia.org/resource/Library_of_Congress")))
+               URIRef("http://dbpedia.org/resource/Library_of_Congress")))
     return g
 
 

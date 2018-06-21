@@ -36,5 +36,5 @@ class Command(BaseCommand):
             print "batches that are missing pages:"
             for batch in missing_pages:
                 print "  %s has %s instead of %s pages" % (batch['name'],
-                        batch['my_page_count'], batch['page_count'])
+                                                           batch['my_page_count'], batch['page_count'])
             print

@@ -24,7 +24,7 @@ class TitleLoaderTests(TestCase):
         # load a title
         loader = TitleLoader()
         titlexml = os.path.join(os.path.dirname(chronam.core.__file__),
-            'test-data', 'title.xml')
+                                'test-data', 'title.xml')
         loader.load_file(titlexml)
 
     def test_title(self):
@@ -87,7 +87,7 @@ class TitleLoaderTests(TestCase):
         notes = list(t.notes.all())
         self.assertEqual(len(notes), 5)
         self.assertEqual(notes[0].text,
-            'Description based on: Vol. 1, no. 8 (Apr. 12, 1873).')
+                         'Description based on: Vol. 1, no. 8 (Apr. 12, 1873).')
 
     def test_preceeding_title_links(self):
         t = Title.objects.get(lccn='sn83030846')
@@ -111,11 +111,11 @@ class TitleLoaderTests(TestCase):
         links = list(t.succeeding_title_links.all())
         self.assertEqual(len(links), 3)
         self.assertEqual(links[0].name,
-            'Living issue and the new republic')
+                         'Living issue and the new republic')
         self.assertEqual(links[0].lccn, 'sn89071335')
         self.assertEqual(links[0].oclc, None)
         self.assertEqual(links[2].name,
-            'State temperance journal (Middletown, Conn.)')
+                         'State temperance journal (Middletown, Conn.)')
         self.assertEqual(links[2].lccn, 'sn92051309')
         self.assertEqual(links[2].oclc, '26109972')
 

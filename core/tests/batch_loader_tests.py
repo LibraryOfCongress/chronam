@@ -31,7 +31,7 @@ class BatchLoaderTest(TestCase):
         self.assertEqual(issue.edition, 1)
         self.assertEqual(issue.title.lccn, 'sn83045396')
         self.assertEqual(date.strftime(issue.date_issued, '%Y-%m-%d'),
-            '1911-09-17')
+                         '1911-09-17')
         self.assertEqual(len(issue.pages.all()), 56)
 
         page = issue.pages.all()[0]
@@ -82,7 +82,7 @@ class BatchLoaderTest(TestCase):
         self.assertTrue('essay' not in solr_doc)
 
         f = os.path.join(os.path.dirname(chronam.core.__file__), 'test-data',
-            'uuml_thys_ocr.txt')
+                         'uuml_thys_ocr.txt')
         self.assertEqual(solr_doc['ocr_eng'], file(f).read().decode('utf-8'))
 
         # purge the batch and make sure it's gone from the db

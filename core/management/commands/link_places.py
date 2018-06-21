@@ -72,10 +72,10 @@ class Command(BaseCommand):
         places_qs = models.Place.objects.filter(dbpedia__isnull=False)
         for p in places_qs.order_by('name'):
             json_src.append({'name': p.name,
-                         'dbpedia': p.dbpedia, 
-                         'geonames': p.geonames,
-                         'longitude': p.longitude,
-                         'latitude': p.latitude})
+                             'dbpedia': p.dbpedia, 
+                             'geonames': p.geonames,
+                             'longitude': p.longitude,
+                             'latitude': p.latitude})
             reset_queries()
         json.dump(json_src, file('core/fixtures/place_links.json', 'w'), indent=2)
         LOGGER.info("finished dumping place_links.json fixture")

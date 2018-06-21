@@ -569,7 +569,7 @@ def language_batches(request, language, page_number=1):
     if language != "eng":
         batches = models.Batch.objects.filter(
             issues__pages__ocr__language_texts__language__code=language
-            ).values('name').annotate(count=Count('name'))
+        ).values('name').annotate(count=Count('name'))
         paginator = Paginator(batches, 25)
         try:
             page = paginator.page(page_number)
@@ -587,7 +587,7 @@ def language_titles(request, language, page_number=1):
     if language != "eng":
         titles = models.Title.objects.filter(
             issues__pages__ocr__language_texts__language__code=language
-            ).values('lccn', 'issues__batch__name').annotate(count=Count('lccn'))
+        ).values('lccn', 'issues__batch__name').annotate(count=Count('lccn'))
         paginator = Paginator(titles, 25)
         try:
             page = paginator.page(page_number)
@@ -608,23 +608,23 @@ def language_pages(request, language, batch, title=None, page_number=1):
             pages = models.Page.objects.filter(
                 ocr__language_texts__language__code=language,
                 issue__title__lccn=title
-                ).values(
-                    'reel__number', 'issue__date_issued', 'issue__title__lccn',
-                    'issue__edition', 'sequence',
-                ).order_by(
-                    'reel__number', 'issue__date_issued',
-                    'sequence'
+            ).values(
+                'reel__number', 'issue__date_issued', 'issue__title__lccn',
+                'issue__edition', 'sequence',
+            ).order_by(
+                'reel__number', 'issue__date_issued',
+                'sequence'
             )
         else:
             pages = models.Page.objects.filter(
                 ocr__language_texts__language__code=language,
                 issue__batch__name=batch
-                ).values(
-                    'reel__number', 'issue__date_issued', 'issue__title__lccn',
-                    'issue__edition', 'sequence',
-                ).order_by(
-                    'reel__number', 'issue__title__lccn',
-                    'issue__date_issued', 'sequence'
+            ).values(
+                'reel__number', 'issue__date_issued', 'issue__title__lccn',
+                'issue__edition', 'sequence',
+            ).order_by(
+                'reel__number', 'issue__title__lccn',
+                'issue__date_issued', 'sequence'
             )
             path = 'reports/language_batch_pages.html'
         paginator = Paginator(pages, 25)

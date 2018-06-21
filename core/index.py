@@ -143,9 +143,9 @@ class SolrPaginator(Paginator):
         solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
         start = self.per_page * (number - 1)
         params = {"hl.snippets": 100, # TODO: make this unlimited
-            "hl.requireFieldMatch": 'true', # limits highlighting slop
-            "hl.maxAnalyzedChars": '102400', # increased from default 51200
-            }
+                  "hl.requireFieldMatch": 'true', # limits highlighting slop
+                  "hl.maxAnalyzedChars": '102400', # increased from default 51200
+                  }
         sort_field, sort_order = _get_sort(self.query.get('sort'), in_pages=True)
         solr_response = solr.query(self._q,
                                    fields=['id', 'title', 'date', 'sequence', 'edition_label', 'section_label'],

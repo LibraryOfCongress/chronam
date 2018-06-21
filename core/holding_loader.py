@@ -39,7 +39,7 @@ class HoldingLoader:
 
             if self.records_processed % 1000 == 0:
                 LOGGER.info("processed %sk records in %.2f seconds" %
-                             (self.records_processed / 1000, seconds))
+                            (self.records_processed / 1000, seconds))
 
         def load_xml_record(record):
             try:
@@ -52,7 +52,7 @@ class HoldingLoader:
 
             except Exception as e:
                 LOGGER.error("unable to load record %s: %s" %
-                              (self.records_processed, e))
+                             (self.records_processed, e))
                 LOGGER.exception(e)
                 self.errors += 1
 
@@ -69,7 +69,7 @@ class HoldingLoader:
             return titles
         except models.Title.DoesNotExist:
             LOGGER.error("Holding missing Title to link: record %s, oclc %s" %
-                          (self.records_processed, oclc))
+                         (self.records_processed, oclc))
             self.missing_title += 1
             self.errors += 1
             return None
@@ -81,7 +81,7 @@ class HoldingLoader:
             return inst
         except models.Institution.DoesNotExist:
             LOGGER.error("Holding missing Institution to link to: %s" %
-                          inst_code)
+                         inst_code)
             self.errors += 1
             return None
 

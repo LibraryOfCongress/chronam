@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
         for flickr_url, chronam_url in flickr_chronam_links(key):
             LOGGER.info("found flickr/chronam link: %s, %s" % 
-                         (flickr_url, chronam_url))
+                        (flickr_url, chronam_url))
 
             # use the page url to locate the Page model
             path = urlparse(chronam_url).path
@@ -38,7 +38,7 @@ class Command(BaseCommand):
                 create_count += 1
                 f.save()
                 LOGGER.info("updated page (%s) with flickr url (%s)" % 
-                          (page, flickr_url))
+                            (page, flickr_url))
             else:
                 LOGGER.info("already knew about %s" % flickr_url)
 
@@ -78,7 +78,7 @@ def chronam_url(photo):
 
     # some other photos might have a link in the textual description
     m = re.search('"(http://chroniclingamerica.loc.gov/.+?)"',
-    photo['photo']['description']['_content'])
+                  photo['photo']['description']['_content'])
     if m:
         return m.group(1)
 

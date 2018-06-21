@@ -10,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         cts = CTS(settings.CTS_USERNAME, settings.CTS_PASSWORD, settings.CTS_URL)
         for sr in cts.get_service_requests(settings.CTS_QUEUE, 
-                settings.CTS_SERVICE_TYPE):
+                                           settings.CTS_SERVICE_TYPE):
             bag_instance_id = sr.data['requestParameters']['baginstancekey']
             bag = cts.get_bag_instance(bag_instance_id)
             bag_dir = bag.data['filepath']

@@ -238,11 +238,11 @@ class BatchLoader(object):
             'string(.//mods:detail[@type="issue"]/mods:number[1])',
             namespaces=ns).strip()
         issue.edition = int(mods.xpath(
-                'string(.//mods:detail[@type="edition"]/mods:number[1])',
-                namespaces=ns))
+            'string(.//mods:detail[@type="edition"]/mods:number[1])',
+            namespaces=ns))
         issue.edition_label = mods.xpath(
-                'string(.//mods:detail[@type="edition"]/mods:caption[1])',
-                namespaces=ns).strip()
+            'string(.//mods:detail[@type="edition"]/mods:caption[1])',
+            namespaces=ns).strip()
 
         # parse issue date
         date_issued = mods.xpath('string(.//mods:dateIssued)', namespaces=ns)
@@ -300,12 +300,12 @@ class BatchLoader(object):
         page.number = mods.xpath(
             'string(.//mods:detail[@type="page number"])',
             namespaces=ns
-            ).strip()
+        ).strip()
 
         reel_number = mods.xpath(
             'string(.//mods:identifier[@type="reel number"])',
             namespaces=ns
-            ).strip()
+        ).strip()
         try:
             reel = models.Reel.objects.get(number=reel_number,
                                            batch=self.current_batch)
@@ -359,12 +359,12 @@ class BatchLoader(object):
         for fptr in div.xpath('./mets:fptr', namespaces=ns):
             file_id = fptr.attrib['FILEID']
             file_el = doc.xpath('.//mets:file[@ID="%s"]' % file_id,
-                namespaces=ns)[0]
+                                namespaces=ns)[0]
             file_type = file_el.attrib['USE']
 
             # get the filename relative to the storage location
             file_name = file_el.xpath('string(./mets:FLocat/@xlink:href)',
-                namespaces=ns)
+                                      namespaces=ns)
             file_name = urlparse.urljoin(doc.docinfo.URL, file_name)
             file_name = self.storage_relative_path(file_name)
 

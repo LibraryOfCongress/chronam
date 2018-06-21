@@ -13,10 +13,10 @@ LOGGER = logging.getLogger(__name__)
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('--skip-coordinates',
-                     action='store_false',
-                     dest='process_coordinates',
-                     default=True,
-                     help="Do not generate word coordinates"),
+                    action='store_false',
+                    dest='process_coordinates',
+                    default=True,
+                    help="Do not generate word coordinates"),
     )
     help = "queue a batch to be loaded"
     args = '<batch name>'
