@@ -1218,9 +1218,11 @@ class OcrDump(models.Model):
             "sha1": self.sha1,
             "url": "http://" + host + self.url
         }
+
         if serialize:
-            return json.dumps(i, indent=2)
-        return j
+            return json.dumps(j, indent=2)
+        else:
+            return j
 
     def __unicode__(self):
         return "path=%s size=%s sha1=%s" % (self.path, self.size, self.sha1)
