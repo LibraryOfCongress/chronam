@@ -19,6 +19,6 @@ class Command(BaseCommand):
             raise CommandError('Usage is queue_process_coordinates %s' % self.args)
         try:
             tasks.process_coordinates.delay(batch_name)
-        except Exception, e:
+        except Exception as e:
             LOGGER.exception(e)
             raise CommandError("unable to process coordinates. check the queue_load_batch log for clues")

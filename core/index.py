@@ -310,7 +310,7 @@ def get_titles_from_solr_documents(solr_response):
         try:
             title = models.Title.objects.get(lccn=lccn)
             results.append(title)
-        except models.Title.DoesNotExist, e:
+        except models.Title.DoesNotExist as e:
             pass # TODO: log exception
     return results
 
@@ -529,7 +529,7 @@ def index_title(title, solr=None):
     LOGGER.info("indexing title: lccn=%s", title.lccn)
     try:
         solr.add(**title.solr_doc)
-    except Exception, e:
+    except Exception as e:
         LOGGER.exception(e)
 
 def delete_title(title):

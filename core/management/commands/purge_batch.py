@@ -39,6 +39,6 @@ class Command(BaseCommand):
                 cursor = connection.cursor()
                 cursor.execute("OPTIMIZE TABLE core_ocr")
                 LOGGER.info("finished optimizing")
-        except BatchLoaderException, e:
+        except BatchLoaderException as e:
             LOGGER.exception(e)
             raise CommandError("unable to purge batch. check the log for clues")

@@ -36,7 +36,7 @@ class Command(BaseCommand):
             try: 
                 LOGGER.debug("looking up %s" % url)
                 graph.load(url)
-            except urllib2.HTTPError, e:
+            except urllib2.HTTPError as e:
                 LOGGER.error(e)
 
             # if we've got more than 3 assertions extract some stuff from 

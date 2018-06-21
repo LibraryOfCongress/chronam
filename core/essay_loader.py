@@ -68,7 +68,7 @@ def load_essay(essay_url, index=True):
         # load titles from web if not available
         try:
             title = Title.objects.get(lccn=lccn)
-        except Exception, e:
+        except Exception as e:
             management.call_command('load_titles', 'http://chroniclingamerica.loc.gov/lccn/%s/marc.xml' % lccn)
             title = Title.objects.get(lccn=lccn)
 

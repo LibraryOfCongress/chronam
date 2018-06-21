@@ -21,7 +21,7 @@ def process_coordinates(batch_dir):
         batch_loader = BatchLoader()
         batch_loader.process_coordinates(batch_dir)
         logger.info("processed batch %s", batch_dir)
-    except Exception, e:
+    except Exception as e:
         logger.exception("unable to process batch %s" % batch_dir)
 
 @task
@@ -34,7 +34,7 @@ def load_batch(batch_dir, service_request=None, process_coordinates=True):
             logger.info("marking service request as complete")
             service_request.complete()
 
-    except Exception, e:
+    except Exception as e:
         logger.exception("unable to load batch %s" % batch_dir)
         if service_request:
             logger.info("marking service request as failed")
@@ -54,7 +54,7 @@ def purge_batch(batch, service_request=None):
         management.call_command('purge_batch', batch, optimize=optimize)
         if service_request:
             service_request.complete()
-    except Exception, e:
+    except Exception as e:
         logger.exception("unable to purge batch: %s" % e)
         if service_request:
             service_request.fail(str(e))
@@ -86,7 +86,7 @@ def poll_purge():
                 logger.info('batch %s purged' % batch_name)
             else:
                 purge_batch(batch_name, req)
-        except Exception, e:
+        except Exception as e:
             logger.exception("purge of %s failed", batch_name)
             req.fail("purge of %s failed: %s" % (batch_name, e))
 
@@ -121,7 +121,7 @@ def poll_cts():
         logger.info("loading %s" % bag_dir)
         return load_batch.delay(bag_dir, sr)
 
-    except Exception, e:
+    except Exception as e:
         logger.exception("loading batch failed!")
         sr.fail(str(e))
 

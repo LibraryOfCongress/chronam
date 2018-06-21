@@ -43,7 +43,7 @@ class TitleLoader(object):
                     elif record.leader[6] == 'a':
                         self.load_bib(record)
 
-            except Exception, e:
+            except Exception as e:
                 LOGGER.error("unable to load: %s" % e)
                 LOGGER.exception(e)
                 self.errors += 1

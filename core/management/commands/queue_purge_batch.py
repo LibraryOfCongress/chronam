@@ -19,7 +19,7 @@ class Command(BaseCommand):
             raise CommandError('Usage is queue_purge_batch %s' % self.args)
         try:
             tasks.purge_batch.delay(batch_name)
-        except Exception, e:
+        except Exception as e:
             LOGGER.exception(e)
             raise CommandError("unable to queue purge batch. check the queue_purge_batch log for clues")
 

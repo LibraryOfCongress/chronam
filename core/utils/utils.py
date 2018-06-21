@@ -166,7 +166,7 @@ def get_page(lccn, date, edition, sequence):
     _year, _month, _day = date.split("-")
     try:
         _date = datetime.date(int(_year), int(_month), int(_day))
-    except ValueError, e:
+    except ValueError as e:
         raise Http404
     try:
         page = models.Page.objects.filter(
@@ -175,7 +175,7 @@ def get_page(lccn, date, edition, sequence):
             issue__edition=edition,
             sequence=sequence).order_by("-created").select_related()[0]
         return page
-    except IndexError, e:
+    except IndexError as e:
         raise Http404
 
 
@@ -188,17 +188,17 @@ def _get_tip(lccn, date, edition, sequence=1):
     _year, _month, _day = date.split("-")
     try:
         _date = datetime.date(int(_year), int(_month), int(_day))
-    except ValueError, e:
+    except ValueError as e:
         raise Http404
     try:
         issue = title.issues.filter(
             date_issued=_date, edition=edition).order_by("-created")[0]
-    except IndexError, e:
+    except IndexError as e:
         raise Http404
     try:
         page = issue.pages.filter(
             sequence=int(sequence)).order_by("-created")[0]
-    except IndexError, e:
+    except IndexError as e:
         raise Http404
     return title, issue, page
 

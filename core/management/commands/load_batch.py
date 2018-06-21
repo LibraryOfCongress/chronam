@@ -32,6 +32,6 @@ class Command(BaseCommand):
                              process_coordinates=options['process_coordinates'])
         try:
             batch = loader.load_batch(batch_name)
-        except BatchLoaderException, e:
+        except BatchLoaderException as e:
             LOGGER.exception(e)
             raise CommandError("unable to load batch. check the load_batch log for clues")

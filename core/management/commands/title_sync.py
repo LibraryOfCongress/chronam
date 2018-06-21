@@ -132,7 +132,7 @@ class Command(BaseCommand):
         # overlay place info harvested from dbpedia onto the places table
         try:
             self.load_place_links()
-        except Exception, e:
+        except Exception as e:
             LOGGER.exception(e)
 
         index.index_titles()

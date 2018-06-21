@@ -50,7 +50,7 @@ class HoldingLoader:
                 if record.leader[6] == 'y':
                     self.load_xml_holding(record)
 
-            except Exception, e:
+            except Exception as e:
                 LOGGER.error("unable to load record %s: %s" %
                               (self.records_processed, e))
                 LOGGER.exception(e)

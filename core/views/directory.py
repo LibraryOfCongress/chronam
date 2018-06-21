@@ -198,7 +198,7 @@ def search_titles_results(request):
  
     try:
         curr_page = int(request.GET.get('page', 1))
-    except ValueError, e:
+    except ValueError as e:
         curr_page = 1
 
     paginator = index.SolrTitlesPaginator(request.GET)
@@ -212,7 +212,7 @@ def search_titles_results(request):
 
     try:
         rows = int(request.GET.get('rows', '20'))
-    except ValueError, e:
+    except ValueError as e:
         rows = 20
 
     query = request.GET.copy()
