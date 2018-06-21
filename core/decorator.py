@@ -2,7 +2,6 @@ import hotshot
 import os
 import re
 import time
-import functools
 from functools import wraps
 
 from django.core import urlresolvers
@@ -22,11 +21,12 @@ class HttpResponseSeeOther(HttpResponse):
 class HttpResponseUnsupportedMediaType(HttpResponse):
     status_code = 415
 
-#replace with cache_control in django 1.10+
+
+# TODO: replace this with the standard Django 1.10+ cache_control decorator
 def add_cache_headers(ttl, shared_cache_maxage=None):
     """Decorate the provided function by adding Cache-Control and Expires headers to responses"""
     def decorator(function):
-        @functools.wraps(function)
+        @wraps(function)
         def decorated_function(*args, **kwargs):
             response = function(*args, **kwargs)
             cache.patch_response_headers(response, ttl)
@@ -36,6 +36,7 @@ def add_cache_headers(ttl, shared_cache_maxage=None):
         return decorated_function
 
     return decorator
+
 
 def rdf_view(f):
     def f1(request, **kwargs):
