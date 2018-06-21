@@ -57,7 +57,7 @@ def load_essay(essay_url, index=True):
     essay.modified = doc.find_all(property="dcterms:modified")[0]['content']
     essay.creator = _lookup_awardee(doc.find_all(property="dcterms:creator")[0]['content'])
     description = doc.find_all(property="dcterms:description")[0]
-    description = ''.join(map(str,description.contents))
+    description = ''.join(map(str, description.contents))
     essay.html = description
     essay.essay_editor_url = essay_url
     essay.save()  # so we can assign titles

@@ -16,7 +16,7 @@ class Command(BaseCommand):
     args = '<batch name>'
 
     def handle(self, batch_name, *args, **options):
-        if len(args)!=0:
+        if len(args) != 0:
             raise CommandError('Usage is queue_process_coordinates %s' % self.args)
         try:
             tasks.process_coordinates.delay(batch_name)

@@ -2,7 +2,7 @@ import home
 import image
 
 from search import search_pages_results, search_titles, \
-     search_titles_opensearch,  search_pages_opensearch, suggest_titles, \
+     search_titles_opensearch, search_pages_opensearch, suggest_titles, \
      search_pages_navigation, search_advanced
 
 from browse import issues, title_holdings, title_marc, \

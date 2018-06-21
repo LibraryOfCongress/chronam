@@ -27,7 +27,7 @@ class Command(BaseCommand):
             LOGGER.error("There is no valid holdings source folder defined.")
             set_holdings = ['To load holdings - Add a folder called "holdings"',
             'to the bib directory that is set in settings',
-            'or pass the location of holdings as an arguement to the loader.',]
+            'or pass the location of holdings as an arguement to the loader.', ]
             LOGGER.error(' '.join(set_holdings))
             return
 

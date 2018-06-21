@@ -16,7 +16,7 @@ class Command(BaseCommand):
     args = '<batch name>'
 
     def handle(self, batch_name, *args, **options):
-        if len(args)!=0:
+        if len(args) != 0:
             raise CommandError('Usage is queue_purge_batch %s' % self.args)
         try:
             tasks.purge_batch.delay(batch_name)

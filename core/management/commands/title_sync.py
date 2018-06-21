@@ -154,7 +154,7 @@ class Command(BaseCommand):
             try:
                 place = Place.objects.get(name=p['name'])
             except(Place.DoesNotExist):
-                place  = Place(name=p['name'])
+                place = Place(name=p['name'])
             place.longitude = p['longitude']
             place.latitude = p['latitude']
             place.geonames = p['geonames']

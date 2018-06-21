@@ -17,7 +17,7 @@ class BrowseTests(TestCase):
                 "/newspapers/": one_day,
                 "/essays/": one_day,
                 "/awardees/": one_day,
-                "/search/titles/" : one_day,
+                "/search/titles/": one_day,
                 "/batches/": never,
                 "/events/": never,
                 "/status": never,

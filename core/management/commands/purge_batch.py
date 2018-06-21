@@ -25,7 +25,7 @@ class Command(BaseCommand):
     args = '<batch_location>'
 
     def handle(self, batch_location=None, *args, **options):
-        if len(args)!=0:
+        if len(args) != 0:
             raise CommandError('Usage is purge_batch %s' % self.args)
 
         loader = BatchLoader()

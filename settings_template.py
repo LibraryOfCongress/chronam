@@ -60,7 +60,7 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 50,  # 50MB
             'backupCount': 5,
         },
-        'console':{
+        'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'simple',

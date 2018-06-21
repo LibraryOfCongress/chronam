@@ -27,7 +27,7 @@ ESCAPE_CHARS_RE = re.compile(r'(?<!\\)(?P<char>[&|+\-!(){}[\]^"~*?:])')
 def solr_escape(value):
     LOGGER.debug("value: %s", value)
     if not value:
-        value=""
+        value = ""
 
     """
     Escape un-escaped special characters and return escaped value.
@@ -90,7 +90,7 @@ class SolrPaginator(Paginator):
 
         self.overall_index = (self._cur_page - 1) * self.per_page + self._cur_index
 
-        self._ocr_list = ['ocr',]
+        self._ocr_list = ['ocr', ]
         self._ocr_list.extend(['ocr_%s' % l for l in settings.SOLR_LANGUAGES])
 
     def _get_count(self):
@@ -245,8 +245,8 @@ class SolrPaginator(Paginator):
         for i in range(0, len(objects), 2):
             h = objects[i]
             row = [h]
-            if i+1 < len(objects):
-                h = objects[i+1]
+            if i + 1 < len(objects):
+                h = objects[i + 1]
                 row.append(h)
             else:
                 row.append(None)
@@ -422,7 +422,7 @@ def page_search(d):
             q.append(') OR ' + query_join(solr_escape(d['ortext']).split(' '), ocr_lang))
         else:
             q.append(')')
-            for ocr  in ocrs:
+            for ocr in ocrs:
                 q.append('OR ' + query_join(solr_escape(d['ortext']).split(' '), ocr))
         q.append(')')
     if d.get('andtext', None):
@@ -598,7 +598,7 @@ def word_matches_for_page(page_id, words):
     if not isinstance(page_id, str):
         page_id = str(page_id)
 
-    ocr_list = ['ocr',]
+    ocr_list = ['ocr', ]
     ocr_list.extend(['ocr_%s' % l for l in settings.SOLR_LANGUAGES])
     ocrs = ' OR '.join([query_join(words, o) for o in ocr_list])
     q = 'id:%s AND (%s)' % (page_id, ocrs)

@@ -16,7 +16,7 @@ class Command(BaseCommand):
     args = '<batch_list_filename>'
 
     def handle(self, batch_list_filename, *args, **options):
-        if len(args)!=0:
+        if len(args) != 0:
             raise CommandError('Usage is process_coordinates %s' % self.args)
 
         loader = batch_loader.BatchLoader()

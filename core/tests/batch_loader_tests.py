@@ -22,7 +22,7 @@ class BatchLoaderTest(TestCase):
         self.assertEqual(batch.name, 'batch_uuml_thys_ver01')
         self.assertEqual(len(batch.issues.all()), 2)
 
-        title = Title.objects.get(lccn = 'sn83045396')
+        title = Title.objects.get(lccn='sn83045396')
         self.assertTrue(title.has_issues)
 
         issue = batch.issues.all()[0]

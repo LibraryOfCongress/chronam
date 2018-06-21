@@ -16,7 +16,7 @@ def home(request, date=None):
     context = RequestContext(request, {})
     context["crumbs"] = list(settings.BASE_CRUMBS)
     today = datetime.date.today()
-    context["date"] = date = today.replace(year=today.year-100)
+    context["date"] = date = today.replace(year=today.year - 100)
     context["pages"] = _frontpages(request, date)
     template = get_template("home.html")
     # note the date is handled on the client side in javascript

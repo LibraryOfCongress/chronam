@@ -18,7 +18,7 @@ class OCRHandler(ContentHandler):
         if tag == 'String':
             word = attrs.get("CONTENT")
             coord = (attrs.get('HPOS'), attrs.get('VPOS'),
-                     attrs.get('WIDTH'),attrs.get('HEIGHT'))
+                     attrs.get('WIDTH'), attrs.get('HEIGHT'))
 
             self._line.append(word)
 

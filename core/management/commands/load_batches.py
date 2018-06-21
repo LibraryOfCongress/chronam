@@ -25,12 +25,12 @@ class Command(BaseCommand):
     args = '<batch_list_filename>'
 
     def handle(self, batch_list_filename, *args, **options):
-        if len(args)!=0:
+        if len(args) != 0:
             raise CommandError('Usage is load_batch %s' % self.args)
 
         loader = batch_loader.BatchLoader()
-        loader.PROCESS_OCR=options['process_ocr']
-        loader.PROCESS_COORDINATES=options['process_coordinates']
+        loader.PROCESS_OCR = options['process_ocr']
+        loader.PROCESS_COORDINATES = options['process_coordinates']
 
         batch_list = file(batch_list_filename)
         LOGGER.info("batch_list_filename: %s" % batch_list_filename)

@@ -21,7 +21,7 @@ class Command(BaseCommand):
     args = '<batch_list_filename>'
 
     def handle(self, batch_list_filename, *args, **options):
-        if len(args)!=0:
+        if len(args) != 0:
             raise CommandError('Usage is diff_batch %s' % self.args)
 
         batches = set()
@@ -31,7 +31,7 @@ class Command(BaseCommand):
             batch_name = line.strip()
             LOGGER.info("batch_name: %s" % batch_name)
             parts = batch_name.split("_")
-            if len(parts)==4 and parts[0]=="batch":
+            if len(parts) == 4 and parts[0] == "batch":
                 batches.add(batch_name)
             else:
                 LOGGER.warning("invalid batch name '%s'" % batch_name)

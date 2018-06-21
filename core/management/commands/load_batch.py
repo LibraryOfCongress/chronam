@@ -26,7 +26,7 @@ class Command(BaseCommand):
     args = '<batch name>'
 
     def handle(self, batch_name, *args, **options):
-        if len(args)!=0:
+        if len(args) != 0:
             raise CommandError('Usage is load_batch %s' % self.args)
 
         loader = BatchLoader(process_ocr=options['process_ocr'],

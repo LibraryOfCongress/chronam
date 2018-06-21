@@ -11,7 +11,7 @@ class IndexTests(TestCase):
     Exercise some search form -> solr query translations
     """
     fixtures = ['ethnicities.json']
-    ocr_langs = ['ocr_%s' %l for l in settings.SOLR_LANGUAGES]
+    ocr_langs = ['ocr_%s' % l for l in settings.SOLR_LANGUAGES]
 
     def test_page_search_lccn(self):
         self.assertEqual(page_search(Q('lccn=sn83030214')),
@@ -48,9 +48,9 @@ class IndexTests(TestCase):
 
     def test_page_search_proxtext(self):
         q = ' OR '.join(['%s:"apples oranges"~10' % lang for lang in self.ocr_langs])
-        self.assertEqual(page_search(Q('proxtext=apples%20oranges&proxdistance=10')), u'+type:page +((ocr:("apples oranges"~10)^10000 ) OR %s )' %q)
+        self.assertEqual(page_search(Q('proxtext=apples%20oranges&proxdistance=10')), u'+type:page +((ocr:("apples oranges"~10)^10000 ) OR %s )' % q)
         q = ' OR '.join(['%s:"apples oranges"~5' % lang for lang in self.ocr_langs])
-        self.assertEqual(page_search(Q('proxtext=apples%20oranges')), u'+type:page +((ocr:("apples oranges"~5)^10000 ) OR %s )' %q)
+        self.assertEqual(page_search(Q('proxtext=apples%20oranges')), u'+type:page +((ocr:("apples oranges"~5)^10000 ) OR %s )' % q)
 
     def test_page_search_language(self):
         self.assertEqual(page_search(Q('proxtext=apples%20oranges&language=eng')), '+type:page +((ocr:("apples oranges"~5)^10000 AND ocr_eng:"apples oranges"~5 ) OR ocr_eng:"apples oranges"~5 )')

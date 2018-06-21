@@ -228,7 +228,7 @@ def search_titles_results(request):
     host = request.get_host()
     page_list = []
     for p in range(len(page.object_list)):
-        page_start = start+p
+        page_start = start + p
         page_list.append((page_start, page.object_list[p]))
 
     if format == 'atom':

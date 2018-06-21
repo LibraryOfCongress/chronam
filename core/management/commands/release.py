@@ -28,10 +28,10 @@ class Command(BaseCommand):
     help = "Updates (Resets if --reset option is used) release datetime on batches from one of following sources (in order of preference) 1. bag-info.txt, if found in the batch source 2. If path to a file is provided with the command, datetime is extracted from the file 3. current public feed 4. current server datetime"
 
     reset = make_option('--reset',
-        action = 'store_true',
-        dest = 'reset',
-        default = False,
-        help = 'reset release times to nothing before setting them again')
+        action='store_true',
+        dest='reset',
+        default=False,
+        help='reset release times to nothing before setting them again')
     option_list = BaseCommand.option_list + (reset, )
 
     def handle(self, *args, **options):

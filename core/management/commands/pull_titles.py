@@ -29,7 +29,7 @@ class Command(BaseCommand):
         default=None,
         help="Pass an oclc number when you pass an lccn."),
 
-        make_option('-p','--path',
+        make_option('-p', '--path',
         action='store',
         dest='path',
         default='/worldcat_titles/',

@@ -30,8 +30,7 @@ class Command(BaseCommand):
     )
 
     def handle(self, **options):
-        for title in Title.objects.filter(urls__value__icontains=
-                'chroniclingamerica'):
+        for title in Title.objects.filter(urls__value__icontains='chroniclingamerica'):
             record = pymarc.parse_xml_to_array(StringIO(title.marc.xml))[0]
             if record['245']['h'] == '[electronic resource].':
                 if options['pretend']:
