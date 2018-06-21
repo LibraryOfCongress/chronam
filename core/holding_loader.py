@@ -197,7 +197,7 @@ def _holdings_type(s):
             return "Microfilm Service Copy"
         # other values are classified as generic microform
         # m - Mixed generation
-        #u - Unknown
+        # u - Unknown
         # | - No attempt to code
         elif s[11] in ["m", "u", "|"]:
             return "Microform"
