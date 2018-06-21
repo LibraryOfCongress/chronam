@@ -1,8 +1,4 @@
-import hotshot
-import os
 import re
-import time
-import functools
 from functools import wraps
 
 from django.core import urlresolvers
@@ -22,11 +18,12 @@ class HttpResponseSeeOther(HttpResponse):
 class HttpResponseUnsupportedMediaType(HttpResponse):
     status_code = 415
 
-#replace with cache_control in django 1.10+
+
+# TODO: replace this with the standard Django 1.10+ cache_control decorator
 def add_cache_headers(ttl, shared_cache_maxage=None):
     """Decorate the provided function by adding Cache-Control and Expires headers to responses"""
     def decorator(function):
-        @functools.wraps(function)
+        @wraps(function)
         def decorated_function(*args, **kwargs):
             response = function(*args, **kwargs)
             cache.patch_response_headers(response, ttl)
@@ -36,6 +33,7 @@ def add_cache_headers(ttl, shared_cache_maxage=None):
         return decorated_function
 
     return decorator
+
 
 def rdf_view(f):
     def f1(request, **kwargs):
@@ -66,6 +64,7 @@ def rdf_view(f):
             return HttpResponseUnsupportedMediaType()
     return f1
 
+
 def opensearch_clean(f):
     """
     Some opensearch clients send along optional parameters from the opensearch
@@ -86,6 +85,7 @@ def opensearch_clean(f):
         return f(request, **kwargs)
     return f1
 
+
 def cors(f, *args, **kwargs):
     """
     Adds CORS header to allow a response to be loaded by JavaScript that
@@ -102,28 +102,3 @@ def cors(f, *args, **kwargs):
         response['Access-Control-Allow-Headers'] = 'X-requested-with'
         return response
     return new_f
-
-try:
-    PROFILE_LOG_BASE = settings.PROFILE_LOG_BASE
-except:
-    PROFILE_LOG_BASE = '/tmp'
-
-def profile(log_file):
-    if not os.path.isabs(log_file):
-        log_file = os.path.join(PROFILE_LOG_BASE, log_file)
-
-    def _outer(f):
-        def _inner(*args, **kwargs):
-            (base, ext) = os.path.splitext(log_file)
-            base = base + "-" + time.strftime("%Y%m%dT%H%M%S", time.gmtime())
-            final_log_file = base + ext
-
-            prof = hotshot.Profile(final_log_file)
-            try:
-                ret = prof.runcall(f, *args, **kwargs)
-            finally:
-                prof.close()
-            return ret
-
-        return _inner
-    return _outer
