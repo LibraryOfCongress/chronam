@@ -4,6 +4,7 @@ import re
 import time
 from functools import wraps
 
+from django.conf import settings
 from django.core import urlresolvers
 from django.http import HttpResponse
 from django.utils import cache, encoding
@@ -67,6 +68,7 @@ def rdf_view(f):
             return HttpResponseUnsupportedMediaType()
     return f1
 
+
 def opensearch_clean(f):
     """
     Some opensearch clients send along optional parameters from the opensearch
@@ -87,6 +89,7 @@ def opensearch_clean(f):
         return f(request, **kwargs)
     return f1
 
+
 def cors(f, *args, **kwargs):
     """
     Adds CORS header to allow a response to be loaded by JavaScript that
@@ -104,10 +107,12 @@ def cors(f, *args, **kwargs):
         return response
     return new_f
 
+
 try:
     PROFILE_LOG_BASE = settings.PROFILE_LOG_BASE
-except:
+except AttributeError:
     PROFILE_LOG_BASE = '/tmp'
+
 
 def profile(log_file):
     if not os.path.isabs(log_file):
