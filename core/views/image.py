@@ -104,8 +104,8 @@ def page_image_tile(request, lccn, date, edition, sequence,
     except IOError as e:
         return HttpResponseServerError("Unable to create image tile: %s" % e)
 
-    width = min(width, (x2-x1))
-    height = min(height, (y2-y1))
+    width = min(width, (x2 - x1))
+    height = min(height, (y2 - y1))
 
     c = im.crop((x1, y1, x2, y2))
     f = c.resize((width, height))

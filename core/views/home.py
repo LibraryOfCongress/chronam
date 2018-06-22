@@ -11,11 +11,12 @@ from chronam.core import models
 from chronam.core import forms
 from chronam.core.decorator import add_cache_headers
 
+
 def home(request, date=None):
     context = RequestContext(request, {})
     context["crumbs"] = list(settings.BASE_CRUMBS)
     today = datetime.date.today()
-    context["date"] = date = today.replace(year=today.year-100)
+    context["date"] = date = today.replace(year=today.year - 100)
     context["pages"] = _frontpages(request, date)
     template = get_template("home.html")
     # note the date is handled on the client side in javascript
@@ -59,6 +60,7 @@ def frontpages(request, date):
         raise Http404
     results = _frontpages(request, date)
     return HttpResponse(json.dumps(results), content_type="application/json")
+
 
 @add_cache_headers(settings.METADATA_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def tabs(request, date=None):

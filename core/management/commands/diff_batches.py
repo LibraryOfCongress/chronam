@@ -6,13 +6,14 @@ from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
 
 from chronam.core import models
-    
+
 LOGGER = logging.getLogger(__name__)
+
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
-        make_option('--skip-process-ocr', 
-                    action='store_false', 
+        make_option('--skip-process-ocr',
+                    action='store_false',
                     dest='process_ocr', default=True,
                     help='Do not generate ocr, and index'),
     )
@@ -20,7 +21,7 @@ class Command(BaseCommand):
     args = '<batch_list_filename>'
 
     def handle(self, batch_list_filename, *args, **options):
-        if len(args)!=0:
+        if len(args) != 0:
             raise CommandError('Usage is diff_batch %s' % self.args)
 
         batches = set()
@@ -30,11 +31,10 @@ class Command(BaseCommand):
             batch_name = line.strip()
             LOGGER.info("batch_name: %s" % batch_name)
             parts = batch_name.split("_")
-            if len(parts)==4 and parts[0]=="batch":
+            if len(parts) == 4 and parts[0] == "batch":
                 batches.add(batch_name)
             else:
                 LOGGER.warning("invalid batch name '%s'" % batch_name)
-
 
         current_batches = set()
         for batch in models.Batch.objects.all().order_by('name'):

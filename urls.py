@@ -27,8 +27,8 @@ sitemaps = {
 }
 
 # replace it with decorated version
-sitemap_index_cached = add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS) (sitemap_index)
-subsitemap_index_cached = add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS) (subsitemap_index)
+sitemap_index_cached = add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(sitemap_index)
+subsitemap_index_cached = add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(subsitemap_index)
 
 urlpatterns = [
     url(r'^sitemap\.xml$', sitemap_index_cached, {'sitemaps': sitemaps}),
@@ -36,15 +36,15 @@ urlpatterns = [
         name='sitemaps'),
     url(r'^healthz$', views.static.healthz, name='health-check'),
     url(r'^$',
-        add_cache_headers(settings.DEFAULT_TTL_SECONDS) (views.home.home),
+        add_cache_headers(settings.DEFAULT_TTL_SECONDS)(views.home.home),
         name="chronam_home"),
 
     url(r'^(?P<date>\d{4}-\d{2}-\d{2})/$',
-        add_cache_headers(settings.DEFAULT_TTL_SECONDS) (views.home.home),
+        add_cache_headers(settings.DEFAULT_TTL_SECONDS)(views.home.home),
         name="chronam_home_date"),
 
     url(r'^frontpages/(?P<date>\d{4}-\d{1,2}-\d{1,2}).json$',
-        add_cache_headers(settings.DEFAULT_TTL_SECONDS) (views.home.frontpages),
+        add_cache_headers(settings.DEFAULT_TTL_SECONDS)(views.home.frontpages),
         name="chronam_frontpages_date_json"),
 
     url(r'^tabs$',
@@ -52,36 +52,36 @@ urlpatterns = [
         name="chronam_tabs"),
 
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/thumbnail.jpg$',
-        add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS) (views.image.thumbnail),
+        add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(views.image.thumbnail),
         name="chronam_page_thumbnail"),
 
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/medium.jpg$',
-        add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS) (views.image.medium),
+        add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(views.image.medium),
         name="chronam_page_medium"),
 
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/image_813x1024_from_0,0_to_6504,8192.jpg
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/image_(?P<width>\d+)x(?P<height>\d+)_from_(?P<x1>\d+),(?P<y1>\d+)_to_(?P<x2>\d+),(?P<y2>\d+).jpg$',
-        add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS) (views.image.page_image_tile),
+        add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(views.image.page_image_tile),
         name="chronam_page_image_tile"),
 
     # example: /tiles/batch_dlc_jamaica_ver01/data/sn83030214/00175042143/1903051701/0299.jp2/image_813x1024_from_0,0_to_6504,8192.jpg
     url(r'^images/tiles/(?P<path>.+)/image_(?P<width>\d+)x(?P<height>\d+)_from_(?P<x1>\d+),(?P<y1>\d+)_to_(?P<x2>\d+),(?P<y2>\d+).jpg$',
-        add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS) (views.image.image_tile),
+        add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(views.image.image_tile),
         name="chronam_image_tile"),
 
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/image_813x1024.jpg
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/image_(?P<width>\d+)x(?P<height>\d+).jpg$',
-        add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS) (views.image.page_image),
+        add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(views.image.page_image),
         name="chronam_page_image"),
 
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/coordinates/
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/coordinates/$',
-        add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS) (views.image.coordinates),
+        add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(views.image.coordinates),
         name="chronam_page_coordinates"),
 
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/coordinates/;words=corn+peas+cigars
     url(r'^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/coordinates/;words=(?P<words>.+)$',
-        add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS) (views.image.coordinates),
+        add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(views.image.coordinates),
         name="chronam_page_coordinates_words"),
 ]
 

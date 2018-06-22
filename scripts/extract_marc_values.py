@@ -3,7 +3,7 @@ Demo of an implementation of the pymarc library found here:
 http://pypi.python.org/pypi/pymarc/
 
 What does this script do?
-This script returns a list of sample values for a directory of marc records. 
+This script returns a list of sample values for a directory of marc records.
 You could a adjust to return all if needed.
 
 To run this file: python extract_cntry_from_worldcatrecs.py $path_to_bib_folder $FIELD $SUBFIELD
@@ -38,6 +38,7 @@ except IndexError:
 
 values = []
 
+
 def parse_record(record, field=FIELD, subfield=SUBFIELD):
     value = extract(record, field, subfield)
     if value:
@@ -45,6 +46,7 @@ def parse_record(record, field=FIELD, subfield=SUBFIELD):
         if not rec_id:
             rec_id = extract(record, '004')
         values.append((rec_id, value))
+
 
 if __name__ == '__main__':
     if os.path.isdir(SOURCE):
@@ -56,20 +58,18 @@ if __name__ == '__main__':
         map_xml(parse_record, open(SOURCE, 'r'))
 
     # all values
-    #for value in values:
+    # for value in values:
     #    print str(value[0]), ',',value[1]
 
     total = len(values)
 
-    #Get a sample of 50 random values for that field
+    # Get a sample of 50 random values for that field
     for i in range(50):
         try:
-            random_value = choice(values) 
+            random_value = choice(values)
             values.remove(random_value)
             print ','.join([random_value[0], random_value[1]])
         except IndexError:
             continue
 
-    print "TOTAL # OF RECORDS: %s" % total 
-    
-
+    print "TOTAL # OF RECORDS: %s" % total

@@ -1,7 +1,6 @@
 import re
 import math
 import logging
-from urllib import urlencode
 import datetime
 from urllib import urlencode, unquote
 
@@ -23,10 +22,12 @@ PROX_DISTANCE_DEFAULT = 5
 # http://groups.google.com/group/solrpy/browse_thread/thread/f4437b885ecb0037?pli=1
 
 ESCAPE_CHARS_RE = re.compile(r'(?<!\\)(?P<char>[&|+\-!(){}[\]^"~*?:])')
+
+
 def solr_escape(value):
     LOGGER.debug("value: %s", value)
     if not value:
-        value=""
+        value = ""
 
     """
     Escape un-escaped special characters and return escaped value.
@@ -41,15 +42,18 @@ def solr_escape(value):
 
 # TODO: prefix functions that are intended for local use only with _
 
+
 def page_count():
     solr = SolrConnection(settings.SOLR)
     return solr.query('type:page', fields=['id']).numFound
+
 
 def title_count():
     solr = SolrConnection(settings.SOLR)
     return solr.query('type:title', fields=['id']).numFound
 
 # TODO: use solr.SolrPaginator and update or remove SolrPaginator
+
 
 class SolrPaginator(Paginator):
     """
@@ -86,13 +90,13 @@ class SolrPaginator(Paginator):
 
         self.overall_index = (self._cur_page - 1) * self.per_page + self._cur_index
 
-        self._ocr_list = ['ocr',]
+        self._ocr_list = ['ocr', ]
         self._ocr_list.extend(['ocr_%s' % l for l in settings.SOLR_LANGUAGES])
 
     def _get_count(self):
         "Returns the total number of objects, across all pages."
         if self._count is None:
-            solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
+            solr = SolrConnection(settings.SOLR)  # TODO: maybe keep connection around?
             solr_response = solr.query(self._q, fields=['id'])
             self._count = int(solr_response.results.numFound)
         return self._count
@@ -111,7 +115,6 @@ class SolrPaginator(Paginator):
             p_page = previous_overall_index / self.per_page + 1
             p_index = previous_overall_index % self.per_page
             o = self.page(p_page).object_list[p_index]
-            q = self.query.copy()
             return self.highlight_url(o.url, o.words, p_page, p_index)
         else:
             return None
@@ -137,12 +140,12 @@ class SolrPaginator(Paginator):
         number = self.validate_number(number)
 
         # figure out the solr query and execute it
-        solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
+        solr = SolrConnection(settings.SOLR)  # TODO: maybe keep connection around?
         start = self.per_page * (number - 1)
-        params = {"hl.snippets": 100, # TODO: make this unlimited
-            "hl.requireFieldMatch": 'true', # limits highlighting slop
-            "hl.maxAnalyzedChars": '102400', # increased from default 51200
-            }
+        params = {"hl.snippets": 100,  # TODO: make this unlimited
+                  "hl.requireFieldMatch": 'true',  # limits highlighting slop
+                  "hl.maxAnalyzedChars": '102400',  # increased from default 51200
+                  }
         sort_field, sort_order = _get_sort(self.query.get('sort'), in_pages=True)
         solr_response = solr.query(self._q,
                                    fields=['id', 'title', 'date', 'sequence', 'edition_label', 'section_label'],
@@ -170,7 +173,6 @@ class SolrPaginator(Paginator):
             pages.append(page)
 
         return Page(pages, number, self)
-
 
     def pages(self):
         """
@@ -221,11 +223,8 @@ class SolrPaginator(Paginator):
         if d.get('phrasetext', None):
             parts.append('the phrase "%s"' % d['phrasetext'])
         if d.get('proxtext', None):
-            proxdistance = d.get('proxdistance', PROX_DISTANCE_DEFAULT)
             parts.append(d['proxtext'])
         return parts
-
-
 
     # TODO: see ticket #176
     # i think this can be removed if the search pages results view uses
@@ -243,8 +242,8 @@ class SolrPaginator(Paginator):
         for i in range(0, len(objects), 2):
             h = objects[i]
             row = [h]
-            if i+1 < len(objects):
-                h = objects[i+1]
+            if i + 1 < len(objects):
+                h = objects[i + 1]
                 row.append(h)
             else:
                 row.append(None)
@@ -301,8 +300,8 @@ def get_titles_from_solr_documents(solr_response):
     solr_response: search result returned from SOLR in response to
     title search.
 
-    This function turns SOLR documents into chronam.models.Title 
-    instances 
+    This function turns SOLR documents into chronam.models.Title
+    instances
     """
     lccns = [d['lccn'] for d in solr_response.results]
     results = []
@@ -310,8 +309,8 @@ def get_titles_from_solr_documents(solr_response):
         try:
             title = models.Title.objects.get(lccn=lccn)
             results.append(title)
-        except models.Title.DoesNotExist, e:
-            pass # TODO: log exception
+        except models.Title.DoesNotExist:
+            pass  # TODO: log exception
     return results
 
 
@@ -320,13 +319,13 @@ def get_solr_request_params_from_query(query):
     fields = ['id', 'title', 'date', 'sequence', 'edition_label', 'section_label']
     sort_field, sort_order = _get_sort(query.get('sort'))
     return q, fields, sort_field, sort_order
- 
+
 
 def execute_solr_query(query, fields, sort, sort_order, rows, start):
-    # default arg_separator - underscore wont work if fields to facet on 
+    # default arg_separator - underscore wont work if fields to facet on
     # themselves have underscore in them
-    solr = SolrConnection(settings.SOLR) # TODO: maybe keep connection around?
-    solr_response = solr.query(query, 
+    solr = SolrConnection(settings.SOLR)  # TODO: maybe keep connection around?
+    solr_response = solr.query(query,
                                fields=['lccn', 'title',
                                        'edition',
                                        'place_of_publication',
@@ -337,6 +336,7 @@ def execute_solr_query(query, fields, sort, sort_order, rows, start):
                                sort_order=sort_order,
                                start=start)
     return solr_response
+
 
 def title_search(d):
     """
@@ -382,6 +382,7 @@ def title_search(d):
 
     return q
 
+
 def page_search(d):
     """
     Pass in form data for a given page search, and get back
@@ -391,8 +392,6 @@ def page_search(d):
 
     if d.get('lccn', None):
         q.append(query_join(d.getlist('lccn'), 'lccn'))
-
-
 
     if d.get('state', None):
         q.append(query_join(d.getlist('state'), 'state'))
@@ -418,7 +417,7 @@ def page_search(d):
             q.append(') OR ' + query_join(solr_escape(d['ortext']).split(' '), ocr_lang))
         else:
             q.append(')')
-            for ocr  in ocrs:
+            for ocr in ocrs:
                 q.append('OR ' + query_join(solr_escape(d['ortext']).split(' '), ocr))
         q.append(')')
     if d.get('andtext', None):
@@ -459,6 +458,7 @@ def page_search(d):
         q.append('+sequence:"%s"' % d['sequence'])
     return ' '.join(q)
 
+
 def query_join(values, field, and_clause=False):
     """
     helper to create a chunk of a lucene query, based on
@@ -474,7 +474,6 @@ def query_join(values, field, and_clause=False):
 
     # quote values
     values = ['"%s"' % v for v in values]
-
 
     # add + to the beginnging of each value if we are doing an AND clause
     if and_clause:
@@ -492,7 +491,7 @@ def query_join(values, field, and_clause=False):
 
 def find_words(s):
     ems = re.findall('<em>.+?</em>', s)
-    words = map(lambda em: em[4:-5], ems) # strip <em> and </em>
+    words = map(lambda em: em[4:-5], ems)  # strip <em> and </em>
     return words
 
 
@@ -512,7 +511,7 @@ def index_titles(since=None):
     count = 0
     while True:
         row = cursor.fetchone()
-        if row == None:
+        if row is None:
             break
         title = models.Title.objects.get(lccn=row[0])
         index_title(title, solr)
@@ -523,20 +522,23 @@ def index_titles(since=None):
             solr.commit()
     solr.commit()
 
+
 def index_title(title, solr=None):
-    if solr==None:
+    if solr is None:
         solr = SolrConnection(settings.SOLR)
     LOGGER.info("indexing title: lccn=%s", title.lccn)
     try:
         solr.add(**title.solr_doc)
-    except Exception, e:
+    except Exception as e:
         LOGGER.exception(e)
+
 
 def delete_title(title):
     solr = SolrConnection(settings.SOLR)
     q = '+type:title +id:%s' % title.solr_doc['id']
-    r = solr.delete_query(q)
+    solr.delete_query(q)
     LOGGER.info("deleted title %s from the index", title)
+
 
 def index_missing_pages():
     """
@@ -554,6 +556,7 @@ def index_missing_pages():
         page.save()
     solr.commit()
 
+
 def index_pages():
     """index all the pages that are modeled in the database
     """
@@ -564,7 +567,7 @@ def index_pages():
     count = 0
     while True:
         row = cursor.fetchone()
-        if row == None:
+        if row is None:
             break
         page = models.Page.objects.get(id=row[0])
         LOGGER.info("[%s] indexing page: %s", count, page.url)
@@ -573,6 +576,7 @@ def index_pages():
         if count % 100 == 0:
             reset_queries()
     solr.commit()
+
 
 def word_matches_for_page(page_id, words):
     """
@@ -588,14 +592,14 @@ def word_matches_for_page(page_id, words):
     if not isinstance(page_id, str):
         page_id = str(page_id)
 
-    ocr_list = ['ocr',]
+    ocr_list = ['ocr', ]
     ocr_list.extend(['ocr_%s' % l for l in settings.SOLR_LANGUAGES])
     ocrs = ' OR '.join([query_join(words, o) for o in ocr_list])
     q = 'id:%s AND (%s)' % (page_id, ocrs)
     params = {"hl.snippets": 100, "hl.requireFieldMatch": 'true', "hl.maxAnalyzedChars": '102400'}
     response = solr.query(q, fields=['id'], highlight=ocr_list, **params)
 
-    if not response.highlighting.has_key(page_id):
+    if page_id not in response.highlighting:
         return []
 
     words = set()
@@ -614,7 +618,7 @@ def commit():
 def _get_sort(sort, in_pages=False):
     sort_field = sort_order = None
     if sort == 'state':
-        sort_field = 'country' # odd artifact of Title model
+        sort_field = 'country'  # odd artifact of Title model
         sort_order = 'asc'
     elif sort == 'title':
         # important to sort on title_facet since it's the original
@@ -630,6 +634,7 @@ def _get_sort(sort, in_pages=False):
         sort_order = 'asc'
     return sort_field, sort_order
 
+
 def _expand_ethnicity(e):
     """
     takes an ethnicity string, expands it out the query using the
@@ -641,6 +646,7 @@ def _expand_ethnicity(e):
         parts.append('subject:"%s"' % s.synonym)
     q = ' OR '.join(parts)
     return "(" + q + ")"
+
 
 def _solrize_date(d, is_start=True):
     """
@@ -681,13 +687,14 @@ def _solrize_date(d, is_start=True):
     else:
         return None
 
+
 def get_page_text(page):
-   no_text = ["Text not available"]
-   solr = SolrConnection(settings.SOLR)
-   query = 'id:"%s"' % page.url
-   solr_results = solr.query(query)
-   results_attribute = getattr(solr_results, 'results', None)
-   if isinstance(results_attribute, list) and len(results_attribute) > 0:
-       return results_attribute[0].get('ocr', no_text)
-   else:
-       return no_text
+    no_text = ["Text not available"]
+    solr = SolrConnection(settings.SOLR)
+    query = 'id:"%s"' % page.url
+    solr_results = solr.query(query)
+    results_attribute = getattr(solr_results, 'results', None)
+    if isinstance(results_attribute, list) and len(results_attribute) > 0:
+        return results_attribute[0].get('ocr', no_text)
+    else:
+        return no_text

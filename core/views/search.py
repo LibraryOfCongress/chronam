@@ -21,12 +21,12 @@ def search_pages_paginator(request):
     # front page only
     try:
         sequence = int(request.GET.get('sequence', '0'))
-    except ValueError, e:
+    except ValueError:
         sequence = 0
     # set results per page value
     try:
         rows = int(request.GET.get('rows', '20'))
-    except ValueError, e:
+    except ValueError:
         rows = 20
     q = request.GET.copy()
     q['rows'] = rows

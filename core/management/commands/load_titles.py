@@ -12,15 +12,16 @@ from chronam.core.models import Title
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     help = "Load a marcxml file of title records"
     args = '<location of marcxml>'
     option_list = BaseCommand.option_list + (
         make_option('--skip-index',
-        action='store_true',
-        dest='skip_index',
-        default=False,
-        help="\
+                    action='store_true',
+                    dest='skip_index',
+                    default=False,
+                    help="\
                 Skip the index process. Use this if you call this from \
                 another process such as 'chronam_sync'. If you call this \
                 directly, you don't want to use this flag. \
@@ -47,7 +48,6 @@ class Command(BaseCommand):
             LOGGER.info("indexing new titles")
             index_titles(since=self.xml_start)
 
-        
         return results
 
     def add_results(self, results):
@@ -94,7 +94,7 @@ class Command(BaseCommand):
                 results = None
                 xml_file_path = os.path.join(marc_xml_source, xml_file)
                 results = self.xml_file_handler(xml_file_path, skip_index)
-                total_results = self.add_results(results)
+                self.add_results(results)
                 self.files_processed += 1
 
             self.log_stats()

@@ -3,6 +3,7 @@ from django.conf import settings
 
 from chronam.core.cts import CTS
 
+
 class CTSTest(TestCase):
     VERIFY_SSL = False
 
@@ -16,15 +17,15 @@ class CTSTest(TestCase):
         self.assertTrue(settings.CTS_SERVICE_TYPE)
 
     def test_project(self):
-        cts = CTS(settings.CTS_USERNAME, 
-                  settings.CTS_PASSWORD, 
+        cts = CTS(settings.CTS_USERNAME,
+                  settings.CTS_PASSWORD,
                   settings.CTS_URL,
                   CTSTest.VERIFY_SSL)
-        project = cts.get_project(settings.CTS_PROJECT_ID)
+        cts.get_project(settings.CTS_PROJECT_ID)
 
     def test_bags(self):
-        cts = CTS(settings.CTS_USERNAME, 
-                  settings.CTS_PASSWORD, 
+        cts = CTS(settings.CTS_USERNAME,
+                  settings.CTS_PASSWORD,
                   settings.CTS_URL,
                   CTSTest.VERIFY_SSL)
         project = cts.get_project(settings.CTS_PROJECT_ID)
@@ -34,13 +35,12 @@ class CTSTest(TestCase):
         self.assertTrue(bag.data['id'])
 
     def test_bag_instances(self):
-        cts = CTS(settings.CTS_USERNAME, 
-                  settings.CTS_PASSWORD, 
+        cts = CTS(settings.CTS_USERNAME,
+                  settings.CTS_PASSWORD,
                   settings.CTS_URL,
                   CTSTest.VERIFY_SSL)
         project = cts.get_project(settings.CTS_PROJECT_ID)
         bag = list(project.get_bags())[0]
-
 
         instances = list(bag.get_bag_instances())
         self.assertTrue(len(instances) > 0)

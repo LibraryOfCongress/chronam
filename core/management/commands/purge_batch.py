@@ -10,13 +10,14 @@ from django.core.management.base import BaseCommand, CommandError
 from solr import SolrConnection
 
 from chronam.core.batch_loader import BatchLoader, BatchLoaderException
-    
+
 LOGGER = logging.getLogger(__name__)
+
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
-        make_option('--no-optimize', 
-                    action='store_false', 
+        make_option('--no-optimize',
+                    action='store_false',
                     dest='optimize', default=True,
                     help='Do not optimize Solr and MySQL after purge'),
     )
@@ -24,7 +25,7 @@ class Command(BaseCommand):
     args = '<batch_location>'
 
     def handle(self, batch_location=None, *args, **options):
-        if len(args)!=0:
+        if len(args) != 0:
             raise CommandError('Usage is purge_batch %s' % self.args)
 
         loader = BatchLoader()
@@ -39,6 +40,6 @@ class Command(BaseCommand):
                 cursor = connection.cursor()
                 cursor.execute("OPTIMIZE TABLE core_ocr")
                 LOGGER.info("finished optimizing")
-        except BatchLoaderException, e:
+        except BatchLoaderException as e:
             LOGGER.exception(e)
             raise CommandError("unable to purge batch. check the log for clues")

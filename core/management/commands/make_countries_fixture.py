@@ -8,6 +8,7 @@ except ImportError:
 
 from django.core.management.base import BaseCommand
 
+
 class Command(BaseCommand):
     help = "loads MARC Country list XML from the web, and dumps JSON fixture to stdout"
 
@@ -21,8 +22,7 @@ class Command(BaseCommand):
             name = country.findtext('./{info:lc/xmlns/codelist-v1}name')
             code = country.findtext('./{info:lc/xmlns/codelist-v1}code')
             region = country.findtext('./{info:lc/xmlns/codelist-v1}region')
-            countries.append({'pk': code, 'model': 'core.countries', 
+            countries.append({'pk': code, 'model': 'core.countries',
                               'fields': {'name': name, 'region': region}})
 
         print json.dumps(countries, indent=2)
-

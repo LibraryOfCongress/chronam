@@ -7,6 +7,7 @@ import requests
 
 logger = logging.getLogger(__name__)
 
+
 class CTS(object):
 
     def __init__(self, username, password, base_url, verify_ssl=True):
@@ -58,7 +59,7 @@ class CTS(object):
     def _request(self, url, method='get', params={}, data=None):
         headers = {"accept": "application/json"}
         url = urlparse.urljoin(self.base_url, url)
-        if data != None:
+        if data is not None:
             data = urllib.urlencode(data)
             headers["content-type"] = "application/x-www-form-urlencoded"
 
@@ -77,7 +78,7 @@ class CTS(object):
             return None
         else:
             logger.error("%s %s with %s resulted in %s", method, url, params,
-                    r.status_code)
+                         r.status_code)
             return None
 
 

@@ -36,11 +36,11 @@ if j2k:
 
             width, height = 640, 480
             rows, cols, nChannels, bpp, data = j2k.image_tile_raw(filename,
-                                                                 width,
-                                                                 height,
-                                                                 0, 0,
-                                                                 2 * width,
-                                                                 2 * height)
+                                                                  width,
+                                                                  height,
+                                                                  0, 0,
+                                                                  2 * width,
+                                                                  2 * height)
 
             im = Image.frombuffer("L", (cols, rows), data, "raw", "L", 0, 1)
 

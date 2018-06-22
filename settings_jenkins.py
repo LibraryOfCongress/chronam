@@ -8,8 +8,8 @@ DATABASES = {
         'NAME': 'chronam',
         'USER': 'chronam',
         'PASSWORD': 'chronam',
-        }
     }
+}
 
 ESSAYS_FEED = "http://rdccavld04.loctest.gov/feed/"
 

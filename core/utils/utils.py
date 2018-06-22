@@ -164,10 +164,12 @@ def get_page(lccn, date, edition, sequence):
     """
 
     _year, _month, _day = date.split("-")
+
     try:
         _date = datetime.date(int(_year), int(_month), int(_day))
-    except ValueError, e:
+    except ValueError:
         raise Http404
+
     try:
         page = models.Page.objects.filter(
             issue__title__lccn=lccn,
@@ -175,7 +177,7 @@ def get_page(lccn, date, edition, sequence):
             issue__edition=edition,
             sequence=sequence).order_by("-created").select_related()[0]
         return page
-    except IndexError, e:
+    except IndexError:
         raise Http404
 
 
@@ -186,20 +188,24 @@ def _get_tip(lccn, date, edition, sequence=1):
     """
     title = get_object_or_404(models.Title, lccn=lccn)
     _year, _month, _day = date.split("-")
+
     try:
         _date = datetime.date(int(_year), int(_month), int(_day))
-    except ValueError, e:
+    except ValueError:
         raise Http404
+
     try:
         issue = title.issues.filter(
             date_issued=_date, edition=edition).order_by("-created")[0]
-    except IndexError, e:
+    except IndexError:
         raise Http404
+
     try:
         page = issue.pages.filter(
             sequence=int(sequence)).order_by("-created")[0]
-    except IndexError, e:
+    except IndexError:
         raise Http404
+
     return title, issue, page
 
 
@@ -276,6 +282,7 @@ def validate_bib_dir():
         return settings.BIB_STORAGE
     else:
         return None
+
 
 def add_cache_tag(response, tag_name):
     """

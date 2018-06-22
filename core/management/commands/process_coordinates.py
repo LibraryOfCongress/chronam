@@ -8,6 +8,7 @@ from chronam.core import batch_loader
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
     )
@@ -15,7 +16,7 @@ class Command(BaseCommand):
     args = '<batch_list_filename>'
 
     def handle(self, batch_list_filename, *args, **options):
-        if len(args)!=0:
+        if len(args) != 0:
             raise CommandError('Usage is process_coordinates %s' % self.args)
 
         loader = batch_loader.BatchLoader()
@@ -25,4 +26,3 @@ class Command(BaseCommand):
             batch_name = line.strip()
             LOGGER.info("batch_name: %s" % batch_name)
             loader.process_coordinates(batch_name)
-

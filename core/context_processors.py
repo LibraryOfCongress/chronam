@@ -18,6 +18,7 @@ def extra_request_info(request):
         'fulltext_enddate': fulltext_range[1],
     }
 
+
 def newspaper_info(request):
     info = cache.get("newspaper_info")
     if info is None:

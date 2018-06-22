@@ -20,6 +20,7 @@ from chronam.core.utils.utils import validate_bib_dir
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     skip_essays = make_option('--skip-essays',
                               action='store_true',
@@ -132,7 +133,7 @@ class Command(BaseCommand):
         # overlay place info harvested from dbpedia onto the places table
         try:
             self.load_place_links()
-        except Exception, e:
+        except Exception as e:
             LOGGER.exception(e)
 
         index.index_titles()
@@ -153,7 +154,7 @@ class Command(BaseCommand):
             try:
                 place = Place.objects.get(name=p['name'])
             except(Place.DoesNotExist):
-                place  = Place(name=p['name'])
+                place = Place(name=p['name'])
             place.longitude = p['longitude']
             place.latitude = p['latitude']
             place.geonames = p['geonames']

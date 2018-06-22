@@ -3,6 +3,7 @@ from django.conf import settings
 
 from chronam.core.essay_loader import load_essays
 
+
 class Command(BaseCommand):
     help = "load all the essays"
 

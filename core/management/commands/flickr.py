@@ -11,6 +11,7 @@ from chronam.core.models import Page, FlickrUrl
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     args = '<flickr_key>'
     help = 'load links for content that has been pushed to flickr.'
@@ -20,8 +21,8 @@ class Command(BaseCommand):
         create_count = 0
 
         for flickr_url, chronam_url in flickr_chronam_links(key):
-            LOGGER.info("found flickr/chronam link: %s, %s" % 
-                         (flickr_url, chronam_url))
+            LOGGER.info("found flickr/chronam link: %s, %s" %
+                        (flickr_url, chronam_url))
 
             # use the page url to locate the Page model
             path = urlparse(chronam_url).path
@@ -31,21 +32,21 @@ class Command(BaseCommand):
                 continue
 
             # create the FlickrUrl attached to the apprpriate page
-            f, created = FlickrUrl.objects.get_or_create(value=flickr_url, 
+            f, created = FlickrUrl.objects.get_or_create(value=flickr_url,
                                                          page=page)
             if created:
                 create_count += 1
                 f.save()
-                LOGGER.info("updated page (%s) with flickr url (%s)" % 
-                          (page, flickr_url))
+                LOGGER.info("updated page (%s) with flickr url (%s)" %
+                            (page, flickr_url))
             else:
                 LOGGER.info("already knew about %s" % flickr_url)
 
         LOGGER.info("created %s flickr urls" % create_count)
-    
+
 
 def photos_in_set(key, set_id):
-    """A generator for all the photos in a set. 
+    """A generator for all the photos in a set.
     """
     u = 'http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=%s&format=json&nojsoncallback=1' % (key, set_id)
     photos = json.loads(urllib.urlopen(u).read())
@@ -74,10 +75,10 @@ def chronam_url(photo):
     for tag in photo['photo']['tags']['tag']:
         if 'chroniclingamerica.loc.gov' in tag['raw']:
             return tag['raw'].replace('dc:identifier=', '')
-   
+
     # some other photos might have a link in the textual description
     m = re.search('"(http://chroniclingamerica.loc.gov/.+?)"',
-    photo['photo']['description']['_content'])
+                  photo['photo']['description']['_content'])
     if m:
         return m.group(1)
 

@@ -15,6 +15,7 @@ from chronam.core.models import Essay, Title, Awardee
 
 LOGGER = logging.getLogger(__name__)
 
+
 def load_essays(feed_url, index=True):
     LOGGER.info("loading feed %s" % feed_url)
     feed = feedparser.parse(feed_url)
@@ -56,7 +57,7 @@ def load_essay(essay_url, index=True):
     essay.modified = doc.find_all(property="dcterms:modified")[0]['content']
     essay.creator = _lookup_awardee(doc.find_all(property="dcterms:creator")[0]['content'])
     description = doc.find_all(property="dcterms:description")[0]
-    description = ''.join(map(str,description.contents))
+    description = ''.join(map(str, description.contents))
     essay.html = description
     essay.essay_editor_url = essay_url
     essay.save()  # so we can assign titles
@@ -68,7 +69,7 @@ def load_essay(essay_url, index=True):
         # load titles from web if not available
         try:
             title = Title.objects.get(lccn=lccn)
-        except Exception, e:
+        except Exception:  # FIXME: this should only handle expected exceptions
             management.call_command('load_titles', 'http://chroniclingamerica.loc.gov/lccn/%s/marc.xml' % lccn)
             title = Title.objects.get(lccn=lccn)
 

@@ -3,7 +3,7 @@ from django.conf import settings
 from django.http import QueryDict as Q
 
 from chronam.core.index import page_search, title_search, find_words, \
-                              _solrize_date
+    _solrize_date
 
 
 class IndexTests(TestCase):
@@ -11,23 +11,23 @@ class IndexTests(TestCase):
     Exercise some search form -> solr query translations
     """
     fixtures = ['ethnicities.json']
-    ocr_langs = ['ocr_%s' %l for l in settings.SOLR_LANGUAGES]
+    ocr_langs = ['ocr_%s' % l for l in settings.SOLR_LANGUAGES]
 
     def test_page_search_lccn(self):
         self.assertEqual(page_search(Q('lccn=sn83030214')),
-            '+type:page +lccn:("sn83030214")')
+                         '+type:page +lccn:("sn83030214")')
         self.assertEqual(page_search(Q('lccn=sn83030214&lccn=sn83030215')),
-            '+type:page +lccn:("sn83030214" "sn83030215")')
+                         '+type:page +lccn:("sn83030214" "sn83030215")')
 
     def test_page_search_state(self):
         self.assertEqual(page_search(Q('state=California')),
-            '+type:page +state:("California")')
+                         '+type:page +state:("California")')
         self.assertEqual(page_search(Q('state=California&state=New Jersey')),
-            '+type:page +state:("California" "New Jersey")')
+                         '+type:page +state:("California" "New Jersey")')
 
     def test_page_search_year(self):
         self.assertEqual(page_search(Q('dateFilterType=year&year=1900')),
-            '+type:page +date:[19000101 TO 19001231]')
+                         '+type:page +date:[19000101 TO 19001231]')
 
     def test_page_search_date_range(self):
         self.assertEqual(
@@ -48,9 +48,9 @@ class IndexTests(TestCase):
 
     def test_page_search_proxtext(self):
         q = ' OR '.join(['%s:"apples oranges"~10' % lang for lang in self.ocr_langs])
-        self.assertEqual(page_search(Q('proxtext=apples%20oranges&proxdistance=10')), u'+type:page +((ocr:("apples oranges"~10)^10000 ) OR %s )' %q)
+        self.assertEqual(page_search(Q('proxtext=apples%20oranges&proxdistance=10')), u'+type:page +((ocr:("apples oranges"~10)^10000 ) OR %s )' % q)
         q = ' OR '.join(['%s:"apples oranges"~5' % lang for lang in self.ocr_langs])
-        self.assertEqual(page_search(Q('proxtext=apples%20oranges')), u'+type:page +((ocr:("apples oranges"~5)^10000 ) OR %s )' %q)
+        self.assertEqual(page_search(Q('proxtext=apples%20oranges')), u'+type:page +((ocr:("apples oranges"~5)^10000 ) OR %s )' % q)
 
     def test_page_search_language(self):
         self.assertEqual(page_search(Q('proxtext=apples%20oranges&language=eng')), '+type:page +((ocr:("apples oranges"~5)^10000 AND ocr_eng:"apples oranges"~5 ) OR ocr_eng:"apples oranges"~5 )')
@@ -58,7 +58,7 @@ class IndexTests(TestCase):
     def test_find_words(self):
         hl = "Today <em>is</em> the <em>greatest</em> day i've <em>ever</em> known\nCan't wait <em>for</em> tomorrow ..."
         self.assertEqual(find_words(hl), ['is', 'greatest', 'ever',
-            'for'])
+                                          'for'])
 
     def test_title_search(self):
         self.assertEqual(
@@ -67,7 +67,7 @@ class IndexTests(TestCase):
 
     def test_ethnicity_query(self):
         self.assertEqual(title_search(Q('ethnicity=Anabaptist')),
-                '+type:title +(subject:"Anabaptist" OR subject:"Amish" OR subject:"Amish Mennonites" OR subject:"Mennonites" OR subject:"Pennsylvania Dutch" OR subject:"Pennsylvania Dutch.")')
+                         '+type:title +(subject:"Anabaptist" OR subject:"Amish" OR subject:"Amish Mennonites" OR subject:"Mennonites" OR subject:"Pennsylvania Dutch" OR subject:"Pennsylvania Dutch.")')
 
     def test_solrize_date(self):
         self.assertEqual(_solrize_date('03/01/1900'), 19000301)

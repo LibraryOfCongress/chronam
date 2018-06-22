@@ -39,7 +39,7 @@ class HoldingLoader:
 
             if self.records_processed % 1000 == 0:
                 LOGGER.info("processed %sk records in %.2f seconds" %
-                             (self.records_processed / 1000, seconds))
+                            (self.records_processed / 1000, seconds))
 
         def load_xml_record(record):
             try:
@@ -50,9 +50,9 @@ class HoldingLoader:
                 if record.leader[6] == 'y':
                     self.load_xml_holding(record)
 
-            except Exception, e:
+            except Exception as e:
                 LOGGER.error("unable to load record %s: %s" %
-                              (self.records_processed, e))
+                             (self.records_processed, e))
                 LOGGER.exception(e)
                 self.errors += 1
 
@@ -69,7 +69,7 @@ class HoldingLoader:
             return titles
         except models.Title.DoesNotExist:
             LOGGER.error("Holding missing Title to link: record %s, oclc %s" %
-                          (self.records_processed, oclc))
+                         (self.records_processed, oclc))
             self.missing_title += 1
             self.errors += 1
             return None
@@ -81,7 +81,7 @@ class HoldingLoader:
             return inst
         except models.Institution.DoesNotExist:
             LOGGER.error("Holding missing Institution to link to: %s" %
-                          inst_code)
+                         inst_code)
             self.errors += 1
             return None
 
@@ -195,10 +195,10 @@ def _holdings_type(s):
             return "Microfilm Print Master"
         elif s[11] == "c":
             return "Microfilm Service Copy"
-        #other values are classified as generic microform
-        #m - Mixed generation
-        #u - Unknown
-        #| - No attempt to code
+        # other values are classified as generic microform
+        # m - Mixed generation
+        # u - Unknown
+        # | - No attempt to code
         elif s[11] in ["m", "u", "|"]:
             return "Microform"
         else:

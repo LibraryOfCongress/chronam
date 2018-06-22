@@ -60,7 +60,7 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 50,  # 50MB
             'backupCount': 5,
         },
-        'console':{
+        'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
@@ -131,12 +131,12 @@ BROKER_URL = 'django://'
 THUMBNAIL_WIDTH = 360
 
 DEFAULT_TTL_SECONDS = 86400  # 1 day
-LONG_TTL_SECONDS = 60 * 60 * 24 * 7 * 8 # 8 weeks
+LONG_TTL_SECONDS = 60 * 60 * 24 * 7 * 8  # 8 weeks
 #: Used to cache metadata about publishers, issues, etc. as distinct from HTML pages, images, search results, etc.
 METADATA_TTL_SECONDS = DEFAULT_TTL_SECONDS
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24 * 7 * 2  # 2 weeks
 API_TTL_SECONDS = 60 * 60  # 1 hour
-SHARED_CACHE_MAXAGE_SECONDS = 60 * 60 * 24 * 365 # 1 year, purge from cloudflare and varnish if needed sooner
+SHARED_CACHE_MAXAGE_SECONDS = 60 * 60 * 24 * 365  # 1 year, purge from cloudflare and varnish if needed sooner
 
 USE_TIFF = False
 
@@ -174,7 +174,7 @@ BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
 COORD_STORAGE = os.path.join(STORAGE, "word_coordinates")
 OCR_DUMP_STORAGE = os.path.join(COORD_STORAGE, "ocr")
-TEMP_STORAGE = '/opt/chronam/temp' #because /tmp is often too small...
+TEMP_STORAGE = '/opt/chronam/temp'  # because /tmp is often too small...
 
 BASE_CRUMBS = [{'label': 'Home', 'href': '/'}]
 

@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand
 
 from chronam.core import models
-    
+
+
 class Command(BaseCommand):
     help = "Displays information about batches"
     args = ''

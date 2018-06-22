@@ -28,7 +28,7 @@ COUNTRIES = (
     '*northern mariana*',
     'american samoa',
 
-#According to MARC states are also countries
+    # According to MARC states are also countries
     'Alabama',
     'Alaska',
     'Arizona',
@@ -111,7 +111,6 @@ class TitlePuller(object):
     Best place to start is with the run method. Run defaults to
     a generic pull for Chronam, unless a query is passed.
     """
-
 
     year_breaks = []
 
@@ -248,7 +247,7 @@ class TitlePuller(object):
                     request_able = self.check_for_doable_bulk_request(cntry_count)
 
                     LOGGER.info("%s request totals: %s" % (country.title(),
-                                                        cntry_count))
+                                                           cntry_count))
 
                 if request_able == 0:
                     # There is no valid requests at all. So, we exit.
@@ -397,12 +396,12 @@ class TitlePuller(object):
             total = int(test_totals)
             if total < 10000:
                 return total
-        
+
         LOGGER.warning("The total [%s] is > 10,000 and a split needs to occur" % total)
         return None
 
     def run(self, save_path, lccn=None, oclc=None,
-        start=None, end=None, countries=COUNTRIES):
+            start=None, end=None, countries=COUNTRIES):
         '''
         Function that runs a search against the WorldCat Search API
 
@@ -432,7 +431,7 @@ class TitlePuller(object):
         # If lccn, then it pulls only that lccn, otherwise it will do
         # a bulk download of titles.
         bib_requests = self.generate_requests(lccn=lccn, oclc=oclc,
-            start=start, end=end, countries=countries)
+                                              start=start, end=end, countries=countries)
         files_saved = self.grab_content(save_path, bib_requests)
 
         return files_saved

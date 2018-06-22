@@ -12,6 +12,7 @@ from chronam.core.utils.utils import validate_bib_dir
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     verbose = make_option('--verbose',
                           action='store_true',

@@ -10,6 +10,7 @@ from chronam.core.utils.utils import validate_bib_dir
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     help = "Load a holdings records after title records are all loaded"
     args = '<location of holdings directory>'
@@ -21,12 +22,12 @@ class Command(BaseCommand):
         default_location = None
 
     def handle(self, holdings_source=default_location, *args, **options):
-        
-        if not os.path.exists(holdings_source): 
+
+        if not os.path.exists(holdings_source):
             LOGGER.error("There is no valid holdings source folder defined.")
             set_holdings = ['To load holdings - Add a folder called "holdings"',
-            'to the bib directory that is set in settings',
-            'or pass the location of holdings as an arguement to the loader.',]
+                            'to the bib directory that is set in settings',
+                            'or pass the location of holdings as an arguement to the loader.', ]
             LOGGER.error(' '.join(set_holdings))
             return
 
@@ -34,6 +35,6 @@ class Command(BaseCommand):
         material_types = models.MaterialType.objects.all()
         [m.delete() for m in material_types]
         management.call_command('loaddata', 'material_types.json')
-       
+
         holding_loader = HoldingLoader()
         holding_loader.main(holdings_source)

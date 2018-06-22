@@ -21,8 +21,9 @@ def process_coordinates(batch_dir):
         batch_loader = BatchLoader()
         batch_loader.process_coordinates(batch_dir)
         logger.info("processed batch %s", batch_dir)
-    except Exception, e:
+    except Exception:
         logger.exception("unable to process batch %s" % batch_dir)
+
 
 @task
 def load_batch(batch_dir, service_request=None, process_coordinates=True):
@@ -34,18 +35,20 @@ def load_batch(batch_dir, service_request=None, process_coordinates=True):
             logger.info("marking service request as complete")
             service_request.complete()
 
-    except Exception, e:
+    except Exception as e:
         logger.exception("unable to load batch %s" % batch_dir)
         if service_request:
             logger.info("marking service request as failed")
             service_request.fail(str(e))
 
+
 @task
 def load_essays():
     try:
-       management.call_command('load_essays')
+        management.call_command('load_essays')
     except:
         logger.error("Unable to load essays")
+
 
 @task
 def purge_batch(batch, service_request=None):
@@ -54,10 +57,11 @@ def purge_batch(batch, service_request=None):
         management.call_command('purge_batch', batch, optimize=optimize)
         if service_request:
             service_request.complete()
-    except Exception, e:
+    except Exception as e:
         logger.exception("unable to purge batch: %s" % e)
         if service_request:
             service_request.fail(str(e))
+
 
 @task
 def poll_purge():
@@ -69,7 +73,7 @@ def poll_purge():
     purge_service_type = "purge.NdnpPurge.purge"
     while True:
         req = cts.next_service_request(queue, purge_service_type)
-        if req == None:
+        if req is None:
             logger.info("no purge service requests")
             break
 
@@ -86,7 +90,7 @@ def poll_purge():
                 logger.info('batch %s purged' % batch_name)
             else:
                 purge_batch(batch_name, req)
-        except Exception, e:
+        except Exception as e:
             logger.exception("purge of %s failed", batch_name)
             req.fail("purge of %s failed: %s" % (batch_name, e))
 
@@ -99,8 +103,8 @@ def poll_cts():
         return None
 
     c = cts.CTS(settings.CTS_USERNAME,
-                  settings.CTS_PASSWORD,
-                  settings.CTS_URL)
+                settings.CTS_PASSWORD,
+                settings.CTS_URL)
 
     # 'ndnpstagingingestqueue', 'ingest.NdnpIngest.ingest'
     sr = c.next_service_request(settings.CTS_QUEUE,
@@ -121,9 +125,10 @@ def poll_cts():
         logger.info("loading %s" % bag_dir)
         return load_batch.delay(bag_dir, sr)
 
-    except Exception, e:
+    except Exception as e:
         logger.exception("loading batch failed!")
         sr.fail(str(e))
+
 
 @task
 def delete_django_cache():
@@ -132,6 +137,7 @@ def delete_django_cache():
 
     logger.info("deleting titles_states")
     cache.delete('titles_states')
+
 
 @task
 def dump_ocr(batch):

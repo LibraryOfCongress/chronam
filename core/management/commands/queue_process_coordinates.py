@@ -8,6 +8,7 @@ from chronam.core import tasks
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
     )
@@ -15,10 +16,10 @@ class Command(BaseCommand):
     args = '<batch name>'
 
     def handle(self, batch_name, *args, **options):
-        if len(args)!=0:
+        if len(args) != 0:
             raise CommandError('Usage is queue_process_coordinates %s' % self.args)
         try:
             tasks.process_coordinates.delay(batch_name)
-        except Exception, e:
+        except Exception as e:
             LOGGER.exception(e)
             raise CommandError("unable to process coordinates. check the queue_load_batch log for clues")

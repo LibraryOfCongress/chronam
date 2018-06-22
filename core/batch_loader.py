@@ -29,13 +29,13 @@ from chronam.core.ocr_extractor import ocr_extractor
 
 # some xml namespaces used in batch metadata
 ns = {
-    'ndnp'  : 'http://www.loc.gov/ndnp',
-    'mods'  : 'http://www.loc.gov/mods/v3',
-    'mets'  : 'http://www.loc.gov/METS/',
-    'np'    : 'urn:library-of-congress:ndnp:mets:newspaper',
-    'xlink' : 'http://www.w3.org/1999/xlink',
-    'mix'   : 'http://www.loc.gov/mix/',
-    'xhtml' : 'http://www.w3.org/1999/xhtml'
+    'ndnp': 'http://www.loc.gov/ndnp',
+    'mods': 'http://www.loc.gov/mods/v3',
+    'mets': 'http://www.loc.gov/METS/',
+    'np': 'urn:library-of-congress:ndnp:mets:newspaper',
+    'xlink': 'http://www.w3.org/1999/xlink',
+    'mix': 'http://www.loc.gov/mix/',
+    'xhtml': 'http://www.w3.org/1999/xhtml'
 }
 
 LOGGER = logging.getLogger(__name__)
@@ -86,7 +86,7 @@ class BatchLoader(object):
         return validated_batch_file
 
     def _sanity_check_batch(self, batch):
-        #if not os.path.exists(batch.path):
+        # if not os.path.exists(batch.path):
         #    raise BatchLoaderException("batch does not exist at %s" % batch.path)
         #b = urllib2.urlopen(batch.url)
         batch.validated_batch_file = self._find_batch_file(batch)
@@ -238,11 +238,11 @@ class BatchLoader(object):
             'string(.//mods:detail[@type="issue"]/mods:number[1])',
             namespaces=ns).strip()
         issue.edition = int(mods.xpath(
-                'string(.//mods:detail[@type="edition"]/mods:number[1])',
-                namespaces=ns))
+            'string(.//mods:detail[@type="edition"]/mods:number[1])',
+            namespaces=ns))
         issue.edition_label = mods.xpath(
-                'string(.//mods:detail[@type="edition"]/mods:caption[1])',
-                namespaces=ns).strip()
+            'string(.//mods:detail[@type="edition"]/mods:caption[1])',
+            namespaces=ns).strip()
 
         # parse issue date
         date_issued = mods.xpath('string(.//mods:dateIssued)', namespaces=ns)
@@ -295,17 +295,17 @@ class BatchLoader(object):
             'string(.//mods:extent/mods:start)', namespaces=ns)
         try:
             page.sequence = int(seq_string)
-        except ValueError as e:
+        except ValueError:
             raise BatchLoaderException("could not determine sequence number for page from '%s'" % seq_string)
         page.number = mods.xpath(
             'string(.//mods:detail[@type="page number"])',
             namespaces=ns
-            ).strip()
+        ).strip()
 
         reel_number = mods.xpath(
             'string(.//mods:identifier[@type="reel number"])',
             namespaces=ns
-            ).strip()
+        ).strip()
         try:
             reel = models.Reel.objects.get(number=reel_number,
                                            batch=self.current_batch)
@@ -359,12 +359,12 @@ class BatchLoader(object):
         for fptr in div.xpath('./mets:fptr', namespaces=ns):
             file_id = fptr.attrib['FILEID']
             file_el = doc.xpath('.//mets:file[@ID="%s"]' % file_id,
-                namespaces=ns)[0]
+                                namespaces=ns)[0]
             file_type = file_el.attrib['USE']
 
             # get the filename relative to the storage location
             file_name = file_el.xpath('string(./mets:FLocat/@xlink:href)',
-                namespaces=ns)
+                                      namespaces=ns)
             file_name = urlparse.urljoin(doc.docinfo.URL, file_name)
             file_name = self.storage_relative_path(file_name)
 
@@ -437,7 +437,7 @@ class BatchLoader(object):
     def _process_coordinates(self, page, coords):
         LOGGER.debug("writing out word coords for %s", page.url)
 
-        fd, path = tempfile.mkstemp(text="w", suffix=".coordinates", dir=settings.TEMP_STORAGE) #get a temp file in case the coordinates dir is a NFS or S3 mount which have poor multiple write performance
+        fd, path = tempfile.mkstemp(text="w", suffix=".coordinates", dir=settings.TEMP_STORAGE)  # get a temp file in case the coordinates dir is a NFS or S3 mount which have poor multiple write performance
         f = open(path, "w")
         f.write(gzip_compress(json.dumps(coords)))
         f.close()

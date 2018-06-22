@@ -23,14 +23,15 @@ from chronam.core import models as m
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     help = "Updates (Resets if --reset option is used) release datetime on batches from one of following sources (in order of preference) 1. bag-info.txt, if found in the batch source 2. If path to a file is provided with the command, datetime is extracted from the file 3. current public feed 4. current server datetime"
 
     reset = make_option('--reset',
-        action = 'store_true',
-        dest = 'reset',
-        default = False,
-        help = 'reset release times to nothing before setting them again')
+                        action='store_true',
+                        dest='reset',
+                        default=False,
+                        help='reset release times to nothing before setting them again')
     option_list = BaseCommand.option_list + (reset, )
 
     def handle(self, *args, **options):
@@ -43,7 +44,7 @@ class Command(BaseCommand):
         input_file_path = None
         if args and os.path.isfile(args[0]):
             LOGGER.info("using file %s for release dates", args[0])
-            input_file_path = args[0]               
+            input_file_path = args[0]
             # turn content from input file into a dictionary for easy lookup
             batch_release_from_file = preprocess_input_file(input_file_path)
 
@@ -55,7 +56,7 @@ class Command(BaseCommand):
                 # if released datetime is successfully set from the bag-info file,
                 # move on to the next batch, else try other options
                 if set_batch_released_from_bag_info(batch):
-                    LOGGER.info("set release datetime from bag-info file") 
+                    LOGGER.info("set release datetime from bag-info file")
                     continue
             if input_file_path:
                 batch_release_datetime = batch_release_from_file.get(batch.name, None)
@@ -74,6 +75,7 @@ class Command(BaseCommand):
             batch.released = datetime.now()
             batch.save()
 
+
 def preprocess_input_file(file_path):
     """
     Input file format: batch_name\tbatch_date\n - one batch per line
@@ -83,10 +85,9 @@ def preprocess_input_file(file_path):
         tsv = csv.reader(open(file_path, 'rb'), delimiter='\t')
         for row in tsv:
             batch_release_times[row[0]] = row[1]
-    except: 
+    except:
         pass
     return batch_release_times
-
 
 
 def preprocess_public_feed():
@@ -108,7 +109,7 @@ def preprocess_public_feed():
             # convert time.struct from feedparser into a datetime for django
             released = datetime.fromtimestamp(mktime(entry.updated_parsed))
             batch_release_times[batch_name] = released
-            #if the batch starts with batch_ remove it, so that it works regardless of that prefix
+            # if the batch starts with batch_ remove it, so that it works regardless of that prefix
             if batch_name.startswith("batch_"):
                 batch_release_times[batch_name[6:]] = released
 
@@ -119,11 +120,13 @@ def preprocess_public_feed():
             cont = False
     return batch_release_times
 
+
 def get_next_page(feed):
     for link in feed.feed.links:
         if link.rel == 'next':
             return link.href
     return None
+
 
 def set_batch_released_from_bag_info(batch):
     status = False

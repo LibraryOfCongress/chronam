@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand
 
 from chronam.core import models
-    
+
+
 class Command(BaseCommand):
 
     def handle(self, *args, **options):

@@ -27,19 +27,19 @@ class Command(BaseCommand):
                 continue
 
             # formulate a dbpedia place uri
-            path = urllib2.quote('%s,_%s' % (_clean(place.city), 
+            path = urllib2.quote('%s,_%s' % (_clean(place.city),
                                              _clean(place.state)))
             url = URIRef('http://dbpedia.org/resource/%s' % path)
 
             # attempt to get a graph from it
             graph = ConjunctiveGraph()
-            try: 
+            try:
                 LOGGER.debug("looking up %s" % url)
                 graph.load(url)
-            except urllib2.HTTPError, e:
+            except urllib2.HTTPError as e:
                 LOGGER.error(e)
 
-            # if we've got more than 3 assertions extract some stuff from 
+            # if we've got more than 3 assertions extract some stuff from
             # the graph and save back some info to the db, would be nice
             # to have a triple store underneath where we could persist
             # all the facts eh?
@@ -72,13 +72,14 @@ class Command(BaseCommand):
         places_qs = models.Place.objects.filter(dbpedia__isnull=False)
         for p in places_qs.order_by('name'):
             json_src.append({'name': p.name,
-                         'dbpedia': p.dbpedia, 
-                         'geonames': p.geonames,
-                         'longitude': p.longitude,
-                         'latitude': p.latitude})
+                             'dbpedia': p.dbpedia,
+                             'geonames': p.geonames,
+                             'longitude': p.longitude,
+                             'latitude': p.latitude})
             reset_queries()
         json.dump(json_src, file('core/fixtures/place_links.json', 'w'), indent=2)
         LOGGER.info("finished dumping place_links.json fixture")
+
 
 def _clean(u):
     return u.strip().replace(' ', '_').encode('ascii', 'ignore')
