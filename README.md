@@ -1,33 +1,33 @@
 chronam
 =======
 
-chronam is the [Django](http://djangoproject.com) application that the 
-Library of Congress uses to make its 
+chronam is the [Django](http://djangoproject.com) application that the
+Library of Congress uses to make its
 [Chronicling America](http://chroniclingamerica.loc.gov) website.
-The Chronicling America website makes millions of pages of historic American 
-newspapers that have been digitized by the 
-[National Digital Newspaper Program (NDNP)](http://www.loc.gov/ndnp/) 
-browsable and searchable on the Web. A little bit of background is needed to 
+The Chronicling America website makes millions of pages of historic American
+newspapers that have been digitized by the
+[National Digital Newspaper Program (NDNP)](http://www.loc.gov/ndnp/)
+browsable and searchable on the Web. A little bit of background is needed to
 understand why this software is being made available.
 
-NDNP is actually a partnership between the Library of Congress, the 
-[National Endowment for the Humanities (NEH)](http://www.neh.gov), and 
+NDNP is actually a partnership between the Library of Congress, the
+[National Endowment for the Humanities (NEH)](http://www.neh.gov), and
 cultural heritage organizations
-([awardees](http://chroniclingamerica.loc.gov/awardees/)) across the 
-United States who have applied for grants to help digitize newspapers 
-in their state. Awardees digitize newspaper microfilm according 
+([awardees](http://chroniclingamerica.loc.gov/awardees/)) across the
+United States who have applied for grants to help digitize newspapers
+in their state. Awardees digitize newspaper microfilm according
 to a set of [specifications](http://www.loc.gov/ndnp/guidelines/)
-and then ship the data back to the Library of Congress where it is 
-loaded into Chronicling America. 
+and then ship the data back to the Library of Congress where it is
+loaded into Chronicling America.
 
 Awardee institutions are able to use this data however
-they want, including creating their own websites that highlight their 
+they want, including creating their own websites that highlight their
 newspaper content in the local context of their own collections. The idea of
-making chronam available here on Github is to provide a technical option to 
-these awardees, or other interested parties who want to make their own websites 
-of NDNP newspaper content available. chronam provides a core set of functionality 
-for loading, modeling and indexing NDNP data, while allowing you to customize 
-the look and feel of the website to suit the needs of your organization. 
+making chronam available here on Github is to provide a technical option to
+these awardees, or other interested parties who want to make their own websites
+of NDNP newspaper content available. chronam provides a core set of functionality
+for loading, modeling and indexing NDNP data, while allowing you to customize
+the look and feel of the website to suit the needs of your organization.
 
 The NDNP data is in the Public Domain and is itself [available](http://chroniclingamerica.loc.gov/data/batches/)
 on the Web for anyone to use. The hope is that the chronam software can be
@@ -36,13 +36,13 @@ useful for others who want to work with and/or publish the content.
 Install
 -------
 
-System level dependencies can be installed by following these operating system 
+System level dependencies can be installed by following these operating system
 specific instructions:
 
 * [install_ubuntu.md](https://github.com/LibraryOfCongress/chronam/blob/master/install_ubuntu.md)
 * [install_redhat.md](https://github.com/LibraryOfCongress/chronam/blob/master/install_redhat.md)
 
-After you have installed the system level dependencies you will need to 
+After you have installed the system level dependencies you will need to
 install some application specific dependencies, and configure the application.
 
 First you will need to set up the local Python environment and install some
@@ -110,7 +110,7 @@ Next you will need to initialize database schema and load some initial data:
     django-admin.py loaddata initial_data
     django-admin.py chronam_sync --skip-essays
 
-And finally you will need to collect static files (stylesheets, images) 
+And finally you will need to collect static files (stylesheets, images)
 for serving up by Apache in production settings:
 
     django-admin.py collectstatic --noinput
@@ -119,11 +119,11 @@ Load Data
 --------
 
 As mentioned above, the NDNP data that awardees create and ship to the Library
-of Congress is in the public domain and is made available on the Web as 
-`batches`. Each batch contains newsaper issues for one or more newspaper 
+of Congress is in the public domain and is made available on the Web as
+`batches`. Each batch contains newsaper issues for one or more newspaper
 titles. To use chronam you will need to have some of this batch data to load. If
 you are an awardee you probably have this data on hand already, but if not
-you can use a tool like [wget](http://www.gnu.org/software/wget/) to bulk 
+you can use a tool like [wget](http://www.gnu.org/software/wget/) to bulk
 download the batches. For example:
 
     cd /opt/chronam/data/
