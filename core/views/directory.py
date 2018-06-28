@@ -119,31 +119,6 @@ def newspapers(request, state=None, format='html'):
         return HttpResponseServerError("unsupported format: %s" % format)
 
 
-@add_cache_headers(settings.API_TTL_SECONDS)
-def newspapers_atom(request):
-    # get a list of titles with issues that are in order by when they
-    # were last updated
-    titles = models.Title.objects.filter(has_issues=True)
-    titles = titles.annotate(last_release=Max('issues__batch__released'))
-    titles = titles.order_by('-last_release')
-
-    # get the last update time for all the titles to use as the
-    # updated time for the feed
-    if titles.count() > 0:
-        last_issue = titles[0].last_issue_released
-        if last_issue.batch.released:
-            feed_updated = last_issue.batch.released
-        else:
-            feed_updated = last_issue.batch.created
-    else:
-        feed_updated = datetime.datetime.now()
-
-    host = request.get_host()
-    return render_to_response("newspapers.xml", dictionary=locals(),
-                              content_type="application/atom+xml",
-                              context_instance=RequestContext(request))
-
-
 @cors
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 @opensearch_clean
