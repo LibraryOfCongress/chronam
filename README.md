@@ -69,7 +69,7 @@ start MySQL and assign it a root password:
 You will probably want to change the password 'pick_one' in the example below
 to something else:
 
-    echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf8; GRANT ALL ON chronam.* to 'chronam'@'localhost' identified by 'pick_one'; GRANT ALL ON test_chronam.* TO 'chronam'@'localhost' identified by 'pick_one';" | mysql -u root -p
+    echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf8mb4; CREATE USER 'chronam'@'localhost' IDENTIFIED BY 'pick_one'; GRANT ALL ON chronam.* to 'chronam'@'localhost'; GRANT ALL ON test_chronam.* TO 'chronam'@'localhost';" | mysql -u root -p
 
 You will need to create a Django settings file which uses the default settings
 and sets custom values specific to your site:
