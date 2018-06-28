@@ -1,12 +1,9 @@
 import re
+from functools import wraps
 
 from django.core import urlresolvers
 from django.http import HttpResponse
 from django.utils import cache, encoding
-
-from functools import update_wrapper
-from functools import wraps
-
 from mimeparse import best_match
 
 
