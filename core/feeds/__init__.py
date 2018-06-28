@@ -1,1 +1,1 @@
-from newspapers import newspaperFeedAtom
+from newspapers import NewspaperFeedAtom

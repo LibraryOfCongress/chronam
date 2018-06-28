@@ -1,9 +1,12 @@
 import re
-from functools import wraps
 
 from django.core import urlresolvers
 from django.http import HttpResponse
 from django.utils import cache, encoding
+
+from functools import update_wrapper
+from functools import wraps
+
 from mimeparse import best_match
 
 
@@ -23,6 +26,9 @@ class HttpResponseUnsupportedMediaType(HttpResponse):
 def add_cache_headers(ttl, shared_cache_maxage=None):
     """Decorate the provided function by adding Cache-Control and Expires headers to responses"""
     def decorator(function):
+        if not hasattr(function, "__name__"):
+            update_wrapper(function, function.__class__)
+
         @wraps(function)
         def decorated_function(*args, **kwargs):
             response = function(*args, **kwargs)

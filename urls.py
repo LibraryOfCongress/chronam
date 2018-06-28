@@ -228,7 +228,7 @@ urlpatterns += [
         name='chronam_newspapers'),
 
     url(r'^newspapers/feed/$',
-        feeds.newspaperFeedAtom(),
+        add_cache_headers(settings.API_TTL_SECONDS)(feeds.NewspaperFeedAtom()),
         name='chronam_newspapers_atom'),
 
     url(r'^newspapers.(?P<format>csv)$',

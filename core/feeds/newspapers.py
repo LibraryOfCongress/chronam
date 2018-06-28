@@ -7,7 +7,7 @@ from django.utils.feedgenerator import Atom1Feed
 
 from chronam.core.models import Title
 
-class newspaperFeedAtom(Feed):
+class NewspaperFeedAtom(Feed):
     title = "Recent Titles from Chronicling America"
     subtitle  = "This feed lists newspaper titles that have had new content added to them."
     feed_type = Atom1Feed
