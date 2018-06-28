@@ -1,0 +1,1 @@
+from newspapers import NewspaperFeedAtom

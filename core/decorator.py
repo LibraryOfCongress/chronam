@@ -23,6 +23,9 @@ class HttpResponseUnsupportedMediaType(HttpResponse):
 def add_cache_headers(ttl, shared_cache_maxage=None):
     """Decorate the provided function by adding Cache-Control and Expires headers to responses"""
     def decorator(function):
+        if not hasattr(function, "__name__"):
+            function.__name__ = function.__class__.__name__
+
         @wraps(function)
         def decorated_function(*args, **kwargs):
             response = function(*args, **kwargs)
