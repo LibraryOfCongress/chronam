@@ -401,7 +401,7 @@ def awardees_json(request):
                         content_type='application/json')
 
 
-@add_cache_headers(settings.METADATA_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+@add_cache_headers(settings.METADATA_TTL_SECONDS)
 def awardee(request, institution_code):
     awardee = get_object_or_404(models.Awardee, org_code=institution_code)
     page_title = 'Awardee: %s' % awardee.name

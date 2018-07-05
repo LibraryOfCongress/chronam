@@ -454,10 +454,6 @@ urlpatterns += [
         views.awardee,
         name='chronam_awardee'),
 
-    url(r'^awardees/(?P<institution_code>\w+)/$',
-        views.awardee,
-        name='chronam_awardee'),
-
     url(r'^awardees/(?P<institution_code>\w+).json$',
         views.awardee_json,
         name='chronam_awardee_json'),
