@@ -169,7 +169,7 @@ TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
 SOLR = "http://localhost:8983/solr"
 SOLR_LANGUAGES = ("ara", "cze", "dak", "dan", "eng", "fin", "fre", "ger", "hrv", "ice", "ita", "lit", "nob", "pol", "rum", "slo", "slv", "spa", "swe",)
 
-STORAGE = '/opt/chronam/data/'
+STORAGE = '/srv/chronam/'
 BATCH_STORAGE = os.path.join(STORAGE, "batches")
 BIB_STORAGE = os.path.join(STORAGE, "bib")
 COORD_STORAGE = os.path.join(STORAGE, "word_coordinates")
