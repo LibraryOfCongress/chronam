@@ -1,7 +1,7 @@
 NO_START=0
 VERBOSE=yes
-JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:bin/javac::")
+JAVA_HOME=$(dirname $(dirname $(readlink -f /usr/bin/javac)))
 JETTY_HOME=/opt/solr
 JETTY_USER=solr
-JETTY_LOGS=/opt/solr/logs
+JETTY_LOGS=/var/log/solr/
 JETTY_PORT=8080
