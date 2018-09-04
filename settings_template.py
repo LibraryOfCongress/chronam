@@ -31,6 +31,7 @@ DATABASES = {
         'NAME': 'chronam',
         'USER': 'chronam',
         'PASSWORD': 'pick_one',
+        'CONN_MAX_AGE': 300,
     }
 }
 
