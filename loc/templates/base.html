@@ -12,7 +12,7 @@
           rel="search" type="application/opensearchdescription+xml" />
     <link title="NDNP Title Search" href="{% url 'chronam_search_titles_opensearch' %}"
           rel="search" type="application/opensearchdescription+xml" />
-    <link rel="alternate" type="application/rss+xml" title="News about Chronicling America - RSS Feed" 
+    <link rel="alternate" type="application/rss+xml" title="News about Chronicling America - RSS Feed"
           href="http://www.loc.gov/rss/ndnp/ndnp.xml" />
     <meta http-equiv="Content-Language" content="en-us" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -85,7 +85,7 @@
         <h1 class="oneline">
             {{ page_title }}
         </h1>
-        {% endblock page_head%}   
+        {% endblock page_head %}
     </div><!-- end id:page_head -->
     {% endblock page_head_container %}
 
@@ -101,7 +101,7 @@
         {% endblock main_content %}
     </div>
     {% endblock main %}
-          
+
     {% block non_main_content %}
     <div class="clear"><!-- --></div>
     {% endblock non_main_content %}
@@ -145,7 +145,7 @@ jQuery(function ($) {
 });
 </script>
 
-<script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 
 {% if sharetool_url %}
