@@ -12,8 +12,8 @@ def extra_request_info(request):
     fulltext_range = _fulltext_range()
     return {
         'site_title': 'Chronicling America',
-        'omniture_url': settings.OMNITURE_SCRIPT if "OMNITURE_SCRIPT" in dir(settings) else None,
-        'sharetool_url': settings.SHARETOOL_URL if "SHARETOOL_URL" in dir(settings) else None,
+        'omniture_url': getattr(settings, "OMNITURE_SCRIPT", None),
+        'sharetool_url': getattr(settings, "SHARETOOL_URL", None),
         'fulltext_startdate': fulltext_range[0],
         'fulltext_enddate': fulltext_range[1],
     }
