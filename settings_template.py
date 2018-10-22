@@ -93,6 +93,7 @@ LOGGING = {
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'chronam.core.middleware.TooBusyMiddleware',
     'chronam.core.middleware.CloudflareCacheHeader',
 )
