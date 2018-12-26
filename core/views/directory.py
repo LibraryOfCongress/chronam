@@ -29,9 +29,15 @@ def newspapers(request, state=None, format='html'):
     else:
         state = request.GET.get('state', None)
 
-    language = request.GET.get('language', None)
-    if language:
-        language_display = models.Language.objects.get(code__contains=language).name
+    language = language_display = None
+    language_code = request.GET.get('language', None)
+    if language_code:
+        language = models.Language.objects.filter(code__startswith=language_code).first()
+        if not language:
+            language_code = None
+        else:
+            language_code = language.code
+            language_display = language.name
     ethnicity = request.GET.get('ethnicity', None)
 
     if not state and not language and not ethnicity:
@@ -47,7 +53,7 @@ def newspapers(request, state=None, format='html'):
         titles = titles.filter(places__state__iexact=state)
 
     if language:
-        titles = titles.filter(languages__code__contains=language)
+        titles = titles.filter(languages=language)
 
     if ethnicity:
         try:
