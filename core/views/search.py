@@ -75,7 +75,7 @@ def search_pages_results(request, view_type='gallery'):
     crumbs = list(settings.BASE_CRUMBS)
 
     host = request.get_host()
-    format = request.GET.get('format', None)
+    format = request.GET.get('format')
     if format == 'atom':
         feed_url = 'http://' + host + request.get_full_path()
         updated = rfc3339(datetime.datetime.now())

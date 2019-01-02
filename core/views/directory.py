@@ -27,10 +27,10 @@ def newspapers(request, state=None, format='html'):
         else:
             state = state.title()
     else:
-        state = request.GET.get('state', None)
+        state = request.GET.get('state')
 
     language = language_display = None
-    language_code = request.GET.get('language', None)
+    language_code = request.GET.get('language')
     if language_code:
         language = models.Language.objects.filter(code__startswith=language_code).first()
         if not language:
@@ -38,7 +38,7 @@ def newspapers(request, state=None, format='html'):
         else:
             language_code = language.code
             language_display = language.name
-    ethnicity = request.GET.get('ethnicity', None)
+    ethnicity = request.GET.get('ethnicity')
 
     if not state and not language and not ethnicity:
         page_title = 'All Digitized Newspapers'
@@ -142,7 +142,7 @@ def search_titles_results(request):
         title['oclc'] = t.oclc
         return title
 
-    format = request.GET.get('format', None)
+    format = request.GET.get('format')
 
     # check if requested format is CSV before building pages for response. CSV
     # response does not make use of pagination, instead all matching titles from
