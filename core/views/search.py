@@ -15,7 +15,7 @@ from rfc3339 import rfc3339
 
 from chronam.core import forms, index, models
 from chronam.core.decorator import add_cache_headers, cors, opensearch_clean
-from chronam.core.utils.utils import _page_range_short
+from chronam.core.utils.utils import _page_range_short, is_valid_jsonp_callback
 
 
 def search_pages_paginator(request):
@@ -95,8 +95,9 @@ def search_pages_results(request, view_type='gallery'):
             i['url'] = 'http://' + request.get_host() + i['id'].rstrip('/') + '.json'
         json_text = json.dumps(results, indent=2)
         # jsonp?
-        if request.GET.get('callback') is not None:
-            json_text = "%s(%s);" % (request.GET.get('callback'), json_text)
+        callback = request.GET.get('callback')
+        if callback and is_valid_jsonp_callback(callback):
+            json_text = "%s(%s);" % (callback, json_text)
         return HttpResponse(json_text, content_type='application/json')
     page_range_short = list(_page_range_short(paginator, page))
     # copy the current request query without the page and sort
@@ -187,9 +188,9 @@ def suggest_titles(request):
 
     suggestions = [q, titles, descriptions, urls]
     json_text = json.dumps(suggestions, indent=2)
-    # jsonp?
-    if request.GET.get("callback") is not None:
-        json_text = "%s(%s);" % (json.GET.get("callback"), json_text)
+    callback = request.GET.get("callback")
+    if callback and is_valid_jsonp_callback(callback):
+        json_text = "%s(%s);" % (callback, json_text)
     return HttpResponse(json_text, content_type='application/x-suggestions+json')
 
 
