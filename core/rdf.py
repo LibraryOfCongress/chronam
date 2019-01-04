@@ -60,7 +60,9 @@ def title_to_graph(t, g=None, include_issues=True):
         g.add((uri, DCTERMS['date'], Literal('%s/%s' % (start, end),
                                              datatype=URIRef('http://www.loc.gov/standards/datetime#edt'))))
 
-    g.add((uri, DCTERMS.hasFormat, URIRef(t.marc.url)))
+    if t.marc:
+        g.add((uri, DCTERMS.hasFormat, URIRef(t.marc.url)))
+
     g.add((uri, RDFS.seeAlso, URIRef('http://lccn.loc.gov/%s' % t.lccn)))
     g.add((uri, OWL['sameAs'], URIRef('info:lccn/%s' % t.lccn)))
 

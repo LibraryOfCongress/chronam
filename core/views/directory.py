@@ -1,21 +1,23 @@
 import csv
 import datetime
 import json
-from rfc3339 import rfc3339
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponse, HttpResponseServerError
 from django.db.models import Max, Min, Q
+from django.http import Http404, HttpResponse, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.encoding import smart_str
+from rfc3339 import rfc3339
 
-from chronam.core.decorator import add_cache_headers, opensearch_clean, rdf_view, cors
-from chronam.core.utils.utils import _page_range_short, _rdf_base
-from chronam.core import models, index
+from chronam.core import index, models
+from chronam.core.decorator import (add_cache_headers, cors, opensearch_clean,
+                                    rdf_view,)
 from chronam.core.rdf import titles_to_graph
 from chronam.core.utils.url import unpack_url_path
+from chronam.core.utils.utils import (_page_range_short, _rdf_base,
+                                      is_valid_jsonp_callback)
 
 
 @add_cache_headers(settings.METADATA_TTL_SECONDS)
@@ -27,12 +29,18 @@ def newspapers(request, state=None, format='html'):
         else:
             state = state.title()
     else:
-        state = request.GET.get('state', None)
+        state = request.GET.get('state')
 
-    language = request.GET.get('language', None)
-    if language:
-        language_display = models.Language.objects.get(code__contains=language).name
-    ethnicity = request.GET.get('ethnicity', None)
+    language = language_display = None
+    language_code = request.GET.get('language')
+    if language_code:
+        language = models.Language.objects.filter(code__startswith=language_code).first()
+        if not language:
+            language_code = None
+        else:
+            language_code = language.code
+            language_display = language.name
+    ethnicity = request.GET.get('ethnicity')
 
     if not state and not language and not ethnicity:
         page_title = 'All Digitized Newspapers'
@@ -47,7 +55,7 @@ def newspapers(request, state=None, format='html'):
         titles = titles.filter(places__state__iexact=state)
 
     if language:
-        titles = titles.filter(languages__code__contains=language)
+        titles = titles.filter(languages=language)
 
     if ethnicity:
         try:
@@ -68,7 +76,8 @@ def newspapers(request, state=None, format='html'):
                 if place.state:
                     _newspapers_by_state.setdefault(place.state, set()).add(title)
 
-    newspapers_by_state = [(s, sorted(t, key=lambda title: title.name_normal)) for s, t in sorted(_newspapers_by_state.iteritems())]
+    newspapers_by_state = [(s, sorted(t, key=lambda title: title.name_normal))
+                           for s, t in sorted(_newspapers_by_state.iteritems())]
     crumbs = list(settings.BASE_CRUMBS)
 
     if format == "html":
@@ -135,7 +144,7 @@ def search_titles_results(request):
         title['oclc'] = t.oclc
         return title
 
-    format = request.GET.get('format', None)
+    format = request.GET.get('format')
 
     # check if requested format is CSV before building pages for response. CSV
     # response does not make use of pagination, instead all matching titles from
@@ -227,8 +236,9 @@ def search_titles_results(request):
             i['url'] = 'http://' + request.get_host() + i['id'].rstrip("/") + ".json"
         json_text = json.dumps(results, indent=2)
         # jsonp?
-        if request.GET.get('callback') is not None:
-            json_text = "%s(%s);" % (request.GET.get('callback'), json_text)
+        callback = request.GET.get('callback')
+        if callback and is_valid_jsonp_callback(callback):
+            json_text = "%s(%s);" % ('callback', json_text)
         return HttpResponse(json_text, content_type='application/json')
 
     sort = request.GET.get('sort', 'relevance')

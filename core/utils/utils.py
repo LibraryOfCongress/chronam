@@ -1,14 +1,15 @@
 import calendar
 import datetime
 import os
+import re
 import wsgiref.util
 
 from django.conf import settings
-from django.shortcuts import get_object_or_404
 from django.core import urlresolvers
-from django.http import HttpResponse, Http404
-from django.utils.http import http_date
+from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404
 from django.utils import datetime_safe
+from django.utils.http import http_date
 
 from chronam.core import models
 
@@ -300,3 +301,20 @@ def add_cache_tag(response, tag_name):
     else:
         response['Cache-Tag'] = tag_name
     return response
+
+
+VALID_JSONP_CALLBACK = re.compile(r'^[\w_]{1,100}$')
+
+
+def is_valid_jsonp_callback(callback):
+    """
+    Restrict JSONP callbacks to a subset of safe values
+
+    This avoids the possibility of someone constructing malicious callback=
+    script values which would have the same origin as this service.
+    """
+
+    if callback is None:
+        return False
+    else:
+        return VALID_JSONP_CALLBACK.match(callback)

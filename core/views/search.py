@@ -1,20 +1,21 @@
 import datetime
-import re
 import json
-from rfc3339 import rfc3339
+import logging
+import re
 
-from django.db.models import Q
 from django.conf import settings
 from django.core import urlresolvers
 from django.core.paginator import InvalidPage
+from django.db.models import Q
+from django.http import (HttpResponse, HttpResponseBadRequest,
+                         HttpResponseNotFound, HttpResponseRedirect,)
 from django.shortcuts import render_to_response
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.template import RequestContext
+from rfc3339 import rfc3339
 
-from chronam.core import index, models
-from chronam.core import forms
-from chronam.core.decorator import opensearch_clean, add_cache_headers, cors
-from chronam.core.utils.utils import _page_range_short
+from chronam.core import forms, index, models
+from chronam.core.decorator import add_cache_headers, cors, opensearch_clean
+from chronam.core.utils.utils import _page_range_short, is_valid_jsonp_callback
 
 
 def search_pages_paginator(request):
@@ -49,6 +50,14 @@ def search_pages_results(request, view_type='gallery'):
         # Set the page to the first page
         q['page'] = 1
         return HttpResponseRedirect('%s?%s' % (url, q.urlencode()))
+    except Exception as exc:
+        logging.error('Solr returned an error: %s', exc, exc_info=True,
+                      extra={'data': {'q': q, 'page': paginator._cur_page}})
+
+        if getattr(exc, 'httpcode') == 400:
+            return HttpResponseBadRequest()
+        else:
+            raise
     start = page.start_index()
     end = page.end_index()
 
@@ -66,7 +75,7 @@ def search_pages_results(request, view_type='gallery'):
     crumbs = list(settings.BASE_CRUMBS)
 
     host = request.get_host()
-    format = request.GET.get('format', None)
+    format = request.GET.get('format')
     if format == 'atom':
         feed_url = 'http://' + host + request.get_full_path()
         updated = rfc3339(datetime.datetime.now())
@@ -86,8 +95,9 @@ def search_pages_results(request, view_type='gallery'):
             i['url'] = 'http://' + request.get_host() + i['id'].rstrip('/') + '.json'
         json_text = json.dumps(results, indent=2)
         # jsonp?
-        if request.GET.get('callback') is not None:
-            json_text = "%s(%s);" % (request.GET.get('callback'), json_text)
+        callback = request.GET.get('callback')
+        if callback and is_valid_jsonp_callback(callback):
+            json_text = "%s(%s);" % (callback, json_text)
         return HttpResponse(json_text, content_type='application/json')
     page_range_short = list(_page_range_short(paginator, page))
     # copy the current request query without the page and sort
@@ -178,9 +188,9 @@ def suggest_titles(request):
 
     suggestions = [q, titles, descriptions, urls]
     json_text = json.dumps(suggestions, indent=2)
-    # jsonp?
-    if request.GET.get("callback") is not None:
-        json_text = "%s(%s);" % (json.GET.get("callback"), json_text)
+    callback = request.GET.get("callback")
+    if callback and is_valid_jsonp_callback(callback):
+        json_text = "%s(%s);" % (callback, json_text)
     return HttpResponse(json_text, content_type='application/x-suggestions+json')
 
 
