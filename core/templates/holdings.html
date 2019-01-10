@@ -7,7 +7,7 @@
   {% if not holdings %}
     <p>No holding information available.</p>
 
-    <p>Check OCLC WorldCat for more information on <a class="external" href="http://www.worldcat.org/search?qt=worldcat_org_all&q='{{ title.lccn_orig }}'">this title</a>.</p>
+    <p>Check OCLC WorldCat for more information on <a class="external" href="https://www.worldcat.org/search?qt=worldcat_org_all&q='{{ title.lccn_orig }}'">this title</a>.</p>
 
   {% endif %}
 
@@ -27,7 +27,7 @@
 
       {% for holding in inst_holding.list %}
         <h4 class="holding">Available as: {% if holding.type %}{{ holding.type }}{% else %}Unspecified{% endif %}</h4>
-        
+
         {% if holding.notes %}
         <p class="holding">{{ holding.notes }}</p>
         {% endif %}
@@ -44,7 +44,7 @@
       {% endfor %}
     <br/>
   {% endfor %}
-      
+
 
   <div class="txt_wrapper">
       <p class="backtotop">
