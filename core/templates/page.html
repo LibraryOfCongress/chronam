@@ -12,12 +12,12 @@
     <link rel="alternate" type="application/pdf" href="{% url 'chronam_page_pdf' title.lccn issue.date_issued issue.edition page.sequence %}" />
     <link rel="alternate" type="application/xml" href="{% url 'chronam_page_ocr_xml' title.lccn issue.date_issued issue.edition page.sequence %}" />
     <link rel="alternate" type="text/plain" href="{% url 'chronam_page_ocr_txt' title.lccn issue.date_issued issue.edition page.sequence %}" />
-    <link rel="canonical" href="http://{{host}}{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}" />
+    <link rel="canonical" href="https://{{host}}{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}" />
     <link rel="up" href="{{ issue.url }}" />
     <link rel="up" href="{{ issue.batch.url }}" />
     {% if page.reel.number %}<link rel="up" href="{% url 'chronam_reel' page.reel.number %}" />{% endif %}
     {% if page.on_flickr %}{% for flickr_url in page.flickr_urls.all %}<link rel="alternate" type="text/html" href="{{ flickr_url.value }}" />{% endfor %}{% endif %}
-    <meta property="og:image" content="http://{{ host }}{% url 'chronam_page_thumbnail' title.lccn page.issue.date_issued page.issue.edition page.sequence %}" />
+    <meta property="og:image" content="https://{{ host }}{% url 'chronam_page_thumbnail' title.lccn page.issue.date_issued page.issue.edition page.sequence %}" />
     <meta property="og:title" content="{{ page_title }}" />
     <meta property="og:description" content="{{ page_title }}, brought to you by {{ image_credit }}, and the National Digital Newspaper Program." />
 
@@ -45,7 +45,7 @@
 .overlay
 {
     border: 1px solid red;
-    opacity: 0.4;      
+    opacity: 0.4;
     -moz-opacity: 0.4;
     -webkit-opacity: 0.4;
     background: red;
@@ -84,7 +84,7 @@
 	      <a rel="previous"{% if page.previous %} href="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.previous.sequence %}"{% else %} class="disabled"{% endif %}>
                   <i class="icon-chevron-left"></i>
                   <span class="visible-desktop">prev</span>
-	      </a> 
+	      </a>
               Page
 	      <a rel="next"{% if page.next %} href="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.next.sequence %}"{% else %} class="disabled"{% endif %}>
                   <span class="visible-desktop">next</span>
@@ -130,7 +130,7 @@
 	</div>
       </div>
       {% if page.jp2_filename %}
-      
+
       <div id="viewer_container_container">
 	<div id="dummy"></div>
 	<div id="viewer_container" class="openseadragon span12">
@@ -145,14 +145,14 @@
       </div>
       {% endif %}
     </div>
-      
+
 {% endblock content %}
 
 
 {% block javascript %}
 {{ block.super }}
     <script src="{% static 'js/openseadragon.min.js' %}"></script>
-    <script src="{% static 'js/jquery.ba-bbq.min.js' %}"></script> 
+    <script src="{% static 'js/jquery.ba-bbq.min.js' %}"></script>
 
     <div id="page_data"
 	 data-static_url="{% static '' %}images/",

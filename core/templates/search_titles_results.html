@@ -3,13 +3,13 @@
 
 {% block extrahead %}
     {% if page.has_previous %}
-    <link rel="prev" href="http://{{host}}{% url 'chronam_search_titles_results' %}{{previous_url}}" />
+    <link rel="prev" href="https://{{host}}{% url 'chronam_search_titles_results' %}{{previous_url}}" />
     {% endif %}
     {% if page.has_next %}
-    <link rel="next" href="http://{{host}}{% url 'chronam_search_titles_results' %}{{next_url}}" />
+    <link rel="next" href="https://{{host}}{% url 'chronam_search_titles_results' %}{{next_url}}" />
     {% endif %}
-    <link rel="alternate" type="application/atom+xml" link="http://{{host}}{% url 'chronam_search_titles_results' %}?{{q}}&amp;page={{page.number}}&amp;format=atom" />
-    <link rel="alternate" type="application/json" link="http://{{host}}{% url 'chronam_search_titles_results' %}?{{q}}&amp;page={{page.number}}&amp;format=json" />
+    <link rel="alternate" type="application/atom+xml" link="https://{{host}}{% url 'chronam_search_titles_results' %}?{{q}}&amp;page={{page.number}}&amp;format=atom" />
+    <link rel="alternate" type="application/json" link="https://{{host}}{% url 'chronam_search_titles_results' %}?{{q}}&amp;page={{page.number}}&amp;format=json" />
 {% endblock %}
 
 {% block javascript %}
@@ -44,14 +44,14 @@
         <p class="term">Your title search returned {{ paginator.count }} results</p>
         <form>
             <p>
-            <label class="norm" for="sort_select">Sort by:</label> 
+            <label class="norm" for="sort_select">Sort by:</label>
             <select class="sel" name="sort_select" id="sort_select">
                 <option value="relevance">Relevance</option>
                 <option value="state">State</option>
                 <option value="title">Title</option>
                 <option value="date">Date</option>
-            </select> &nbsp;  &nbsp; 
-            <label class="norm" for="rpp_select">Results per page:</label> 
+            </select> &nbsp;  &nbsp;
+            <label class="norm" for="rpp_select">Results per page:</label>
             <select class="sel" name="rpp_select" id="rpp_select">
                 <option value="20">20</option>
                 <option value="50">50</option>
@@ -59,7 +59,7 @@
             </p>
         </form>
     </div>
-    
+
     {% block search_results_box %}
     <ul class="results_list">
         {% for number, object_list in page_list %}
