@@ -1,8 +1,8 @@
 {% extends "site_base_alt.html" %}
- 
+
 {% load static from staticfiles %}
 {% load humanize %}
- 
+
 
 {% block extrahead %}
     <link rel="preload" as="html" href="/tabs">
@@ -11,14 +11,14 @@
 
 {% block javascript %}
 {{ block.super }}
-<!-- jCarousel --> 
+<!-- jCarousel -->
 <script type="text/javascript" src="{% static 'js/jquery.jcarousel.min.js' %}"></script>
 
-<script type="text/javascript"> 
+<script type="text/javascript">
 $(document).ready(setupCarousel);
 
 function setupCarousel() {
-    // if the current page location has a date in it use that otherwise 
+    // if the current page location has a date in it use that otherwise
     // default to one hundred years ago from the current date
     var t = window.location.href.match(/(\d{4})-(\d{2})-(\d{2})/);
     if (t) {
@@ -34,7 +34,7 @@ function setupCarousel() {
         // add some some descriptive text and a canned search to the carousel
         $("#hundredYears").append(t.toLocaleDateString() + " (" + results.length + " issues)");
         var tSearch = (t.getMonth() + 1) + "/" + t.getDate() + "/" + t.getFullYear();
-        $("#hundredYears").attr({"href": "/search/pages/results/?dateFilterType=range&date1=" + tSearch + "&date2=" + tSearch}); 
+        $("#hundredYears").attr({"href": "/search/pages/results/?dateFilterType=range&date1=" + tSearch + "&date2=" + tSearch});
 
         // add the newspaper images to the carousel
         shuffle(results);
@@ -59,19 +59,19 @@ function shuffle(myArray) {
     }
 }
 
-</script> 
+</script>
 
 {% endblock %}
- 
+
 {% block sub_page_head %}{% endblock %}
 
 {% block subcontent %}
-  <div class="carousel-body"> 
-    <div class="carousel-menu"> 
+  <div class="carousel-body">
+    <div class="carousel-menu">
         <a id="hundredYears" href='{% url 'chronam_search_pages_results' %}?dateFilterType=range&date1={{date|date:"m/d/Y" }}&date2={{date|date:"m/d/Y"}}/'><strong>100 Years Ago Today</strong>: </a>
-    </div> 
-    <ul id="mycarousel" class="jcarousel-skin-tango"> 
-    </ul> 
-  </div><!-- end carousel-body --> 
-  <div class="clear"><!-- --></div> 
-{% endblock subcontent %}  
+    </div>
+    <ul id="mycarousel" class="jcarousel-skin-tango">
+    </ul>
+  </div><!-- end carousel-body -->
+  <div class="clear"><!-- --></div>
+{% endblock subcontent %}
