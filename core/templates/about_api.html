@@ -7,7 +7,7 @@
 
 {% block main_content %}
 <div id="std_box">
-<h2>Introduction</h2> 
+<h2>Introduction</h2>
 <p>Chronicling America provides access to information about historic
 newspapers and select digitized newspaper pages.  To encourage a wide
 range of potential uses, we designed several different views of the
@@ -15,7 +15,7 @@ data we provide, all of which are publicly visible.  Each uses common
 Web protocols, and access is not restricted in any way.  You do not
 need to apply for a special key to use them.  Together they make up an
 extensive application programming interface (API) which you can use to
-explore all of our data in many ways.</p> 
+explore all of our data in many ways.</p>
 
 <p>Details about these interfaces are below.  In case you want to dive
 right in, though, we use HTML link conventions to advertise the
@@ -23,9 +23,9 @@ availability of these views.  If you are a software developer
 or researcher or anyone else who might be interested in programmatic
 access to the data in Chronicling America, we encourage you to look
 around the site, &quot;view source&quot; often, and follow where the
-different links take you to get started.  When describing Chronicling America as the source of content, please use the URL and a Web site citation, such as &quot;from the Library of Congress, Chronicling America: Historic American Newspapers site&quot;.</p> 
+different links take you to get started.  When describing Chronicling America as the source of content, please use the URL and a Web site citation, such as &quot;from the Library of Congress, Chronicling America: Historic American Newspapers site&quot;.</p>
 
-<p>For more information about the open source Chronicling America software 
+<p>For more information about the open source Chronicling America software
 please see the <a href="https://github.com/LibraryofCongress/chronam">LibraryOfCongress/chronam</a> GitHub site.
 Also, please consider subscribing to the <a href="http://listserv.loc.gov/archives/chronam-users.html">ChronAm-Users</a> discussion list
 if you want to discuss how to use or extend the software or data from its
@@ -37,103 +37,103 @@ APIs.</p>
     <a href=" https://labs.loc.gov/lc-for-robots/++">
         https://labs.loc.gov/lc-for-robots/++ </a>
 </p>
- 
-<h2>The API</h2> 
-<h3>Jump to:</h3> 
-<ul class="anchor"> 
-<li><a href="#search">Search</a> the newspaper directory and digitized page contents using OpenSearch.</li> 
+
+<h2>The API</h2>
+<h3>Jump to:</h3>
+<ul class="anchor">
+<li><a href="#search">Search</a> the newspaper directory and digitized page contents using OpenSearch.</li>
 <li><a href="#autosuggest">Auto Suggest</a> API for looking up newspaper
 titles</li>
 <li><a href="#link">Link</a> using our stable URL pattern for Chronicling
 America resources.</li>
-<li><a href="#linked-data">JSON</a> views of Chronicling America resources.</li> 
-<li><a href="#linked-data">Linked Data</a> views of Chronicling American resources.</li> 
+<li><a href="#linked-data">JSON</a> views of Chronicling America resources.</li>
+<li><a href="#linked-data">Linked Data</a> views of Chronicling American resources.</li>
 <li><a href="#bulk-data">Bulk Data</a> for research and external services.</li>
 <li><a href="#cors_jsonp">CORS and JSONP</a> support for your JavaScript
 applications.</li>
-</ul> 
- 
-<a name="search"></a> 
-<h3>Searching the directory and newspaper pages using OpenSearch</h3> 
+</ul>
+
+<a name="search"></a>
+<h3>Searching the directory and newspaper pages using OpenSearch</h3>
 <p>The <a href="/search/titles/">directory of
 newspaper titles</a> contains nearly 140,000 records of newspapers and
 libraries that hold copies of these newspapers. The title records are based
-on MARC data gathered and enhanced as part of the NDNP program.</p> 
+on MARC data gathered and enhanced as part of the NDNP program.</p>
 <p>Searching the title records is possible using the <a class="external"
 href="http://opensearch.org/">OpenSearch protocol</a>. This
 is advertised in a LINK header element of the site's HTML
-template as &quot;NDNP Title Search&quot;, using <a 
+template as &quot;NDNP Title Search&quot;, using <a
 href="/search/titles/opensearch.xml">this
-OpenSearch Description document</a>.</p> 
-<p>Title search parameters:</p> 
-<ul> 
-<li>terms: the search query</li> 
-<li>format: 'html' (default), 'json', or 'atom' (optional)</li> 
-<li>page: for paging results (optional)</li> 
-</ul> 
-<p>Examples:</p> 
+OpenSearch Description document</a>.</p>
+<p>Title search parameters:</p>
+<ul>
+<li>terms: the search query</li>
+<li>format: 'html' (default), 'json', or 'atom' (optional)</li>
+<li>page: for paging results (optional)</li>
+</ul>
+<p>Examples:</p>
 <p>Note that all example URLs below use the same protocol and server name,
 <a href="/">http://chroniclingamerica.loc.gov/</a>.
-We only show the URL paths and parameters below to save space.</p> 
-<ul> 
-<li> 
-<a href="/search/titles/results/?terms=michigan">/search/titles/results/?terms=michigan</a> 
-<br /> 
+We only show the URL paths and parameters below to save space.</p>
+<ul>
+<li>
+<a href="/search/titles/results/?terms=michigan">/search/titles/results/?terms=michigan</a>
+<br />
 search for &quot;michigan&quot;, HTML response
-</li> 
-<li> 
-<a href="/search/titles/results/?terms=michigan&format=atom">/search/titles/results/?terms=michigan&amp;format=atom</a> 
-<br /> 
+</li>
+<li>
+<a href="/search/titles/results/?terms=michigan&format=atom">/search/titles/results/?terms=michigan&amp;format=atom</a>
+<br />
 search for &quot;michigan&quot;, Atom response
-</li> 
-<li> 
-<a href="/search/titles/results/?terms=michigan&format=json&page=5">/search/titles/results/?terms=michigan&amp;format=json&amp;page=5</a> 
-<br /> 
+</li>
+<li>
+<a href="/search/titles/results/?terms=michigan&format=json&page=5">/search/titles/results/?terms=michigan&amp;format=json&amp;page=5</a>
+<br />
 search for &quot;michigan&quot;, JSON response, starting at page 5
-</li> 
-</ul> 
+</li>
+</ul>
 <p>There are millions of <a href="/search/pages/results/">digitized
 newspaper pages</a> in Chronicling America.  These pages span
 several decades and many U.S. states and territories.  New batches of
 data come in from partner institutions throughout the year and are
-added to the site regularly.</p> 
+added to the site regularly.</p>
 <p>Searching newspaper pages is also possible via OpenSearch. This is
 advertised in a LINK header element of the site's HTML template as
 &quot;NDNP Page Search&quot;, using <a
 href="/search/pages/opensearch.xml">this
-OpenSearch Description document</a>.</p> 
-<p>Page search parameters:</p> 
-<ul> 
-<li>andtext: the search query</li> 
-<li>format: 'html' (default), or 'json', or 'atom' (optional)</li> 
-<li>page: for paging results (optional)</li> 
-</ul> 
-<p>Examples:</p> 
-<ul> 
-<li> 
-<a href="/search/pages/results/?andtext=thomas">/search/pages/results/?andtext=thomas</a> 
-<br /> 
+OpenSearch Description document</a>.</p>
+<p>Page search parameters:</p>
+<ul>
+<li>andtext: the search query</li>
+<li>format: 'html' (default), or 'json', or 'atom' (optional)</li>
+<li>page: for paging results (optional)</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>
+<a href="/search/pages/results/?andtext=thomas">/search/pages/results/?andtext=thomas</a>
+<br />
 search for &quot;thomas&quot;, HTML response
-</li> 
-<li> 
-<a href="/search/pages/results/?andtext=thomas&format=atom">/search/pages/results/?andtext=thomas&amp;format=atom</a> 
-<br /> 
+</li>
+<li>
+<a href="/search/pages/results/?andtext=thomas&format=atom">/search/pages/results/?andtext=thomas&amp;format=atom</a>
+<br />
 search for &quot;thomas&quot;, Atom response
-</li> 
-<li> 
-<a href="/search/pages/results/?andtext=thomas&format=atom&page=11">/search/pages/results/?andtext=thomas&amp;format=atom&amp;page=11</a> 
-<br /> 
+</li>
+<li>
+<a href="/search/pages/results/?andtext=thomas&format=atom&page=11">/search/pages/results/?andtext=thomas&amp;format=atom&amp;page=11</a>
+<br />
 search for &quot;thomas&quot;, Atom response, starting at page 11
-</li> 
-</ul> 
-<p class="backtotop"><a href="#skip_menu">Top</a></p> 
+</li>
+</ul>
+<p class="backtotop"><a href="#skip_menu">Top</a></p>
 
 <a name="autosuggest"></a>
 
 <h3>Using the Directory's AutoSuggest API</h3>
 <p>The Chronicling America Directory contains hundreds of thousands of
 bibliographic records for American newspaper titles. To allow the directory to
-be integrated into your own applications you can use the OpenSearch 
+be integrated into your own applications you can use the OpenSearch
 AutoSuggest API to dynamically lookup these newspaper titles. For example:</p>
 
 <ul>
@@ -145,44 +145,44 @@ AutoSuggest API to dynamically lookup these newspaper titles. For example:</p>
 <p class="backtotop"><a href="#skip_menu">Top</a></p>
 
 
-<a name="link"></a> 
-<h3>Link to Chronicling America Resources</h3> 
+<a name="link"></a>
+<h3>Link to Chronicling America Resources</h3>
 <p>The Chronicling America Web site uses links that follow a
 straightforward pattern.  You can use this pattern to construct links
 into specific newspaper titles, to any of its available issues and
 their editions, and even to specific pages.  These links can be readily
-bookmarked and shared on other sites.</p> 
+bookmarked and shared on other sites.</p>
 <p>We are committed to supporting this link pattern over time, so even if we change
 how the site works, we will redirect any requests to the system using
 this specific pattern into the new site.  We established redirect rules
 for links into the previous version of the site when we released a new
-version in early 2009, and we intend to sustain those rules.</p> 
-<p>The link pattern uses <a href="http://www.loc.gov/marc/lccn.html">LCCNs</a>, dates, issue
-numbers, edition numbers, and page sequence numbers.</p> 
-<p>Examples:</p> 
-<ul> 
-<li><a href="/lccn/sn86069873/">/lccn/sn86069873/</a> 
-<br /> 
+version in early 2009, and we intend to sustain those rules.</p>
+<p>The link pattern uses <a href="https://www.loc.gov/marc/lccn.html">LCCNs</a>, dates, issue
+numbers, edition numbers, and page sequence numbers.</p>
+<p>Examples:</p>
+<ul>
+<li><a href="/lccn/sn86069873/">/lccn/sn86069873/</a>
+<br />
 title information for LCCN sn 86069873
-</li> 
-<li><a href="/lccn/sn86069873/issues/">/lccn/sn86069873/issues/</a> 
-<br /> 
+</li>
+<li><a href="/lccn/sn86069873/issues/">/lccn/sn86069873/issues/</a>
+<br />
 calendar view of available issues
-</li> 
-<li><a href="/lccn/sn86069873/issues/first_pages/">/lccn/sn86069873/issues/first_pages/</a> 
-<br /> 
+</li>
+<li><a href="/lccn/sn86069873/issues/first_pages/">/lccn/sn86069873/issues/first_pages/</a>
+<br />
 browse first pages of available issues
-</li> 
-<li><a href="/lccn/sn86069873/1900-01-05/ed-1/">/lccn/sn86069873/1900-01-05/ed-1/</a> 
-<br /> 
+</li>
+<li><a href="/lccn/sn86069873/1900-01-05/ed-1/">/lccn/sn86069873/1900-01-05/ed-1/</a>
+<br />
 first available edition from January 5, 1900
-</li> 
-<li><a href="/lccn/sn86069873/1900-01-05/ed-1/seq-3/">/lccn/sn86069873/1900-01-05/ed-1/seq-3/</a> 
-<br /> 
+</li>
+<li><a href="/lccn/sn86069873/1900-01-05/ed-1/seq-3/">/lccn/sn86069873/1900-01-05/ed-1/seq-3/</a>
+<br />
 third available page from first edition, January 5, 1900
-</li> 
-</ul> 
-<p class="backtotop"><a href="#skip_menu">Top</a></p> 
+</li>
+</ul>
+<p class="backtotop"><a href="#skip_menu">Top</a></p>
 
 
 <a name="json-views"></a>
@@ -191,20 +191,20 @@ third available page from first edition, January 5, 1900
 In addition to the use of JSON in OpenSearch results, there are also JSON views
 available for various resources in Chronicling America. These JSON views are
 typically linked from their HTML representation using the &lt;link&gt; element.
-For example: 
-<ul> 
-<li><a href="/lccn/sn86069873.json">/lccn/sn86069873.json</a> 
-<br /> 
+For example:
+<ul>
+<li><a href="/lccn/sn86069873.json">/lccn/sn86069873.json</a>
+<br />
 title information for LCCN sn 86069873
-</li> 
-<li><a href="/lccn/sn86069873/1900-01-05/ed-1.json">/lccn/sn86069873/1900-01-05/ed-1.json</a> 
+</li>
+<li><a href="/lccn/sn86069873/1900-01-05/ed-1.json">/lccn/sn86069873/1900-01-05/ed-1.json</a>
 <br />
 first available edition from January 5, 1900
-</li> 
-<li><a href="/lccn/sn86069873/1900-01-05/ed-1/seq-3.json">/lccn/sn86069873/1900-01-05/ed-1/seq-3.json</a> 
+</li>
+<li><a href="/lccn/sn86069873/1900-01-05/ed-1/seq-3.json">/lccn/sn86069873/1900-01-05/ed-1/seq-3.json</a>
 <br />
 third available page from first edition, January 5, 1900
-</li> 
+</li>
 <li><a href="/newspapers.json">/newspapers.json</a>
 <br>
 a list of all newspaper titles for which there is digital content
@@ -225,23 +225,23 @@ a list of all NDNP Awardees as JSON
 <br>
 detailed information about a specific awardee
 </li>
-</ul>   
+</ul>
 
 You will notice that many of these JSON views link to each other. This allows
-the JSON to stay relatively compact by including only information about a 
-particular entity, while providing a link to fetch more detail about a 
+the JSON to stay relatively compact by including only information about a
+particular entity, while providing a link to fetch more detail about a
 related entity.
 </p>
-<p class="backtotop"><a href="#skip_menu">Top</a></p> 
+<p class="backtotop"><a href="#skip_menu">Top</a></p>
 
 
-<a name="linked-data"></a> 
-<h3>Linked Data</h3> 
+<a name="linked-data"></a>
+<h3>Linked Data</h3>
 <p><a href="http://linkeddata.org/">Linked Data</a> allows us to connect the
-information in Chronicling America directly to related data on the Web 
+information in Chronicling America directly to related data on the Web
 explicitly.  Chronicling America provides several Linked Data views to
 make it easy to connect with other information resources and to process
-and analyze newspaper information with conceptual precision.</p> 
+and analyze newspaper information with conceptual precision.</p>
 <p>We use concepts like Title (defined in <a class="external"
 href="http://dublincore.org/documents/dcmi-terms/">DCMI Metadata
 Terms</a>) and Issue (defined in <a class="external"
@@ -252,45 +252,45 @@ what we mean by &quot;title&quot; and &quot;issue&quot; is consistent with the i
 publishers of linked data.  We also define other concepts not
 already defined in existing ontologies. This
 vocabulary includes elements suitable for newspaper information
-and the NDNP program, including these elements:</p> 
-<ul> 
-<li>Awardee</li> 
-<li>Batch</li> 
-<li>Page</li> 
-<li>bag</li> 
-<li>number</li> 
-<li>section</li> 
-<li>sequence</li> 
-</ul> 
+and the NDNP program, including these elements:</p>
+<ul>
+<li>Awardee</li>
+<li>Batch</li>
+<li>Page</li>
+<li>bag</li>
+<li>number</li>
+<li>section</li>
+<li>sequence</li>
+</ul>
 <p>These elements are used in RDF views of several types of pages, ranging
 from a list of the newspaper titles available on the site and
 information about each, to enumerations of all the pages that make
-up each issue and all of the files available for each page.</p> 
-<p>Examples:</p> 
-<ul> 
-<li> 
-<a href="/lccn/sn85038615.rdf">/lccn/sn85038615.rdf</a> 
-<br /> 
+up each issue and all of the files available for each page.</p>
+<p>Examples:</p>
+<ul>
+<li>
+<a href="/lccn/sn85038615.rdf">/lccn/sn85038615.rdf</a>
+<br />
 information about <a href="/lccn/sn85038615/">The Times Dispatch</a> (Richmond, Va.) 1903-1914
-</li> 
-<li> 
-<a href="/lccn/sn83045555/1889-11-21/ed-1.rdf">/lccn/sn83045555/1889-11-21/ed-1.rdf</a> 
-<br /> 
+</li>
+<li>
+<a href="/lccn/sn83045555/1889-11-21/ed-1.rdf">/lccn/sn83045555/1889-11-21/ed-1.rdf</a>
+<br />
 information about <a href="/lccn/sn83045555/1889-11-21/ed-1/">the November 21, 1889 first edition issue</a> of Deseret Evening News (Great Salt Lake City [Utah])
-</li> 
-<li> 
-<a href="/lccn/sn83030214/1905-01-15/ed-1/seq-25.rdf">/lccn/sn83030214/1905-01-15/ed-1/seq-25.rdf</a> 
-<br /> 
+</li>
+<li>
+<a href="/lccn/sn83030214/1905-01-15/ed-1/seq-25.rdf">/lccn/sn83030214/1905-01-15/ed-1/seq-25.rdf</a>
+<br />
 details about all of the files associated with the <a href="/lccn/sn83030214/1905-01-15/ed-1/seq-25/">25th image of the January 15, 1905 issue</a> of New-York Tribune (New York [N.Y.]) 1886-1924
-</li> 
-<li><a href="/awardees/mohi.rdf">/awardees/mohi.rdf</a><br />information about <a href="/awardees/mohi/">awardee State Historical Society of Missouri</a></li> 
-<li><a href="/newspapers.rdf">/newspapers.rdf</a><br />list of <a href="/newspapers/">available newspaper titles</a></li> 
-</ul> 
+</li>
+<li><a href="/awardees/mohi.rdf">/awardees/mohi.rdf</a><br />information about <a href="/awardees/mohi/">awardee State Historical Society of Missouri</a></li>
+<li><a href="/newspapers.rdf">/newspapers.rdf</a><br />list of <a href="/newspapers/">available newspaper titles</a></li>
+</ul>
 <p>Comparing the RDF versions of the links above with their HTML
 counterpart links, you might notice that the URI pattern we follow for these
 views is to remove the final slash, replacing it with &quot;.rdf&quot;.
 We follow this pattern to comply with best practices for publishing
-linked data, and also to keep the URIs easy to understand and use.</p> 
+linked data, and also to keep the URIs easy to understand and use.</p>
 <p>For each of the HTML pages with a linked data counterpart in RDF,
 we provide links to those alternate views from the
 HTML page using the LINK header element.  This can support automating
@@ -300,41 +300,41 @@ availability of the additional views.  In many views, such as newspaper
 page images, we also provide LINK elements pointing to the various
 available files (image, text, OCR coordinate XML) for each available
 page or other potentially useful information.  We encourage you to
-explore the entire site and to look for and use these LINK elements 
-if you find them useful when working with NDNP data.  Just follow your nose, 
-and view the source.</p> 
+explore the entire site and to look for and use these LINK elements
+if you find them useful when working with NDNP data.  Just follow your nose,
+and view the source.</p>
 <p>In addition to the concepts describe above, we use concepts from
 several other vocabularies in describing NDNP materials and also in
 linking to related data available on other sites.  These additional
-vocabularies and external sites include:</p> 
-<ul> 
-<li><a class="external" href="http://dbpedia.org/">DBpedia</a></li> 
-<li><a class="external" href="http://purl.org/dc/elements/1.1/">Dublin Core</a> and 
-<a class="external" href="http://dublincore.org/documents/dcmi-terms/">DCMI Terms</a></li> 
-<li><a class="external" href="http://purl.org/vocab/frbr/core#">FRBR concepts in RDF</a></li> 
-<li><a class="external" href="http://sws.geonames.org/">GeoNames</a></li> 
-<li><a href="http://lccn.loc.gov/">LCCN Permalink</a></li> 
-<li><a class="external" href="http://www.lingvoj.org/">lingvoj.org</a></li> 
-<li><a class="external" href="http://www.openarchives.org/ore/">OAI-ORE</a> (more about aggregations below)</li> 
-<li><a class="external" href="http://www.w3.org/2002/07/owl#">OWL</a></li> 
-<li><a class="external" href="http://metadataregistry.org/schema/show/id/1.html">RDA</a></li> 
-<li><a class="external" href="http://www.worldcat.org/">WorldCat</a></li> 
-</ul> 
+vocabularies and external sites include:</p>
+<ul>
+<li><a class="external" href="http://dbpedia.org/">DBpedia</a></li>
+<li><a class="external" href="http://purl.org/dc/elements/1.1/">Dublin Core</a> and
+<a class="external" href="http://dublincore.org/documents/dcmi-terms/">DCMI Terms</a></li>
+<li><a class="external" href="http://purl.org/vocab/frbr/core#">FRBR concepts in RDF</a></li>
+<li><a class="external" href="http://sws.geonames.org/">GeoNames</a></li>
+<li><a href="http://lccn.loc.gov/">LCCN Permalink</a></li>
+<li><a class="external" href="http://www.lingvoj.org/">lingvoj.org</a></li>
+<li><a class="external" href="http://www.openarchives.org/ore/">OAI-ORE</a> (more about aggregations below)</li>
+<li><a class="external" href="http://www.w3.org/2002/07/owl#">OWL</a></li>
+<li><a class="external" href="http://metadataregistry.org/schema/show/id/1.html">RDA</a></li>
+<li><a class="external" href="http://www.worldcat.org/">WorldCat</a></li>
+</ul>
 <p>We are grateful to all of these providers and we hope we can follow
 their lead in encouraging additional connections between data and
 vocabulary providers.  Please be aware that how we use these vocabularies
-will likely change over time, as they continue to develop, and as new 
-vocabularies are introduced.</p> 
-<p class="backtotop"><a href="#skip_menu">Top</a></p> 
+will likely change over time, as they continue to develop, and as new
+vocabularies are introduced.</p>
+<p class="backtotop"><a href="#skip_menu">Top</a></p>
 
 <a name="bulk-data"></a>
 <h3>Bulk Data</h3>
 <p>
 In certain situations the granular access provided by the API may be somewhat
-constraining. For example, perhaps you are a researcher who would like to 
+constraining. For example, perhaps you are a researcher who would like to
 try out new indexing techniques on the millions of pages of OCR data in
 Chronicling America. Or perhaps you are a service provider and anticipate
-needing to support a high volume of fulltext searches across the corpus, and 
+needing to support a high volume of fulltext searches across the corpus, and
 do not want the Chronicling America API as an external dependency.
 
 To support these and other potential use cases we are beginning to provide
@@ -343,14 +343,14 @@ bulk access to the underlying data sets. The initial bulk data sets include:
 <ul>
     <li>Batches: each batch of digitized content that is provided by awardees is
     made available via the Batches <a href="{% url 'chronam_batches' %}">HTML</a>,
-    <a href="{% url 'chronam_batches_atom' %}">Atom</a> and 
+    <a href="{% url 'chronam_batches_atom' %}">Atom</a> and
     <a href="{% url 'chronam_batches_json' %}">JSON</a> views. These views provide
     links to where the files comprising the batch can be fetched with a web
     crawling tool like <a href="http://www.gnu.org/software/wget/">wget</a>.</li>
     <li>OCR Bulk Data: the complete set of OCR XML and text files that make up
-    the newspaper collection are made available as compressed archive files. 
-    These files are listed in the <a href="{% url 'chronam_ocr' %}">OCR</a> 
-    report, and are also made available via   
+    the newspaper collection are made available as compressed archive files.
+    These files are listed in the <a href="{% url 'chronam_ocr' %}">OCR</a>
+    report, and are also made available via
     <a href="{% url 'chronam_ocr_atom' %}">Atom</a> and
     <a href="{% url 'chronam_ocr_json' %}">JSON</a> feeds that will allow
     you to build automated workflows for updating your local collection.</li>
@@ -358,18 +358,18 @@ bulk access to the underlying data sets. The initial bulk data sets include:
 
 Please note: Some batches contain digitized newspaper pages that lack corresponding OCR text.  For this reason, after decompressing the downloadable files, the number of ocr.txt files may not match the page count available within the HTML, Atom and JSON batch views.
 </p>
-<p class="backtotop"><a href="#skip_menu">Top</a></p> 
+<p class="backtotop"><a href="#skip_menu">Top</a></p>
 
 <a name="cors_jsonp"></a>
 <h3>CORS and JSONP Support</h3>
 <p>
-To help you integrate Chronicling America into your JavaScript applications, 
-the OpenSearch and AutoSuggest JSON responses support both 
-<a href="http://www.w3.org/TR/cors/">Cross-Origin Resource Sharing (CORS)</a> 
+To help you integrate Chronicling America into your JavaScript applications,
+the OpenSearch and AutoSuggest JSON responses support both
+<a href="http://www.w3.org/TR/cors/">Cross-Origin Resource Sharing (CORS)</a>
 and <a href="http://en.wikipedia.org/wiki/JSONP">JSON with Padding (JSONP)</a>.
-CORS and JSONP allow your JavaScript applications to talk to services 
+CORS and JSONP allow your JavaScript applications to talk to services
 hosted at chroniclingamerica.loc.gov without the need to proxy the requests
-yourself. 
+yourself.
 </p>
 
 <h4>CORS Example</h4>
@@ -391,7 +391,7 @@ Content-Type: application/x-suggestions+json
 
 [
   "manh",
-    [   
+    [
       "Manhasset life. (Manhasset, N.Y.) 19??-19??",
       "Manhasset mail. (Manhasset, N.Y.) 1927-1986"
     ],
@@ -425,7 +425,7 @@ Content-Type: application/x-suggestions+json
 
 suggest([
   "manh",
-    [   
+    [
       "Manhasset life. (Manhasset, N.Y.) 19??-19??",
       "Manhasset mail. (Manhasset, N.Y.) 1927-1986"
     ],
@@ -441,11 +441,11 @@ suggest([
 </pre>
 
 <p>
-CORS is arguably a more elegant solution, and is supported by most modern 
-browsers.  However JSONP might be a better option if your application needs 
+CORS is arguably a more elegant solution, and is supported by most modern
+browsers.  However JSONP might be a better option if your application needs
 legacy browser support.
 </p>
 
 <p class="backtotop"><a href="#skip_menu">Top</a></p>
- 
+
 {% endblock main_content %}
