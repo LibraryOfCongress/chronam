@@ -73,7 +73,7 @@ OpenSearch Description document</a>.</p>
 </ul>
 <p>Examples:</p>
 <p>Note that all example URLs below use the same protocol and server name,
-<a href="/">http://chroniclingamerica.loc.gov/</a>.
+<a href="/">https://chroniclingamerica.loc.gov/</a>.
 We only show the URL paths and parameters below to save space.</p>
 <ul>
 <li>
@@ -376,7 +376,7 @@ yourself.
 
 <pre>
 
-curl -i 'http://chroniclingamerica.loc.gov/suggest/titles/?q=manh'
+curl -i 'https://chroniclingamerica.loc.gov/suggest/titles/?q=manh'
 
 HTTP/1.1 200 OK
 Date: Mon, 28 Mar 2011 19:45:34 GMT
@@ -400,8 +400,8 @@ Content-Type: application/x-suggestions+json
       "sn95071148"
     ],
     [
-      "http://chroniclingamerica.loc.gov/lccn/sn97063690/",
-      "http://chroniclingamerica.loc.gov/lccn/sn95071148/"
+      "https://chroniclingamerica.loc.gov/lccn/sn97063690/",
+      "https://chroniclingamerica.loc.gov/lccn/sn95071148/"
     ]
 ]
 </pre>
@@ -410,7 +410,7 @@ Content-Type: application/x-suggestions+json
 
 <pre>
 
-curl -i 'http://chroniclingamerica.loc.gov/suggest/titles/?q=manh&amp;callback=suggest'
+curl -i 'https://chroniclingamerica.loc.gov/suggest/titles/?q=manh&amp;callback=suggest'
 
 HTTP/1.1 200 OK
 Date: Mon, 28 Mar 2011 19:45:34 GMT
@@ -434,8 +434,8 @@ suggest([
       "sn95071148"
     ],
     [
-      "http://chroniclingamerica.loc.gov/lccn/sn97063690/",
-      "http://chroniclingamerica.loc.gov/lccn/sn95071148/"
+      "https://chroniclingamerica.loc.gov/lccn/sn97063690/",
+      "https://chroniclingamerica.loc.gov/lccn/sn95071148/"
     ]
 ]);
 </pre>
