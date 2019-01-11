@@ -3,8 +3,9 @@ import os
 import time
 
 from django.conf import settings
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core import urlresolvers
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.decorators.cache import never_cache
@@ -66,3 +67,8 @@ def help(request):
     ])
     return render_to_response('help.html', dictionary=locals(),
                               context_instance=RequestContext(request))
+
+
+@add_cache_headers(settings.LONG_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+def favicon(request):
+    return HttpResponseRedirect(static('img-std/fav.ico'))

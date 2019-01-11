@@ -6,16 +6,17 @@ import os
 
 from django.conf import settings
 from django.conf.urls import url
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.sitemaps.views import index as sitemap_index
 from django.contrib.sitemaps.views import sitemap as subsitemap_index
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.utils import cache
 from django.views.static import serve
 
-import chronam.core.views as views
 import chronam.core.feeds as feeds
+import chronam.core.views as views
 from chronam.core.decorator import add_cache_headers
-from chronam.core.sitemaps import (BatchesSitemap, IssuesSitemap, PagesSitemap, TitlesSitemap)
+from chronam.core.sitemaps import (BatchesSitemap, IssuesSitemap, PagesSitemap,
+                                   TitlesSitemap)
 
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
@@ -649,9 +650,11 @@ urlpatterns += [
         views.ocr_atom,
         name='chronam_ocr_atom'),
 
-    url(r'^ocr.json$',
+    url(r'^ocr[.]json$',
         views.ocr_json,
         name='chronam_ocr_json'),
+
+    url('^favicon[.]ico$', views.static.favicon)
 ]
 
 _ROOT = os.path.abspath(os.path.dirname(__file__))
