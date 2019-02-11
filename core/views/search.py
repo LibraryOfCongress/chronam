@@ -54,7 +54,7 @@ def search_pages_results(request, view_type='gallery'):
         logging.error('Solr returned an error: %s', exc, exc_info=True,
                       extra={'data': {'q': q, 'page': paginator._cur_page}})
 
-        if getattr(exc, 'httpcode') == 400:
+        if getattr(exc, 'httpcode', None) == 400:
             return HttpResponseBadRequest()
         else:
             raise
