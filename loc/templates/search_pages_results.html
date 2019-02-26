@@ -29,9 +29,7 @@ jQuery(function($){
 </script>
 
 <script type="text/javascript">
-
 var padding = 5;
-
 var offset = 2; /* Think the 'a' tag around the thumbnail has a border
 that shifts the thumbnail down and to the right a couple pixels... so
 we do the same with the highlights */
@@ -43,15 +41,16 @@ function add_highlights(div) {
     var words = div.find("input[name='words']").attr("value");
     var width = image.width();
     var height = image.height();
-    if (width>0 && height>0) {
-        $.getJSON('{{script_name}}'+id+'coordinates/', function(all_coordinates) {
+    if (width > 0 && height > 0) {
+        $.getJSON("{{ script_name }}" + id + "coordinates/", function(all_coordinates) {
             var vScale = height / all_coordinates["height"];
             var hScale = width / all_coordinates["width"];
             $.each(words.split(" "), function(index, word) {
-                if( word ){ //don't do anything if the word is blank
                     for (word_on_page in all_coordinates["coords"]){
                         //check if the word on the page starts or ends with the word we are looking for
                         if(word_on_page.toLowerCase().indexOf(word.toLowerCase()) > -1 ){
+                if (word) {
+                    // don't do anything if the word is blank
                             var coordinates = all_coordinates["coords"][word_on_page];
                             for (k in coordinates) {
                                 var v = coordinates[k];
@@ -70,30 +69,27 @@ function add_highlights(div) {
     }
 }
 
-
 function initHighlights() {
-  // add highlights after images load
-  $("img.thumbnail").load(function(i) {
-    var div = $(this).parents("div.highlite");
-    add_highlights(div);
-  });
+    // add highlights after images load
+    $("img.thumbnail").load(function(i) {
+        var div = $(this).parents("div.highlite");
+        add_highlights(div);
+    });
 
-  // add highlights for already loaded images
-  // TODO: prevent from potentially adding highlights twice
-  $("div.highlite").each(function(i) {
-    var div = $(this);
-    add_highlights(div);
-  });
-};
+    // add highlights for already loaded images
+    // TODO: prevent from potentially adding highlights twice
+    $("div.highlite").each(function(i) {
+        var div = $(this);
+        add_highlights(div);
+    });
+}
 
 if ($.browser.msie && $.browser.version < 7) {
     window.onload = initHighlights;
 } else {
     $(document).ready(initHighlights);
 }
-
 </script>
-
 {% endblock %}
 
 {% block page_head_container %}{% endblock %}
