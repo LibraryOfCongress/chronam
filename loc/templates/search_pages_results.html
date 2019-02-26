@@ -54,12 +54,15 @@ function add_highlights(div) {
                             var coordinates = all_coordinates["coords"][word_on_page];
                             for (k in coordinates) {
                                 var v = coordinates[k];
-                                div.append("<img class='highlite' src='"+"{% static 'images/red_60.png' %}" +
-    "' style='TOP: " +  (v[1] * vScale - padding/2.0 + offset) + 'px;' +
-    " LEFT: " +       (v[0] * hScale - padding/2.0 + offset) + 'px;' +
-    " HEIGHT: " +     (v[3] * vScale + padding) + 'px;' +
-    " WIDTH: " +      (v[2] * hScale + padding) + "px;'/>");
-
+                                var $h = $('<img class="highlite">');
+                                $h.attr("src", "{% static 'images/red_60.png' %}");
+                                $h.css({
+                                    top: (v[1] * vScale - padding / 2.0 + offset) + "px",
+                                    left: (v[0] * hScale - padding / 2.0 + offset) + "px",
+                                    height: (v[3] * vScale + padding) + "px",
+                                    width: (v[2] * hScale + padding) + "px"
+                                });
+                                $h.appendTo(div);
                             }
                         }
                     }
