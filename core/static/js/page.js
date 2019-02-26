@@ -157,18 +157,26 @@
         var params = $.deparam.fragment();
         var words = params["words"] || "";
 
+        // FIXME: refactor this and search_pages_results.html to share a common implementation
+        var highlightNoiseRegEx = new RegExp(
+            /^[/.,/#!$%^&*;:{}=\-_`~()]+|[/.,/#!$%^&*;:{}=\-_`~()]+$|'s$/
+        );
+
         $.getJSON(coordinates_url, function(all_coordinates) {
             var scale = 1 / all_coordinates["width"];
 
             $.each(words.split(" "), function(index, word) {
-                if (word != "") {
+                if (word) {
+                    word = word.toLocaleLowerCase().trim();
+
                     for (var word_on_page in all_coordinates["coords"]) {
-                        //check if the word on the page starts or ends with the word we are looking for
-                        if (
-                            word_on_page
-                                .toLowerCase()
-                                .indexOf(word.toLowerCase()) > -1
-                        ) {
+                        var match_word = word_on_page
+                            .toLocaleLowerCase()
+                            .replace(highlightNoiseRegEx, " ")
+                            .replace(/\s+/, " ")
+                            .trim();
+
+                        if (match_word === word) {
                             var coordinates =
                                 all_coordinates["coords"][word_on_page];
                             if (coordinates !== undefined) {

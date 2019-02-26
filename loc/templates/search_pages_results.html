@@ -34,6 +34,7 @@ var offset = 2; /* Think the 'a' tag around the thumbnail has a border
 that shifts the thumbnail down and to the right a couple pixels... so
 we do the same with the highlights */
 
+var highlightNoiseRegEx = new RegExp(/^[/.,/#!$%^&*;:{}=\-_`~()]+|[/.,/#!$%^&*;:{}=\-_`~()]+$|'s$/);
 
 function add_highlights(div) {
     var image = div.find(".thumbnail");
@@ -46,11 +47,18 @@ function add_highlights(div) {
             var vScale = height / all_coordinates["height"];
             var hScale = width / all_coordinates["width"];
             $.each(words.split(" "), function(index, word) {
-                    for (word_on_page in all_coordinates["coords"]){
-                        //check if the word on the page starts or ends with the word we are looking for
-                        if(word_on_page.toLowerCase().indexOf(word.toLowerCase()) > -1 ){
                 if (word) {
                     // don't do anything if the word is blank
+                    word = word.toLocaleLowerCase().trim();
+
+                    for (word_on_page in all_coordinates["coords"]) {
+                        match_word = word_on_page
+                            .toLocaleLowerCase()
+                            .replace(highlightNoiseRegEx, " ")
+                            .replace(/\s+/, " ")
+                            .trim();
+
+                        if (match_word === word) {
                             var coordinates = all_coordinates["coords"][word_on_page];
                             for (k in coordinates) {
                                 var v = coordinates[k];
