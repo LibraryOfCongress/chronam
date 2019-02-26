@@ -127,7 +127,7 @@ you can use a tool like [wget](http://www.gnu.org/software/wget/) to bulk
 download the batches. For example:
 
     cd /srv/chronam/
-    wget --recursive --no-host-directories --cut-dirs 1 --reject index.html* --include-directories /data/batches/batch_uuml_thys_ver01/ http://chroniclingamerica.loc.gov/data/batches/batch_uuml_thys_ver01/
+    wget --recursive --no-host-directories --cut-dirs 1 --reject index.html* --include-directories /data/batches/uuml_thys_ver01/ https://chroniclingamerica.loc.gov/data/batches/uuml_thys_ver01/
 
 In order to load data you will need to run the load_batch management command by
 passing it the full path to the batch directory. So assuming you have downloaded
