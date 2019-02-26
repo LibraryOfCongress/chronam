@@ -1,17 +1,17 @@
-{% extends "site_base.html" %} 
+{% extends "site_base.html" %}
 {% load static from staticfiles %}
 {% load custom_filters %}
 
 {% block javascript %}
 {{ block.super }}
-<script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script>
 <script type="text/javascript">
 
 jQuery(function($){
     $.ajaxSettings.traditional = true;
     $("#sort_select option[value='{{sort}}']").attr("selected", true);
     $("#rpp_select option[value='{{rows}}']").attr("selected", true);
-    if ($.deparam.querystring().sequence == 1){ 
+    if ($.deparam.querystring().sequence == 1){
         $("input#check_front").attr('checked', 'checked');
     }
     $("#rpp_select").change(function(){
@@ -112,31 +112,31 @@ if ($.browser.msie && $.browser.version < 7) {
 {% else %}
 <div class="search_results_ctrl top fix-float">
     {% include 'includes/results_ctrl.html' %}
-</div><!-- end class:search_results_ctrl --> 
+</div><!-- end class:search_results_ctrl -->
 
 <div class="search_results_body {{ view_type }}">
     <div class="results_nav">
-        <p class="term">{{ paginator.count }} results 
-        {% if english_search %}containing{% endif %} 
+        <p class="term">{{ paginator.count }} results
+        {% if english_search %}containing{% endif %}
         {% for part in english_search %}
         <strong>&ldquo;{{ part }}&rdquo;</strong>
         {% if not forloop.last %}<em>and</em>{% endif %}
         {% endfor %}
 
-        </p> 
+        </p>
         <form id="results">
             <p>
             <input class="check" name="check_front" id="check_front" value=1 type="checkbox" />
             <label class="norm" for="check_front">Show only front pages</label> &nbsp;&nbsp;
 
-            <label class="norm" for="sort_select">Sort by:</label> 
+            <label class="norm" for="sort_select">Sort by:</label>
             <select class="sel" name="sort_select" id="sort_select">
                 <option value="relevance">Relevance</option>
                 <option value="state">State</option>
                 <option value="title">Title</option>
                 <option value="date">Date</option>
-            </select> &nbsp;  &nbsp; 
-            <label class="norm" for="rpp_select">Results per page:</label> 
+            </select> &nbsp;  &nbsp;
+            <label class="norm" for="rpp_select">Results per page:</label>
             <select class="sel" name="rpp_select" id="rpp_select">
                 <option value="20">20</option>
                 <option value="50">50</option>
@@ -152,7 +152,7 @@ if ($.browser.msie && $.browser.version < 7) {
             {% if object %}
                 <div class="highlite">
                     <a href="{{ object.highlight_url }}">
-                    {% if object.jp2_filename %} 
+                    {% if object.jp2_filename %}
                     <img class="thumbnail" src="{{ object.thumb_url }}" />
                     {% else %}
                      No Image
@@ -170,7 +170,7 @@ if ($.browser.msie && $.browser.version < 7) {
             </td>
             {% if forloop.counter|divisibleby:4 and not forloop.last %}
             </tr><tr>
-            {% endif %}        
+            {% endif %}
             {% endfor %}
         </tr>
     </table>
