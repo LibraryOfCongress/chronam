@@ -1976,10 +1976,10 @@ cursor:text;
 .ui-corner-bottom,
 .ui-corner-right,
 .ui-corner-left,
-.ui-corner-all { 
--moz-border-radius: 0px/*{cornerRadius}*/ !important; 
--webkit-border-radius: 0px/*{cornerRadius}*/ !important; 
-border-radius: 0px/*{cornerRadius}*/;  !important
+.ui-corner-all {
+    -moz-border-radius: 0px !important;
+    -webkit-border-radius: 0px !important;
+    border-radius: 0px !important;
 }
 
 @media print {
