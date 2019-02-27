@@ -1,24 +1,24 @@
 chronam
 =======
 
-chronam is the [Django](http://djangoproject.com) application that the 
-Library of Congress uses to make its 
-[Chronicling America](http://chroniclingamerica.loc.gov) website.
-The Chronicling America website makes millions of pages of historic American 
-newspapers that have been digitized by the 
-[National Digital Newspaper Program (NDNP)](http://www.loc.gov/ndnp/) 
-browsable and searchable on the Web. A little bit of background is needed to 
+chronam is the [Django](https://djangoproject.com) application that the
+Library of Congress uses to make its
+[Chronicling America](https://chroniclingamerica.loc.gov) website.
+The Chronicling America website makes millions of pages of historic American
+newspapers that have been digitized by the
+[National Digital Newspaper Program (NDNP)](https://www.loc.gov/ndnp/)
+browsable and searchable on the Web. A little bit of background is needed to
 understand why this software is being made available.
 
-NDNP is actually a partnership between the Library of Congress, the 
-[National Endowment for the Humanities (NEH)](http://www.neh.gov), and 
+NDNP is actually a partnership between the Library of Congress, the
+[National Endowment for the Humanities (NEH)](https://www.neh.gov), and
 cultural heritage organizations
-([awardees](http://chroniclingamerica.loc.gov/awardees/)) across the 
-United States who have applied for grants to help digitize newspapers 
-in their state. Awardees digitize newspaper microfilm according 
-to a set of [specifications](http://www.loc.gov/ndnp/guidelines/)
-and then ship the data back to the Library of Congress where it is 
-loaded into Chronicling America. 
+([awardees](https://chroniclingamerica.loc.gov/awardees/)) across the
+United States who have applied for grants to help digitize newspapers
+in their state. Awardees digitize newspaper microfilm according
+to a set of [specifications](https://www.loc.gov/ndnp/guidelines/)
+and then ship the data back to the Library of Congress where it is
+loaded into Chronicling America.
 
 Awardee institutions are able to use this data however
 they want, including creating their own websites that highlight their 
@@ -29,7 +29,7 @@ of NDNP newspaper content available. chronam provides a core set of functionalit
 for loading, modeling and indexing NDNP data, while allowing you to customize 
 the look and feel of the website to suit the needs of your organization. 
 
-The NDNP data is in the Public Domain and is itself [available](http://chroniclingamerica.loc.gov/data/batches/)
+The NDNP data is in the Public Domain and is itself [available](https://chroniclingamerica.loc.gov/data/batches/)
 on the Web for anyone to use. The hope is that the chronam software can be
 useful for others who want to work with and/or publish the content.
 

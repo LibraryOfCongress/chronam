@@ -21,7 +21,7 @@ Configure Solr
 
 Download Solr from a mirror site
 
-    wget http://archive.apache.org/dist/lucene/solr/4.10.4/solr-4.10.4.tgz
+    wget https://archive.apache.org/dist/lucene/solr/4.10.4/solr-4.10.4.tgz
     tar zxvf solr-4.10.4.tgz
     sudo mv solr-4.10.4/example/ /opt/solr
 
@@ -35,7 +35,7 @@ Download Solr from a mirror site
     sudo cp /opt/chronam/conf/solrconfig.xml /opt/solr/solr/collection1/conf/solrconfig.xml
 
     sudo mkdir -p /opt/solr/contrib
-    sudo wget --output-document=/opt/solr/contrib/lucene-analyzers-stempel-4.10.4.jar http://central.maven.org/maven2/org/apache/lucene/lucene-analyzers-stempel/4.10.4/lucene-analyzers-stempel-4.10.4.jar
+    sudo wget --output-document=/opt/solr/contrib/lucene-analyzers-stempel-4.10.4.jar https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-stempel/4.10.4/lucene-analyzers-stempel-4.10.4.jar
     sudo wget --output-document=/opt/solr/solr/collection1/conf/lang/stopwords_pl.txt https://raw.githubusercontent.com/apache/lucene-solr/master/lucene/analysis/stempel/src/resources/org/apache/lucene/analysis/pl/stopwords.txt"
 
     sudo cp /opt/chronam/conf/jetty-ubuntu /etc/default/jetty
