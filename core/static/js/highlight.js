@@ -1,4 +1,4 @@
-/* global jQuery */
+/* global jQuery, ChronAmSearch */
 
 (function($) {
     function add_highlights(image) {
@@ -23,38 +23,31 @@
 
                 var vScale = 100 / all_coordinates["height"];
                 var hScale = 100 / all_coordinates["width"];
-                $.each(words.split(" "), function(index, word) {
-                    if (word) {
-                        //check word isn't blank
-                        for (var word_on_page in all_coordinates["coords"]) {
-                            //check if the word on the page starts or ends with the word we are looking for
-                            if (
-                                word_on_page
-                                    .toLowerCase()
-                                    .indexOf(word.toLowerCase()) > -1
-                            ) {
-                                var coordinates =
-                                    all_coordinates["coords"][word_on_page];
-                                for (var k in coordinates) {
-                                    var v = coordinates[k];
-                                    div.append(
-                                        "<div style='position: absolute; " +
-                                            "TOP: " +
-                                            v[1] * vScale +
-                                            "%; " +
-                                            "LEFT: " +
-                                            v[0] * hScale +
-                                            "%; " +
-                                            "HEIGHT: " +
-                                            v[3] * vScale +
-                                            "%; " +
-                                            "WIDTH: " +
-                                            v[2] * hScale +
-                                            "%;'/>"
-                                    );
-                                }
-                            }
-                        }
+                var matchingWords = ChronAmSearch.matchWords(
+                    words,
+                    all_coordinates
+                );
+
+                $.each(matchingWords, function(index, word_on_page) {
+                    //check if the word on the page starts or ends with the word we are looking for
+                    var coordinates = all_coordinates["coords"][word_on_page];
+                    for (var k in coordinates) {
+                        var v = coordinates[k];
+                        div.append(
+                            "<div style='position: absolute; " +
+                                "TOP: " +
+                                v[1] * vScale +
+                                "%; " +
+                                "LEFT: " +
+                                v[0] * hScale +
+                                "%; " +
+                                "HEIGHT: " +
+                                v[3] * vScale +
+                                "%; " +
+                                "WIDTH: " +
+                                v[2] * hScale +
+                                "%;'/>"
+                        );
                     }
                 });
             });

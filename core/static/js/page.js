@@ -1,4 +1,4 @@
-/* globals OpenSeadragon, jQuery */
+/* globals OpenSeadragon, jQuery, ChronAmSearch */
 
 (function($) {
     var page_url;
@@ -157,42 +157,27 @@
         var params = $.deparam.fragment();
         var words = params["words"] || "";
 
-        // FIXME: refactor this and search_pages_results.html to share a common implementation
-        var highlightNoiseRegEx = new RegExp(
-            /^[/.,/#!$%^&*;:{}=\-_`~()]+|[/.,/#!$%^&*;:{}=\-_`~()]+$|'s$/
-        );
-
         $.getJSON(coordinates_url, function(all_coordinates) {
             var scale = 1 / all_coordinates["width"];
 
-            $.each(words.split(" "), function(index, word) {
-                if (word) {
-                    word = word.toLocaleLowerCase().trim();
+            var matchingWords = ChronAmSearch.matchWords(
+                words,
+                all_coordinates
+            );
 
-                    for (var word_on_page in all_coordinates["coords"]) {
-                        var match_word = word_on_page
-                            .toLocaleLowerCase()
-                            .replace(highlightNoiseRegEx, " ")
-                            .replace(/\s+/, " ")
-                            .trim();
-
-                        if (match_word === word) {
-                            var coordinates =
-                                all_coordinates["coords"][word_on_page];
-                            if (coordinates !== undefined) {
-                                $.each(coordinates, function(index, value) {
-                                    addOverlay(
-                                        viewer,
-                                        value[0] * scale,
-                                        value[1] * scale,
-                                        value[2] * scale,
-                                        value[3] * scale
-                                    );
-                                });
-                            }
-                        }
-                    }
-                }
+            $.each(matchingWords, function(index, word_on_page) {
+                $.each(all_coordinates["coords"][word_on_page], function(
+                    index,
+                    value
+                ) {
+                    addOverlay(
+                        viewer,
+                        value[0] * scale,
+                        value[1] * scale,
+                        value[2] * scale,
+                        value[3] * scale
+                    );
+                });
             });
         });
     }

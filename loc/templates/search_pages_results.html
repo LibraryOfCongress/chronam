@@ -28,13 +28,13 @@ jQuery(function($){
 });
 </script>
 
+<script type="text/javascript" src="{% static 'js/search.js' %}"></script>
 <script type="text/javascript">
 var padding = 5;
 var offset = 2; /* Think the 'a' tag around the thumbnail has a border
 that shifts the thumbnail down and to the right a couple pixels... so
 we do the same with the highlights */
 
-var highlightNoiseRegEx = new RegExp(/^[/.,/#!$%^&*;:{}=\-_`~()]+|[/.,/#!$%^&*;:{}=\-_`~()]+$|'s$/);
 
 function add_highlights(div) {
     var image = div.find(".thumbnail");
@@ -46,34 +46,25 @@ function add_highlights(div) {
         $.getJSON("{{ script_name }}" + id + "coordinates/", function(all_coordinates) {
             var vScale = height / all_coordinates["height"];
             var hScale = width / all_coordinates["width"];
-            $.each(words.split(" "), function(index, word) {
-                if (word) {
-                    // don't do anything if the word is blank
-                    word = word.toLocaleLowerCase().trim();
 
-                    for (word_on_page in all_coordinates["coords"]) {
-                        match_word = word_on_page
-                            .toLocaleLowerCase()
-                            .replace(highlightNoiseRegEx, " ")
-                            .replace(/\s+/, " ")
-                            .trim();
+            var matchingWords = ChronAmSearch.matchWords(
+                words,
+                all_coordinates
+            );
 
-                        if (match_word === word) {
-                            var coordinates = all_coordinates["coords"][word_on_page];
-                            for (k in coordinates) {
-                                var v = coordinates[k];
-                                var $h = $('<img class="highlite">');
-                                $h.attr("src", "{% static 'images/red_60.png' %}");
-                                $h.css({
-                                    top: (v[1] * vScale - padding / 2.0 + offset) + "px",
-                                    left: (v[0] * hScale - padding / 2.0 + offset) + "px",
-                                    height: (v[3] * vScale + padding) + "px",
-                                    width: (v[2] * hScale + padding) + "px"
-                                });
-                                $h.appendTo(div);
-                            }
-                        }
-                    }
+            $.each(matchingWords, function (index, word_on_page) {
+                var coordinates = all_coordinates["coords"][word_on_page];
+                for (var k in coordinates) {
+                    var v = coordinates[k];
+                    var $h = $('<img class="highlite">');
+                    $h.attr("src", "{% static 'images/red_60.png' %}");
+                    $h.css({
+                        top: (v[1] * vScale - padding / 2.0 + offset) + "px",
+                        left: (v[0] * hScale - padding / 2.0 + offset) + "px",
+                        height: (v[3] * vScale + padding) + "px",
+                        width: (v[2] * hScale + padding) + "px"
+                    });
+                    $h.appendTo(div);
                 }
             });
         });
