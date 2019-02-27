@@ -1,5 +1,4 @@
-chronam Redhat
-==============
+# chronam Redhat
 
 The following are instructions for installing system level dependencies on
 RHEL, tested with Red Hat Enterprise Linux Server release 6.4 (Santiago).
@@ -21,28 +20,25 @@ Install system dependencies:
     sudo tar xzf jdk-8u72-linux-x64.tar.gz
     export JAVA_HOME=/opt/jdk1.8.0_72
 
-
 When you install mysql-server, you will be prompted for a root password. If
 you choose one, make a note of what it is. Later you will be asked to enter
 the password when you create the database for the project.
 
-Get chronam
------------
+## Get chronam
 
     sudo mkdir /opt/chronam
     sudo chown $USER:users /opt/chronam
     git clone https://github.com/LibraryOfCongress/chronam.git /opt/chronam
 
-Configure Solr
---------------
+## Configure Solr
 
 Download solr from a mirror site (tested with Solr 4.10, get the latest version)
 
     wget http://archive.apache.org/dist/lucene/solr/4.10.4/solr-4.10.4.tgz
     tar zxvf solr-4.10.4.tgz
     sudo mv solr-4.10.4/example/ /opt/solr/
-    sudo cp /opt/chronam/conf/schema.xml /opt/solr/solr/collection1/conf/schema.xml
-    sudo cp /opt/chronam/conf/solrconfig.xml /opt/solr/solr/collection1/conf/solrconfig.xml
+    sudo cp /opt/chronam/solr/conf/schema.xml /opt/solr/solr/collection1/conf/schema.xml
+    sudo cp /opt/chronam/solr/conf/solrconfig.xml /opt/solr/solr/collection1/conf/solrconfig.xml
 
 Update the dataDir field in /opt/solr/solr/conf/solrconfig.xml and
 point to a directory for where the solr index will live.
@@ -50,15 +46,15 @@ point to a directory for where the solr index will live.
     sudo useradd -d /opt/solr -s /bin/bash solr
     sudo chown solr:solr -R /opt/solr
 
-    sudo cp /opt/chronam/conf/jetty7.sh /etc/init.d/jetty
+    sudo cp /opt/chronam/solr/conf/jetty7.sh /etc/init.d/jetty
     sudo chmod +x /etc/init.d/jetty
 
 Install the polish analyzer and stopwords
-    sudo mkdir -p /opt/solr/contrib
-    sudo wget --output-document=/opt/solr/contrib/lucene-analyzers-stempel-4.10.4.jar http://central.maven.org/maven2/org/apache/lucene/lucene-analyzers-stempel/4.10.4/lucene-analyzers-stempel-4.10.4.jar
-    sudo wget --output-document=/opt/solr/solr/collection1/conf/lang/stopwords_pl.txt https://raw.githubusercontent.com/apache/lucene-solr/master/lucene/analysis/stempel/src/resources/org/apache/lucene/analysis/pl/stopwords.txt"
+sudo mkdir -p /opt/solr/contrib
+sudo wget --output-document=/opt/solr/contrib/lucene-analyzers-stempel-4.10.4.jar https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-stempel/4.10.4/lucene-analyzers-stempel-4.10.4.jar
+sudo wget --output-document=/opt/solr/solr/collection1/conf/lang/stopwords_pl.txt https://raw.githubusercontent.com/apache/lucene-solr/master/lucene/analysis/stempel/src/resources/org/apache/lucene/analysis/pl/stopwords.txt"
 
-The jetty-redhat config file contains a default heap space allocation- "-Xms2g -Xmx2g".  Change the 2g 
+The jetty-redhat config file contains a default heap space allocation- "-Xms2g -Xmx2g". Change the 2g
 to a sensible default for your system if 2g is too much or too little.
 
     sudo cp /opt/chronam/conf/jetty-redhat /etc/default/jetty
@@ -66,8 +62,7 @@ to a sensible default for your system if 2g is too much or too little.
 
     sudo service jetty start
 
-Configure Image Rendering:
---------------------------
+## Configure Image Rendering:
 
 If you have the Aware JPEG 2000 library this is how you install it:
 
@@ -83,21 +78,18 @@ If not, install GraphicsMagick:
 
     sudo yum install GraphicsMagick
 
-Configure Apache
-----------------
+## Configure Apache
 
     sudo cp /opt/chronam/conf/chronam.conf /etc/httpd/conf.d/chronam.conf
     sudo install -o `whoami` -g users -d /opt/chronam/static
     sudo install -o `whoami` -g users -d /opt/chronam/.python-eggs
 
-Update the KeepAlive directive in /etc/httpd/conf/httpd.conf config from 'Off' 
-to 'On'. If you are the Library of Congress you will also want to canonicalize 
+Update the KeepAlive directive in /etc/httpd/conf/httpd.conf config from 'Off'
+to 'On'. If you are the Library of Congress you will also want to canonicalize
 URLs that used by the Chronicling America application at the Library of Congress:
 
     sudo cp /opt/chronam/conf/chronam-canonical.conf /etc/httpd/conf.d/
 
-
-Continue
---------
+## Continue
 
 -   You can now return to the Install section in [README.md](https://github.com/LibraryOfCongress/chronam/blob/master/README.md#install)

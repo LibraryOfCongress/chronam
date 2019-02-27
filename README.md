@@ -1,5 +1,4 @@
-chronam
-=======
+# chronam
 
 chronam is the [Django](https://djangoproject.com) application that the
 Library of Congress uses to make its
@@ -21,28 +20,27 @@ and then ship the data back to the Library of Congress where it is
 loaded into Chronicling America.
 
 Awardee institutions are able to use this data however
-they want, including creating their own websites that highlight their 
+they want, including creating their own websites that highlight their
 newspaper content in the local context of their own collections. The idea of
-making chronam available here on Github is to provide a technical option to 
-these awardees, or other interested parties who want to make their own websites 
-of NDNP newspaper content available. chronam provides a core set of functionality 
-for loading, modeling and indexing NDNP data, while allowing you to customize 
-the look and feel of the website to suit the needs of your organization. 
+making chronam available here on Github is to provide a technical option to
+these awardees, or other interested parties who want to make their own websites
+of NDNP newspaper content available. chronam provides a core set of functionality
+for loading, modeling and indexing NDNP data, while allowing you to customize
+the look and feel of the website to suit the needs of your organization.
 
 The NDNP data is in the Public Domain and is itself [available](https://chroniclingamerica.loc.gov/data/batches/)
 on the Web for anyone to use. The hope is that the chronam software can be
 useful for others who want to work with and/or publish the content.
 
-Install
--------
+## Install
 
-System level dependencies can be installed by following these operating system 
+System level dependencies can be installed by following these operating system
 specific instructions:
 
-* [install_ubuntu.md](install_ubuntu.md)
-* [install_redhat.md](install_redhat.md)
+-   [install_ubuntu.md](install_ubuntu.md)
+-   [install_redhat.md](install_redhat.md)
 
-After you have installed the system level dependencies you will need to 
+After you have installed the system level dependencies you will need to
 install some application specific dependencies, and configure the application.
 
 First you will need to set up the local Python environment and install some
@@ -74,30 +72,30 @@ to something else:
 You will need to create a Django settings file which uses the default settings
 and sets custom values specific to your site:
 
-1. Create a `settings.py` file in the chronam directory which imports the default values
-   from the provided template for possible customization:
+1.  Create a `settings.py` file in the chronam directory which imports the default values
+    from the provided template for possible customization:
 
-        echo 'from chronam.settings_template import *' > /opt/chronam/settings.py
+         echo 'from chronam.settings_template import *' > /opt/chronam/settings.py
 
-1. Ensure that the `DJANGO_SETTINGS_MODULE` environment variable is set to
-   `chronam.settings` before you start a Django management command. This can be
-   set as a user-wide default in your `~/.profile` or but the recommended way is
-   simply to make it part of the virtualenv activation process::
+1.  Ensure that the `DJANGO_SETTINGS_MODULE` environment variable is set to
+    `chronam.settings` before you start a Django management command. This can be
+    set as a user-wide default in your `~/.profile` or but the recommended way is
+    simply to make it part of the virtualenv activation process::
 
-        echo 'export DJANGO_SETTINGS_MODULE=chronam.settings' >> /opt/chronam/ENV/bin/activate
+         echo 'export DJANGO_SETTINGS_MODULE=chronam.settings' >> /opt/chronam/ENV/bin/activate
 
-1. Add your database password to the settings.py file following the standard
-   Django [settings documentation](https://docs.djangoproject.com/en/1.8/ref/settings/#databases):
+1.  Add your database password to the settings.py file following the standard
+    Django [settings documentation](https://docs.djangoproject.com/en/1.8/ref/settings/#databases):
 
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.mysql',
-                'NAME': 'chronam_db',
-                'USER': 'chronam_user',
-                'HOST': 'mysql.example.org',
-                'PASSWORD': 'NotTheRealPassword',
-            }
-        }
+         DATABASES = {
+             'default': {
+                 'ENGINE': 'django.db.backends.mysql',
+                 'NAME': 'chronam_db',
+                 'USER': 'chronam_user',
+                 'HOST': 'mysql.example.org',
+                 'PASSWORD': 'NotTheRealPassword',
+             }
+         }
 
 You should never edit the `settings_template.py` file since that may change in
 the next release but you may wish to periodically review the list of
@@ -110,20 +108,19 @@ Next you will need to initialize database schema and load some initial data:
     django-admin.py loaddata initial_data
     django-admin.py chronam_sync --skip-essays
 
-And finally you will need to collect static files (stylesheets, images) 
+And finally you will need to collect static files (stylesheets, images)
 for serving up by Apache in production settings:
 
     django-admin.py collectstatic --noinput
 
-Load Data
---------
+## Load Data
 
 As mentioned above, the NDNP data that awardees create and ship to the Library
-of Congress is in the public domain and is made available on the Web as 
-`batches`. Each batch contains newsaper issues for one or more newspaper 
+of Congress is in the public domain and is made available on the Web as
+`batches`. Each batch contains newsaper issues for one or more newspaper
 titles. To use chronam you will need to have some of this batch data to load. If
 you are an awardee you probably have this data on hand already, but if not
-you can use a tool like [wget](http://www.gnu.org/software/wget/) to bulk 
+you can use a tool like [wget](http://www.gnu.org/software/wget/) to bulk
 download the batches. For example:
 
     cd /srv/chronam/batches/
@@ -144,17 +141,16 @@ via the Web:
 
     http://www.example.org/batches/
 
-Caching
--------
+## Caching
 
 After loading data, you will need to clear the cache. If you are using a reverse proxie (like Varnish) you will need to also clear that, as well as any CDN you have. Below is a list of URLS that should be cleared based on what content you are loading.
 
 All pages that contain a LCCN are tagged with that LCCN in the cache headers. This allows for purging by specific LCCN tag if there is a update to a batch.
 
-List of URLs to purge when loading new batch
-==============================================
-* All URLs tagged with `lccn=<LCCN>`
-* All URLs matching these patterns:
+# List of URLs to purge when loading new batch
+
+-   All URLs tagged with `lccn=<LCCN>`
+-   All URLs matching these patterns:
     ```
     chroniclingamerica.loc.gov/tabs
     chroniclingamerica.loc.gov/sitemap*
@@ -170,17 +166,17 @@ List of URLs to purge when loading new batch
     chroniclingamerica.loc.gov/essays*
     ```
 
-List of URLs to purge when loading new Awardees
-===============================================
-* All URLs matching `chroniclingamerica.loc.gov/awardees*`
+# List of URLs to purge when loading new Awardees
 
-List of URLs to purge when loading new basic data
-=================================================
-* All URLs matching `chroniclingamerica.loc.gov/institutions*`
+-   All URLs matching `chroniclingamerica.loc.gov/awardees*`
 
-List of URLs to purge when loading code
-=======================================
-* All URLs matching these patterns:
+# List of URLs to purge when loading new basic data
+
+-   All URLs matching `chroniclingamerica.loc.gov/institutions*`
+
+# List of URLs to purge when loading code
+
+-   All URLs matching these patterns:
     ```
     chroniclingamerica.loc.gov/ocr
     chroniclingamerica.loc.gov/about
@@ -188,21 +184,20 @@ List of URLs to purge when loading code
     chroniclingamerica.loc.gov/help
     ```
 
-Run Unit Tests
---------------
+## Run Unit Tests
 
 For the unit tests to work you will need:
-* to have the batch_uuml_thys_ver01 available. You can use the wget command in the previous section to get get it.
-* A local SOLR instance running
-* A local MySQL database
-* Access to the Essay Editor Feed
+
+-   to have the batch_uuml_thys_ver01 available. You can use the wget command in the previous section to get get it.
+-   A local SOLR instance running
+-   A local MySQL database
+-   Access to the Essay Editor Feed
 
 After that you should be able to:
 
     cd /opt/chronam/
     django-admin.py test chronam.core.tests --settings=chronam.settings_test
 
-License
--------
+## License
 
 This software is in the Public Domain.
