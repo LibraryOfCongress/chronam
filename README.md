@@ -58,6 +58,16 @@ to something else:
 
     echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf8mb4; CREATE USER 'chronam'@'localhost' IDENTIFIED BY 'pick_one'; GRANT ALL ON chronam.* to 'chronam'@'localhost'; GRANT ALL ON test_chronam.* TO 'chronam'@'localhost';" | mysql -u root -p
 
+#### Solr
+
+The [Ubuntu](install_ubuntu.md) and [Red Hat](install_redhat.md) guides have
+instructions for installing and starting Solr manually. For developmeny you
+may prefer to use Docker:
+
+    cd solr
+    docker build -t chronam-solr:latest .
+    docker run -p8983:8983 chronam-solr:latest
+
 ### Install the application
 
 First you will need to set up the local Python environment and install some
