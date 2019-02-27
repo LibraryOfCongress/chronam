@@ -105,7 +105,7 @@ in case you need to update your local settings.
 Next you will need to initialize database schema and load some initial data:
 
     django-admin.py migrate
-    django-admin.py loaddata initial_data
+    django-admin.py loaddata initial_data languages
     django-admin.py chronam_sync --skip-essays
 
 And finally you will need to collect static files (stylesheets, images)
