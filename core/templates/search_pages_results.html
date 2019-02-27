@@ -1,4 +1,4 @@
-{% extends "site_base.html" %} 
+{% extends "site_base.html" %}
 {% load static from staticfiles %}
 {% load custom_filters %}
 
@@ -10,7 +10,7 @@
       <div class="pagination pagination-small">
 	<ul>
 	  <li><a {% if page.has_previous %}{% else %}class="disabled"{% endif %} href="{{previous_url}}" class="prev">prev</a></li>
-     
+
 	  {% for page_number in page_range_short %}
 
 	  {% ifequal page_number "..." %}
@@ -25,13 +25,13 @@
 
 	  {% endifequal %}
 	  {% endfor %}
-            
+
 	  <li><a {% if page.has_next %}{% else %}class="disabled"{% endif %} href="{{ next_url }}" class="next">next</a></li>
 	</ul>
       </div>
     </div>
 
-  </div>  
+  </div>
 
   <ul class="thumbnails newspaper_pages clearfix">
     {% for object in page.object_list %}
@@ -54,6 +54,6 @@
 
 
 {% block javascript %}
-{{ block.super }}
+    {{ block.super }}
     <script src="{% static 'js/highlight.js' %}"></script>
 {% endblock %}
