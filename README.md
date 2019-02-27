@@ -43,6 +43,23 @@ specific instructions:
 After you have installed the system level dependencies you will need to
 install some application specific dependencies, and configure the application.
 
+### Install dependent services
+
+#### MySQL
+
+You will need a MySQL database. If this is a new server, you will need to
+start MySQL and assign it a root password:
+
+    sudo service mysqld start
+    /usr/bin/mysqladmin -u root password '' # pick a real password
+
+You will probably want to change the password 'pick_one' in the example below
+to something else:
+
+    echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf8mb4; CREATE USER 'chronam'@'localhost' IDENTIFIED BY 'pick_one'; GRANT ALL ON chronam.* to 'chronam'@'localhost'; GRANT ALL ON test_chronam.* TO 'chronam'@'localhost';" | mysql -u root -p
+
+### Install the application
+
 First you will need to set up the local Python environment and install some
 Python dependencies:
 
@@ -57,17 +74,6 @@ Next you need to create some directories for data:
     mkdir /srv/chronam/batches
     mkdir /srv/chronam/cache
     mkdir /srv/chronam/bib
-
-And you will need a MySQL database. If this is a new server, you will need to
-start MySQL and assign it a root password:
-
-    sudo service mysqld start
-    /usr/bin/mysqladmin -u root password '' # pick a real password
-
-You will probably want to change the password 'pick_one' in the example below
-to something else:
-
-    echo "DROP DATABASE IF EXISTS chronam; CREATE DATABASE chronam CHARACTER SET utf8mb4; CREATE USER 'chronam'@'localhost' IDENTIFIED BY 'pick_one'; GRANT ALL ON chronam.* to 'chronam'@'localhost'; GRANT ALL ON test_chronam.* TO 'chronam'@'localhost';" | mysql -u root -p
 
 You will need to create a Django settings file which uses the default settings
 and sets custom values specific to your site:
