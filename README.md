@@ -126,14 +126,14 @@ you are an awardee you probably have this data on hand already, but if not
 you can use a tool like [wget](http://www.gnu.org/software/wget/) to bulk 
 download the batches. For example:
 
-    cd /srv/chronam/
-    wget --recursive --no-host-directories --cut-dirs 1 --reject index.html* --include-directories /data/batches/uuml_thys_ver01/ https://chroniclingamerica.loc.gov/data/batches/uuml_thys_ver01/
+    cd /srv/chronam/batches/
+    wget --recursive --no-parent --no-host-directories --cut-dirs 2 --reject index.html* https://chroniclingamerica.loc.gov/data/batches/uuml_thys_ver01/
 
 In order to load data you will need to run the load_batch management command by
 passing it the full path to the batch directory. So assuming you have downloaded
 batch_uuml_thys_ver01 you will want to:
 
-    django-admin.py load_batch /srv/chronam/batches/batch_uuml_thys_ver01
+    django-admin.py load_batch /srv/chronam/batches/uuml_thys_ver01
 
 If this is a new server, you may need to start the web server:
 
