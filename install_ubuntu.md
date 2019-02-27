@@ -54,4 +54,4 @@ Configure Apache
 Continue
 --------
 
-* You can now return to the Install section in [README.md](https://github.com/LibraryOfCongress/chronam/blob/master/README.md#install)
+-   You can now return to the Install section in [README.md](README.md#install)

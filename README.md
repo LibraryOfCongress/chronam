@@ -39,8 +39,8 @@ Install
 System level dependencies can be installed by following these operating system 
 specific instructions:
 
-* [install_ubuntu.md](https://github.com/LibraryOfCongress/chronam/blob/master/install_ubuntu.md)
-* [install_redhat.md](https://github.com/LibraryOfCongress/chronam/blob/master/install_redhat.md)
+* [install_ubuntu.md](install_ubuntu.md)
+* [install_redhat.md](install_redhat.md)
 
 After you have installed the system level dependencies you will need to 
 install some application specific dependencies, and configure the application.
