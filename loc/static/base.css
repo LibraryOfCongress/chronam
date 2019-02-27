@@ -1771,6 +1771,9 @@ table.search_results td {
 .highlite {
     width: 200px;
 }
+img.highlite {
+    pointer-events: none;
+}
 .highlite img.thumbnail {
     margin-bottom: 2px;
 }
