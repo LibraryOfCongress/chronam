@@ -28,8 +28,8 @@ Download Solr from a mirror site
     sudo cp /opt/chronam/conf/jetty7.sh /etc/init.d/jetty
     sudo chmod +x /etc/init.d/jetty
 
-    sudo cp /opt/chronam/conf/schema.xml /opt/solr/solr/collection1/conf/schema.xml
-    sudo cp /opt/chronam/conf/solrconfig.xml /opt/solr/solr/collection1/conf/solrconfig.xml
+    sudo cp /opt/chronam/solr/conf/schema.xml /opt/solr/solr/collection1/conf/schema.xml
+    sudo cp /opt/chronam/solr/conf/solrconfig.xml /opt/solr/solr/collection1/conf/solrconfig.xml
 
     sudo mkdir -p /opt/solr/contrib
     sudo wget --output-document=/opt/solr/contrib/lucene-analyzers-stempel-4.10.4.jar https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-stempel/4.10.4/lucene-analyzers-stempel-4.10.4.jar

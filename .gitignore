@@ -8,6 +8,5 @@ data/word_coordinates
 .static-media/
 .vagrant/
 .idea*
-solr
 batches
 storage
