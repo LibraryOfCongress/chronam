@@ -3,4 +3,4 @@ JAVA=$JAVA_HOME/bin/java
 JAVA_OPTIONS="-verbose:gc -Xms2g -Xmx2g -Dsolr.solr.home=/opt/solr/solr $JAVA_OPTIONS"
 JETTY_HOME=/opt/solr
 JETTY_USER=solr
-JETTY_LOGS=/opt/solr/logs 
+JETTY_LOGS=/opt/solr/logs

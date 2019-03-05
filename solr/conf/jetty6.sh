@@ -12,19 +12,19 @@
 # Configuration files
 #
 # /etc/default/jetty
-#   If it exists, this is read at the start of script. It may perform any 
+#   If it exists, this is read at the start of script. It may perform any
 #   sequence of shell commands, like setting relevant environment variables.
 #
 # $HOME/.jettyrc
-#   If it exists, this is read at the start of script. It may perform any 
+#   If it exists, this is read at the start of script. It may perform any
 #   sequence of shell commands, like setting relevant environment variables.
 #
 # /etc/jetty.conf
 #   If found, and no configurations were given on the command line,
-#   the file will be used as this script's configuration. 
+#   the file will be used as this script's configuration.
 #   Each line in the file may contain:
 #     - A comment denoted by the pound (#) sign as first non-blank character.
-#     - The path to a regular file, which will be passed to jetty as a 
+#     - The path to a regular file, which will be passed to jetty as a
 #       config.xml file.
 #     - The path to a directory. Each *.xml file in the directory will be
 #       passed to jetty as a config.xml file.
@@ -34,11 +34,11 @@
 # $JETTY_HOME/etc/jetty.xml
 #   If found, used as this script's configuration file, but only if
 #   /etc/jetty.conf was not present. See above.
-#   
+#
 # Configuration variables
 #
-# JAVA_HOME  
-#   Home of Java installation. 
+# JAVA_HOME
+#   Home of Java installation.
 #
 # JAVA
 #   Command to invoke Java. If not set, $JAVA_HOME/bin/java will be
@@ -73,10 +73,10 @@
 # JETTY_RUN
 #   Where the jetty.pid file should be stored. It defaults to the
 #   first available of /var/run, /usr/var/run, and /tmp if not set.
-#  
+#
 # JETTY_PID
 #   The Jetty PID file, defaults to $JETTY_RUN/jetty.pid
-#   
+#
 # JETTY_ARGS
 #   The default arguments to pass to jetty.
 #
@@ -103,10 +103,10 @@ findDirectory()
     OP=$1
     shift
     for L in $* ; do
-        [ $OP $L ] || continue 
+        [ $OP $L ] || continue
         echo $L
         break
-    done 
+    done
 }
 
 running()
@@ -136,9 +136,9 @@ NO_START=0
 ##################################################
 # See if there's a default configuration file
 ##################################################
-if [ -f /etc/default/jetty6 ] ; then 
+if [ -f /etc/default/jetty6 ] ; then
   . /etc/default/jetty6
-elif [ -f /etc/default/jetty ] ; then 
+elif [ -f /etc/default/jetty ] ; then
   . /etc/default/jetty
 fi
 
@@ -146,7 +146,7 @@ fi
 ##################################################
 # See if there's a user-specific configuration file
 ##################################################
-if [ -f $HOME/.jettyrc ] ; then 
+if [ -f $HOME/.jettyrc ] ; then
   . $HOME/.jettyrc
 fi
 
@@ -154,7 +154,7 @@ fi
 # Set tmp if not already set.
 ##################################################
 
-if [ -z "$TMP" ] 
+if [ -z "$TMP" ]
 then
   TMP=/tmp
 fi
@@ -169,13 +169,13 @@ TMPJ=$TMP/j$$
 ##################################################
 # Try to determine JETTY_HOME if not set
 ##################################################
-if [ -z "$JETTY_HOME" ] 
+if [ -z "$JETTY_HOME" ]
 then
   JETTY_HOME_1=`dirname "$0"`
   JETTY_HOME_1=`dirname "$JETTY_HOME_1"`
-  if [ -f "${JETTY_HOME_1}/${JETTY_INSTALL_TRACE_FILE}" ] ; 
-  then 
-     JETTY_HOME=${JETTY_HOME_1} 
+  if [ -f "${JETTY_HOME_1}/${JETTY_INSTALL_TRACE_FILE}" ] ;
+  then
+     JETTY_HOME=${JETTY_HOME_1}
   fi
 fi
 
@@ -207,14 +207,14 @@ if [ "$JETTY_HOME" = "" ] ; then
         Jetty-6.*                \
         Jetty                    \
         "
-        
+
   JETTY_HOME=
-  for L in $STANDARD_LOCATIONS 
+  for L in $STANDARD_LOCATIONS
   do
-     for N in $JETTY_DIR_NAMES 
+     for N in $JETTY_DIR_NAMES
      do
-         if [ -d $L/$N ] && [ -f "$L/${N}/${JETTY_INSTALL_TRACE_FILE}" ] ; 
-         then 
+         if [ -d $L/$N ] && [ -f "$L/${N}/${JETTY_INSTALL_TRACE_FILE}" ] ;
+         then
             JETTY_HOME="$L/$N"
          fi
      done
@@ -227,7 +227,7 @@ fi
 # No JETTY_HOME yet? We're out of luck!
 ##################################################
 if [ -z "$JETTY_HOME" ] ; then
-    echo "** ERROR: JETTY_HOME not set, you need to set it or install in a standard location" 
+    echo "** ERROR: JETTY_HOME not set, you need to set it or install in a standard location"
     exit 1
 fi
 
@@ -238,7 +238,7 @@ JETTY_HOME=`pwd`
 #####################################################
 # Check that jetty is where we think it is
 #####################################################
-if [ ! -r $JETTY_HOME/$JETTY_INSTALL_TRACE_FILE ] 
+if [ ! -r $JETTY_HOME/$JETTY_INSTALL_TRACE_FILE ]
 then
    echo "** ERROR: Oops! Jetty doesn't appear to be installed in $JETTY_HOME"
    echo "** ERROR:  $JETTY_HOME/$JETTY_INSTALL_TRACE_FILE is not readable!"
@@ -249,29 +249,29 @@ fi
 ###########################################################
 # Get the list of config.xml files from the command line.
 ###########################################################
-if [ ! -z "$ARGS" ] 
+if [ ! -z "$ARGS" ]
 then
-  for A in $ARGS 
+  for A in $ARGS
   do
-    if [ -f $A ] 
+    if [ -f $A ]
     then
-       CONF="$A" 
-    elif [ -f $JETTY_HOME/etc/$A ] 
+       CONF="$A"
+    elif [ -f $JETTY_HOME/etc/$A ]
     then
-       CONF="$JETTY_HOME/etc/$A" 
-    elif [ -f ${A}.xml ] 
+       CONF="$JETTY_HOME/etc/$A"
+    elif [ -f ${A}.xml ]
     then
-       CONF="${A}.xml" 
-    elif [ -f $JETTY_HOME/etc/${A}.xml ] 
+       CONF="${A}.xml"
+    elif [ -f $JETTY_HOME/etc/${A}.xml ]
     then
-       CONF="$JETTY_HOME/etc/${A}.xml" 
+       CONF="$JETTY_HOME/etc/${A}.xml"
     else
-       echo "** ERROR: Cannot find configuration '$A' specified in the command line." 
+       echo "** ERROR: Cannot find configuration '$A' specified in the command line."
        exit 1
     fi
-    if [ ! -r $CONF ] 
+    if [ ! -r $CONF ]
     then
-       echo "** ERROR: Cannot read configuration '$A' specified in the command line." 
+       echo "** ERROR: Cannot read configuration '$A' specified in the command line."
        exit 1
     fi
     CONFIGS="$CONFIGS $CONF"
@@ -284,7 +284,7 @@ fi
 # but only if no configurations were given on the
 # command line.
 ##################################################
-if [ -z "$JETTY_CONF" ] 
+if [ -z "$JETTY_CONF" ]
 then
   if [ -f /etc/jetty.conf ]
   then
@@ -299,42 +299,42 @@ fi
 # Read the configuration file if one exists
 ##################################################
 CONFIG_LINES=
-if [ -z "$CONFIGS" ] && [ -f "$JETTY_CONF" ] && [ -r "$JETTY_CONF" ] 
+if [ -z "$CONFIGS" ] && [ -f "$JETTY_CONF" ] && [ -r "$JETTY_CONF" ]
 then
-  CONFIG_LINES=`cat $JETTY_CONF | grep -v "^[:space:]*#" | tr "\n" " "` 
+  CONFIG_LINES=`cat $JETTY_CONF | grep -v "^[:space:]*#" | tr "\n" " "`
 fi
 
 ##################################################
 # Get the list of config.xml files from jetty.conf
 ##################################################
-if [ ! -z "${CONFIG_LINES}" ] 
+if [ ! -z "${CONFIG_LINES}" ]
 then
-  for CONF in ${CONFIG_LINES} 
+  for CONF in ${CONFIG_LINES}
   do
-    if [ ! -r "$CONF" ] 
+    if [ ! -r "$CONF" ]
     then
-      echo "** WARNING: Cannot read '$CONF' specified in '$JETTY_CONF'" 
-    elif [ -f "$CONF" ] 
+      echo "** WARNING: Cannot read '$CONF' specified in '$JETTY_CONF'"
+    elif [ -f "$CONF" ]
     then
       # assume it's a configure.xml file
-      CONFIGS="$CONFIGS $CONF" 
-    elif [ -d "$CONF" ] 
+      CONFIGS="$CONFIGS $CONF"
+    elif [ -d "$CONF" ]
     then
       # assume it's a directory with configure.xml files
       # for example: /etc/jetty.d/
       # sort the files before adding them to the list of CONFIGS
-      XML_FILES=`ls ${CONF}/*.xml | sort | tr "\n" " "` 
-      for FILE in ${XML_FILES} 
+      XML_FILES=`ls ${CONF}/*.xml | sort | tr "\n" " "`
+      for FILE in ${XML_FILES}
       do
-         if [ -r "$FILE" ] && [ -f "$FILE" ] 
+         if [ -r "$FILE" ] && [ -f "$FILE" ]
          then
-            CONFIGS="$CONFIGS $FILE" 
+            CONFIGS="$CONFIGS $FILE"
          else
-           echo "** WARNING: Cannot read '$FILE' specified in '$JETTY_CONF'" 
+           echo "** WARNING: Cannot read '$FILE' specified in '$JETTY_CONF'"
          fi
       done
     else
-      echo "** WARNING: Don''t know what to do with '$CONF' specified in '$JETTY_CONF'" 
+      echo "** WARNING: Don''t know what to do with '$CONF' specified in '$JETTY_CONF'"
     fi
   done
 fi
@@ -342,7 +342,7 @@ fi
 #####################################################
 # Run the standard server if there's nothing else to run
 #####################################################
-if [ -z "$CONFIGS" ] 
+if [ -z "$CONFIGS" ]
 then
     CONFIGS="${JETTY_HOME}/etc/jetty-logging.xml ${JETTY_HOME}/etc/jetty.xml"
 fi
@@ -351,7 +351,7 @@ fi
 #####################################################
 # Find a location for the pid file
 #####################################################
-if [  -z "$JETTY_RUN" ] 
+if [  -z "$JETTY_RUN" ]
 then
   JETTY_RUN=`findDirectory -w /var/run /usr/var/run /tmp`
 fi
@@ -359,7 +359,7 @@ fi
 #####################################################
 # Find a PID for the pid file
 #####################################################
-if [  -z "$JETTY_PID" ] 
+if [  -z "$JETTY_PID" ]
 then
   JETTY_PID="$JETTY_RUN/jetty.pid"
 fi
@@ -386,14 +386,14 @@ then
         /opt/java \
         /opt/jdk \
         /opt/jre \
-    " 
+    "
     JAVA_NAMES="java jdk jre"
     for N in $JAVA_NAMES ; do
         for L in $JAVA_LOCATIONS ; do
-            [ -d $L ] || continue 
+            [ -d $L ] || continue
             find $L -name "$N" ! -type d | grep -v threads | while read J ; do
                 [ -x $J ] || continue
-                VERSION=`eval $J -version 2>&1`       
+                VERSION=`eval $J -version 2>&1`
                 [ $? = 0 ] || continue
                 VERSION=`expr "$VERSION" : '.*"\(1.[0-9\.]*\)["_]'`
                 [ "$VERSION" = "" ] && continue
@@ -421,9 +421,9 @@ fi
 ##################################################
 if [ "$JAVA" = "" -a "$JAVA_HOME" != "" ]
 then
-  if [ ! -z "$JAVACMD" ] 
+  if [ ! -z "$JAVACMD" ]
   then
-     JAVA="$JAVACMD" 
+     JAVA="$JAVACMD"
   else
     [ -x $JAVA_HOME/bin/jre -a ! -d $JAVA_HOME/bin/jre ] && JAVA=$JAVA_HOME/bin/jre
     [ -x $JAVA_HOME/bin/java -a ! -d $JAVA_HOME/bin/java ] && JAVA=$JAVA_HOME/bin/java
@@ -441,7 +441,7 @@ JAVA_VERSION=`expr "$($JAVA -version 2>&1 | head -1)" : '.*1\.\([0-9]\)'`
 #####################################################
 # See if JETTY_PORT is defined
 #####################################################
-if [ "$JETTY_PORT" != "" ] 
+if [ "$JETTY_PORT" != "" ]
 then
   JAVA_OPTIONS="$JAVA_OPTIONS -Djetty.port=$JETTY_PORT"
 fi
@@ -481,7 +481,7 @@ RUN_ARGS="$JAVA_OPTIONS -jar $JETTY_START $JETTY_ARGS $CONFIGS"
 RUN_CMD="$JAVA $RUN_ARGS"
 
 #####################################################
-# Comment these out after you're happy with what 
+# Comment these out after you're happy with what
 # the script is doing.
 #####################################################
 #echo "JETTY_HOME     =  $JETTY_HOME"
@@ -501,7 +501,7 @@ case "$ACTION" in
   start)
         echo -n "Starting Jetty: "
 
-        if [ "$NO_START" = "1" ]; then 
+        if [ "$NO_START" = "1" ]; then
 	  echo "Not starting jetty - NO_START=1 in /etc/default/jetty6";
           exit 0;
 	fi
@@ -511,7 +511,7 @@ case "$ACTION" in
 	then
           [ x$JETTY_USER = x ] && JETTY_USER=$(whoami)
 	  [ $UID = 0 ] && CH_USER="-u $JETTY_USER"
-	  if start-stop-daemon -S -p $JETTY_PID $CH_USER -d $JETTY_HOME -b -m -x $JAVA -- $RUN_ARGS 
+	  if start-stop-daemon -S -p $JETTY_PID $CH_USER -d $JETTY_HOME -b -m -x $JAVA -- $RUN_ARGS
 	  then
 	      sleep 1
 	      if running $JETTY_PID
@@ -525,7 +525,7 @@ case "$ACTION" in
 	else
 
           if [ -f $JETTY_PID ]
-          then            
+          then
             if running $JETTY_PID
             then
               echo "Already Running!!"
@@ -536,7 +536,7 @@ case "$ACTION" in
             fi
           fi
 
-          if [ x$JETTY_USER != x ] 
+          if [ x$JETTY_USER != x ]
           then
 	  echo 7
               touch $JETTY_PID
@@ -553,7 +553,7 @@ case "$ACTION" in
               echo $PID > $JETTY_PID
           fi
 
-          echo "STARTED Jetty `date`" 
+          echo "STARTED Jetty `date`"
         fi
 
         ;;
@@ -568,7 +568,7 @@ case "$ACTION" in
             exit 0
           fi
 
-	  start-stop-daemon -K -p $JETTY_PID -d $JETTY_HOME -x $JAVA -s HUP 
+	  start-stop-daemon -K -p $JETTY_PID -d $JETTY_HOME -x $JAVA -s HUP
 	  sleep 1
 	  if running $JETTY_PID
 	  then
@@ -594,7 +594,7 @@ case "$ACTION" in
             sleep 1
             let TIMEOUT=$TIMEOUT-1
           done
-          
+
           [ $TIMEOUT -gt 0 ] || kill -9 $PID 2>/dev/null
 
 	  rm -f $JETTY_PID
@@ -656,7 +656,7 @@ case "$ACTION" in
         echo "CLASSPATH      =  $CLASSPATH"
         echo "RUN_CMD        =  $RUN_CMD"
         echo
-        
+
         if [ -f $JETTY_PID ]
         then
             echo "Jetty running pid="`cat $JETTY_PID`
