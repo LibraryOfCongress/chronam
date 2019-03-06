@@ -18,7 +18,11 @@ class NewspaperFeedAtom(Feed):
     author_link = "https://www.loc.gov"
 
     def items(self):
-        return Title.objects.filter(has_issues=True).annotate(last_release=Max('issues__batch__released')).order_by('-last_release')
+        return (
+            Title.objects.filter(has_issues=True, issues__batch__released__isnull=False)
+            .annotate(last_release=Max("issues__batch__released"))
+            .order_by("-last_release")
+        )
 
     def item_link(self, item):
         return reverse("chronam_title", args=[item.lccn])
