@@ -28,7 +28,7 @@ class NewspaperFeedAtom(Feed):
         return reverse("chronam_title", args=[item.lccn])
 
     def item_updateddate(self, item):
-        return item.issues.order_by("-batch__released").first().batch.released
+        return item.last_release
 
     def item_author_name(self, item):
         return item.publisher
