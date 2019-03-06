@@ -92,13 +92,21 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [os.path.join(DIRNAME, "templates")],
-        "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "chronam.core.context_processors.extra_request_info",
                 "chronam.core.context_processors.newspaper_info",
             ],
             "debug": DEBUG,
+            "loaders": [
+                (
+                    "django.template.loaders.cached.Loader",
+                    [
+                        "django.template.loaders.filesystem.Loader",
+                        "django.template.loaders.app_directories.Loader",
+                    ],
+                )
+            ],
         },
     }
 ]
