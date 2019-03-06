@@ -22,6 +22,7 @@ class NewspaperFeedAtom(Feed):
             Title.objects.filter(has_issues=True, issues__batch__released__isnull=False)
             .annotate(last_release=Max("issues__batch__released"))
             .order_by("-last_release")
+            .prefetch_related("issues", "issues__batch")
         )
 
     def item_link(self, item):
