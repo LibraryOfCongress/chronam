@@ -30,14 +30,18 @@ def reports(request):
 
 @never_cache
 def batches(request, page_number=1):
-    page_title = 'Batches'
+    page_title = "Batches"
     batches = models.Batch.viewable_batches()
+    batches = batches.prefetch_related("awardee")
     paginator = Paginator(batches, 25)
     page = paginator.page(page_number)
     page_range_short = list(_page_range_short(paginator, page))
 
-    return render_to_response('reports/batches.html', dictionary=locals(),
-                              context_instance=RequestContext(request))
+    return render_to_response(
+        "reports/batches.html",
+        dictionary=locals(),
+        context_instance=RequestContext(request),
+    )
 
 
 @never_cache
