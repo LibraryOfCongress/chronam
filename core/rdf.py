@@ -57,8 +57,16 @@ def title_to_graph(t, g=None, include_issues=True):
             end = 'unknown'
         if start == '????':
             start = 'unknown'
-        g.add((uri, DCTERMS['date'], Literal('%s/%s' % (start, end),
-                                             datatype=URIRef('http://www.loc.gov/standards/datetime#edt'))))
+        g.add(
+            (
+                uri,
+                DCTERMS['date'],
+                Literal(
+                    '%s/%s' % (start, end),
+                    datatype=URIRef('http://www.loc.gov/standards/datetime#edt'),
+                ),
+            )
+        )
 
     if t.marc:
         g.add((uri, DCTERMS.hasFormat, URIRef(t.marc.url)))
@@ -67,8 +75,7 @@ def title_to_graph(t, g=None, include_issues=True):
     g.add((uri, OWL['sameAs'], URIRef('info:lccn/%s' % t.lccn)))
 
     if t.oclc:
-        g.add((uri, RDFS.seeAlso,
-               URIRef('http://www.worldcat.org/oclc/%s' % t.oclc)))
+        g.add((uri, RDFS.seeAlso, URIRef('http://www.worldcat.org/oclc/%s' % t.oclc)))
         g.add((uri, OWL['sameAs'], URIRef('info:oclcnum/%s' % t.oclc)))
     if t.issn:
         g.add((uri, OWL['sameAs'], URIRef('urn:issn:%s' % t.issn)))
@@ -84,8 +91,13 @@ def issue_to_graph(i, g=None):
 
     uri = abstract_uri(i)
     g.add((uri, RDF.type, BIBO['Issue']))
-    g.add((uri, DCTERMS['title'], Literal('%s - %s' % (i.title.display_name,
-                                                       i.date_issued))))
+    g.add(
+        (
+            uri,
+            DCTERMS['title'],
+            Literal('%s - %s' % (i.title.display_name, i.date_issued)),
+        )
+    )
     g.add((uri, DCTERMS['issued'], Literal(i.date_issued, datatype=XSD.date)))
     g.add((uri, ORE['isAggregatedBy'], abstract_uri(i.title)))
     g.add((uri, ORE['isAggregatedBy'], abstract_uri(i.batch)))
@@ -128,10 +140,17 @@ def page_to_graph(p, g=None):
     g.add((uri, ORE.aggregates, thumb_uri))
     g.add((uri, FOAF.depiction, thumb_uri))
     g.add((thumb_uri, DC['format'], Literal('image/jpeg')))
-    g.add((uri, DCTERMS['issued'], Literal(p.issue.date_issued,
-                                           datatype=XSD.date)))
-    g.add((uri, DCTERMS['title'], Literal('%s - %s - %s' %
-                                          (p.issue.title.display_name, p.issue.date_issued, p.sequence))))
+    g.add((uri, DCTERMS['issued'], Literal(p.issue.date_issued, datatype=XSD.date)))
+    g.add(
+        (
+            uri,
+            DCTERMS['title'],
+            Literal(
+                '%s - %s - %s'
+                % (p.issue.title.display_name, p.issue.date_issued, p.sequence)
+            ),
+        )
+    )
 
     for flickr_url in p.flickr_urls.all():
         g.add((uri, ORE.aggregates, flickr_url.value))
@@ -158,8 +177,7 @@ def batch_to_graph(b):
     uri = abstract_uri(b)
 
     g.add((uri, RDF.type, NDNP['Batch']))
-    g.add((uri, DCTERMS['created'], Literal(rfc3339(b.created),
-                                            datatype=XSD.dateTime)))
+    g.add((uri, DCTERMS['created'], Literal(rfc3339(b.created), datatype=XSD.dateTime)))
     g.add((uri, DCTERMS['title'], Literal(b.name)))
     g.add((uri, DCTERMS['creator'], abstract_uri(b.awardee)))
     g.add((uri, NDNP['bag'], URIRef('/data/batches/' + b.name)))
@@ -184,8 +202,13 @@ def awardee_to_graph(a):
     if a.org_code == 'dlc':
         # important for resource maps that reference loc as dc:creator
         g.add((uri, FOAF['mbox'], Literal('help@loc.gov')))
-        g.add((uri, OWL['sameAs'],
-               URIRef("http://dbpedia.org/resource/Library_of_Congress")))
+        g.add(
+            (
+                uri,
+                OWL['sameAs'],
+                URIRef("http://dbpedia.org/resource/Library_of_Congress"),
+            )
+        )
     return g
 
 
@@ -221,7 +244,13 @@ def add_rem(g, uri_a, uri_r):
     g.add((uri_a, ORE['isDescribedBy'], uri_r))
     g.add((uri_r, RDF.type, ORE['ResourceMap']))
     g.add((uri_r, ORE['describes'], uri_a))
-    g.add((uri_r, DCTERMS['creator'], URIRef('http://chroniclingamerica.loc.gov/awardees/dlc#awardee')))
+    g.add(
+        (
+            uri_r,
+            DCTERMS['creator'],
+            URIRef('http://chroniclingamerica.loc.gov/awardees/dlc#awardee'),
+        )
+    )
 
     # TODO: would be nice if created and modified were more real somehow
     # so oai-ore bots would know when resources needed to be harvested...
