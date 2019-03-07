@@ -22,7 +22,7 @@ class NewspaperFeedAtom(Feed):
             Title.objects.filter(has_issues=True, issues__batch__released__isnull=False)
             .annotate(last_release=Max("issues__batch__released"))
             .order_by("-last_release")
-            .prefetch_related("issues", "issues__batch")
+            .only("lccn", "publisher", "place_of_publication", "name")
         )
 
     def item_link(self, item):
@@ -35,7 +35,7 @@ class NewspaperFeedAtom(Feed):
         return item.publisher
 
     def item_description(self, item):
-        updated = item.issues.first().batch.released.strftime("%Y-%m-%d")
+        updated = item.last_release.strftime("%Y-%m-%d")
         return "Issues were added on %s for %s" % (updated, item.name)
 
     def item_title(self, item):
