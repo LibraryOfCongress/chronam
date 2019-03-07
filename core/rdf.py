@@ -3,6 +3,8 @@ from datetime import datetime
 from rdflib import ConjunctiveGraph, Namespace, Literal, URIRef, RDF, RDFS
 from rfc3339 import rfc3339
 
+from chronam.core.models import MARC
+
 DC = Namespace('http://purl.org/dc/elements/1.1/')
 ORE = Namespace('http://www.openarchives.org/ore/terms/')
 OWL = Namespace('http://www.w3.org/2002/07/owl#')
@@ -68,8 +70,10 @@ def title_to_graph(t, g=None, include_issues=True):
             )
         )
 
-    if t.marc:
+    try:
         g.add((uri, DCTERMS.hasFormat, URIRef(t.marc.url)))
+    except MARC.DoesNotExist:
+        pass
 
     g.add((uri, RDFS.seeAlso, URIRef('http://lccn.loc.gov/%s' % t.lccn)))
     g.add((uri, OWL['sameAs'], URIRef('info:lccn/%s' % t.lccn)))
@@ -77,6 +81,7 @@ def title_to_graph(t, g=None, include_issues=True):
     if t.oclc:
         g.add((uri, RDFS.seeAlso, URIRef('http://www.worldcat.org/oclc/%s' % t.oclc)))
         g.add((uri, OWL['sameAs'], URIRef('info:oclcnum/%s' % t.oclc)))
+
     if t.issn:
         g.add((uri, OWL['sameAs'], URIRef('urn:issn:%s' % t.issn)))
 
