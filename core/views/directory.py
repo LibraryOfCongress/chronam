@@ -259,6 +259,18 @@ def search_titles_results(request):
 @rdf_view
 def newspapers_rdf(request):
     titles = models.Title.objects.filter(has_issues=True)
+    titles = titles.prefetch_related(
+        'subjects',
+        'languages',
+        'essays',
+        'places',
+        'urls',
+        'succeeding_title_links',
+        'preceeding_title_links',
+        'related_title_links',
+    )
+    titles = titles.select_related('marc')
+
     graph = titles_to_graph(titles)
     return HttpResponse(graph.serialize(base=_rdf_base(request),
                                         include_base=True),
