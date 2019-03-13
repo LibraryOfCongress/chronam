@@ -1,0 +1,14 @@
+[Unit]
+Description=ChronAm celeryd
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=10s
+User=ndnp
+Group=ndnp
+Environment=DJANGO_SETTINGS_MODULE=chronam.settings
+ExecStart=/bin/bash -c ". /opt/chronam/ENV/bin/activate && exec django-admin.py celeryd -c 2 --pidfile /var/log/celery/celeryd.pid --logfile /var/log/celery/celeryd.log"
+
+[Install]
+WantedBy=multi-user.target

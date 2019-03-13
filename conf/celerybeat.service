@@ -1,0 +1,14 @@
+[Unit]
+Description=ChronAm celerybeat
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=10s
+User=ndnp
+Group=ndnp
+Environment=DJANGO_SETTINGS_MODULE=chronam.settings
+ExecStart=/bin/bash -c ". /opt/chronam/ENV/bin/activate && exec django-admin.py celerybeat --pidfile /var/log/celery/celerybeat.pid --logfile /var/log/celery/celerybeat.log --workdir=/var/log/celery --schedule=/var/log/celery/celerybeat-schedule"
+
+[Install]
+WantedBy=multi-user.target
