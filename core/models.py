@@ -138,7 +138,7 @@ class Batch(models.Model):
         try:
             self.ocr_dump.delete()
         except OcrDump.DoesNotExist:
-            logging.warn("no OcrDump to delete for %s", self)
+            logging.warning("no OcrDump to delete for %s", self)
         super(Batch, self).delete(*args, **kwargs)
 
     def json(self, include_issues=True, serialize=True, host="chroniclingamerica.loc.gov"):
@@ -1179,7 +1179,7 @@ class OcrDump(models.Model):
         try:
             shutil.move(tempFile, dump.path)
         except Exception:
-            logging.warn("Couldn't move %s to %s. Waiting 5 seconds and trying again.", tempFile, dump.path)
+            logging.warning("Couldn't move %s to %s. Waiting 5 seconds and trying again.", tempFile, dump.path)
             time.sleep(5)
             shutil.move(tempFile, dump.path)
 
@@ -1254,7 +1254,7 @@ class OcrDump(models.Model):
         info.mtime = time.time()
         tar.addfile(info, open(page.ocr_abs_filename))
 
-        logging.info("added %s to %s" % (unicode(page), tar.name))
+        logging.debug("added %s to %s", page, tar.name)
 
     def delete(self, *args, **kwargs):
         # clean up file off of filesystem
