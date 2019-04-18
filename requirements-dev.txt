@@ -1,0 +1,6 @@
+--requirement=requirements.pip
+
+flake8-assertive==1.0.1
+flake8-builtins==1.4.1
+flake8-logging-format==0.6.0
+flake8-comprehensions==1.4.1
