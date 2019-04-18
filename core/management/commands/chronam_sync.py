@@ -6,46 +6,45 @@ from datetime import datetime
 from optparse import make_option
 
 from django.core import management
-from django.core.management.base import BaseCommand
 
 from chronam.core import index, models
 from chronam.core.utils.utils import validate_bib_dir
 
+from . import LoggingCommand
+
 LOGGER = logging.getLogger(__name__)
 
 
-class Command(BaseCommand):
-    verbose = make_option('--verbose',
-                          action='store_true',
-                          dest='verbose',
-                          default=False,
-                          help='')
+class Command(LoggingCommand):
+    verbose = make_option('--verbose', action='store_true', dest='verbose', default=False, help='')
 
-    skip_essays = make_option('--skip-essays',
-                              action='store_true',
-                              dest='skip_essays',
-                              default=False,
-                              help='Skip essay loading.')
+    skip_essays = make_option(
+        '--skip-essays', action='store_true', dest='skip_essays', default=False, help='Skip essay loading.'
+    )
 
-    pull_title_updates = make_option('--pull-title-updates',
-                                     action='store_true',
-                                     dest='pull_title_updates',
-                                     default=False,
-                                     help='Pull down a new set of titles.')
+    pull_title_updates = make_option(
+        '--pull-title-updates',
+        action='store_true',
+        dest='pull_title_updates',
+        default=False,
+        help='Pull down a new set of titles.',
+    )
 
-    option_list = BaseCommand.option_list + (verbose, skip_essays, pull_title_updates)
+    option_list = LoggingCommand.option_list + (verbose, skip_essays, pull_title_updates)
     help = ''
     args = ''
 
     def handle(self, **options):
-        if not (models.Title.objects.all().count() == 0 and
-                models.Holding.objects.all().count() == 0 and
-                models.Essay.objects.all().count() == 0 and
-                models.Batch.objects.all().count() == 0 and
-                models.Issue.objects.all().count() == 0 and
-                models.Page.objects.all().count() == 0 and
-                index.page_count() == 0 and
-                index.title_count() == 0):
+        if not (
+            models.Title.objects.all().count() == 0
+            and models.Holding.objects.all().count() == 0
+            and models.Essay.objects.all().count() == 0
+            and models.Batch.objects.all().count() == 0
+            and models.Issue.objects.all().count() == 0
+            and models.Page.objects.all().count() == 0
+            and index.page_count() == 0
+            and index.title_count() == 0
+        ):
             LOGGER.warn("Database or index not empty as expected.")
             return
 
@@ -64,9 +63,9 @@ class Command(BaseCommand):
                     filepath = os.path.join(bib_in_settings, filename)
                     management.call_command('load_titles', filepath, skip_index=True)
 
-        management.call_command('title_sync',
-                                skip_essays=options['skip_essays'],
-                                pull_title_updates=options['pull_title_updates'])
+        management.call_command(
+            'title_sync', skip_essays=options['skip_essays'], pull_title_updates=options['pull_title_updates']
+        )
 
         end = datetime.now()
         total_time = end - start

@@ -6,14 +6,14 @@ import re
 import urllib
 from urlparse import urlparse
 
-from django.core.management.base import BaseCommand
-
 from chronam.core.models import FlickrUrl, Page
+
+from . import LoggingCommand
 
 LOGGER = logging.getLogger(__name__)
 
 
-class Command(BaseCommand):
+class Command(LoggingCommand):
     args = '<flickr_key>'
     help = 'load links for content that has been pushed to flickr.'
 
@@ -22,8 +22,7 @@ class Command(BaseCommand):
         create_count = 0
 
         for flickr_url, chronam_url in flickr_chronam_links(key):
-            LOGGER.info("found flickr/chronam link: %s, %s" %
-                        (flickr_url, chronam_url))
+            LOGGER.info("found flickr/chronam link: %s, %s" % (flickr_url, chronam_url))
 
             # use the page url to locate the Page model
             path = urlparse(chronam_url).path
@@ -33,13 +32,11 @@ class Command(BaseCommand):
                 continue
 
             # create the FlickrUrl attached to the apprpriate page
-            f, created = FlickrUrl.objects.get_or_create(value=flickr_url,
-                                                         page=page)
+            f, created = FlickrUrl.objects.get_or_create(value=flickr_url, page=page)
             if created:
                 create_count += 1
                 f.save()
-                LOGGER.info("updated page (%s) with flickr url (%s)" %
-                            (page, flickr_url))
+                LOGGER.info("updated page (%s) with flickr url (%s)" % (page, flickr_url))
             else:
                 LOGGER.info("already knew about %s" % flickr_url)
 
@@ -49,7 +46,10 @@ class Command(BaseCommand):
 def photos_in_set(key, set_id):
     """A generator for all the photos in a set.
     """
-    u = 'http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=%s&format=json&nojsoncallback=1' % (key, set_id)
+    u = (
+        'http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=%s&format=json&nojsoncallback=1'
+        % (key, set_id)
+    )
     photos = json.loads(urllib.urlopen(u).read())
     for p in photos['photoset']['photo']:
         yield photo(key, p['id'])
@@ -58,7 +58,10 @@ def photos_in_set(key, set_id):
 def photo(key, photo_id):
     """Return JSON for a given photo.
     """
-    u = 'http://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=%s&photo_id=%s&format=json&nojsoncallback=1' % (key, photo_id)
+    u = (
+        'http://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=%s&photo_id=%s&format=json&nojsoncallback=1'
+        % (key, photo_id)
+    )
     return json.loads(urllib.urlopen(u).read())
 
 
@@ -78,8 +81,7 @@ def chronam_url(photo):
             return tag['raw'].replace('dc:identifier=', '')
 
     # some other photos might have a link in the textual description
-    m = re.search('"(http://chroniclingamerica.loc.gov/.+?)"',
-                  photo['photo']['description']['_content'])
+    m = re.search('"(http://chroniclingamerica.loc.gov/.+?)"', photo['photo']['description']['_content'])
     if m:
         return m.group(1)
 

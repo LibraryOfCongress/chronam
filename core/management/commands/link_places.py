@@ -3,11 +3,12 @@ from __future__ import absolute_import
 import logging
 import urllib2
 
-from django.core.management.base import BaseCommand
 from django.db import reset_queries
 from rdflib import ConjunctiveGraph, Namespace, URIRef
 
 from chronam.core import models
+
+from . import LoggingCommand
 
 try:
     import simplejson as json
@@ -22,8 +23,7 @@ owl = Namespace('http://www.w3.org/2002/07/owl#')
 dbpedia = Namespace('http://dbpedia.org/ontology/')
 
 
-class Command(BaseCommand):
-
+class Command(LoggingCommand):
     def handle(self, **options):
         LOGGER.debug("linking places")
         for place in models.Place.objects.filter(dbpedia__isnull=True):
@@ -31,8 +31,7 @@ class Command(BaseCommand):
                 continue
 
             # formulate a dbpedia place uri
-            path = urllib2.quote('%s,_%s' % (_clean(place.city),
-                                             _clean(place.state)))
+            path = urllib2.quote('%s,_%s' % (_clean(place.city), _clean(place.state)))
             url = URIRef('http://dbpedia.org/resource/%s' % path)
 
             # attempt to get a graph from it
@@ -75,11 +74,15 @@ class Command(BaseCommand):
         json_src = []
         places_qs = models.Place.objects.filter(dbpedia__isnull=False)
         for p in places_qs.order_by('name'):
-            json_src.append({'name': p.name,
-                             'dbpedia': p.dbpedia,
-                             'geonames': p.geonames,
-                             'longitude': p.longitude,
-                             'latitude': p.latitude})
+            json_src.append(
+                {
+                    'name': p.name,
+                    'dbpedia': p.dbpedia,
+                    'geonames': p.geonames,
+                    'longitude': p.longitude,
+                    'latitude': p.latitude,
+                }
+            )
             reset_queries()
         json.dump(json_src, open('core/fixtures/place_links.json', 'w'), indent=2)
         LOGGER.info("finished dumping place_links.json fixture")

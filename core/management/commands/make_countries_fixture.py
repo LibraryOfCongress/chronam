@@ -3,7 +3,7 @@ from __future__ import absolute_import, print_function
 import urllib
 from xml.etree import ElementTree
 
-from django.core.management.base import BaseCommand
+from . import LoggingCommand
 
 try:
     import simplejson as json
@@ -11,8 +11,7 @@ except ImportError:
     import json
 
 
-
-class Command(BaseCommand):
+class Command(LoggingCommand):
     help = "loads MARC Country list XML from the web, and dumps JSON fixture to stdout"
 
     def handle(self, *args, **options):
@@ -25,7 +24,8 @@ class Command(BaseCommand):
             name = country.findtext('./{info:lc/xmlns/codelist-v1}name')
             code = country.findtext('./{info:lc/xmlns/codelist-v1}code')
             region = country.findtext('./{info:lc/xmlns/codelist-v1}region')
-            countries.append({'pk': code, 'model': 'core.countries',
-                              'fields': {'name': name, 'region': region}})
+            countries.append(
+                {'pk': code, 'model': 'core.countries', 'fields': {'name': name, 'region': region}}
+            )
 
         print(json.dumps(countries, indent=2))

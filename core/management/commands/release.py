@@ -16,23 +16,25 @@ from time import mktime
 
 import feedparser
 from django.conf import settings
-from django.core.management.base import BaseCommand
 
 from chronam.core import models as m
-from chronam.core.rdf import rdf_uri
+
+from . import LoggingCommand
 
 LOGGER = logging.getLogger(__name__)
 
 
-class Command(BaseCommand):
+class Command(LoggingCommand):
     help = "Updates (Resets if --reset option is used) release datetime on batches from one of following sources (in order of preference) 1. bag-info.txt, if found in the batch source 2. If path to a file is provided with the command, datetime is extracted from the file 3. current public feed 4. current server datetime"
 
-    reset = make_option('--reset',
-                        action='store_true',
-                        dest='reset',
-                        default=False,
-                        help='reset release times to nothing before setting them again')
-    option_list = BaseCommand.option_list + (reset, )
+    reset = make_option(
+        '--reset',
+        action='store_true',
+        dest='reset',
+        default=False,
+        help='reset release times to nothing before setting them again',
+    )
+    option_list = LoggingCommand.option_list + (reset,)
 
     def handle(self, *args, **options):
         if options['reset']:
@@ -100,7 +102,9 @@ def preprocess_public_feed():
     batch_release_times = {}
 
     if len(feed.entries) == 0:
-        LOGGER.error("public feed did not return any batches! Check to make sure chroniclingamerica.loc.gov is running correctly")
+        LOGGER.error(
+            "public feed did not return any batches! Check to make sure chroniclingamerica.loc.gov is running correctly"
+        )
 
     cont = True
     while cont:

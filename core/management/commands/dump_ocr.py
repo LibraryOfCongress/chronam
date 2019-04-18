@@ -3,13 +3,14 @@ from __future__ import absolute_import, print_function
 import os
 
 from django.conf import settings
-from django.core.management.base import BaseCommand
 
 from chronam.core.models import Batch
 from chronam.core.tasks import dump_ocr
 
+from . import LoggingCommand
 
-class Command(BaseCommand):
+
+class Command(LoggingCommand):
     help = "looks for batches that need to have ocr dump files created"
 
     def handle(self, *args, **options):

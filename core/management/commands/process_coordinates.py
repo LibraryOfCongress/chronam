@@ -3,14 +3,16 @@ from __future__ import absolute_import
 import logging
 import os
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import CommandError
 
 from chronam.core import batch_loader
+
+from . import LoggingCommand
 
 LOGGER = logging.getLogger(__name__)
 
 
-class Command(BaseCommand):
+class Command(LoggingCommand):
     help = "Process word coordinates for a batch by name from a batch list file"
     args = "<batch_list_filename>"
 

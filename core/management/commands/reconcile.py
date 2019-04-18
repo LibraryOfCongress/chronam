@@ -3,16 +3,16 @@ from __future__ import absolute_import, print_function
 import json
 from urllib import urlopen
 
-from django.core.management.base import BaseCommand
-
 from chronam.core.models import Batch
 
+from . import LoggingCommand
 
-class Command(BaseCommand):
+
+class Command(LoggingCommand):
     help = "compares batches loaded with the public site"
 
     def handle(self, *args, **options):
-        url = 'http://chroniclingamerica.loc.gov/batches.json'
+        url = 'https://chroniclingamerica.loc.gov/batches.json'
         missing_batches = []
         missing_pages = []
         while url:
@@ -37,6 +37,8 @@ class Command(BaseCommand):
         if len(missing_pages) > 0:
             print("batches that are missing pages:")
             for batch in missing_pages:
-                print("  %s has %s instead of %s pages" % (batch['name'],
-                                                           batch['my_page_count'], batch['page_count']))
+                print(
+                    "  %s has %s instead of %s pages"
+                    % (batch['name'], batch['my_page_count'], batch['page_count'])
+                )
             print()

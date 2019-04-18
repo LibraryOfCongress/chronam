@@ -4,16 +4,17 @@ import logging
 import os
 
 from django.core import management
-from django.core.management.base import BaseCommand
 
 from chronam.core import models
 from chronam.core.holding_loader import HoldingLoader
 from chronam.core.utils.utils import validate_bib_dir
 
+from . import LoggingCommand
+
 LOGGER = logging.getLogger(__name__)
 
 
-class Command(BaseCommand):
+class Command(LoggingCommand):
     help = "Load a holdings records after title records are all loaded"
     args = '<location of holdings directory>'
 
@@ -27,9 +28,11 @@ class Command(BaseCommand):
 
         if not os.path.exists(holdings_source):
             LOGGER.error("There is no valid holdings source folder defined.")
-            set_holdings = ['To load holdings - Add a folder called "holdings"',
-                            'to the bib directory that is set in settings',
-                            'or pass the location of holdings as an arguement to the loader.', ]
+            set_holdings = [
+                'To load holdings - Add a folder called "holdings"',
+                'to the bib directory that is set in settings',
+                'or pass the location of holdings as an arguement to the loader.',
+            ]
             LOGGER.error(' '.join(set_holdings))
             return
 

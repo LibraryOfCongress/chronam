@@ -1,18 +1,18 @@
 from __future__ import absolute_import
 
 import logging
-import os
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import CommandError
 
 from chronam.core import tasks
+
+from . import LoggingCommand
 
 LOGGER = logging.getLogger(__name__)
 
 
-class Command(BaseCommand):
-    option_list = BaseCommand.option_list + (
-    )
+class Command(LoggingCommand):
+    option_list = LoggingCommand.option_list + ()
     help = "queue a batch to be purged"
     args = '<batch name>'
 

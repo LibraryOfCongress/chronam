@@ -7,13 +7,14 @@ from optparse import make_option
 
 from django.conf import settings
 from django.core.management import call_command
-from django.core.management.base import BaseCommand
 
 from chronam import core
 from chronam.core import index
 from chronam.core.essay_loader import load_essays
 from chronam.core.models import Place, Title
 from chronam.core.utils.utils import validate_bib_dir
+
+from . import LoggingCommand
 
 try:
     import simplejson as json
@@ -24,20 +25,20 @@ except ImportError:
 LOGGER = logging.getLogger(__name__)
 
 
-class Command(BaseCommand):
-    skip_essays = make_option('--skip-essays',
-                              action='store_true',
-                              dest='skip_essays',
-                              default=False,
-                              help='Skip essay loading.')
+class Command(LoggingCommand):
+    skip_essays = make_option(
+        '--skip-essays', action='store_true', dest='skip_essays', default=False, help='Skip essay loading.'
+    )
 
-    pull_title_updates = make_option('--pull-title-updates',
-                                     action='store_true',
-                                     dest='pull_title_updates',
-                                     default=False,
-                                     help='Pull down a new set of titles.')
+    pull_title_updates = make_option(
+        '--pull-title-updates',
+        action='store_true',
+        dest='pull_title_updates',
+        default=False,
+        help='Pull down a new set of titles.',
+    )
 
-    option_list = BaseCommand.option_list + (skip_essays, pull_title_updates)
+    option_list = LoggingCommand.option_list + (skip_essays, pull_title_updates)
 
     help = 'Runs title pull and title load for a complete title refresh.'
     args = ''
@@ -49,8 +50,7 @@ class Command(BaseCommand):
             LOGGER.info("Total number of titles not updated: 0")
             return Title.objects.values()
         elif limited:
-            titles = Title.objects.order_by('-version').values(
-                'lccn_orig', 'oclc', 'version')
+            titles = Title.objects.order_by('-version').values('lccn_orig', 'oclc', 'version')
             end = titles[0]['version']
         else:
             titles = Title.objects.order_by('-version')
@@ -83,7 +83,7 @@ class Command(BaseCommand):
 
             pull_titles = bool(options['pull_title_updates'] and hasattr(settings, "WORLDCAT_KEY"))
             if pull_titles:
-                call_command('pull_titles',)
+                call_command('pull_titles')
 
             LOGGER.info("Starting load of OCLC titles.")
             bulk_dir = worldcat_dir + 'bulk'
@@ -156,7 +156,7 @@ class Command(BaseCommand):
         for p in json.load(open(filename)):
             try:
                 place = Place.objects.get(name=p['name'])
-            except(Place.DoesNotExist):
+            except (Place.DoesNotExist):
                 place = Place(name=p['name'])
             place.longitude = p['longitude']
             place.latitude = p['latitude']

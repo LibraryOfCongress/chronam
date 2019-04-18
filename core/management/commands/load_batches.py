@@ -1,26 +1,33 @@
 from __future__ import absolute_import
 
 import logging
-import os
 from optparse import make_option
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import CommandError
 
 from chronam.core import batch_loader
+
+from . import LoggingCommand
 
 LOGGER = logging.getLogger(__name__)
 
 
-class Command(BaseCommand):
-    option_list = BaseCommand.option_list + (
-        make_option('--skip-process-ocr',
-                    action='store_false',
-                    dest='process_ocr', default=True,
-                    help='Do not generate ocr, and index'),
-        make_option('--skip-process-coordinates',
-                    action='store_false',
-                    dest='process_coordinates', default=True,
-                    help='Do not write out word coordinates'),
+class Command(LoggingCommand):
+    option_list = LoggingCommand.option_list + (
+        make_option(
+            '--skip-process-ocr',
+            action='store_false',
+            dest='process_ocr',
+            default=True,
+            help='Do not generate ocr, and index',
+        ),
+        make_option(
+            '--skip-process-coordinates',
+            action='store_false',
+            dest='process_coordinates',
+            default=True,
+            help='Do not write out word coordinates',
+        ),
     )
     help = "Load batches by name from a batch list file"
     args = '<batch_list_filename>'

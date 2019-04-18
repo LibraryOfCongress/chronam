@@ -1,12 +1,13 @@
 from __future__ import absolute_import, print_function
 
 from django.conf import settings
-from django.core.management.base import BaseCommand
 
 from chronam.core.cts import CTS
 
+from . import LoggingCommand
 
-class Command(BaseCommand):
+
+class Command(LoggingCommand):
     help = "Lookup CTS bag_instance ids for batches"
 
     def handle(self, *args, **options):

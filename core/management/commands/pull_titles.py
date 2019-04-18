@@ -5,36 +5,44 @@ from datetime import datetime
 from optparse import make_option
 
 from django.conf import settings
-from django.core.management.base import BaseCommand
 
 from chronam.core import title_pull
+
+from . import LoggingCommand
 
 LOGGER = logging.getLogger(__name__)
 
 
-class Command(BaseCommand):
+class Command(LoggingCommand):
     help = "Retrieve a fresh pull of titles from OCLC. \
             #TODO: add a list of example commands."
     args = ''
     # TODO: Remove default from lccn
-    option_list = BaseCommand.option_list + (
-        make_option('-l', '--lccn',
-                    action='store',
-                    dest='lccn',
-                    default=None,
-                    help="Pass a specific lccn to pull down updates from Worldcat."),
-
-        make_option('-o', '--oclc',
-                    action='store',
-                    dest='oclc',
-                    default=None,
-                    help="Pass an oclc number when you pass an lccn."),
-
-        make_option('-p', '--path',
-                    action='store',
-                    dest='path',
-                    default='/worldcat_titles/',
-                    help="Path var that is appeneded to settings.BIB_STORAGE to save to"),
+    option_list = LoggingCommand.option_list + (
+        make_option(
+            '-l',
+            '--lccn',
+            action='store',
+            dest='lccn',
+            default=None,
+            help="Pass a specific lccn to pull down updates from Worldcat.",
+        ),
+        make_option(
+            '-o',
+            '--oclc',
+            action='store',
+            dest='oclc',
+            default=None,
+            help="Pass an oclc number when you pass an lccn.",
+        ),
+        make_option(
+            '-p',
+            '--path',
+            action='store',
+            dest='path',
+            default='/worldcat_titles/',
+            help="Path var that is appeneded to settings.BIB_STORAGE to save to",
+        ),
     )
 
     def run_pull(self, path, lccn=None, oclc=None, query=None):

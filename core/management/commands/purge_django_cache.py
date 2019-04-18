@@ -4,19 +4,23 @@ import logging
 from optparse import make_option
 
 from django.core.cache import cache
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import CommandError
+
+from . import LoggingCommand
 
 LOGGER = logging.getLogger(__name__)
 
 
-class Command(BaseCommand):
-    purge_all = make_option('--all',
-                            action='store_true',
-                            dest='purge_all',
-                            default=False,
-                            help='Purge everything from the django cache')
+class Command(LoggingCommand):
+    purge_all = make_option(
+        '--all',
+        action='store_true',
+        dest='purge_all',
+        default=False,
+        help='Purge everything from the django cache',
+    )
 
-    option_list = BaseCommand.option_list + (purge_all,)
+    option_list = LoggingCommand.option_list + (purge_all,)
     help = "Purge the django cache after ingest/purge of a batch"
 
     def handle(self, *args, **options):

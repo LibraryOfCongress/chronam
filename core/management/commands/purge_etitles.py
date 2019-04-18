@@ -5,15 +5,16 @@ from cStringIO import StringIO
 from optparse import make_option
 
 import pymarc
-from django.core.management.base import BaseCommand
 
 from chronam.core import index
 from chronam.core.models import Title
 
+from . import LoggingCommand
+
 LOGGER = logging.getLogger(__name__)
 
 
-class Command(BaseCommand):
+class Command(LoggingCommand):
     """
     Management command for purging title records which have an 856 field
     containing a link to Chronicling America, and which appear to be records
@@ -26,7 +27,7 @@ class Command(BaseCommand):
     option.
     """
 
-    option_list = BaseCommand.option_list + (
+    option_list = LoggingCommand.option_list + (
         make_option('-p', '--pretend', dest='pretend', action='store_true'),
     )
 

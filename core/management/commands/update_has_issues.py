@@ -1,11 +1,11 @@
 from __future__ import absolute_import, print_function
 
-from django.core.management.base import BaseCommand
-
 from chronam.core import models as m
 
+from . import LoggingCommand
 
-class Command(BaseCommand):
+
+class Command(LoggingCommand):
     help = "Updates the Title.has_issues property appropriately"
 
     def handle(self, *args, **options):

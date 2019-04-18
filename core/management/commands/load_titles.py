@@ -5,28 +5,30 @@ import os
 from datetime import datetime
 from optparse import make_option
 
-from django.core.management.base import BaseCommand
-
 from chronam.core import title_loader
 from chronam.core.index import index_titles
 from chronam.core.models import Title
 
+from . import LoggingCommand
+
 LOGGER = logging.getLogger(__name__)
 
 
-class Command(BaseCommand):
+class Command(LoggingCommand):
     help = "Load a marcxml file of title records"
     args = '<location of marcxml>'
-    option_list = BaseCommand.option_list + (
-        make_option('--skip-index',
-                    action='store_true',
-                    dest='skip_index',
-                    default=False,
-                    help="\
+    option_list = LoggingCommand.option_list + (
+        make_option(
+            '--skip-index',
+            action='store_true',
+            dest='skip_index',
+            default=False,
+            help="\
                 Skip the index process. Use this if you call this from \
                 another process such as 'chronam_sync'. If you call this \
                 directly, you don't want to use this flag. \
-            "),
+            ",
+        ),
     )
 
     def __init__(self):

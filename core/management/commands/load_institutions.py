@@ -2,11 +2,10 @@ from __future__ import absolute_import
 
 import codecs
 import csv
-import os
-
-from django.core.management.base import BaseCommand
 
 from chronam.core.models import Institution
+
+from . import LoggingCommand
 
 
 """
@@ -15,7 +14,7 @@ Loads the institutions based on a CSV file in the form of:
 """
 
 
-class Command(BaseCommand):
+class Command(LoggingCommand):
     help = 'loads institution csv data into Institution table'
     args = '<institution_csv_file>'
 
@@ -31,13 +30,13 @@ class Command(BaseCommand):
             i.zip = row[4]
             i.save()
 
+
 # some hoops to get csv reader to emit unicode
 # http://www.python.org/doc/2.5.2/lib/csv-examples.html
 
 
 def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
-    csv_reader = csv.reader(utf8_encoder(unicode_csv_data),
-                            dialect=dialect, **kwargs)
+    csv_reader = csv.reader(utf8_encoder(unicode_csv_data), dialect=dialect, **kwargs)
     for row in csv_reader:
         yield [unicode(cell, 'utf-8') for cell in row]
 

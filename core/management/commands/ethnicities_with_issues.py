@@ -1,12 +1,11 @@
 from __future__ import absolute_import, print_function
 
-from django.core.management.base import BaseCommand
-
 from chronam.core import models
 
+from . import LoggingCommand
 
-class Command(BaseCommand):
 
+class Command(LoggingCommand):
     def handle(self, *args, **options):
         for e in models.Ethnicity.objects.all():
             print(e.name, ": ", e.has_issues)
