@@ -1,15 +1,19 @@
+from __future__ import absolute_import
+
 import logging
 import urllib2
 
 from django.core.management.base import BaseCommand
 from django.db import reset_queries
-from rdflib import Namespace, ConjunctiveGraph, URIRef
+from rdflib import ConjunctiveGraph, Namespace, URIRef
+
+from chronam.core import models
+
 try:
     import simplejson as json
 except ImportError:
     import json
 
-from chronam.core import models
 
 LOGGER = logging.getLogger(__name__)
 
@@ -77,7 +81,7 @@ class Command(BaseCommand):
                              'longitude': p.longitude,
                              'latitude': p.latitude})
             reset_queries()
-        json.dump(json_src, file('core/fixtures/place_links.json', 'w'), indent=2)
+        json.dump(json_src, open('core/fixtures/place_links.json', 'w'), indent=2)
         LOGGER.info("finished dumping place_links.json fixture")
 
 

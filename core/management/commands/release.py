@@ -4,22 +4,22 @@ public. It sets the 'release' date on the batches, and also generates up to date
 sitemap files for crawlers.
 """
 
-import re
+from __future__ import absolute_import
+
+import csv
 import logging
 import os
-import csv
-
+import re
+from datetime import datetime
 from optparse import make_option
 from time import mktime
-from datetime import datetime
 
 import feedparser
-
-from django.core.management.base import BaseCommand
 from django.conf import settings
+from django.core.management.base import BaseCommand
 
-from chronam.core.rdf import rdf_uri
 from chronam.core import models as m
+from chronam.core.rdf import rdf_uri
 
 LOGGER = logging.getLogger(__name__)
 

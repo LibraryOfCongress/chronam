@@ -1,5 +1,7 @@
-import os
+from __future__ import absolute_import
+
 import logging
+import os
 from datetime import datetime, timedelta
 from optparse import make_option
 
@@ -7,16 +9,17 @@ from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
-try:
-    import simplejson as json
-except ImportError:
-    import json
-
 from chronam import core
 from chronam.core import index
 from chronam.core.essay_loader import load_essays
 from chronam.core.models import Place, Title
 from chronam.core.utils.utils import validate_bib_dir
+
+try:
+    import simplejson as json
+except ImportError:
+    import json
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -150,7 +153,7 @@ class Command(BaseCommand):
         LOGGER.info('loading place links')
         _CORE_ROOT = os.path.abspath(os.path.dirname(core.__file__))
         filename = os.path.join(_CORE_ROOT, './fixtures/place_links.json')
-        for p in json.load(file(filename)):
+        for p in json.load(open(filename)):
             try:
                 place = Place.objects.get(name=p['name'])
             except(Place.DoesNotExist):

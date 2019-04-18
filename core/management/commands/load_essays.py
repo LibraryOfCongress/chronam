@@ -1,5 +1,7 @@
-from django.core.management.base import BaseCommand
+from __future__ import absolute_import
+
 from django.conf import settings
+from django.core.management.base import BaseCommand
 
 from chronam.core.essay_loader import load_essays
 

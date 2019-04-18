@@ -1,13 +1,14 @@
-import re
-import json
-import urllib
-import logging
+from __future__ import absolute_import
 
+import json
+import logging
+import re
+import urllib
 from urlparse import urlparse
 
 from django.core.management.base import BaseCommand
 
-from chronam.core.models import Page, FlickrUrl
+from chronam.core.models import FlickrUrl, Page
 
 LOGGER = logging.getLogger(__name__)
 

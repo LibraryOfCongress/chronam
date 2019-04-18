@@ -1,5 +1,7 @@
-from django.core.management.base import BaseCommand
+from __future__ import absolute_import, print_function
+
 from django.conf import settings
+from django.core.management.base import BaseCommand
 
 from chronam.core.cts import CTS
 
@@ -14,4 +16,4 @@ class Command(BaseCommand):
             bag_instance_id = sr.data['requestParameters']['baginstancekey']
             bag = cts.get_bag_instance(bag_instance_id)
             bag_dir = bag.data['filepath']
-            print "service request %s with status %s to load %s" % (sr.data['key'], sr.data['status'], bag_dir)
+            print("service request %s with status %s to load %s" % (sr.data['key'], sr.data['status'], bag_dir))

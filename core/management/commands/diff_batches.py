@@ -1,9 +1,10 @@
-import os
+from __future__ import absolute_import, print_function
+
 import logging
+import os
 from optparse import make_option
 
-from django.core.management.base import BaseCommand
-from django.core.management.base import CommandError
+from django.core.management.base import BaseCommand, CommandError
 
 from chronam.core import models
 
@@ -25,7 +26,7 @@ class Command(BaseCommand):
             raise CommandError('Usage is diff_batch %s' % self.args)
 
         batches = set()
-        batch_list = file(batch_list_filename)
+        batch_list = open(batch_list_filename)
         LOGGER.info("batch_list_filename: %s" % batch_list_filename)
         for line in batch_list:
             batch_name = line.strip()
@@ -51,4 +52,4 @@ class Command(BaseCommand):
                 assert batch in current_batches
                 indicator = "+"
 
-            print "%s%s" % (indicator, batch)
+            print("%s%s" % (indicator, batch))

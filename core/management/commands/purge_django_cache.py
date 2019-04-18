@@ -1,5 +1,6 @@
-import logging
+from __future__ import absolute_import
 
+import logging
 from optparse import make_option
 
 from django.core.cache import cache

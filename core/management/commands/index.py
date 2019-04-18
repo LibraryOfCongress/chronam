@@ -1,8 +1,10 @@
+from __future__ import absolute_import
+
 import logging
 
 from django.core.management.base import BaseCommand
 
-from chronam.core.index import index_titles, index_pages
+from chronam.core.index import index_pages, index_titles
 
 LOGGER = logging.getLogger(__name__)
 

@@ -1,7 +1,8 @@
-import logging
+from __future__ import absolute_import
 
-from datetime import datetime
+import logging
 import os
+from datetime import datetime
 from optparse import make_option
 
 from django.core.management.base import BaseCommand

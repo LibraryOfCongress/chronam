@@ -1,3 +1,5 @@
+from __future__ import absolute_import, print_function
+
 import os
 
 from django.conf import settings
@@ -15,5 +17,5 @@ class Command(BaseCommand):
             os.makedirs(settings.OCR_DUMP_STORAGE)
 
         for batch in Batch.objects.filter(ocr_dump__isnull=True):
-            print "queueing %s for ocr dump" % batch
+            print("queueing %s for ocr dump" % batch)
             dump_ocr.delay(batch)

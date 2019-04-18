@@ -1,3 +1,5 @@
+from __future__ import absolute_import, print_function
+
 from django.core.management.base import BaseCommand
 
 from chronam.core import models as m
@@ -10,6 +12,6 @@ class Command(BaseCommand):
         q = m.Title.objects.filter(pk__in=m.Issue.objects.values("title"))
         q = q.distinct()
         for t in q:
-            print "%s has issues" % t
+            print("%s has issues" % t)
             t.has_issues = True
             t.save()

@@ -1,10 +1,11 @@
-import logging
+from __future__ import absolute_import
 
+import logging
 from datetime import datetime
 from optparse import make_option
 
-from django.core.management.base import BaseCommand
 from django.conf import settings
+from django.core.management.base import BaseCommand
 
 from chronam.core import title_pull
 

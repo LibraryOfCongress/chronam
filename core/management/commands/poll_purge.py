@@ -1,8 +1,9 @@
-import os
-import logging
+from __future__ import absolute_import
 
-from django.core.management.base import BaseCommand
-from django.core.management.base import CommandError
+import logging
+import os
+
+from django.core.management.base import BaseCommand, CommandError
 
 from chronam.core import tasks
 

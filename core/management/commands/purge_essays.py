@@ -1,7 +1,9 @@
+from __future__ import absolute_import
+
 from django.core.management.base import BaseCommand
 
-from chronam.core.models import Essay
 from chronam.core.essay_loader import purge_essay
+from chronam.core.models import Essay
 
 
 class Command(BaseCommand):

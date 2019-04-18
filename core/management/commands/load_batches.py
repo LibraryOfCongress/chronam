@@ -1,9 +1,10 @@
-import os
+from __future__ import absolute_import
+
 import logging
+import os
 from optparse import make_option
 
-from django.core.management.base import BaseCommand
-from django.core.management.base import CommandError
+from django.core.management.base import BaseCommand, CommandError
 
 from chronam.core import batch_loader
 
@@ -32,7 +33,7 @@ class Command(BaseCommand):
         loader.PROCESS_OCR = options['process_ocr']
         loader.PROCESS_COORDINATES = options['process_coordinates']
 
-        batch_list = file(batch_list_filename)
+        batch_list = open(batch_list_filename)
         LOGGER.info("batch_list_filename: %s" % batch_list_filename)
         for line in batch_list:
             batch_name = line.strip()

@@ -1,10 +1,11 @@
-import logging
+from __future__ import absolute_import, print_function
 
+import logging
 from cStringIO import StringIO
 from optparse import make_option
 
-from django.core.management.base import BaseCommand
 import pymarc
+from django.core.management.base import BaseCommand
 
 from chronam.core import index
 from chronam.core.models import Title
@@ -34,7 +35,7 @@ class Command(BaseCommand):
             record = pymarc.parse_xml_to_array(StringIO(title.marc.xml))[0]
             if record['245']['h'] == '[electronic resource].':
                 if options['pretend']:
-                    print title
+                    print(title)
                 else:
                     LOGGER.info("deleting %s [%s] from solr index")
                     index.delete_title(title)

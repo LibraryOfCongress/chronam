@@ -1,13 +1,14 @@
-import os
+from __future__ import absolute_import
+
 import logging
+import os
 from datetime import datetime
 from optparse import make_option
 
 from django.core import management
 from django.core.management.base import BaseCommand
 
-from chronam.core import models
-from chronam.core import index
+from chronam.core import index, models
 from chronam.core.utils.utils import validate_bib_dir
 
 LOGGER = logging.getLogger(__name__)
