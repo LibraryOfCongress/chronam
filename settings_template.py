@@ -61,22 +61,9 @@ LOGGING = {
             "maxBytes": 1024 * 1024 * 50,  # 50MB
             "backupCount": 5,
         },
-        "console": {
-            "level": "INFO",
-            "class": "logging.StreamHandler",
-            "formatter": "simple",
-        },
+        "console": {"level": "INFO", "class": "logging.StreamHandler", "formatter": "simple"},
     },
-    "loggers": {
-        "django": {"handlers": ["file"], "level": "INFO", "propagate": True},
-        "utils": {"handlers": ["file"], "level": "INFO", "propagate": True},
-        "chronam": {
-            "handlers": ["file", "console"],
-            "level": "INFO",
-            "propagate": True,
-        },
-    },
-    "root": {"handlers": ["file"], "level": "DEBUG"},
+    "root": {"handlers": ["file", "console"], "level": "INFO"},
 }
 
 MIDDLEWARE_CLASSES = (
