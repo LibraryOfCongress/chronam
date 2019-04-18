@@ -1170,6 +1170,8 @@ class OcrDump(models.Model):
 
         # add each page to a tar ball
         tempFile = os.path.join(settings.TEMP_STORAGE, dump.name)  # write to a temp dir first in case the ocr dump folder is a NFS or S3 mount
+        logging.info('Creating OCR dump for %s in %s before moving it to %s', batch.name, tempFile, dump.path)
+
         tar = tarfile.open(tempFile, "w:bz2")
         for issue in batch.issues.all():
             for page in issue.pages.filter(ocr__isnull=False):
