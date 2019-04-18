@@ -9,18 +9,17 @@ from chronam.core.models import Batch, OcrDump
 
 from . import LoggingCommand
 
-LOGGER = logging.getLogger(__name__)
-
 
 class Command(LoggingCommand):
-    help = "dump ocr for a single batch"
+    help = "dump OCR for one or more batches"
     args = '<batch name>'
 
-    def handle(self, batch_name, *args, **options):
+    def handle(self, *args, **options):
         if not os.path.isdir(settings.OCR_DUMP_STORAGE):
             os.makedirs(settings.OCR_DUMP_STORAGE)
 
-        batch = Batch.objects.get(name=batch_name)
-        LOGGER.info("starting to dump ocr for %s", batch)
-        dump = OcrDump.new_from_batch(batch)
-        LOGGER.info("created ocr dump %s for %s", dump, batch)
+        for batch_name in args:
+            batch = Batch.objects.get(name=batch_name)
+            logging.info("Starting to dump OCR for batch %s", batch_name)
+            dump = OcrDump.new_from_batch(batch)
+            logging.info("Created OCR dump for batch %s in %s", batch_name, dump)
