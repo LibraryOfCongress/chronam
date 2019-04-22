@@ -16,7 +16,6 @@ repos:
           - id: mixed-line-ending
             args: ["--fix=lf"]
           - id: check-merge-conflict
-          - id: flake8
           - id: check-json
           - id: check-yaml
           - id: detect-aws-credentials
@@ -37,3 +36,7 @@ repos:
                 - eslint@5.8.0
                 - eslint-plugin-prettier@3.0.0
                 - prettier@1.14.3
+    - repo: https://gitlab.com/pycqa/flake8
+      rev: 3.7.7
+      hooks:
+          - id: flake8
