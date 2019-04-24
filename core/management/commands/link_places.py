@@ -37,10 +37,10 @@ class Command(LoggingCommand):
             # attempt to get a graph from it
             graph = ConjunctiveGraph()
             try:
-                LOGGER.debug("looking up %s" % url)
+                LOGGER.debug("looking up %s", url)
                 graph.load(url)
-            except urllib2.HTTPError as e:
-                LOGGER.error(e)
+            except urllib2.HTTPError:
+                LOGGER.exception("Error fetching %s", url)
 
             # if we've got more than 3 assertions extract some stuff from
             # the graph and save back some info to the db, would be nice
@@ -55,9 +55,9 @@ class Command(LoggingCommand):
                     if object.startswith('http://sws.geonames.org'):
                         place.geonames = object
                 place.save()
-                LOGGER.info("found dbpedia resource %s" % url)
+                LOGGER.info("found dbpedia resource %s", url)
             else:
-                LOGGER.warn("couldn't find dbpedia resource for %s" % url)
+                LOGGER.warning("couldn't find dbpedia resource for %s", url)
 
             reset_queries()
         LOGGER.info("finished looking up places in dbpedia")

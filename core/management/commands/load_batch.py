@@ -41,6 +41,6 @@ class Command(LoggingCommand):
         )
         try:
             loader.load_batch(batch_name)
-        except BatchLoaderException as e:
-            LOGGER.exception(e)
+        except BatchLoaderException:
+            LOGGER.exception("Unable to load batch %s", batch_name)
             raise CommandError("unable to load batch. check the load_batch log for clues")

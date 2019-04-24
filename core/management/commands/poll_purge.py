@@ -17,6 +17,6 @@ class Command(LoggingCommand):
     def handle(self, *args, **options):
         try:
             tasks.poll_purge.apply()
-        except Exception as e:
-            LOGGER.exception(e)
+        except Exception:
+            LOGGER.exception("Unable to process purge_batch requests:")
             raise CommandError("Unable to purge batches")

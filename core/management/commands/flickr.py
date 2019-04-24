@@ -22,13 +22,13 @@ class Command(LoggingCommand):
         create_count = 0
 
         for flickr_url, chronam_url in flickr_chronam_links(key):
-            LOGGER.info("found flickr/chronam link: %s, %s" % (flickr_url, chronam_url))
+            self.stdout.write("found flickr/chronam link: %s, %s" % (flickr_url, chronam_url))
 
             # use the page url to locate the Page model
             path = urlparse(chronam_url).path
             page = Page.lookup(path)
             if not page:
-                LOGGER.error("page for %s not found" % chronam_url)
+                self.stderr.write("page for %s not found" % chronam_url)
                 continue
 
             # create the FlickrUrl attached to the apprpriate page
@@ -36,11 +36,11 @@ class Command(LoggingCommand):
             if created:
                 create_count += 1
                 f.save()
-                LOGGER.info("updated page (%s) with flickr url (%s)" % (page, flickr_url))
+                self.stdout.write("updated page (%s) with flickr url (%s)" % (page, flickr_url))
             else:
-                LOGGER.info("already knew about %s" % flickr_url)
+                self.stdout.write("already knew about %s" % flickr_url)
 
-        LOGGER.info("created %s flickr urls" % create_count)
+        self.stdout.write("created %s flickr urls" % create_count)
 
 
 def photos_in_set(key, set_id):

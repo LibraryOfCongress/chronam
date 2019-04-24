@@ -17,6 +17,6 @@ class Command(LoggingCommand):
     def handle(self, *args, **options):
         try:
             tasks.poll_cts.apply()
-        except Exception as e:
-            LOGGER.exception(e)
-            raise CommandError("unable to load batches from cts")
+        except Exception:
+            LOGGER.exception("Unable to load new batches from CTS")
+            raise CommandError("unable to load batches from CTS")

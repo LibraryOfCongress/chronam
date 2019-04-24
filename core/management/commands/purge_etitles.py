@@ -1,6 +1,5 @@
 from __future__ import absolute_import, print_function
 
-import logging
 from cStringIO import StringIO
 from optparse import make_option
 
@@ -10,8 +9,6 @@ from chronam.core import index
 from chronam.core.models import Title
 
 from . import LoggingCommand
-
-LOGGER = logging.getLogger(__name__)
 
 
 class Command(LoggingCommand):
@@ -38,9 +35,9 @@ class Command(LoggingCommand):
                 if options['pretend']:
                     self.stdout.write(title)
                 else:
-                    LOGGER.info("deleting %s [%s] from solr index")
+                    self.stdout.write("deleting %s [%s] from solr index")
                     index.delete_title(title)
-                    LOGGER.info("purging %s [%s]" % (title, title.lccn))
+                    self.stdout.write("purging %s [%s]" % (title, title.lccn))
                     title.delete()
         if not options['pretend']:
             index.commit()

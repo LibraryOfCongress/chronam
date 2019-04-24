@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 
-import logging
 import os
 from datetime import datetime
 from optparse import make_option
@@ -10,8 +9,6 @@ from chronam.core.index import index_titles
 from chronam.core.models import Title
 
 from . import LoggingCommand
-
-LOGGER = logging.getLogger(__name__)
 
 
 class Command(LoggingCommand):
@@ -48,7 +45,7 @@ class Command(LoggingCommand):
 
         if not skip_index:
             # need to index any titles that we just created
-            LOGGER.info("indexing new titles")
+            self.stdout.write("indexing new titles")
             index_titles(since=self.xml_start)
 
         return results
@@ -65,26 +62,26 @@ class Command(LoggingCommand):
         self.total_missing_lccns += results[4]
 
     def log_stats(self):
-        LOGGER.info("############### TOTAL RESULTS ############")
-        LOGGER.info("TITLE RECORDS PROCESSED: %i" % self.total_processed)
-        LOGGER.info("NEW TITLES CREATED: %i" % self.total_created)
-        LOGGER.info("EXISTING TITLES UPDATED: %i" % self.total_updated)
-        LOGGER.info("ERRORS: %i" % self.total_errors)
-        LOGGER.info("MISSING LCCNS: %i" % self.total_missing_lccns)
-        LOGGER.info("FILES PROCESSED: %i" % self.files_processed)
+        self.stdout.write("############### TOTAL RESULTS ############")
+        self.stdout.write("TITLE RECORDS PROCESSED: %i" % self.total_processed)
+        self.stdout.write("NEW TITLES CREATED: %i" % self.total_created)
+        self.stdout.write("EXISTING TITLES UPDATED: %i" % self.total_updated)
+        self.stdout.write("ERRORS: %i" % self.total_errors)
+        self.stdout.write("MISSING LCCNS: %i" % self.total_missing_lccns)
+        self.stdout.write("FILES PROCESSED: %i" % self.files_processed)
 
         end = datetime.now()
 
         # Document titles that are not being updated.
         ts = Title.objects.filter(version__lt=self.start_time)
         not_updated = ts.count()
-        LOGGER.info("TITLES NOT UPDATED: %i" % not_updated)
+        self.stdout.write("TITLES NOT UPDATED: %i" % not_updated)
 
         # Total time to run.
-        LOGGER.info("START TIME: %s" % str(self.start_time))
-        LOGGER.info("END TIME: %s" % str(end))
+        self.stdout.write("START TIME: %s" % str(self.start_time))
+        self.stdout.write("END TIME: %s" % str(end))
         total_time = end - self.start_time
-        LOGGER.info("TOTAL TIME: %s" % str(total_time))
+        self.stdout.write("TOTAL TIME: %s" % str(total_time))
 
     def handle(self, marc_xml_source, *args, **options):
         skip_index = options['skip_index']

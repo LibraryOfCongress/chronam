@@ -1,6 +1,5 @@
 from __future__ import absolute_import, print_function
 
-import logging
 from optparse import make_option
 
 from django.core.management.base import CommandError
@@ -8,8 +7,6 @@ from django.core.management.base import CommandError
 from chronam.core import models
 
 from . import LoggingCommand
-
-LOGGER = logging.getLogger(__name__)
 
 
 class Command(LoggingCommand):
@@ -31,15 +28,15 @@ class Command(LoggingCommand):
 
         batches = set()
         batch_list = open(batch_list_filename)
-        LOGGER.info("batch_list_filename: %s" % batch_list_filename)
+        self.stdout.write("batch_list_filename: %s" % batch_list_filename)
         for line in batch_list:
             batch_name = line.strip()
-            LOGGER.info("batch_name: %s" % batch_name)
+            self.stdout.write("batch_name: %s" % batch_name)
             parts = batch_name.split("_")
             if len(parts) == 4 and parts[0] == "batch":
                 batches.add(batch_name)
             else:
-                LOGGER.warning("invalid batch name '%s'" % batch_name)
+                self.stderr.write("invalid batch name '%s'" % batch_name)
 
         current_batches = set()
         for batch in models.Batch.objects.all().order_by('name'):

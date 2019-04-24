@@ -30,6 +30,6 @@ class Command(LoggingCommand):
             raise CommandError('Usage is queue_load_batch %s' % self.args)
         try:
             tasks.load_batch.delay(batch_name, process_coordinates=options['process_coordinates'])
-        except Exception as e:
-            LOGGER.exception(e)
+        except Exception:
+            LOGGER.exception("Error queuing load for batch %s: %s", batch_name)
             raise CommandError("unable to queue load batch. check the queue_load_batch log for clues")

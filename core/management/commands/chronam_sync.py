@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 
-import logging
 import os
 from datetime import datetime
 from optparse import make_option
@@ -11,8 +10,6 @@ from chronam.core import index, models
 from chronam.core.utils.utils import validate_bib_dir
 
 from . import LoggingCommand
-
-LOGGER = logging.getLogger(__name__)
 
 
 class Command(LoggingCommand):
@@ -45,7 +42,7 @@ class Command(LoggingCommand):
             and index.page_count() == 0
             and index.title_count() == 0
         ):
-            LOGGER.warn("Database or index not empty as expected.")
+            self.stderr.write("Database or index not empty as expected.")
             return
 
         start = datetime.now()
@@ -69,7 +66,7 @@ class Command(LoggingCommand):
 
         end = datetime.now()
         total_time = end - start
-        LOGGER.info('start time: %s' % start)
-        LOGGER.info('end time: %s' % end)
-        LOGGER.info('total time: %s' % total_time)
-        LOGGER.info("chronam_sync done.")
+        self.stdout.write('start time: %s' % start)
+        self.stdout.write('end time: %s' % end)
+        self.stdout.write('total time: %s' % total_time)
+        self.stdout.write("chronam_sync done.")
