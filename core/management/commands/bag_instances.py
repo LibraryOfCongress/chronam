@@ -18,4 +18,4 @@ class Command(LoggingCommand):
             for instance in bag.get_bag_instances():
                 for instance_type in instance.data['bagInstanceTypes']:
                     if instance_type['name'] == 'public access':
-                        print(instance.data['filepath'])
+                        self.stdout.write(instance.data['filepath'])

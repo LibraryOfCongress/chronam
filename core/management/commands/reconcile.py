@@ -18,7 +18,7 @@ class Command(LoggingCommand):
         while url:
             batch_info = json.loads(urlopen(url).read())
             for batch in batch_info['batches']:
-                print("comparing %(name)s with %(page_count)s pages" % batch)
+                self.stdout.write("comparing %(name)s with %(page_count)s pages" % batch)
                 try:
                     my_batch = Batch.objects.get(name=batch['name'])
                     if my_batch.page_count != batch['page_count']:
@@ -29,16 +29,16 @@ class Command(LoggingCommand):
             url = batch_info.get('next', None)
 
         if len(missing_batches) > 0:
-            print("missing batches:")
+            self.stdout.write("missing batches:")
             for batch in missing_batches:
-                print("  %s" % batch['name'])
-            print()
+                self.stdout.write("  %s" % batch['name'])
+            self.stdout.write()
 
         if len(missing_pages) > 0:
-            print("batches that are missing pages:")
+            self.stdout.write("batches that are missing pages:")
             for batch in missing_pages:
-                print(
+                self.stdout.write(
                     "  %s has %s instead of %s pages"
                     % (batch['name'], batch['my_page_count'], batch['page_count'])
                 )
-            print()
+            self.stdout.write()

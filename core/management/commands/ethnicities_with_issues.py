@@ -8,4 +8,4 @@ from . import LoggingCommand
 class Command(LoggingCommand):
     def handle(self, *args, **options):
         for e in models.Ethnicity.objects.all():
-            print(e.name, ": ", e.has_issues)
+            self.stdout.write("%s: %s" % (e.name, e.has_issues))

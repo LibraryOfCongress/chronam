@@ -36,7 +36,7 @@ class Command(LoggingCommand):
             record = pymarc.parse_xml_to_array(StringIO(title.marc.xml))[0]
             if record['245']['h'] == '[electronic resource].':
                 if options['pretend']:
-                    print(title)
+                    self.stdout.write(title)
                 else:
                     LOGGER.info("deleting %s [%s] from solr index")
                     index.delete_title(title)

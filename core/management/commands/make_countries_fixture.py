@@ -28,4 +28,4 @@ class Command(LoggingCommand):
                 {'pk': code, 'model': 'core.countries', 'fields': {'name': name, 'region': region}}
             )
 
-        print(json.dumps(countries, indent=2))
+        self.stdout.write(json.dumps(countries, indent=2))

@@ -16,6 +16,6 @@ class Command(LoggingCommand):
             bag_instance_id = sr.data['requestParameters']['baginstancekey']
             bag = cts.get_bag_instance(bag_instance_id)
             bag_dir = bag.data['filepath']
-            print(
+            self.stdout.write(
                 "service request %s with status %s to load %s" % (sr.data['key'], sr.data['status'], bag_dir)
             )

@@ -56,4 +56,4 @@ class Command(LoggingCommand):
                 assert batch in current_batches
                 indicator = "+"
 
-            print("%s%s" % (indicator, batch))
+            self.stdout.write("%s%s" % (indicator, batch))

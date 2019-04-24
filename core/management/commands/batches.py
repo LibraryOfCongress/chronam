@@ -12,4 +12,4 @@ class Command(LoggingCommand):
     def handle(self, *args, **options):
 
         for batch in models.Batch.objects.all().order_by('name'):
-            print(batch.name)
+            self.stdout.write(batch.name)
