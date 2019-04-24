@@ -15,7 +15,7 @@ Loads the institutions based on a CSV file in the form of:
 
 
 class Command(LoggingCommand):
-    help = 'loads institution csv data into Institution table'
+    help = 'loads institution csv data into Institution table'  # NOQA: A003
     args = '<institution_csv_file>'
 
     def handle(self, csv_file, *args, **options):

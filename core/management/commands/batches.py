@@ -6,7 +6,7 @@ from . import LoggingCommand
 
 
 class Command(LoggingCommand):
-    help = "Displays information about batches"
+    help = "Displays information about batches"  # NOQA: A003
     args = ''
 
     def handle(self, *args, **options):

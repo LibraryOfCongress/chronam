@@ -8,7 +8,7 @@ from . import LoggingCommand
 
 
 class Command(LoggingCommand):
-    help = "list service requests that are in the queue"
+    help = "list service requests that are in the queue"  # NOQA: A003
 
     def handle(self, *args, **options):
         cts = CTS(settings.CTS_USERNAME, settings.CTS_PASSWORD, settings.CTS_URL)

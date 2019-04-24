@@ -14,8 +14,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Command(LoggingCommand):
-    help = "Retrieve a fresh pull of titles from OCLC. \
-            #TODO: add a list of example commands."
+    help = "Retrieve a fresh pull of titles from OCLC"  # NOQA: A003
     args = ''
     # TODO: Remove default from lccn
     option_list = LoggingCommand.option_list + (

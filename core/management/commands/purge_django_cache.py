@@ -21,7 +21,7 @@ class Command(LoggingCommand):
     )
 
     option_list = LoggingCommand.option_list + (purge_all,)
-    help = "Purge the django cache after ingest/purge of a batch"
+    help = "Purge the django cache after ingest/purge of a batch"  # NOQA: A003
 
     def handle(self, *args, **options):
 

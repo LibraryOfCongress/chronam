@@ -15,7 +15,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Command(LoggingCommand):
-    help = "Load a marcxml file of title records"
+    help = "Load a marcxml file of title records"  # NOQA: A003
     args = '<location of marcxml>'
     option_list = LoggingCommand.option_list + (
         make_option(

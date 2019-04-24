@@ -10,7 +10,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Command(LoggingCommand):
-    help = "index all titles and pages ; " + "you may (or may not) want to zap_index before"
+    help = "index all titles and pages ; " + "you may (or may not) want to zap_index before"  # NOQA: A003
 
     def handle(self, **options):
 

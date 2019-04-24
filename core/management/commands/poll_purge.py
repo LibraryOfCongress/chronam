@@ -12,7 +12,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Command(LoggingCommand):
-    help = "manual command to process purge_batch requests  from CTS"
+    help = "manual command to process purge_batch requests from CTS"  # NOQA: A003
 
     def handle(self, *args, **options):
         try:

@@ -15,7 +15,7 @@ LOGGER = logging.getLogger(__name__)
 
 class Command(LoggingCommand):
     args = '<flickr_key>'
-    help = 'load links for content that has been pushed to flickr.'
+    help = 'load links for content that has been pushed to flickr.'  # NOQA: A003
 
     def handle(self, key, **options):
         LOGGER.debug("looking for chronam page content on flickr")

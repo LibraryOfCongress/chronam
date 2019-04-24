@@ -12,7 +12,7 @@ except ImportError:
 
 
 class Command(LoggingCommand):
-    help = "loads MARC Country list XML from the web, and dumps JSON fixture to stdout"
+    help = "loads MARC Country list XML from the web, and dumps JSON fixture to stdout"  # NOQA: A003
 
     def handle(self, *args, **options):
         uri = 'http://www.loc.gov/standards/codelists/countries.xml'

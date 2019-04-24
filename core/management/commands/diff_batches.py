@@ -22,7 +22,7 @@ class Command(LoggingCommand):
             help='Do not generate ocr, and index',
         ),
     )
-    help = "Diff batches by name from a batch list file"
+    help = "Diff batches by name from a batch list file"  # NOQA: A003
     args = '<batch_list_filename>'
 
     def handle(self, batch_list_filename, *args, **options):

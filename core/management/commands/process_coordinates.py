@@ -13,7 +13,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Command(LoggingCommand):
-    help = "Process word coordinates for a batch by name from a batch list file"
+    help = "Process word coordinates for a batch by name from a batch list file"  # NOQA: A003
     args = "<batch_list_filename>"
 
     def handle(self, batch_list_filename, *args, **options):

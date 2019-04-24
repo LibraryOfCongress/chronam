@@ -7,7 +7,7 @@ from . import LoggingCommand
 
 
 class Command(LoggingCommand):
-    help = "send a commit message to the solr index"
+    help = "send a commit message to the solr index"  # NOQA: A003
 
     def handle(self, **options):
         solr = SolrConnection(settings.SOLR)

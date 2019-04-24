@@ -29,7 +29,7 @@ class Command(LoggingCommand):
             help='Do not out word coordinates',
         ),
     )
-    help = "Load a batch"
+    help = "Load a batch"  # NOQA: A003
     args = '<batch name>'
 
     def handle(self, batch_name, *args, **options):

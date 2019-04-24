@@ -11,7 +11,7 @@ from . import LoggingCommand
 
 
 class Command(LoggingCommand):
-    help = "looks for batches that need to have ocr dump files created"
+    help = "looks for batches that need to have ocr dump files created"  # NOQA: A003
 
     def handle(self, *args, **options):
         if not os.path.isdir(settings.OCR_DUMP_STORAGE):

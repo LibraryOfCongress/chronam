@@ -8,7 +8,7 @@ from . import LoggingCommand
 
 
 class Command(LoggingCommand):
-    help = "Lookup CTS bag_instance ids for batches"
+    help = "Lookup CTS bag_instance ids for batches"  # NOQA: A003
 
     def handle(self, *args, **options):
         cts = CTS(settings.CTS_USERNAME, settings.CTS_PASSWORD, settings.CTS_URL)

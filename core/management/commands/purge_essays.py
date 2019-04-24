@@ -7,7 +7,7 @@ from . import LoggingCommand
 
 
 class Command(LoggingCommand):
-    help = "purge all the essays"
+    help = "purge all the essays"  # NOQA: A003
 
     def handle(self, *args, **options):
         for essay in Essay.objects.all():

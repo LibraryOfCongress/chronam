@@ -22,7 +22,7 @@ class Command(LoggingCommand):
             help="Do not generate word coordinates",
         ),
     )
-    help = "queue a batch to be loaded"
+    help = "queue a batch to be loaded"  # NOQA: A003
     args = '<batch name>'
 
     def handle(self, batch_name, *args, **options):

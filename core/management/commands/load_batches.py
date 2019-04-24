@@ -29,7 +29,7 @@ class Command(LoggingCommand):
             help='Do not write out word coordinates',
         ),
     )
-    help = "Load batches by name from a batch list file"
+    help = "Load batches by name from a batch list file"  # NOQA: A003
     args = '<batch_list_filename>'
 
     def handle(self, batch_list_filename, *args, **options):

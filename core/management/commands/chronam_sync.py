@@ -31,7 +31,7 @@ class Command(LoggingCommand):
     )
 
     option_list = LoggingCommand.option_list + (verbose, skip_essays, pull_title_updates)
-    help = ''
+    help = ''  # NOQA: A003
     args = ''
 
     def handle(self, **options):

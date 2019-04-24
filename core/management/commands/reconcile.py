@@ -9,7 +9,7 @@ from . import LoggingCommand
 
 
 class Command(LoggingCommand):
-    help = "compares batches loaded with the public site"
+    help = "compares batches loaded with the public site"  # NOQA: A003
 
     def handle(self, *args, **options):
         url = 'https://chroniclingamerica.loc.gov/batches.json'

@@ -40,7 +40,7 @@ class Command(LoggingCommand):
 
     option_list = LoggingCommand.option_list + (skip_essays, pull_title_updates)
 
-    help = 'Runs title pull and title load for a complete title refresh.'
+    help = 'Runs title pull and title load for a complete title refresh.'  # NOQA: A003
     args = ''
 
     def find_titles_not_updated(self, limited=True):

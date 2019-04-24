@@ -8,7 +8,7 @@ from . import LoggingCommand
 
 
 class Command(LoggingCommand):
-    help = "load all the essays"
+    help = "load all the essays"  # NOQA: A003
 
     def handle(self, *args, **options):
         load_essays(settings.ESSAYS_FEED, index=True)

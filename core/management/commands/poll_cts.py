@@ -12,7 +12,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Command(LoggingCommand):
-    help = "manual command to load new batches from cts"
+    help = "manual command to load new batches from CTS"  # NOQA: A003
 
     def handle(self, *args, **options):
         try:

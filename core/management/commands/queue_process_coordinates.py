@@ -13,7 +13,7 @@ LOGGER = logging.getLogger(__name__)
 
 class Command(LoggingCommand):
     option_list = LoggingCommand.option_list + ()
-    help = "queue the word coordinates of a batch to be processed"
+    help = "queue the word coordinates of a batch to be processed"  # NOQA: A003
     args = '<batch name>'
 
     def handle(self, batch_name, *args, **options):

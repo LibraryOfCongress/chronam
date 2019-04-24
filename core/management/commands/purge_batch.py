@@ -25,7 +25,7 @@ class Command(LoggingCommand):
             help='Do not optimize Solr and MySQL after purge',
         ),
     )
-    help = "Purge a batch"
+    help = "Purge a batch"  # NOQA: A003
     args = '<batch_location>'
 
     def handle(self, batch_location=None, *args, **options):

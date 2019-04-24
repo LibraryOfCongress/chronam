@@ -15,7 +15,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Command(LoggingCommand):
-    help = "Load a holdings records after title records are all loaded"
+    help = "Load a holdings records after title records are all loaded"  # NOQA: A003
     args = '<location of holdings directory>'
 
     bib_in_settings = validate_bib_dir()

@@ -6,7 +6,7 @@ from . import LoggingCommand
 
 
 class Command(LoggingCommand):
-    help = "Updates the Title.has_issues property appropriately"
+    help = "Updates the Title.has_issues property appropriately"  # NOQA: A003
 
     def handle(self, *args, **options):
         q = m.Title.objects.filter(pk__in=m.Issue.objects.values("title"))

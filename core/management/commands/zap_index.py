@@ -13,7 +13,9 @@ class Command(LoggingCommand):
         '--batch', action='store', dest='batch', help='the batch name for pages you want to purge from index'
     )
     option_list = LoggingCommand.option_list + (batch_option,)
-    help = "remove all documents, or only documents related to a particular batch from the solr index"
+    help = (  # NOQA: A003
+        "remove all documents, or only documents related to a particular batch from the solr index"
+    )
     args = 'an optional batch'
 
     def handle(self, **options):
