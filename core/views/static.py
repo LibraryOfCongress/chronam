@@ -20,12 +20,21 @@ def healthz(request):
     status = {
         'current_time': time.time(),
         'load_average': os.getloadavg(),
-        'process_creation_time': Process().create_time()
+        'process_creation_time': Process().create_time(),
     }
 
     # We don't want to query a large table but we do want to hit the database
     # at last once:
     status['database_has_data'] = Language.objects.count() > 0
+
+    # We'll intentionally touch the storage paths to turn failed network mounts
+    # into failed health-checks. This would be less generic if we did an
+    # os.path.ismount() tests on the ones which are independent mounts so we're
+    # not doing that.
+    status['storage'] = {
+        k: os.path.isdir(getattr(settings, k))
+        for k in ('BATCH_STORAGE', 'BIB_STORAGE', 'COORD_STORAGE', 'OCR_DUMP_STORAGE', 'TEMP_STORAGE')
+    }
 
     return HttpResponse(content=json.dumps(status), content_type='application/json')
 
