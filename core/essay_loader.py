@@ -1,25 +1,24 @@
 import calendar
 import datetime
-import feedparser
 import logging
 import re
-import requests
 import urlparse
 
+import feedparser
+import requests
 from bs4 import BeautifulSoup
-
 from django.core import management
 
 from chronam.core.index import index_title
-from chronam.core.models import Essay, Title, Awardee
+from chronam.core.models import Awardee, Essay, Title
 
 LOGGER = logging.getLogger(__name__)
 
 
 def load_essays(feed_url, index=True):
-    LOGGER.info("loading feed %s" % feed_url)
+    LOGGER.info("loading feed %s", feed_url)
     feed = feedparser.parse(feed_url)
-    LOGGER.info("got %s entries" % len(feed.entries))
+    LOGGER.info("got %d entries", len(feed.entries))
     for e in feed.entries:
         url = e.links[0]['href']
         t = calendar.timegm(e.modified_parsed)
@@ -27,14 +26,14 @@ def load_essays(feed_url, index=True):
 
         q = Essay.objects.filter(essay_editor_url=url)
         if q.count() == 0:
-            LOGGER.info("found a new essay: %s" % url)
+            LOGGER.info("found a new essay: %s", url)
             load_essay(url, index)
         elif q.filter(modified__lt=modified).count() > 0:
-            LOGGER.info("found updated essay: %s" % url)
+            LOGGER.info("found updated essay: %s", url)
             purge_essay(url, index)
             load_essay(url, index)
         else:
-            LOGGER.info("essay already up to date: %s" % url)
+            LOGGER.info("essay already up to date: %s", url)
 
 
 def load_essay(essay_url, index=True):
@@ -42,7 +41,7 @@ def load_essay(essay_url, index=True):
     Load an essay from an RDFa HTML document.
     """
     # extract metadata from the html
-    LOGGER.info("loading essay %s" % essay_url)
+    LOGGER.info("loading essay %s", essay_url)
 
     # create the essay instance
     url_parts = urlparse.urlparse(essay_url)
@@ -70,7 +69,9 @@ def load_essay(essay_url, index=True):
         try:
             title = Title.objects.get(lccn=lccn)
         except Exception:  # FIXME: this should only handle expected exceptions
-            management.call_command('load_titles', 'http://chroniclingamerica.loc.gov/lccn/%s/marc.xml' % lccn)
+            management.call_command(
+                'load_titles', 'http://chroniclingamerica.loc.gov/lccn/%s/marc.xml' % lccn
+            )
             title = Title.objects.get(lccn=lccn)
 
         # attach the title to the essay
@@ -80,7 +81,7 @@ def load_essay(essay_url, index=True):
         if index:
             index_title(title)
 
-    LOGGER.info("loaded essay: %s" % essay_url)
+    LOGGER.info("loaded essay: %s", essay_url)
     return essay
 
 
@@ -92,7 +93,7 @@ def purge_essay(essay_url, index=True):
         essay = Essay.objects.get(essay_editor_url=essay_url)
         titles = list(essay.titles.all())
         essay.delete()
-        LOGGER.info("deleted essay %s" % essay_url)
+        LOGGER.info("deleted essay %s", essay_url)
 
         # reindex titles
         if index:
