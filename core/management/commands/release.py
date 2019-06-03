@@ -40,7 +40,7 @@ class Command(LoggingCommand):
         if options['reset']:
             for batch in m.Batch.objects.all():
                 batch.released = None
-                LOGGER.info("unsetting release time for %s" % batch.name)
+                LOGGER.info("unsetting release time for %s", batch.name)
                 batch.save()
 
         input_file_path = None
