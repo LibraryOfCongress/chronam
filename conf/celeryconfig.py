@@ -1,10 +1,9 @@
-import os
 import logging
-import datetime
+import os
 
 from celery.schedules import crontab
 
-from chronam.settings import *
+from chronam.settings import *  # NOQA
 
 APP_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
@@ -23,17 +22,13 @@ CELERYBEAT_SCHEDULE = {
     "load_essays": {
         "task": "chronam.core.tasks.load_essays",
         "schedule": crontab(hour=0, minute=0),
-        "args": ()
+        "args": (),
     },
-
-    "poll_purge": {
-        "task": "chronam.core.tasks.poll_purge",
-        "schedule": crontab(hour=3, minute=0),
-    },
+    "poll_purge": {"task": "chronam.core.tasks.poll_purge", "schedule": crontab(hour=3, minute=0)},
     "delete_django_cache": {
         "task": "chronam.core.tasks.delete_django_cache",
         "schedule": crontab(hour=5, minute=0),
-    }
+    },
 }
 
 CELERYBEAT_LOG_FILE = os.path.join("/var/log/celery", "celerybeat.log")
