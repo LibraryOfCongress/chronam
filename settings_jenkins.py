@@ -15,8 +15,6 @@ ESSAYS_FEED = "http://rdccavld04.loctest.gov/feed/"
 
 IS_PRODUCTION = False
 
-CTS_URL = "https://transferqa.loctest.gov/transfer/"
-
 SOLR = "http://localhost:8080/solr"
 
 
