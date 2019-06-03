@@ -30,7 +30,6 @@ CELERYBEAT_SCHEDULE = {
         "task": "chronam.core.tasks.poll_purge",
         "schedule": crontab(hour=3, minute=0),
     },
-    # Executes every morning at 2:00 A.M
     "delete_django_cache": {
         "task": "chronam.core.tasks.delete_django_cache",
         "schedule": crontab(hour=5, minute=0),
