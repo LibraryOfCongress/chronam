@@ -1,6 +1,6 @@
-from settings_template import *
-
 import os
+
+from settings_template import *  # NOQA
 
 DATABASES = {
     'default': {

@@ -47,9 +47,7 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
-        },
+        "verbose": {"format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"},
         "simple": {"format": "[%(asctime)s %(levelname)s %(name)s] %(message)s"},
     },
     "handlers": {
@@ -121,9 +119,7 @@ LONG_TTL_SECONDS = 60 * 60 * 24 * 7 * 8  # 8 weeks
 METADATA_TTL_SECONDS = DEFAULT_TTL_SECONDS
 PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24 * 7 * 2  # 2 weeks
 API_TTL_SECONDS = 60 * 60  # 1 hour
-SHARED_CACHE_MAXAGE_SECONDS = (
-    60 * 60 * 24 * 365
-)  # 1 year, purge from cloudflare and varnish if needed sooner
+SHARED_CACHE_MAXAGE_SECONDS = 60 * 60 * 24 * 365  # 1 year, purge from cloudflare and varnish if needed sooner
 
 USE_TIFF = False
 

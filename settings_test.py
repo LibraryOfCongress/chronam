@@ -1,12 +1,14 @@
-from settings_template import *
+import os
+
+# DO NOT CHECK-IN WORLDCAT_KEY TO REPO
+from settings import WORLDCAT_KEY  # NOQA
+from settings_template import *  # NOQA
+from settings_template import DIRNAME, STORAGE
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'TEST': {
-            'CHARSET': "utf8",
-            'COLLATION': "utf8_general_ci"
-        }
+        'TEST': {'CHARSET': "utf8", 'COLLATION': "utf8_general_ci"},
     }
 }
 
@@ -18,6 +20,3 @@ COORD_STORAGE = os.path.join(STORAGE, "test_word_coordinates")
 TEMP_TEST_DATA = os.path.join(STORAGE, "temp_test_data")
 DATA_DIR = os.path.join(DIRNAME, "data")
 BATCH_STORAGE = os.path.join(DATA_DIR, "batches")
-
-# DO NOT CHECK-IN WORLDCAT_KEY TO REPO
-from settings import WORLDCAT_KEY
