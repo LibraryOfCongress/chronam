@@ -1,16 +1,15 @@
 import logging
-import minicts
 import os
 
+import minicts
 from celery.decorators import task
-
 from django.conf import settings
 from django.core import management
 from django.core.cache import cache
 
 from chronam.core import cts
-from chronam.core.models import Batch, OcrDump
 from chronam.core.batch_loader import BatchLoader
+from chronam.core.models import Batch, OcrDump
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +21,7 @@ def process_coordinates(batch_dir):
         batch_loader.process_coordinates(batch_dir)
         logger.info("processed batch %s", batch_dir)
     except Exception:
-        logger.exception("unable to process batch %s" % batch_dir)
+        logger.exception("unable to process batch %s", batch_dir)
 
 
 @task
@@ -36,7 +35,7 @@ def load_batch(batch_dir, service_request=None, process_coordinates=True):
             service_request.complete()
 
     except Exception as e:
-        logger.exception("unable to load batch %s" % batch_dir)
+        logger.exception("unable to load batch %s", batch_dir)
         if service_request:
             logger.info("marking service request as failed")
             service_request.fail(str(e))
@@ -46,8 +45,8 @@ def load_batch(batch_dir, service_request=None, process_coordinates=True):
 def load_essays():
     try:
         management.call_command('load_essays')
-    except:
-        logger.error("Unable to load essays")
+    except Exception:
+        logger.exception("Unable to load essays")
 
 
 @task
@@ -58,16 +57,14 @@ def purge_batch(batch, service_request=None):
         if service_request:
             service_request.complete()
     except Exception as e:
-        logger.exception("unable to purge batch: %s" % e)
+        logger.exception("unable to purge batch: %s", batch)
         if service_request:
             service_request.fail(str(e))
 
 
 @task
 def poll_purge():
-    cts = minicts.CTS(settings.CTS_URL,
-                      settings.CTS_USERNAME,
-                      settings.CTS_PASSWORD)
+    cts = minicts.CTS(settings.CTS_URL, settings.CTS_USERNAME, settings.CTS_PASSWORD)
 
     queue = settings.CTS_QUEUE
     purge_service_type = "purge.NdnpPurge.purge"
@@ -77,17 +74,17 @@ def poll_purge():
             logger.info("no purge service requests")
             break
 
-        logger.info('got purge service request: %s' % req.url)
+        logger.info('got purge service request: %s', req.url)
         bag_instance_key = req.data['requestParameters']['baginstancekey']
         bag_instance = cts.get_bag_instance(bag_instance_key)
         batch_name = os.path.basename(bag_instance.data['filepath'])
-        logger.info('purging %s' % batch_name)
+        logger.info('purging %s', batch_name)
 
         # if the batch isn't there no need to purge
         try:
             if Batch.objects.filter(name=batch_name).count() == 0:
-                logger.info('no need to purge %s ; it is not loaded' % batch_name)
-                logger.info('batch %s purged' % batch_name)
+                logger.info('no need to purge %s ; it is not loaded', batch_name)
+                logger.info('batch %s purged', batch_name)
             else:
                 purge_batch(batch_name, req)
         except Exception as e:
@@ -97,18 +94,14 @@ def poll_purge():
 
 @task
 def poll_cts():
-    if settings.MAX_BATCHES != 0 \
-            and Batch.objects.all().count() >= settings.MAX_BATCHES:
+    if settings.MAX_BATCHES != 0 and Batch.objects.all().count() >= settings.MAX_BATCHES:
         logger.debug("not loading more than %s batches", settings.MAX_BATCHES)
         return None
 
-    c = cts.CTS(settings.CTS_USERNAME,
-                settings.CTS_PASSWORD,
-                settings.CTS_URL)
+    c = cts.CTS(settings.CTS_USERNAME, settings.CTS_PASSWORD, settings.CTS_URL)
 
     # 'ndnpstagingingestqueue', 'ingest.NdnpIngest.ingest'
-    sr = c.next_service_request(settings.CTS_QUEUE,
-                                settings.CTS_SERVICE_TYPE)
+    sr = c.next_service_request(settings.CTS_QUEUE, settings.CTS_SERVICE_TYPE)
 
     # no service request? whew, we're done.
     if not sr:
@@ -122,7 +115,7 @@ def poll_cts():
     bag_dir = bag.data['filepath']
 
     try:
-        logger.info("loading %s" % bag_dir)
+        logger.info("loading %s", bag_dir)
         return load_batch.delay(bag_dir, sr)
 
     except Exception as e:
