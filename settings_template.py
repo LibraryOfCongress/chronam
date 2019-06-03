@@ -127,7 +127,7 @@ SHARED_CACHE_MAXAGE_SECONDS = (
 
 USE_TIFF = False
 
-ESSAYS_FEED = "http://essays.loc.gov/feed/"
+ESSAYS_FEED = "https://essays.loc.gov/feed/"
 
 CACHES = {
     "default": {
