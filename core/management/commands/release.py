@@ -14,10 +14,10 @@ from datetime import datetime
 from optparse import make_option
 from time import mktime
 
-import feedparser
 from django.conf import settings
 
 from chronam.core import models as m
+from chronam.core.essay_loader import fetch_feed
 
 from . import LoggingCommand
 
@@ -98,7 +98,7 @@ def preprocess_public_feed():
     and returns a dictionary of {batch name: released datetime}
     """
     LOGGER.info("processing public feed for released datetime")
-    feed = feedparser.parse("https://chroniclingamerica.loc.gov/batches/feed/")
+    feed = fetch_feed("https://chroniclingamerica.loc.gov/batches/feed/")
     batch_release_times = {}
 
     if len(feed.entries) == 0:
@@ -119,7 +119,7 @@ def preprocess_public_feed():
 
         next_page = get_next_page(feed)
         if next_page:
-            feed = feedparser.parse(next_page)
+            feed = fetch_feed(next_page)
         else:
             cont = False
     return batch_release_times

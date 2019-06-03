@@ -1,5 +1,6 @@
 import calendar
 import datetime
+import io
 import logging
 import re
 import urlparse
@@ -15,10 +16,32 @@ from chronam.core.models import Awardee, Essay, Title
 LOGGER = logging.getLogger(__name__)
 
 
+def fetch_feed(feed_url, timeout=120):
+    """
+    feedparse does not have network timeout support and the upstream
+    maintainer recommends using a dedicated network client instead — see
+    https://github.com/kurtmckee/feedparser/pull/80#issuecomment-449543486 –
+    so we'll load the feed using requests and pass the response to feedparser.
+
+    120 seconds was selected based on the default response time of ~45 seconds(!)
+    """
+    LOGGER.debug("Fetching feed %s", feed_url)
+
+    response = requests.get(feed_url, timeout=timeout)
+    response.raise_for_status()
+
+    LOGGER.debug("Parsing feed %s", feed_url)
+    feed_bytes = io.BytesIO(response.content)
+    feed = feedparser.parse(feed_bytes)
+
+    LOGGER.info("Loaded %d entries from %s", len(feed.entries), feed_url)
+
+    return feed
+
+
 def load_essays(feed_url, index=True):
-    LOGGER.info("loading feed %s", feed_url)
-    feed = feedparser.parse(feed_url)
-    LOGGER.info("got %d entries", len(feed.entries))
+    feed = fetch_feed(feed_url)
+
     for e in feed.entries:
         url = e.links[0]['href']
         t = calendar.timegm(e.modified_parsed)
