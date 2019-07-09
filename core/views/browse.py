@@ -344,7 +344,7 @@ def title(request, lccn):
     has_external_link = False
     for note in title.notes.all():
         org_text = html.escape(note.text)
-        text = re.sub('(http(s)?://[^\s]+[^\.])', r'<a class="external" href="\1">\1</a>', org_text)
+        text = re.sub(r'(http(s)?://[^\s]+[^\.])', r'<a class="external" href="\1">\1</a>', org_text)
         if text != org_text:
             has_external_link = True
         notes.append(text)
