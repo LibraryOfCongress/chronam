@@ -1,5 +1,7 @@
 import datetime
 import json
+import os
+from urllib import quote
 
 from django.conf import settings
 from django.core import urlresolvers
@@ -38,16 +40,22 @@ def _frontpages(request, date):
             lccn=issue.title.lccn, date=issue.date_issued, edition=issue.edition, sequence=first_page.sequence
         )
         url = urlresolvers.reverse('chronam_page', kwargs=path_parts)
-        results.append(
-            {
-                'label': "%s" % issue.title.display_name,
-                'url': url,
-                'thumbnail_url': first_page.thumb_url,
-                'medium_url': first_page.medium_url,
-                'place_of_publication': issue.title.place_of_publication,
-                'pages': issue.pages.count(),
-            }
-        )
+
+        issue_info = {
+            'label': "%s" % issue.title.display_name,
+            'url': url,
+            'thumbnail_url': first_page.thumb_url,
+            'medium_url': first_page.medium_url,
+            'place_of_publication': issue.title.place_of_publication,
+            'pages': issue.pages.count(),
+        }
+
+        if settings.IIIF_IMAGE_BASE_URL:
+            issue_info['iiif_thumbnail_base_url'] = settings.IIIF_IMAGE_BASE_URL + quote(
+                os.path.relpath(first_page.jp2_abs_filename, start=settings.BATCH_STORAGE), safe=""
+            )
+
+        results.append(issue_info)
     return results
 
 
