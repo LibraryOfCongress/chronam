@@ -9,6 +9,7 @@ from django import forms as django_forms
 from django.conf import settings
 from django.core import urlresolvers
 from django.core.paginator import InvalidPage, Paginator
+from django.db.models import Min
 from django.forms import fields
 from django.http import (
     Http404,
@@ -47,20 +48,23 @@ LOGGER = logging.getLogger(__name__)
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def issues(request, lccn, year=None):
     title = get_object_or_404(models.Title, lccn=lccn)
-    issues = title.issues.all()
 
-    if issues.count() > 0:
-        if year is None:
-            _year = issues[0].date_issued.year
-        else:
-            _year = int(year)
+    if year is not None:
+        _year = int(year)
     else:
-        _year = 1900  # no issues available
-    year_view = HTMLCalendar(firstweekday=6, issues=issues).formatyear(_year)
-    dates = issues.dates('date_issued', 'year')
+        issue_stats = title.issues.aggregate(first_issued=Min('date_issued'))
+        first_issued = issue_stats.get('first_issued')
+        if first_issued:
+            _year = first_issued.year
+        else:
+            _year = 1900
+
+    year_view = HTMLCalendar(firstweekday=6, issues=title.issues).formatyear(_year)
 
     class SelectYearForm(django_forms.Form):
-        year = fields.ChoiceField(choices=((d.year, d.year) for d in dates), initial=_year)
+        year = fields.ChoiceField(
+            choices=((d.year, d.year) for d in title.issues.dates('date_issued', 'year')), initial=_year
+        )
 
     select_year_form = SelectYearForm()
     page_title = "Browse Issues: %s" % title.display_name
