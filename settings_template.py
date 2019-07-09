@@ -135,6 +135,9 @@ IS_PRODUCTION = False
 MAX_BATCHES = 0
 
 SENDFILE_BACKEND = "sendfile.backends.xsendfile"
+#: If set, instead of using Sendfile a redirect will be issued to the path
+#: urljoin()-ed with this value
+SENDFILE_REDIRECT_BATCH_BASE_URL = 'https://chroniclingamerica.loc.gov/data/batches/'
 
 TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
 # TOO_BUSY_LOAD_AVERAGE = 64

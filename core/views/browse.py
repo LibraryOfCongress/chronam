@@ -4,6 +4,7 @@ import os
 import re
 import urlparse
 import warnings
+from urlparse import urljoin
 
 from django import forms as django_forms
 from django.conf import settings
@@ -43,6 +44,16 @@ from chronam.core.utils.utils import (
 )
 
 LOGGER = logging.getLogger(__name__)
+
+
+def serve_file(request, filename):
+    if filename.startswith(settings.BATCH_STORAGE) and settings.SENDFILE_REDIRECT_BATCH_BASE_URL:
+        direct_url = urljoin(
+            settings.SENDFILE_REDIRECT_BATCH_BASE_URL, os.path.relpath(filename, start=settings.BATCH_STORAGE)
+        )
+        return HttpResponseRedirect(direct_url)
+    else:
+        return sendfile(request, filename)
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
@@ -529,8 +540,8 @@ def page_ocr(request, lccn, date, edition, sequence):
 
 def page_pdf(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
-    if page.pdf_abs_filename:
-        response = sendfile(request, page.pdf_abs_filename)
+    if page.pdf_filename:
+        response = serve_file(request, page.pdf_abs_filename)
         return add_cache_tag(response, "lccn=%s" % lccn)
     else:
         raise Http404("No pdf for page %s" % page)
@@ -538,8 +549,8 @@ def page_pdf(request, lccn, date, edition, sequence):
 
 def page_jp2(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
-    if page.jp2_abs_filename:
-        response = sendfile(request, page.jp2_abs_filename)
+    if page.jp2_filename:
+        response = serve_file(request, page.jp2_abs_filename)
         return add_cache_tag(response, "lccn=%s" % lccn)
     else:
         raise Http404("No jp2 for page %s" % page)
@@ -547,8 +558,8 @@ def page_jp2(request, lccn, date, edition, sequence):
 
 def page_ocr_xml(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
-    if page.ocr_abs_filename:
-        response = sendfile(request, page.ocr_abs_filename)
+    if page.ocr_filename:
+        response = serve_file(request, page.ocr_abs_filename)
         return add_cache_tag(response, "lccn=%s" % lccn)
     else:
         raise Http404("No ocr for page %s" % page)
