@@ -7,7 +7,7 @@ from django.core import urlresolvers
 from django.core.paginator import InvalidPage, Paginator
 from django.db import connection
 from django.db.models import Count, Max, Min
-from django.http import Http404, HttpResponse, HttpResponseNotFound
+from django.http import Http404, HttpResponse, HttpResponseNotFound, JsonResponse
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.utils import datetime_safe
@@ -19,6 +19,11 @@ from chronam.core.decorator import add_cache_headers, cors, rdf_view
 from chronam.core.rdf import awardee_to_graph, batch_to_graph
 from chronam.core.utils.url import unpack_url_path
 from chronam.core.utils.utils import _get_tip, _page_range_short, _rdf_base
+
+
+@add_cache_headers(settings.METADATA_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
+def total_page_count(request):
+    return JsonResponse({"total_page_count": index.page_count()})
 
 
 @add_cache_headers(settings.LONG_TTL_SECONDS)

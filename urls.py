@@ -467,6 +467,7 @@ urlpatterns += [
     ),
     # reports
     url(r'^reports/$', views.reports, name='chronam_reports'),
+    url(r'^reports/total-page-count[.]json$', views.total_page_count, name='total-page-count'),
     # ocr data
     url(r'^ocr/feed/$', views.ocr_atom, name='chronam_ocr_atom'),
     url(r'^ocr[.]json$', views.ocr_json, name='chronam_ocr_json'),

@@ -24,13 +24,12 @@ class Command(LoggingCommand):
     help = "Purge the django cache after ingest/purge of a batch"  # NOQA: A003
 
     def handle(self, *args, **options):
-
         try:
             if options['purge_all']:
                 LOGGER.info("clearing the whole django cache")
                 cache.clear()
             else:
-                # delete the total pages count
+                # delete the cached newspaper statistics
                 LOGGER.info('removing newspaper_info from cache')
                 cache.delete('newspaper_info')
 
@@ -41,7 +40,6 @@ class Command(LoggingCommand):
                 # delete the fulltext date range
                 LOGGER.info('removing fulltext_range')
                 cache.delete('fulltext_range')
-
-        except Exception as e:
-            LOGGER.exception(e)
+        except Exception:
+            LOGGER.exception('Unable to purge cache')
             raise CommandError("unable to purge the cache. check the purge_batch_cache log for clues")

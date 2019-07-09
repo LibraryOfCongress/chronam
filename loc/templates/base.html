@@ -37,8 +37,7 @@
     <meta name="dc.language" content="eng" />
     <link rel="preconnect" href="//cdn.loc.gov">
     <link type="text/css" rel="stylesheet" href="{% static 'base.css' %}" />
-    <link type="text/css" rel="stylesheet"
-          href="{% static 'jquery-ui.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'jquery-ui.css' %}" />
     <link type="text/css" rel="styelsheet" href="{% static 'ui_carousel.css' %}" />
     {% block extrahead %}{% endblock extrahead %}
 {% endblock head_content %}
@@ -56,7 +55,7 @@
     {% endblock box-tabs %}
     <div class="sharetool_container">
         {% block sharetool_container_left %}
-	    <p>Pages Available: {{ total_page_count|intcomma }}</p>
+        <p class="total-page-count" hidden>Pages Available: <span class="total-page-count-value"></span></p>
 	    {% endblock sharetool_container_left %}
         <!-- Toolbar -->
         <div class="locshare-this" id='instance_id1001' style='display:none'>
@@ -136,7 +135,6 @@
 <script src="{% static 'js/jquery-ui.js' %}" ></script>
 
 <script type="text/javascript">
-
 jQuery(function ($) {
     var searchString = window.location.search.substring(1);
     if (searchString) {
@@ -147,6 +145,17 @@ jQuery(function ($) {
     $('#tabs-container').load(tab_url, function() {
         $("#tabs-container").trigger('chronam.tabsloaded', {});
     });
+});
+</script>
+
+<script type="text/javascript">
+jQuery(function ($) {
+    $.getJSON("{% url 'total-page-count' %}", function (data) {
+        if (data.total_page_count) {
+            $(".total-page-count").removeAttr('hidden');
+            $(".total-page-count-value").text(Number(data.total_page_count).toLocaleString());
+        }
+    })
 });
 </script>
 
