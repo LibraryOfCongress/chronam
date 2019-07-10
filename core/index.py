@@ -3,7 +3,7 @@ import re
 from urllib import urlencode
 
 from django.conf import settings
-from django.core.paginator import Page, Paginator
+from django.core.paginator import InvalidPage, Page, Paginator
 from django.db import connection, reset_queries
 from solr import SolrConnection
 
@@ -69,19 +69,19 @@ class SolrPaginator(Paginator):
         self._q = page_search(self.query)
 
         try:
-            self._cur_page = int(self.query.get('page'))
-        except:
-            self._cur_page = 1  # _cur_page is 1-based
+            self._cur_page = int(self.query.get('page', 1))
+        except ValueError:
+            raise InvalidPage
 
         try:
-            self._cur_index = int(self.query.get('index'))
-        except:
-            self._cur_index = 0
+            self._cur_index = int(self.query.get('index', 0))
+        except ValueError:
+            raise InvalidPage
 
         try:
-            rows = int(self.query.get('rows'))
-        except:
-            rows = 10
+            rows = int(self.query.get('rows', 10))
+        except ValueError:
+            raise InvalidPage
 
         # set up some bits that the Paginator expects to be able to use
         Paginator.__init__(self, None, per_page=rows, orphans=0)
@@ -266,15 +266,17 @@ class SolrTitlesPaginator(Paginator):
     def __init__(self, query):
         self.query = query.copy()
         q, fields, sort_field, sort_order = get_solr_request_params_from_query(self.query)
-        try:
-            page = int(self.query.get('page'))
-        except:
-            page = 1
 
         try:
-            rows = int(self.query.get('rows'))
-        except:
-            rows = 50
+            page = int(self.query.get('page', 1))
+        except ValueError:
+            raise InvalidPage
+
+        try:
+            rows = int(self.query.get('rows', 50))
+        except ValueError:
+            raise InvalidPage
+
         start = rows * (page - 1)
         # execute query
         solr_response = execute_solr_query(q, fields, sort_field, sort_order, rows, start)
