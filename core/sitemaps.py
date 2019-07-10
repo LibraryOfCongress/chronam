@@ -1,6 +1,6 @@
 from django.contrib import sitemaps
 
-from chronam.core.models import (Batch, Issue, Page, Title)
+from chronam.core.models import Batch, Issue, Page, Title
 
 
 class BatchesSitemap(sitemaps.Sitemap):

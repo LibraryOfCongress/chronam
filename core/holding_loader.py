@@ -3,11 +3,11 @@ import os
 from datetime import datetime
 from time import time
 
-from pymarc import map_xml
 from django.db import reset_queries
+from pymarc import map_xml
 
-from chronam.core.title_loader import _normal_oclc, _extract
 from chronam.core import models
+from chronam.core.title_loader import _extract, _normal_oclc
 
 LOGGER = logging.getLogger(__name__)
 
@@ -38,8 +38,9 @@ class HoldingLoader:
             times.append(seconds)
 
             if self.records_processed % 1000 == 0:
-                LOGGER.info("processed %sk records in %.2f seconds" %
-                            (self.records_processed / 1000, seconds))
+                LOGGER.info(
+                    "processed %sk records in %.2f seconds" % (self.records_processed / 1000, seconds)
+                )
 
         def load_xml_record(record):
             try:
@@ -51,8 +52,7 @@ class HoldingLoader:
                     self.load_xml_holding(record)
 
             except Exception as e:
-                LOGGER.error("unable to load record %s: %s" %
-                             (self.records_processed, e))
+                LOGGER.error("unable to load record %s: %s" % (self.records_processed, e))
                 LOGGER.exception(e)
                 self.errors += 1
 
@@ -68,8 +68,7 @@ class HoldingLoader:
             titles = models.Title.objects.filter(oclc=oclc)
             return titles
         except models.Title.DoesNotExist:
-            LOGGER.error("Holding missing Title to link: record %s, oclc %s" %
-                         (self.records_processed, oclc))
+            LOGGER.error("Holding missing Title to link: record %s, oclc %s" % (self.records_processed, oclc))
             self.missing_title += 1
             self.errors += 1
             return None
@@ -80,8 +79,7 @@ class HoldingLoader:
             inst = models.Institution.objects.get(code=inst_code)
             return inst
         except models.Institution.DoesNotExist:
-            LOGGER.error("Holding missing Institution to link to: %s" %
-                         inst_code)
+            LOGGER.error("Holding missing Institution to link to: %s" % inst_code)
             self.errors += 1
             return None
 
@@ -118,8 +116,7 @@ class HoldingLoader:
         # get the oclc number to link to
         oclc = _normal_oclc(_extract(record, '004'))
         if not oclc:
-            LOGGER.error("holding record missing title: record %s, oclc %s" %
-                         (self.records_processed, oclc))
+            LOGGER.error("holding record missing title: record %s, oclc %s" % (self.records_processed, oclc))
             self.errors += 1
             return
 
@@ -146,12 +143,14 @@ class HoldingLoader:
 
         # persist it
         for title in titles:
-            holding = models.Holding(title=title,
-                                     institution=inst,
-                                     description=desc,
-                                     type=holding_type,
-                                     last_updated=date,
-                                     notes=notes)
+            holding = models.Holding(
+                title=title,
+                institution=inst,
+                description=desc,
+                type=holding_type,
+                last_updated=date,
+                notes=notes,
+            )
             holding.save()
             self.holding_created += 1
         reset_queries()

@@ -16,11 +16,11 @@ class HttpResponseServiceUnavailable(HttpResponse):
 
 
 class TooBusyMiddleware(object):
-
     def process_request(self, request):
         one, five, fifteen = os.getloadavg()
         if one > settings.TOO_BUSY_LOAD_AVERAGE:
-            return HttpResponseServiceUnavailable("""
+            return HttpResponseServiceUnavailable(
+                """
 <!doctype html>
 <html>
 <head>
@@ -38,4 +38,5 @@ class TooBusyMiddleware(object):
     </article>
 </body>
 </html>
-""".strip())
+""".strip()
+            )

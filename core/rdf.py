@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from rdflib import ConjunctiveGraph, Namespace, Literal, URIRef, RDF, RDFS
+from rdflib import RDF, RDFS, ConjunctiveGraph, Literal, Namespace, URIRef
 from rfc3339 import rfc3339
 
 from chronam.core.models import MARC
@@ -63,10 +63,7 @@ def title_to_graph(t, g=None, include_issues=True):
             (
                 uri,
                 DCTERMS['date'],
-                Literal(
-                    '%s/%s' % (start, end),
-                    datatype=URIRef('http://www.loc.gov/standards/datetime#edt'),
-                ),
+                Literal('%s/%s' % (start, end), datatype=URIRef('http://www.loc.gov/standards/datetime#edt')),
             )
         )
 
@@ -96,13 +93,7 @@ def issue_to_graph(i, g=None):
 
     uri = abstract_uri(i)
     g.add((uri, RDF.type, BIBO['Issue']))
-    g.add(
-        (
-            uri,
-            DCTERMS['title'],
-            Literal('%s - %s' % (i.title.display_name, i.date_issued)),
-        )
-    )
+    g.add((uri, DCTERMS['title'], Literal('%s - %s' % (i.title.display_name, i.date_issued))))
     g.add((uri, DCTERMS['issued'], Literal(i.date_issued, datatype=XSD.date)))
     g.add((uri, ORE['isAggregatedBy'], abstract_uri(i.title)))
     g.add((uri, ORE['isAggregatedBy'], abstract_uri(i.batch)))
@@ -150,10 +141,7 @@ def page_to_graph(p, g=None):
         (
             uri,
             DCTERMS['title'],
-            Literal(
-                '%s - %s - %s'
-                % (p.issue.title.display_name, p.issue.date_issued, p.sequence)
-            ),
+            Literal('%s - %s - %s' % (p.issue.title.display_name, p.issue.date_issued, p.sequence)),
         )
     )
 
@@ -207,13 +195,7 @@ def awardee_to_graph(a):
     if a.org_code == 'dlc':
         # important for resource maps that reference loc as dc:creator
         g.add((uri, FOAF['mbox'], Literal('help@loc.gov')))
-        g.add(
-            (
-                uri,
-                OWL['sameAs'],
-                URIRef("http://dbpedia.org/resource/Library_of_Congress"),
-            )
-        )
+        g.add((uri, OWL['sameAs'], URIRef("http://dbpedia.org/resource/Library_of_Congress")))
     return g
 
 
@@ -249,13 +231,7 @@ def add_rem(g, uri_a, uri_r):
     g.add((uri_a, ORE['isDescribedBy'], uri_r))
     g.add((uri_r, RDF.type, ORE['ResourceMap']))
     g.add((uri_r, ORE['describes'], uri_a))
-    g.add(
-        (
-            uri_r,
-            DCTERMS['creator'],
-            URIRef('http://chroniclingamerica.loc.gov/awardees/dlc#awardee'),
-        )
-    )
+    g.add((uri_r, DCTERMS['creator'], URIRef('http://chroniclingamerica.loc.gov/awardees/dlc#awardee')))
 
     # TODO: would be nice if created and modified were more real somehow
     # so oai-ore bots would know when resources needed to be harvested...

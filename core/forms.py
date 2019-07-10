@@ -26,12 +26,7 @@ FREQUENCY_CHOICES = (
     ("Unknown", "Unknown"),
 )
 
-PROX_CHOICES = (
-    ("5", "5"),
-    ("10", "10"),
-    ("50", "50"),
-    ("100", "100"),
-)
+PROX_CHOICES = (("5", "5"), ("10", "10"), ("50", "50"), ("100", "100"))
 
 
 def _titles_states():
@@ -44,14 +39,13 @@ def _titles_states():
     """
     titles_states = cache.get("titles_states")
     if not titles_states:
-        titles = [("", "All newspapers"), ]
+        titles = [("", "All newspapers")]
         states = [("", "All states")]
         # create a temp Set _states to hold states before compiling full list
         _states = set()
         for title in models.Title.objects.filter(has_issues=True).select_related():
             short_name = title.name.split(":")[0]  # remove subtitle
-            title_name = "%s (%s)" % (short_name,
-                                      title.place_of_publication)
+            title_name = "%s (%s)" % (short_name, title.place_of_publication)
             titles.append((title.lccn, title_name))
             for p in title.places.all():
                 _states.add(p.state)
@@ -69,8 +63,9 @@ def _fulltext_range():
     fulltext_range = cache.get('fulltext_range')
     if not fulltext_range:
         # get the maximum and minimum years that we have content for
-        issue_dates = models.Issue.objects.all().aggregate(min_date=Min('date_issued'),
-                                                           max_date=Max('date_issued'))
+        issue_dates = models.Issue.objects.all().aggregate(
+            min_date=Min('date_issued'), max_date=Max('date_issued')
+        )
 
         # when there is no content these may not be set
         if issue_dates['min_date']:
@@ -84,11 +79,11 @@ def _fulltext_range():
 
         # removing these bits for https://rdc.lctl.gov/trac/chronam/ticket/1025
         # See: https://rdc.lctl.gov/trac/ndnp/ticket/446
-        #min_year = max(min_year, MIN_YEAR)
+        # min_year = max(min_year, MIN_YEAR)
 
         # I don't understand why... just doing what's asked. See:
         # https://rdc.lctl.gov/trac/ndnp/ticket/241
-        #max_year = min(max_year, MAX_YEAR)
+        # max_year = min(max_year, MAX_YEAR)
 
         fulltext_range = (min_year, max_year)
         cache.set('fulltext_range', fulltext_range, settings.METADATA_TTL_SECONDS)
@@ -148,7 +143,7 @@ class AdvSearchPagesForm(SearchPagesForm):
         self.fields["date2"].initial = ""
         self.fields["sequence"].widget.attrs = {"id": "id_char_sequence", "size": "3"}
         self.fields["proxtext"].widget.attrs["id"] = "id_proxtext_adv"
-        lang_choices = [("", "All"), ]
+        lang_choices = [("", "All")]
         lang_choices.extend((l, models.Language.objects.get(code=l).name) for l in settings.SOLR_LANGUAGES)
         self.fields["language"].choices = lang_choices
 
@@ -181,15 +176,15 @@ class SearchTitlesForm(forms.Form):
         self.fields["year2"].initial = choices[-1][0]
         self.fields["year2"].widget.attrs["class"] = "norm"
 
-        language = [("", "Select"), ]
+        language = [("", "Select")]
         language.extend((l.name, l.name) for l in models.Language.objects.all())
         self.fields["language"].choices = language
 
-        ethnicity = [("", "Select"), ]
+        ethnicity = [("", "Select")]
         ethnicity.extend((e.name, e.name) for e in models.Ethnicity.objects.all())
         self.fields["ethnicity"].choices = ethnicity
 
-        labor = [("", "Select"), ]
+        labor = [("", "Select")]
         labor.extend((l.name, l.name) for l in models.LaborPress.objects.all())
         self.fields["labor"].choices = labor
 

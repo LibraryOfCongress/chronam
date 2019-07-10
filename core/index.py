@@ -1,14 +1,14 @@
-import re
-import math
-import logging
 import datetime
-from urllib import urlencode, unquote
+import logging
+import math
+import re
+from urllib import unquote, urlencode
 
-from solr import SolrConnection
-from django.core.paginator import Paginator, Page
+from django.conf import settings
+from django.core.paginator import Page, Paginator
 from django.db import connection, reset_queries
 from django.http import QueryDict
-from django.conf import settings
+from solr import SolrConnection
 
 from chronam.core import models
 from chronam.core.forms import _fulltext_range
@@ -40,6 +40,7 @@ def solr_escape(value):
     """
     return ESCAPE_CHARS_RE.sub(r'\\\g<char>', value)
 
+
 # TODO: prefix functions that are intended for local use only with _
 
 
@@ -51,6 +52,7 @@ def page_count():
 def title_count():
     solr = SolrConnection(settings.SOLR)
     return solr.query('type:title', fields=['id']).numFound
+
 
 # TODO: use solr.SolrPaginator and update or remove SolrPaginator
 
@@ -90,7 +92,7 @@ class SolrPaginator(Paginator):
 
         self.overall_index = (self._cur_page - 1) * self.per_page + self._cur_index
 
-        self._ocr_list = ['ocr', ]
+        self._ocr_list = ['ocr']
         self._ocr_list.extend(['ocr_%s' % l for l in settings.SOLR_LANGUAGES])
 
     def _get_count(self):
@@ -100,6 +102,7 @@ class SolrPaginator(Paginator):
             solr_response = solr.query(self._q, fields=['id'])
             self._count = int(solr_response.results.numFound)
         return self._count
+
     count = property(_get_count)
 
     def highlight_url(self, url, words, page, index):
@@ -118,6 +121,7 @@ class SolrPaginator(Paginator):
             return self.highlight_url(o.url, o.words, p_page, p_index)
         else:
             return None
+
     previous_result = property(_get_previous)
 
     def _get_next(self):
@@ -129,6 +133,7 @@ class SolrPaginator(Paginator):
             return self.highlight_url(o.url, o.words, n_page, n_index)
         else:
             return None
+
     next_result = property(_get_next)
 
     def page(self, number):
@@ -142,20 +147,22 @@ class SolrPaginator(Paginator):
         # figure out the solr query and execute it
         solr = SolrConnection(settings.SOLR)  # TODO: maybe keep connection around?
         start = self.per_page * (number - 1)
-        params = {"hl.snippets": 100,  # TODO: make this unlimited
-                  "hl.requireFieldMatch": 'true',  # limits highlighting slop
-                  "hl.maxAnalyzedChars": '102400',  # increased from default 51200
-                  }
+        params = {
+            "hl.snippets": 100,  # TODO: make this unlimited
+            "hl.requireFieldMatch": 'true',  # limits highlighting slop
+            "hl.maxAnalyzedChars": '102400',  # increased from default 51200
+        }
         sort_field, sort_order = _get_sort(self.query.get('sort'), in_pages=True)
-        solr_response = solr.query(self._q,
-                                   fields=['id', 'title', 'date', 'sequence',
-                                           'edition_label', 'section_label'],
-                                   highlight=self._ocr_list,
-                                   rows=self.per_page,
-                                   sort=sort_field,
-                                   sort_order=sort_order,
-                                   start=start,
-                                   **params)
+        solr_response = solr.query(
+            self._q,
+            fields=['id', 'title', 'date', 'sequence', 'edition_label', 'section_label'],
+            highlight=self._ocr_list,
+            rows=self.per_page,
+            sort=sort_field,
+            sort_order=sort_order,
+            start=start,
+            **params
+        )
         pages = []
         for result in solr_response.results:
             page = models.Page.lookup(result['id'])
@@ -168,9 +175,7 @@ class SolrPaginator(Paginator):
                     words.update(find_words(s))
             page.words = sorted(words, key=lambda v: v.lower())
 
-            page.highlight_url = self.highlight_url(page.url,
-                                                    page.words,
-                                                    number, len(pages))
+            page.highlight_url = self.highlight_url(page.url, page.words, number, len(pages))
             pages.append(page)
 
         return Page(pages, number, self)
@@ -254,6 +259,7 @@ class SolrPaginator(Paginator):
 
 # TODO: remove/update this in light of solr.SolrPaginator
 
+
 class SolrTitlesPaginator(Paginator):
     """
     SolrTitlesPaginator takes a QueryDict object, builds and executes a solr
@@ -326,16 +332,14 @@ def execute_solr_query(query, fields, sort, sort_order, rows, start):
     # default arg_separator - underscore wont work if fields to facet on
     # themselves have underscore in them
     solr = SolrConnection(settings.SOLR)  # TODO: maybe keep connection around?
-    solr_response = solr.query(query,
-                               fields=['lccn', 'title',
-                                       'edition',
-                                       'place_of_publication',
-                                       'start_year', 'end_year',
-                                       'language'],
-                               rows=rows,
-                               sort=sort,
-                               sort_order=sort_order,
-                               start=start)
+    solr_response = solr.query(
+        query,
+        fields=['lccn', 'title', 'edition', 'place_of_publication', 'start_year', 'end_year', 'language'],
+        rows=rows,
+        sort=sort,
+        sort_order=sort_order,
+        start=start,
+    )
     return solr_response
 
 
@@ -352,8 +356,10 @@ def title_search(d):
     if d.get('city'):
         q.append('+city:"%s"' % d['city'])
     for term in d.get('terms', '').replace('"', '').split():
-        q.append('+(title:"%s" OR essay:"%s" OR note:"%s" OR edition:"%s" OR place_of_publication:"%s" OR url:"%s" OR publisher:"%s")' %
-                 (term, term, term, term, term, term, term))
+        q.append(
+            '+(title:"%s" OR essay:"%s" OR note:"%s" OR edition:"%s" OR place_of_publication:"%s" OR url:"%s" OR publisher:"%s")'
+            % (term, term, term, term, term, term, term)
+        )
     if d.get('frequency'):
         q.append('+frequency:"%s"' % d['frequency'])
     if d.get('language'):
@@ -401,8 +407,7 @@ def page_search(d):
     date_filter_type = d.get('dateFilterType', None)
     if date_filter_type == 'year' and d.get('year', None):
         q.append('+date:[%(year)s0101 TO %(year)s1231]' % d)
-    elif date_filter_type in ('range', 'yearRange') and d.get('date1', None)\
-            and d.get('date2', None):
+    elif date_filter_type in ('range', 'yearRange') and d.get('date1', None) and d.get('date2', None):
         d1 = _solrize_date(d['date1'])
         d2 = _solrize_date(d['date2'], is_start=False)
         if d1 and d2:
@@ -594,7 +599,7 @@ def word_matches_for_page(page_id, words):
     if not isinstance(page_id, str):
         page_id = str(page_id)
 
-    ocr_list = ['ocr', ]
+    ocr_list = ['ocr']
     ocr_list.extend(['ocr_%s' % l for l in settings.SOLR_LANGUAGES])
     ocrs = ' OR '.join([query_join(words, o) for o in ocr_list])
     q = 'id:%s AND (%s)' % (page_id, ocrs)

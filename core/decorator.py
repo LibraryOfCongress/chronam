@@ -22,6 +22,7 @@ class HttpResponseUnsupportedMediaType(HttpResponse):
 # TODO: replace this with the standard Django 1.10+ cache_control decorator
 def add_cache_headers(ttl, shared_cache_maxage=None):
     """Decorate the provided function by adding Cache-Control and Expires headers to responses"""
+
     def decorator(function):
         if not hasattr(function, "__name__"):
             function.__name__ = function.__class__.__name__
@@ -33,6 +34,7 @@ def add_cache_headers(ttl, shared_cache_maxage=None):
             maxage = ttl if shared_cache_maxage is None else shared_cache_maxage
             cache.patch_cache_control(response, public=True, s_maxage=maxage)
             return response
+
         return decorated_function
 
     return decorator
@@ -65,6 +67,7 @@ def rdf_view(f):
             return html_redirect
         else:
             return HttpResponseUnsupportedMediaType()
+
     return f1
 
 
@@ -79,6 +82,7 @@ def opensearch_clean(f):
     query parsing to throw an exception, so it's best to remove them when
     present.
     """
+
     def f1(request, **kwargs):
         new_get = request.GET.copy()
         for k, v in new_get.items():
@@ -86,6 +90,7 @@ def opensearch_clean(f):
                 new_get.pop(k)
         request.GET = new_get
         return f(request, **kwargs)
+
     return f1
 
 
@@ -104,4 +109,5 @@ def cors(f, *args, **kwargs):
         response['Access-Control-Allow-Origin'] = '*'
         response['Access-Control-Allow-Headers'] = 'X-requested-with'
         return response
+
     return new_f

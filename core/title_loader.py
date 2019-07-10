@@ -1,12 +1,12 @@
-import logging
-import urlparse
-import urllib2
 import datetime
+import logging
+import urllib2
+import urlparse
 from re import sub
-from time import time, strptime
+from time import strptime, time
 
-from pymarc import map_xml, record_to_xml
 from django.db import reset_queries
+from pymarc import map_xml, record_to_xml
 
 from chronam.core import models
 
@@ -14,7 +14,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 class TitleLoader(object):
-
     def __init__(self):
         self.records_processed = 0
         self.records_created = 0
@@ -52,8 +51,9 @@ class TitleLoader(object):
             times.append(seconds)
 
             if self.records_processed % 1000 == 0:
-                LOGGER.info("processed %sk records in %.2f seconds" %
-                            (self.records_processed / 1000, seconds))
+                LOGGER.info(
+                    "processed %sk records in %.2f seconds" % (self.records_processed / 1000, seconds)
+                )
 
         request = urllib2.Request(location, headers={'User-Agent': 'chronam-title-loader'})
         map_xml(load_record, urllib2.urlopen(request))
@@ -217,11 +217,10 @@ class TitleLoader(object):
 
         # strip of leading The, An, A, etc if present
         if f245.indicators[1] != '0':
-            title.name_normal = title.name_normal[int(f245.indicators[1]):]
+            title.name_normal = title.name_normal[int(f245.indicators[1]) :]
         return
 
     def _extract_languages(self, record, title):
-
         def _get_langs(field):
             '''
             _get_langs sub-function is to extract/parse
@@ -282,8 +281,7 @@ class TitleLoader(object):
             text = field['a']
             if text is None:
                 continue
-            pubdate, created = models.PublicationDate.objects.get_or_create(
-                text=text, titles=title)
+            pubdate, created = models.PublicationDate.objects.get_or_create(text=text, titles=title)
         return
 
     def _extract_subjects(self, record, title):
@@ -295,10 +293,7 @@ class TitleLoader(object):
             else:
                 type = 'g'
             # many-to-many relationship between titles and subjects
-            subject, found = models.Subject.objects.get_or_create(
-                heading=heading,
-                type=type
-            )
+            subject, found = models.Subject.objects.get_or_create(heading=heading, type=type)
             subjects.append(subject)
         title.subjects = subjects
         return
@@ -307,9 +302,7 @@ class TitleLoader(object):
         for field in record.fields:
             if field.tag.startswith('5') and field['a']:
                 note, note_created = models.Note.objects.get_or_create(
-                    text=field['a'],
-                    type=field.tag,
-                    title=title
+                    text=field['a'], type=field.tag, title=title
                 )
         return
 
@@ -317,10 +310,7 @@ class TitleLoader(object):
         for f in record.get_fields('780'):
             link_obj = self._unpack_link(models.PreceedingTitleLink, f)
             link, link_created = models.PreceedingTitleLink.objects.get_or_create(
-                name=link_obj.name,
-                lccn=link_obj.lccn,
-                oclc=link_obj.oclc,
-                title=title
+                name=link_obj.name, lccn=link_obj.lccn, oclc=link_obj.oclc, title=title
             )
         return
 
@@ -328,10 +318,7 @@ class TitleLoader(object):
         for f in record.get_fields('785'):
             link_obj = self._unpack_link(models.SucceedingTitleLink, f)
             link, link_created = models.SucceedingTitleLink.objects.get_or_create(
-                name=link_obj.name,
-                lccn=link_obj.lccn,
-                oclc=link_obj.oclc,
-                title=title
+                name=link_obj.name, lccn=link_obj.lccn, oclc=link_obj.oclc, title=title
             )
         return
 
@@ -339,10 +326,7 @@ class TitleLoader(object):
         for f in record.get_fields('775'):
             link_obj = self._unpack_link(models.RelatedTitleLink, f)
             link, link_created = models.RelatedTitleLink.objects.get_or_create(
-                name=link_obj.name,
-                lccn=link_obj.lccn,
-                oclc=link_obj.oclc,
-                title=title
+                name=link_obj.name, lccn=link_obj.lccn, oclc=link_obj.oclc, title=title
             )
         return
 
@@ -365,9 +349,7 @@ class TitleLoader(object):
 
         for alt_title in alt_titles:
             alt_obj, alt_created = models.AltTitle.objects.get_or_create(
-                name=alt_title.name,
-                date=alt_title.date,
-                title=title
+                name=alt_title.name, date=alt_title.date, title=title
             )
         return
 
@@ -426,8 +408,7 @@ class TitleLoader(object):
         for field in record.get_fields('856'):
             i2 = field.indicators[1]
             for url in field.get_subfields('u'):
-                url_obj, url_created = models.Url.objects.get_or_create(
-                    value=url, type=i2, title=title)
+                url_obj, url_created = models.Url.objects.get_or_create(value=url, type=i2, title=title)
         return
 
 
@@ -502,7 +483,7 @@ def nsplit(s, n):
     """returns a string split up into sequences of length n
     http://mail.python.org/pipermail/python-list/2005-August/335131.html
     """
-    return [s[k:k + n] for k in xrange(0, len(s), n)]
+    return [s[k : k + n] for k in xrange(0, len(s), n)]
 
 
 class TitleLoaderException(RuntimeError):
@@ -523,8 +504,10 @@ def load(location, bulk_load=True):
         LOGGER.info("errors: %i" % loader.errors)
         LOGGER.info("missing lccns: %i" % loader.missing_lccns)
 
-    return (loader.records_processed,
-            loader.records_created,
-            loader.records_updated,
-            loader.errors,
-            loader.missing_lccns)
+    return (
+        loader.records_processed,
+        loader.records_created,
+        loader.records_updated,
+        loader.errors,
+        loader.missing_lccns,
+    )
