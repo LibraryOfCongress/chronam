@@ -3,6 +3,7 @@
 (function($) {
     var page_url;
     var tile_url;
+    var iiif_url;
     var coordinates_url;
     var navigation_url;
     var width;
@@ -215,22 +216,40 @@
         var tile_width = Math.min(parseInt(sx), x2 - x1);
         var tile_height = Math.min(parseInt(sy), y2 - y1);
 
-        return (
-            tile_url +
-            "image_" +
-            tile_width +
-            "x" +
-            tile_height +
-            "_from_" +
-            x1 +
-            "," +
-            y1 +
-            "_to_" +
-            x2 +
-            "," +
-            y2 +
-            ".jpg"
-        );
+        if (iiif_url) {
+            return (
+                iiif_url +
+                x1 +
+                "," +
+                y1 +
+                "," +
+                (x2 - x1) +
+                "," +
+                (y2 - y1) +
+                "/" +
+                tile_width +
+                "," +
+                tile_height +
+                "/0/default.jpg"
+            );
+        } else {
+            return (
+                tile_url +
+                "image_" +
+                tile_width +
+                "x" +
+                tile_height +
+                "_from_" +
+                x1 +
+                "," +
+                y1 +
+                "_to_" +
+                x2 +
+                "," +
+                y2 +
+                ".jpg"
+            );
+        }
     }
 
     function updateSearchNav(data) {
@@ -277,6 +296,7 @@
     function initPage() {
         page_url = $("#page_data").data("page_url");
         tile_url = $("#page_data").data("tile_url");
+        iiif_url = $("#page_data").data("iiif-url");
         coordinates_url = $("#page_data").data("coordinates_url");
         navigation_url = $("#page_data").data("navigation_url");
         width = $("#page_data").data("width");

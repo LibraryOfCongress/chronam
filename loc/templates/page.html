@@ -14,6 +14,7 @@
 	 data-height="{{ page.jp2_length }}"
 	 data-page_url="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}"
 	 data-tile_url="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}"
+     data-iiif-url="{{ page.iiif_base_url|default_if_none:"" }}"
 	 data-coordinates_url="{% url 'chronam_page_coordinates' page.issue.title.lccn page.issue.date_issued page.issue.edition page.sequence %}"
 	 data-navigation_url="{% url 'chronam_search_pages_navigation' %}?"
 	 ></div>
