@@ -43,6 +43,7 @@ def search_pages_results(request, view_type='gallery'):
     page_title = "Search Results"
     paginator = search_pages_paginator(request)
     q = paginator.query
+
     try:
         page = paginator.page(paginator._cur_page)
     except InvalidPage:
@@ -51,8 +52,9 @@ def search_pages_results(request, view_type='gallery'):
         q['page'] = 1
         return HttpResponseRedirect('%s?%s' % (url, q.urlencode()))
     except Exception as exc:
-        logging.error('Solr returned an error: %s', exc, exc_info=True,
-                      extra={'data': {'q': q, 'page': paginator._cur_page}})
+        logging.exception(
+            'Unable to paginate search results', extra={'data': {'q': q, 'page': paginator._cur_page}}
+        )
 
         if getattr(exc, 'httpcode', None) == 400:
             return HttpResponseBadRequest()
