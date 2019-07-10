@@ -5,7 +5,7 @@ import re
 
 from django.conf import settings
 from django.core import urlresolvers
-from django.core.paginator import InvalidPage
+from django.core.paginator import EmptyPage, InvalidPage
 from django.db.models import Q
 from django.http import (
     HttpResponse,
@@ -222,9 +222,12 @@ def search_pages_navigation(request):
     search['total'] = paginator.count
     search['current'] = paginator.overall_index + 1  # current is 1-based
     search['results'] = search_url + '?' + paginator.query.urlencode()
-    search['previous_result'] = paginator.previous_result
-    search['next_result'] = paginator.next_result
 
+    try:
+        search['previous_result'] = paginator.previous_result
+        search['next_result'] = paginator.next_result
+    except EmptyPage:
+        pass
 
     return JsonResponse(search)
 
