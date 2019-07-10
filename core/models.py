@@ -124,11 +124,7 @@ class Batch(models.Model):
         return self.url.rstrip('/') + '#batch'
 
     def lccns(self):
-        # TODO: rewrite me
-        l = {}
-        for issue in self.issues.all():
-            l[issue.title_id] = 1
-        return l.keys()
+        return list(self.issues.values_list('title_id', flat=True).order_by('title_id').distinct())
 
     def delete(self, *args, **kwargs):
         # manually delete any OcrDump associated with this batch
@@ -391,9 +387,8 @@ class Title(models.Model):
             # look by OCLC number
             if link.oclc:
                 try:
-                    t = Title.objects.get(oclc="ocm" + link.oclc)
-                    titles.append(t)
-                except:
+                    titles.append(Title.objects.get(oclc="ocm" + link.oclc))
+                except Title.DoesNotExist:
                     pass  # oh well, we tried again
 
         return titles
