@@ -1,17 +1,13 @@
-import datetime
 import logging
-import math
 import re
-from urllib import unquote, urlencode
+from urllib import urlencode
 
 from django.conf import settings
 from django.core.paginator import Page, Paginator
 from django.db import connection, reset_queries
-from django.http import QueryDict
 from solr import SolrConnection
 
 from chronam.core import models
-from chronam.core.forms import _fulltext_range
 from chronam.core.title_loader import _normal_lccn
 
 LOGGER = logging.getLogger(__name__)
