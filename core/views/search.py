@@ -216,7 +216,10 @@ def search_pages_navigation(request):
 
     search_url = urlresolvers.reverse('chronam_search_pages_results')
 
-    paginator = search_pages_paginator(request)
+    try:
+        paginator = search_pages_paginator(request)
+    except (EmptyPage, InvalidPage):
+        return HttpResponseBadRequest()
 
     search = {}
     search['total'] = paginator.count
