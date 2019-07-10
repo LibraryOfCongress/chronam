@@ -7,8 +7,13 @@ from django.conf import settings
 from django.core import urlresolvers
 from django.core.paginator import InvalidPage
 from django.db.models import Q
-from django.http import (HttpResponse, HttpResponseBadRequest,
-                         HttpResponseNotFound, HttpResponseRedirect,)
+from django.http import (
+    HttpResponse,
+    HttpResponseBadRequest,
+    HttpResponseNotFound,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from rfc3339 import rfc3339
@@ -218,7 +223,8 @@ def search_pages_navigation(request):
     search['previous_result'] = paginator.previous_result
     search['next_result'] = paginator.next_result
 
-    return HttpResponse(json.dumps(search), content_type="application/json")
+
+    return JsonResponse(search)
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
