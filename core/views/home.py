@@ -37,9 +37,12 @@ def _frontpages(request, date):
         if not first_page or not first_page.jp2_filename:
             continue
 
-        path_parts = dict(
-            lccn=issue.title.lccn, date=issue.date_issued, edition=issue.edition, sequence=first_page.sequence
-        )
+        path_parts = {
+            'lccn': issue.title.lccn,
+            'date': issue.date_issued,
+            'edition': issue.edition,
+            'sequence': first_page.sequence,
+        }
         url = urlresolvers.reverse('chronam_page', kwargs=path_parts)
 
         issue_info = {
@@ -93,10 +96,10 @@ def get_newspaper_info():
         titles_with_issues_count = titles_with_issues.count()
 
         _places = Place.objects.filter(titles__in=titles_with_issues)
-        states_with_issues = sorted(set(place.state for place in _places if place.state is not None))
+        states_with_issues = sorted({place.state for place in _places if place.state is not None})
 
         _languages = Language.objects.filter(titles__in=titles_with_issues)
-        languages_with_issues = sorted(set((lang.code, lang.name) for lang in _languages))
+        languages_with_issues = sorted({(lang.code, lang.name) for lang in _languages})
 
         ethnicities_with_issues = []
         for e in Ethnicity.objects.all():
