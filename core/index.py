@@ -533,11 +533,13 @@ def index_titles(since=None):
 def index_title(title, solr=None):
     if solr is None:
         solr = SolrConnection(settings.SOLR)
+
     LOGGER.info("indexing title: lccn=%s", title.lccn)
+
     try:
         solr.add(**title.solr_doc)
-    except Exception as e:
-        LOGGER.exception(e)
+    except Exception:
+        LOGGER.exception('Unable to index title %s', title)
 
 
 def delete_title(title):
