@@ -1,27 +1,26 @@
+import hashlib
+import json
+import logging
 import os
 import os.path
 import re
-import json
-import hashlib
-import logging
 import shutil
 import tarfile
-import time
 import textwrap
+import time
 import urlparse
 from cStringIO import StringIO
-
-from rfc3339 import rfc3339
-from lxml import etree
 from urllib import url2pathname
 
-from django.db import models
-from django.db.models import permalink, Q
 from django.conf import settings
 from django.core import urlresolvers
+from django.db import models
+from django.db.models import Q, permalink
+from lxml import etree
+from rfc3339 import rfc3339
 
-from chronam.core.utils import strftime
 from chronam.core.ocr_extractor import ocr_extractor
+from chronam.core.utils import strftime
 
 
 class Awardee(models.Model):
@@ -52,10 +51,7 @@ class Awardee(models.Model):
         return self.url.rstrip('/') + '#awardee'
 
     def json(self, host="chroniclingamerica.loc.gov", serialize=True):
-        j = {
-            "name": self.name,
-            "url": 'http://' + host + self.json_url
-        }
+        j = {"name": self.name, "url": 'http://' + host + self.json_url}
         if serialize:
             return json.dumps(j, indent=2)
         return j
@@ -147,10 +143,7 @@ class Batch(models.Model):
         b['ingested'] = rfc3339(self.created)
         b['page_count'] = self.page_count
         b['lccns'] = self.lccns()
-        b['awardee'] = {
-            "name": self.awardee.name,
-            "url": "http://" + host + self.awardee.json_url
-        }
+        b['awardee'] = {"name": self.awardee.name, "url": "http://" + host + self.awardee.json_url}
         b['url'] = "http://" + host + self.json_url
         if include_issues:
             b['issues'] = []
@@ -161,7 +154,7 @@ class Batch(models.Model):
                         "url": "http://" + host + issue.title.json_url,
                     },
                     "date_issued": strftime(issue.date_issued, "%Y-%m-%d"),
-                    "url": "http://" + host + issue.json_url
+                    "url": "http://" + host + issue.json_url,
                 }
                 b['issues'].append(i)
         if serialize:
@@ -171,6 +164,7 @@ class Batch(models.Model):
 
     def __unicode__(self):
         return self.full_name
+
 
 # TODO rename because it is used for more than just loading batches event notification
 
@@ -323,10 +317,10 @@ class Title(models.Model):
             "end_year": self.end_year,
             "subject": [s.heading for s in self.subjects.all()],
             "place": [p.name for p in self.places.all()],
-            "issues": [{
-                "url": "http://" + host + i.json_url,
-                "date_issued": strftime(i.date_issued, "%Y-%m-%d")
-            } for i in self.issues.all()]
+            "issues": [
+                {"url": "http://" + host + i.json_url, "date_issued": strftime(i.date_issued, "%Y-%m-%d")}
+                for i in self.issues.all()
+            ],
         }
 
         if serialize:
@@ -403,8 +397,12 @@ class Title(models.Model):
 
     def __unicode__(self):
         # TODO: should edition info go in here if present?
-        return u'%s (%s) %s-%s' % (self.display_name, self.place_of_publication,
-                                   self.start_year, self.end_year)
+        return u'%s (%s) %s-%s' % (
+            self.display_name,
+            self.place_of_publication,
+            self.start_year,
+            self.end_year,
+        )
 
     class Meta:
         ordering = ['name_normal']
@@ -497,19 +495,29 @@ class Issue(models.Model):
     @permalink
     def url(self):
         date = self.date_issued
-        return ('chronam_issue_pages', (),
-                {'lccn': self.title.lccn,
-                 'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
-                 'edition': self.edition})
+        return (
+            'chronam_issue_pages',
+            (),
+            {
+                'lccn': self.title.lccn,
+                'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
+                'edition': self.edition,
+            },
+        )
 
     @property
     @permalink
     def json_url(self):
         date = self.date_issued
-        return ('chronam_issue_pages_dot_json', (),
-                {'lccn': self.title.lccn,
-                 'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
-                 'edition': self.edition})
+        return (
+            'chronam_issue_pages_dot_json',
+            (),
+            {
+                'lccn': self.title.lccn,
+                'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
+                'edition': self.edition,
+            },
+        )
 
     @property
     def abstract_url(self):
@@ -545,7 +553,11 @@ class Issue(models.Model):
     def previous(self):
         """return the previous issue to this one (skipping over 'duplicates')"""
         previous_issue = self._previous
-        while previous_issue is not None and previous_issue.date_issued == self.date_issued and previous_issue.edition == self.edition:
+        while (
+            previous_issue is not None
+            and previous_issue.date_issued == self.date_issued
+            and previous_issue.edition == self.edition
+        ):
             previous_issue = previous_issue._previous
         return previous_issue
 
@@ -553,7 +565,11 @@ class Issue(models.Model):
     def next(self):
         """return the next issue to this one (skipping over 'duplicates')"""
         next_issue = self._next
-        while next_issue is not None and next_issue.date_issued == self.date_issued and next_issue.edition == self.edition:
+        while (
+            next_issue is not None
+            and next_issue.date_issued == self.date_issued
+            and next_issue.edition == self.edition
+        ):
             next_issue = next_issue._next
         return next_issue
 
@@ -585,10 +601,9 @@ class Issue(models.Model):
             'batch': {"name": self.batch.name, "url": 'http://' + host + self.batch.json_url},
         }
 
-        j['pages'] = [{
-            "url": "http://" + host + p.json_url,
-            "sequence": p.sequence
-        } for p in self.pages.all()]
+        j['pages'] = [
+            {"url": "http://" + host + p.json_url, "sequence": p.sequence} for p in self.pages.all()
+        ]
 
         if serialize:
             return json.dumps(j, indent=2)
@@ -622,14 +637,16 @@ class Page(models.Model):
             "sequence": self.sequence,
             "issue": {
                 "date_issued": strftime(self.issue.date_issued, "%Y-%m-%d"),
-                "url": "http://" + host + self.issue.json_url},
+                "url": "http://" + host + self.issue.json_url,
+            },
             "jp2": "http://" + host + self.jp2_url,
             "ocr": "http://" + host + self.ocr_url,
             "text": "http://" + host + self.txt_url,
             "pdf": "http://" + host + self.pdf_url,
             "title": {
                 "name": self.issue.title.display_name,
-                "url": "http://" + host + self.issue.title.json_url}
+                "url": "http://" + host + self.issue.title.json_url,
+            },
         }
         if serialize:
             return json.dumps(j, indent=2)
@@ -666,10 +683,12 @@ class Page(models.Model):
 
     def _url_parts(self):
         date = self.issue.date_issued
-        return {'lccn': self.issue.title.lccn,
-                'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
-                'edition': self.issue.edition,
-                'sequence': self.sequence}
+        return {
+            'lccn': self.issue.title.lccn,
+            'date': "%04i-%02i-%02i" % (date.year, date.month, date.day),
+            'edition': self.issue.edition,
+            'sequence': self.sequence,
+        }
 
     @property
     @permalink
@@ -726,16 +745,18 @@ class Page(models.Model):
         del doc['essay']
         del doc['url']
         del doc['holding_type']
-        doc.update({
-            'id': self.url,
-            'type': 'page',
-            'batch': self.issue.batch.name,
-            'date': date,
-            'page': self.number,
-            'sequence': self.sequence,
-            'section_label': self.section_label,
-            'edition_label': self.issue.edition_label,
-        })
+        doc.update(
+            {
+                'id': self.url,
+                'type': 'page',
+                'batch': self.issue.batch.name,
+                'date': date,
+                'page': self.number,
+                'sequence': self.sequence,
+                'section_label': self.section_label,
+                'edition_label': self.issue.edition_label,
+            }
+        )
 
         # This is needed when building the solr index.
         # TODO this is also used when visiting a page like http://127.0.0.1:8000/search/pages/results/?state=&date1=1789&date2=1963&proxtext=&x=0&y=0&dateFilterType=yearRange&rows=20&searchType=basic&format=json
@@ -795,10 +816,9 @@ class Page(models.Model):
 
         # unfortunately there can be more than one
         # default to the latest one
-        q = Page.objects.filter(issue__title__lccn=lccn,
-                                issue__date_issued=date,
-                                issue__edition=edition,
-                                sequence=sequence)
+        q = Page.objects.filter(
+            issue__title__lccn=lccn, issue__date_issued=date, issue__edition=edition, sequence=sequence
+        )
         pages = q.order_by('-issue__date_issued').all()
         if len(pages) == 0:
             return None
@@ -1067,6 +1087,7 @@ class Country(models.Model):
     is about the United States and the MARC country codes contains
     distinct codes for each US state. Go figure.
     """
+
     code = models.CharField(null=False, max_length=3, primary_key=True)
     name = models.CharField(null=False, max_length=100)
     region = models.CharField(null=False, max_length=100)
@@ -1163,7 +1184,9 @@ class OcrDump(models.Model):
         event.save()
 
         # add each page to a tar ball
-        tempFile = os.path.join(settings.TEMP_STORAGE, dump.name)  # write to a temp dir first in case the ocr dump folder is a NFS or S3 mount
+        tempFile = os.path.join(
+            settings.TEMP_STORAGE, dump.name
+        )  # write to a temp dir first in case the ocr dump folder is a NFS or S3 mount
         logging.info('Creating OCR dump for %s in %s before moving it to %s', batch.name, tempFile, dump.path)
 
         tar = tarfile.open(tempFile, "w:bz2")
@@ -1175,7 +1198,9 @@ class OcrDump(models.Model):
         try:
             shutil.move(tempFile, dump.path)
         except Exception:
-            logging.warning("Couldn't move %s to %s. Waiting 5 seconds and trying again.", tempFile, dump.path)
+            logging.warning(
+                "Couldn't move %s to %s. Waiting 5 seconds and trying again.", tempFile, dump.path
+            )
             time.sleep(5)
             shutil.move(tempFile, dump.path)
 
@@ -1218,7 +1243,7 @@ class OcrDump(models.Model):
             "created": rfc3339(self.created),
             "size": self.size,
             "sha1": self.sha1,
-            "url": "http://" + host + self.url
+            "url": "http://" + host + self.url,
         }
 
         if serialize:
@@ -1233,7 +1258,14 @@ class OcrDump(models.Model):
         from .index import get_page_text
 
         d = page.issue.date_issued
-        relative_dir = "%s/%i/%02i/%02i/ed-%i/seq-%i/" % (page.issue.title_id, d.year, d.month, d.day, page.issue.edition, page.sequence)
+        relative_dir = "%s/%i/%02i/%02i/ed-%i/seq-%i/" % (
+            page.issue.title_id,
+            d.year,
+            d.month,
+            d.day,
+            page.issue.edition,
+            page.sequence,
+        )
 
         # add ocr text
         txt_filename = relative_dir + "ocr.txt"
