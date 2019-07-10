@@ -1,13 +1,10 @@
 import datetime
-import os
-from urllib import quote
 
 from django.conf import settings
 from django.core import urlresolvers
 from django.core.cache import cache
 from django.http import Http404, JsonResponse
 from django.template.response import TemplateResponse
-from piffle.iiif import IIIFImageClient
 
 from chronam.core import forms
 from chronam.core.decorator import add_cache_headers
@@ -49,21 +46,15 @@ def _frontpages(request, date):
             'url': url,
             'place_of_publication': issue.title.place_of_publication,
             'pages': issue.pages.count(),
+            'thumbnail_url': first_page.thumb_url,
+            'medium_url': first_page.medium_url,
         }
 
-        if settings.IIIF_IMAGE_BASE_URL:
-            thumb = IIIFImageClient(
-                settings.IIIF_IMAGE_BASE_URL,
-                quote(os.path.relpath(first_page.jp2_abs_filename, start=settings.BATCH_STORAGE), safe=""),
-            )
-            issue_info['iiif_thumbnail_base_url'] = '%s/%s/' % (thumb.api_endpoint, thumb.get_image_id())
-            issue_info['thumbnail_url'] = str(thumb.size(width=settings.THUMBNAIL_WIDTH))
-            issue_info['medium_url'] = str(thumb.size(width=settings.THUMBNAIL_MEDIUM_WIDTH))
-        else:
-            issue_info['thumbnail_url'] = first_page.thumb_url
-            issue_info['medium_url'] = first_page.medium_url
+        if first_page.iiif_client:
+            issue_info['iiif_thumbnail_base_url'] = first_page.iiif_base_url
 
         results.append(issue_info)
+
     return results
 
 

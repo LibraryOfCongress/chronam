@@ -10,13 +10,16 @@ import textwrap
 import time
 import urlparse
 from cStringIO import StringIO
-from urllib import url2pathname
+from urllib import quote, url2pathname
 
 from django.conf import settings
 from django.core import urlresolvers
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q, permalink
+from django.utils.functional import cached_property
 from lxml import etree
+from piffle.iiif import IIIFImageClient
 from rfc3339 import rfc3339
 
 from chronam.core.ocr_extractor import ocr_extractor
@@ -690,6 +693,23 @@ class Page(models.Model):
             'sequence': self.sequence,
         }
 
+    @cached_property
+    def iiif_client(self):
+        if not settings.IIIF_IMAGE_BASE_URL:
+            return None
+        else:
+            return IIIFImageClient(
+                settings.IIIF_IMAGE_BASE_URL,
+                quote(os.path.join(self.issue.batch.name, 'data', self.jp2_filename), safe=""),
+            )
+
+    @property
+    def iiif_base_url(self):
+        if self.iiif_client:
+            return '%s/%s/' % (self.iiif_client.api_endpoint, self.iiif_client.get_image_id())
+        else:
+            return None
+
     @property
     @permalink
     def url(self):
@@ -704,15 +724,19 @@ class Page(models.Model):
     def abstract_url(self):
         return self.url.rstrip('/') + '#page'
 
-    @property
-    @permalink
+    @cached_property
     def thumb_url(self):
-        return ('chronam_page_thumbnail', (), self._url_parts())
+        if self.iiif_client:
+            return str(self.iiif_client.size(width=settings.THUMBNAIL_WIDTH))
+        else:
+            return reverse('chronam_page_thumbnail', kwargs=self._url_parts())
 
     @property
-    @permalink
     def medium_url(self):
-        return ('chronam_page_medium', (), self._url_parts())
+        if self.iiif_client:
+            return str(self.iiif_client.size(width=settings.THUMBNAIL_MEDIUM_WIDTH))
+        else:
+            return reverse('chronam_page_medium', kwargs=self._url_parts())
 
     @property
     @permalink
