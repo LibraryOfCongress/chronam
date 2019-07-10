@@ -1,12 +1,11 @@
 import datetime
-import json
 import os
 from urllib import quote
 
 from django.conf import settings
 from django.core import urlresolvers
 from django.core.cache import cache
-from django.http import Http404, HttpResponse
+from django.http import Http404, JsonResponse
 from django.template.response import TemplateResponse
 from piffle.iiif import IIIFImageClient
 
@@ -70,12 +69,15 @@ def _frontpages(request, date):
 
 def frontpages(request, date):
     _year, _month, _day = date.split("-")
+
     try:
         date = datetime.date(int(_year), int(_month), int(_day))
     except ValueError:
         raise Http404
+
     results = _frontpages(request, date)
-    return HttpResponse(json.dumps(results), content_type="application/json")
+
+    return JsonResponse(results, safe=False)
 
 
 @add_cache_headers(settings.METADATA_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
