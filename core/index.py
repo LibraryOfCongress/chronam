@@ -677,7 +677,7 @@ def _solrize_date(d, is_start=True):
                 d = '31'
         else:
             # 1900 -> 19000101 | 19001231
-            match = re.match('(\d{4})', d)
+            match = re.match(r'(\d{4})', d)
             if match:
                 y = match.group(1)
                 if is_start:
