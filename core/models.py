@@ -517,17 +517,11 @@ class Issue(models.Model):
 
     @property
     def first_page(self):
-        try:
-            return self.pages.all()[0]
-        except Exception:
-            return None
+        return self.pages.first()
 
     @property
     def first_page_with_image(self):
-        for page in self.pages.all():
-            if page.jp2_filename:
-                return page
-        return None
+        return self.pages.exclude(jp2_filename=None).first()
 
     @property
     def _previous(self):
