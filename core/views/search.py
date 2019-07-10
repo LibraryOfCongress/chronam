@@ -82,15 +82,17 @@ def search_pages_results(request, view_type='gallery'):
     crumbs = list(settings.BASE_CRUMBS)
 
     host = request.get_host()
-    format = request.GET.get('format')
-    if format == 'atom':
+    response_format = request.GET.get('format')
+    if response_format == 'atom':
         feed_url = 'http://' + host + request.get_full_path()
         updated = rfc3339(datetime.datetime.now())
-        return render_to_response('search_pages_results.xml',
-                                  dictionary=locals(),
-                                  context_instance=RequestContext(request),
-                                  content_type='application/atom+xml')
-    elif format == 'json':
+        return render_to_response(
+            'search_pages_results.xml',
+            dictionary=locals(),
+            context_instance=RequestContext(request),
+            content_type='application/atom+xml',
+        )
+    elif response_format == 'json':
         results = {
             'startIndex': start,
             'endIndex': end,
