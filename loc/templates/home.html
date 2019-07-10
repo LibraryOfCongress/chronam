@@ -44,7 +44,7 @@ function setupCarousel() {
             var thumbnail_url = img.thumbnail_url;
 
             if (img.iiif_thumbnail_base_url) {
-                thumbnail_url = img.iiif_thumbnail_base_url + '/full/!200,286/0/default.jpg';
+                thumbnail_url = img.iiif_thumbnail_base_url + 'full/!200,286/0/default.jpg';
             }
 
           carousel.append($('<li><a href="' + img.url + '"><img class="thumbnail" src="' + thumbnail_url + '" width="200" height="286" alt="" /></a><br /><span><a href="' + img.url + '"><strong>' + img.label + '</strong> (' + img.pages + 'pp.)</a><br />' + img.place_of_publication + '</span></li>'));
