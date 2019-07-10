@@ -31,10 +31,10 @@
 
     <div class="thumbnail">
         <br />
-    <a href="{{url}}">
-        <img src="{% url 'chronam_page_thumbnail' title.lccn issue.date_issued issue.edition page.sequence %}" alt="Thumbnail for {{page.number}}">
-    </a>
-    <br />
+        <a href="{{url}}">
+            <img src="{{ page.thumb_url }}" alt="Thumbnail for {{page.number}}">
+        </a>
+        <br />
     </div>
 
     <div>
