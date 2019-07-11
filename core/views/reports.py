@@ -414,7 +414,7 @@ def awardees_json(request):
         a = {'url': request.build_absolute_uri(awardee.json_url), 'name': awardee.name}
         awardees['awardees'].append(a)
 
-    return HttpResponse(json.dumps(awardees, indent=2), content_type='application/json')
+    return HttpResponse(json.dumps(awardees), content_type='application/json')
 
 
 @add_cache_headers(settings.METADATA_TTL_SECONDS)

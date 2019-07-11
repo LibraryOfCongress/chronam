@@ -102,7 +102,7 @@ def search_pages_results(request, view_type='gallery'):
         }
         for i in results['items']:
             i['url'] = 'http://' + request.get_host() + i['id'].rstrip('/') + '.json'
-        json_text = json.dumps(results, indent=2)
+        json_text = json.dumps(results)
         # jsonp?
         callback = request.GET.get('callback')
         if callback and is_valid_jsonp_callback(callback):
@@ -196,7 +196,7 @@ def suggest_titles(request):
         urls.append("http://" + host + t.url)
 
     suggestions = [q, titles, descriptions, urls]
-    json_text = json.dumps(suggestions, indent=2)
+    json_text = json.dumps(suggestions)
     callback = request.GET.get("callback")
     if callback and is_valid_jsonp_callback(callback):
         json_text = "%s(%s);" % (callback, json_text)

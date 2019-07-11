@@ -56,7 +56,7 @@ class Awardee(models.Model):
     def json(self, request, serialize=True):
         j = {"name": self.name, "url": request.build_absolute_uri(self.json_url)}
         if serialize:
-            return json.dumps(j, indent=2)
+            return json.dumps(j)
         return j
 
     def __unicode__(self):
@@ -326,7 +326,7 @@ class Title(models.Model):
         }
 
         if serialize:
-            return json.dumps(j, indent=2)
+            return json.dumps(j)
         return j
 
     def has_non_english_language(self):
@@ -610,7 +610,7 @@ class Issue(models.Model):
         ]
 
         if serialize:
-            return json.dumps(j, indent=2)
+            return json.dumps(j)
         return j
 
     class Meta:
@@ -653,7 +653,7 @@ class Page(models.Model):
             },
         }
         if serialize:
-            return json.dumps(j, indent=2)
+            return json.dumps(j)
         return j
 
     @property
@@ -1272,7 +1272,7 @@ class OcrDump(models.Model):
         }
 
         if serialize:
-            return json.dumps(j, indent=2)
+            return json.dumps(j)
         else:
             return j
 

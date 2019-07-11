@@ -84,7 +84,7 @@ class Command(LoggingCommand):
                 }
             )
             reset_queries()
-        json.dump(json_src, open('core/fixtures/place_links.json', 'w'), indent=2)
+        json.dump(json_src, open('core/fixtures/place_links.json', 'w'))
         LOGGER.info("finished dumping place_links.json fixture")
 
 

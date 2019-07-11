@@ -12,12 +12,10 @@ from django.utils.encoding import smart_str
 from rfc3339 import rfc3339
 
 from chronam.core import index, models
-from chronam.core.decorator import (add_cache_headers, cors, opensearch_clean,
-                                    rdf_view,)
+from chronam.core.decorator import add_cache_headers, cors, opensearch_clean, rdf_view
 from chronam.core.rdf import titles_to_graph
 from chronam.core.utils.url import unpack_url_path
-from chronam.core.utils.utils import (_page_range_short, _rdf_base,
-                                      is_valid_jsonp_callback)
+from chronam.core.utils.utils import _page_range_short, _rdf_base, is_valid_jsonp_callback
 
 
 @add_cache_headers(settings.METADATA_TTL_SECONDS)
@@ -123,7 +121,7 @@ def newspapers(request, state=None, format='html'):
                     "state": state
                 })
 
-        return HttpResponse(json.dumps(results, indent=2), content_type='application/json')
+        return HttpResponse(json.dumps(results), content_type='application/json')
     else:
         return HttpResponseServerError("unsupported format: %s" % format)
 
@@ -234,7 +232,7 @@ def search_titles_results(request):
         # add url for the json view
         for i in results['items']:
             i['url'] = 'http://' + request.get_host() + i['id'].rstrip("/") + ".json"
-        json_text = json.dumps(results, indent=2)
+        json_text = json.dumps(results)
         # jsonp?
         callback = request.GET.get('callback')
         if callback and is_valid_jsonp_callback(callback):
