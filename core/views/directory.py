@@ -66,7 +66,7 @@ def newspapers(request, state=None, format='html'):
             pass
 
     _newspapers_by_state = {}
-    for title in titles:
+    for title in titles.prefetch_related('places'):
         if state:
             _newspapers_by_state.setdefault(state, set()).add(title)
         else:
