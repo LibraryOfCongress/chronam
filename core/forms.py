@@ -6,7 +6,7 @@ from django.core.cache import cache
 from django.db.models import Max, Min
 from django.forms import fields
 
-from chronam.core import models
+from chronam.core.models import Ethnicity, Issue, LaborPress, Language, MaterialType, Title
 
 MIN_YEAR = 1860
 MAX_YEAR = 1922
@@ -43,7 +43,7 @@ def _titles_states():
         states = [("", "All states")]
         # create a temp Set _states to hold states before compiling full list
         _states = set()
-        for title in models.Title.objects.filter(has_issues=True).select_related():
+        for title in Title.objects.filter(has_issues=True).prefetch_related('places'):
             short_name = title.name.split(":")[0]  # remove subtitle
             title_name = "%s (%s)" % (short_name, title.place_of_publication)
             titles.append((title.lccn, title_name))
@@ -63,9 +63,7 @@ def _fulltext_range():
     fulltext_range = cache.get('fulltext_range')
     if not fulltext_range:
         # get the maximum and minimum years that we have content for
-        issue_dates = models.Issue.objects.all().aggregate(
-            min_date=Min('date_issued'), max_date=Max('date_issued')
-        )
+        issue_dates = Issue.objects.all().aggregate(min_date=Min('date_issued'), max_date=Max('date_issued'))
 
         # when there is no content these may not be set
         if issue_dates['min_date']:
@@ -144,7 +142,9 @@ class AdvSearchPagesForm(SearchPagesForm):
         self.fields["sequence"].widget.attrs = {"id": "id_char_sequence", "size": "3"}
         self.fields["proxtext"].widget.attrs["id"] = "id_proxtext_adv"
         lang_choices = [("", "All")]
-        lang_choices.extend((l, models.Language.objects.get(code=l).name) for l in settings.SOLR_LANGUAGES)
+        lang_choices.extend(
+            Language.objects.filter(code__in=settings.SOLR_LANGUAGES).values_list('code', 'name')
+        )
         self.fields["language"].choices = lang_choices
 
 
@@ -177,17 +177,17 @@ class SearchTitlesForm(forms.Form):
         self.fields["year2"].widget.attrs["class"] = "norm"
 
         language = [("", "Select")]
-        language.extend((l.name, l.name) for l in models.Language.objects.all())
+        language.extend((l.name, l.name) for l in Language.objects.all())
         self.fields["language"].choices = language
 
         ethnicity = [("", "Select")]
-        ethnicity.extend((e.name, e.name) for e in models.Ethnicity.objects.all())
+        ethnicity.extend((e.name, e.name) for e in Ethnicity.objects.all())
         self.fields["ethnicity"].choices = ethnicity
 
         labor = [("", "Select")]
-        labor.extend((l.name, l.name) for l in models.LaborPress.objects.all())
+        labor.extend((l.name, l.name) for l in LaborPress.objects.all())
         self.fields["labor"].choices = labor
 
         material = [("", "Select")]
-        material.extend((m.name, m.name) for m in models.MaterialType.objects.all())
+        material.extend((m.name, m.name) for m in MaterialType.objects.all())
         self.fields["material_type"].choices = material
