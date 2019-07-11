@@ -35,9 +35,9 @@ subsitemap_index_cached = add_cache_headers(
 )(subsitemap_index)
 
 urlpatterns = [
-    url(r'^sitemap\.xml$', sitemap_index_cached, {'sitemaps': sitemaps}),
-    url(r'^sitemap-(?P<section>.+)\.xml$', subsitemap_index_cached, {'sitemaps': sitemaps}, name='sitemaps'),
     url(r'^healthz$', views.static.healthz, name='health-check'),
+    url(r'^sitemap\.xml$', sitemap_index_cached, {'sitemaps': sitemaps, 'sitemap_url_name': 'sitemaps'}),
+    url(r'^sitemap-(?P<section>.+)\.xml$', subsitemap_index_cached, {'sitemaps': sitemaps}, name='sitemaps'),
     url(r'^$', add_cache_headers(settings.DEFAULT_TTL_SECONDS)(views.home.home), name="chronam_home"),
     url(
         r'^(?P<date>\d{4}-\d{2}-\d{2})/$',
