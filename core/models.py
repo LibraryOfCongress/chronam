@@ -489,6 +489,10 @@ class Issue(models.Model):
     batch = models.ForeignKey('Batch', related_name='issues')
     created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ('date_issued',)
+        index_together = (('title', 'date_issued'),)
+
     def __unicode__(self):
         return "%s [%s]" % (self.title.display_name, self.date_issued)
 
@@ -612,9 +616,6 @@ class Issue(models.Model):
         if serialize:
             return json.dumps(j)
         return j
-
-    class Meta:
-        ordering = ('date_issued',)
 
 
 class Page(models.Model):
