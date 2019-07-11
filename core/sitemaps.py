@@ -31,10 +31,12 @@ class IssuesSitemap(sitemaps.Sitemap):
 
 class PagesSitemap(sitemaps.Sitemap):
     changefreq = 'daily'
-    limit = 5000  # default is 50,000 which takes forever to load
+    # Reduce the number of pages from the default 50,0000 to reduce the size of
+    # some of the database queries:
+    limit = 10000
 
     def items(self):
-        return Page.objects.all()
+        return Page.objects.order_by('pk').prefetch_related('issue', 'issue__title')
 
     def lastmod(self, page):
         return page.created
