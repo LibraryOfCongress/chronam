@@ -314,8 +314,8 @@ class Title(models.Model):
             "publisher": self.publisher,
             "start_year": self.start_year,
             "end_year": self.end_year,
-            "subject": [s.heading for s in self.subjects.all()],
-            "place": [p.name for p in self.places.all()],
+            "subject": list(self.subjects.values_list('heading', flat=True)),
+            "place": list(self.places.values_list('name', flat=True)),
             "issues": [
                 {
                     "url": request.build_absolute_uri(i.json_url),
