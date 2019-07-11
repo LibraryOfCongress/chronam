@@ -3,12 +3,13 @@ import datetime
 from django.conf import settings
 from django.core import urlresolvers
 from django.core.cache import cache
+from django.db.models import Count
 from django.http import Http404, JsonResponse
 from django.template.response import TemplateResponse
 
 from chronam.core import forms
 from chronam.core.decorator import add_cache_headers
-from chronam.core.models import Ethnicity, Issue, Language, Place, Title
+from chronam.core.models import Ethnicity, Issue, Language, Page, Place, Title
 
 
 def home(request, date=None):
@@ -23,35 +24,60 @@ def _frontpages(request, date):
     # if there aren't any issues default to the first 20 which
     # is useful for testing the homepage when there are no issues
     # for a given date
-    issues = Issue.objects.filter(date_issued=date).prefetch_related('title')
+    issues = Issue.objects.filter(date_issued=date).prefetch_related("title", "batch")
     if issues.count() == 0:
         issues = Issue.objects.all()[0:20]
 
+    # Prefetch the page count to avoid O(n) queries during serialization:
+    issues = issues.annotate(page_count=Count("pages"))
+
+    # To avoid URL generation triggering O(n) queries looking up the first page
+    # and it's issue/batch info, we'll do one subselect to collect lal of the
+    # results in the first pass:
+    issues = issues.extra(
+        select={
+            "first_page_pk": """
+                SELECT id FROM core_page
+                    WHERE issue_id = core_issue.id AND jp2_filename IS NOT NULL
+                    ORDER BY sequence ASC
+                LIMIT 1
+            """
+        }
+    )
+
+    first_pages = {
+        page.issue_id: page for page in Page.objects.filter(pk__in=[issue.first_page_pk for issue in issues])
+    }
+
     results = []
     for issue in issues:
-        first_page = issue.first_page
-        if not first_page or not first_page.jp2_filename:
+        first_page = first_pages.get(issue.pk)
+        if not first_page:
             continue
 
+        # Rather than lookup the issue on-access we'll replace it with the same
+        # data we already have:
+        first_page.issue = issue
+
         path_parts = {
-            'lccn': issue.title.lccn,
-            'date': issue.date_issued,
-            'edition': issue.edition,
-            'sequence': first_page.sequence,
+            "lccn": issue.title.lccn,
+            "date": issue.date_issued,
+            "edition": issue.edition,
+            "sequence": first_page.sequence,
         }
-        url = urlresolvers.reverse('chronam_page', kwargs=path_parts)
+        url = urlresolvers.reverse("chronam_page", kwargs=path_parts)
 
         issue_info = {
-            'label': "%s" % issue.title.display_name,
-            'url': url,
-            'place_of_publication': issue.title.place_of_publication,
-            'pages': issue.pages.count(),
-            'thumbnail_url': first_page.thumb_url,
-            'medium_url': first_page.medium_url,
+            "label": "%s" % issue.title.display_name,
+            "url": url,
+            "place_of_publication": issue.title.place_of_publication,
+            "pages": issue.page_count,
+            "thumbnail_url": first_page.thumb_url,
+            "medium_url": first_page.medium_url,
         }
 
         if first_page.iiif_client:
-            issue_info['iiif_thumbnail_base_url'] = first_page.iiif_base_url
+            issue_info["iiif_thumbnail_base_url"] = first_page.iiif_base_url
 
         results.append(issue_info)
 
@@ -77,7 +103,7 @@ def tabs(request, date=None):
     form = forms.SearchPagesForm(params)
     adv_form = forms.AdvSearchPagesForm(params)
 
-    context = {'search_form': form, 'adv_search_form': adv_form}
+    context = {"search_form": form, "adv_search_form": adv_form}
     context.update(get_newspaper_info())
     return TemplateResponse(request, "includes/tabs.html", context)
 
