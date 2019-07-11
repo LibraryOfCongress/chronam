@@ -36,8 +36,8 @@
         }
     }
 
-    function fullscreen(viewer) {
-        if (viewer.isFullPage()) {
+    function fullscreen(event) {
+        if (event.eventSource.isFullPage()) {
             $.bbq.pushState({ fullscreen: true });
             rewritePagingLinks();
         } else {
@@ -69,7 +69,8 @@
         }
     }
 
-    function resizePrint(viewer) {
+    function resizePrint(event) {
+        var viewer = event.eventSource;
         var image = viewer.source;
         var zoom = viewer.viewport.getZoom();
         var size = new OpenSeadragon.Rect(
@@ -176,7 +177,8 @@
         viewer.drawer.addOverlay(div, rect);
     }
 
-    function addOverlays(viewer) {
+    function addOverlays(event) {
+        var viewer = event.eventSource;
         var params = $.deparam.fragment();
         var words = params["words"] || "";
 
@@ -325,27 +327,32 @@
         height = $("#page_data").data("height");
         static_url = $("#page_data").data("static_url");
 
-        var viewer = null;
         addSearchNav();
 
-        var tileSize = 512;
-        var tileOverlap = 1;
-        var minLevel = 8;
-        var maxLevel = Math.ceil(
-            Math.log(Math.max(width, height)) / Math.log(2)
-        );
+        var ts;
 
-        var ts = new OpenSeadragon.TileSource(
-            width,
-            height,
-            tileSize,
-            tileOverlap,
-            minLevel,
-            maxLevel
-        );
-        ts.getTileUrl = getTileUrl;
+        if (iiif_url) {
+            ts = [iiif_url];
+        } else {
+            var tileSize = 512;
+            var tileOverlap = 1;
+            var minLevel = 8;
+            var maxLevel = Math.ceil(
+                Math.log(Math.max(width, height)) / Math.log(2)
+            );
 
-        viewer = new OpenSeadragon.Viewer({
+            ts = new OpenSeadragon.TileSource(
+                width,
+                height,
+                tileSize,
+                tileOverlap,
+                minLevel,
+                maxLevel
+            );
+            ts.getTileUrl = getTileUrl;
+        }
+
+        var viewer = new OpenSeadragon.Viewer({
             id: "viewer_container",
             toolbar: "item-ctrl",
             prefixUrl: static_url,
@@ -358,7 +365,7 @@
 
         viewer.addHandler("open", addOverlays);
         viewer.addHandler("open", resizePrint);
-        viewer.addHandler("animationfinish", resizePrint);
+        viewer.addHandler("animation-finish", resizePrint);
         viewer.addHandler("resize", fullscreen);
 
         if ($.bbq.getState("fullscreen")) {

@@ -4,21 +4,21 @@
 {% block javascript %}
     {{ block.super }}
 
-    <script type="text/javascript" src="{% static 'js/openseadragon.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.1/openseadragon.min.js" integrity="sha256-qIiBj8XqCj196KLyEX8fBJ0HiHUZmXYmYFciVQZ7nls=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script>
     <script src="{% static 'js/search.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/page.js' %}"></script>
 
     <div id="page_data"
-	 data-static_url="{% static '' %}images/"
-	 data-width="{{ page.jp2_width }}"
-	 data-height="{{ page.jp2_length }}"
-	 data-page_url="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}"
-	 data-tile_url="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}"
-     data-iiif-url="{{ page.iiif_base_url|default_if_none:"" }}"
-	 data-coordinates_url="{% url 'chronam_page_coordinates' page.issue.title.lccn page.issue.date_issued page.issue.edition page.sequence %}"
-	 data-navigation_url="{% url 'chronam_search_pages_navigation' %}?"
-	 ></div>
+	    data-static_url="{% static '' %}images/"
+	    data-width="{{ page.jp2_width }}"
+	    data-height="{{ page.jp2_length }}"
+	    data-page_url="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}"
+	    data-tile_url="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}"
+        data-iiif-url="{% if page.iiif_client %}{{ page.iiif_client.info }}{% endif %}"
+	    data-coordinates_url="{% url 'chronam_page_coordinates' page.issue.title.lccn page.issue.date_issued page.issue.edition page.sequence %}"
+	    data-navigation_url="{% url 'chronam_search_pages_navigation' %}?"
+	></div>
 
     <noscript><!-- without javascript the pageviewer does not work; display OCR in this case instead. -->
         <h3>Newspaper Page Text</h3>
