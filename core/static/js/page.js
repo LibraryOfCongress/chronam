@@ -9,6 +9,32 @@
     var width;
     var height;
     var static_url;
+    var printButtonConfigured = false;
+
+    function checkPrintButtonHander() {
+        // We're effectively racing the LOCShare code which is loaded asynchronously
+        // using a convoluted system which does not fire an event when it's completed
+        // and waits until after all page resources have been loaded before triggering. We'll
+
+        if (!printButtonConfigured) {
+            var $pb = $(".locshare-print-button a");
+
+            if ($pb.length > 0) {
+                $(".locshare-print-button a").attr(
+                    "href",
+                    $("#clip").attr("href")
+                );
+
+                $pb.off("click").on("click", function(event) {
+                    event.stopImmediatePropagation();
+                    window.open(this.href, "print");
+                    return false;
+                });
+
+                printButtonConfigured = true;
+            }
+        }
+    }
 
     function fullscreen(viewer) {
         if (viewer.isFullPage()) {
@@ -86,12 +112,8 @@
             "," +
             scaledBox.getBottomRight().y;
         $("#clip").attr("href", dimension);
-        $(".locshare-print-button")
-            .find("a:first")
-            .attr("href", dimension)
-            .click(function() {
-                window.open($(this).attr("href"), "print");
-            });
+        $(".locshare-print-button a").attr("href", dimension);
+        checkPrintButtonHander();
     }
 
     function fitWithinBoundingBox(d, max) {
@@ -360,5 +382,6 @@
             }
         });
     }
+
     $(initPage);
 })(jQuery);

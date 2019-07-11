@@ -162,9 +162,10 @@ jQuery(function ($) {
 <script type="text/javascript" src="{% static 'js/jquery.ba-bbq.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 
-{% if sharetool_url %}
-<!-- Toolbar -->
-<script type="text/javascript" src="{{ sharetool_url }}"></script>
-{% endif %}
+{% block sharetool_javascript %}
+    {% if sharetool_url %}
+        <script type="text/javascript" src="{{ sharetool_url }}"></script>
+    {% endif %}
+{% endblock sharetool_javascript %}
 
 {% endblock javascript %}
