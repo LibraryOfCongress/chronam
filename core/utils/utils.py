@@ -55,8 +55,7 @@ class HTMLCalendar(calendar.Calendar):
             r = self.issues.filter(date_issued=datetime.date(year, month, day))
             issues = set()
             for issue in r:
-                issues.add((issue.title.lccn,
-                            issue.date_issued, issue.edition))
+                issues.add((issue.title.lccn, issue.date_issued, issue.edition))
             issues = sorted(list(issues))
             count = len(issues)
             if count == 1:
@@ -71,16 +70,13 @@ class HTMLCalendar(calendar.Calendar):
                 _day += "<ul class='unstyled'>"
                 for lccn, date_issued, edition in issues:
                     kw = dict(lccn=lccn, date=date_issued, edition=edition)
-                    url = urlresolvers.reverse('chronam_issue_pages',
-                                               kwargs=kw)
+                    url = urlresolvers.reverse('chronam_issue_pages', kwargs=kw)
                     _day += """<li><a href="%s">ed-%d</a></li>""" % (url, edition)
                 _day += "</ul>"
             else:
                 _class = "noissues"
                 _day = day
-            return '<td class="%s %s">%s</td>' % (_class,
-                                                  self.cssclasses[weekday],
-                                                  _day)
+            return '<td class="%s %s">%s</td>' % (_class, self.cssclasses[weekday], _day)
 
     def formatweek(self, year, month, theweek):
         """
@@ -93,8 +89,7 @@ class HTMLCalendar(calendar.Calendar):
         """
         Return a weekday name as a table header.
         """
-        return '<td class="dayname %s">%s</td>' % (self.cssclasses[day],
-                                                   calendar.day_abbr[day][0])
+        return '<td class="dayname %s">%s</td>' % (self.cssclasses[day], calendar.day_abbr[day][0])
 
     def formatweekheader(self):
         """
@@ -111,8 +106,7 @@ class HTMLCalendar(calendar.Calendar):
             s = '%s %s' % (calendar.month_name[themonth], theyear)
         else:
             s = '%s' % calendar.month_name[themonth]
-        return '<tr><td colspan="7" class="title">%s, %s</td></tr>' % (s,
-                                                                       theyear)
+        return '<tr><td colspan="7" class="title">%s, %s</td></tr>' % (s, theyear)
 
     def formatmonth(self, theyear, themonth, withyear=True):
         """
@@ -120,7 +114,9 @@ class HTMLCalendar(calendar.Calendar):
         """
         v = []
         a = v.append
-        a('<table border="0" cellpadding="0" cellspacing="0" class="month table table-condensed table-bordered">')
+        a(
+            '<table border="0" cellpadding="0" cellspacing="0" class="month table table-condensed table-bordered">'
+        )
         a('\n')
         a(self.formatmonthname(theyear, themonth, withyear=withyear))
         a('\n')
@@ -172,11 +168,13 @@ def get_page(lccn, date, edition, sequence):
         raise Http404
 
     try:
-        page = models.Page.objects.filter(
-            issue__title__lccn=lccn,
-            issue__date_issued=_date,
-            issue__edition=edition,
-            sequence=sequence).order_by("-created").select_related()[0]
+        page = (
+            models.Page.objects.filter(
+                issue__title__lccn=lccn, issue__date_issued=_date, issue__edition=edition, sequence=sequence
+            )
+            .order_by("-created")
+            .select_related()[0]
+        )
         return page
     except IndexError:
         raise Http404
@@ -196,14 +194,12 @@ def _get_tip(lccn, date, edition, sequence=1):
         raise Http404
 
     try:
-        issue = title.issues.filter(
-            date_issued=_date, edition=edition).order_by("-created")[0]
+        issue = title.issues.filter(date_issued=_date, edition=edition).order_by("-created")[0]
     except IndexError:
         raise Http404
 
     try:
-        page = issue.pages.filter(
-            sequence=int(sequence)).order_by("-created")[0]
+        page = issue.pages.filter(sequence=int(sequence)).order_by("-created")[0]
     except IndexError:
         raise Http404
 
@@ -228,9 +224,12 @@ def _stream_file(path, mimetype):
 
 def label(instance):
     if isinstance(instance, models.Title):
-        return u'%s (%s) %s-%s' % (instance.display_name,
-                                   instance.place_of_publication,
-                                   instance.start_year, instance.end_year)
+        return u'%s (%s) %s-%s' % (
+            instance.display_name,
+            instance.place_of_publication,
+            instance.start_year,
+            instance.end_year,
+        )
     elif isinstance(instance, models.Issue):
         parts = []
         dt = datetime_safe.new_datetime(instance.date_issued)
@@ -252,25 +251,34 @@ def label(instance):
 
 def create_crumbs(title, issue=None, date=None, edition=None, page=None):
     crumbs = list(settings.BASE_CRUMBS)
-    crumbs.extend([{'label': label(title.name.split(":")[0]),
-                    'href': urlresolvers.reverse('chronam_title',
-                                                 kwargs={'lccn': title.lccn})}])
+    crumbs.extend(
+        [
+            {
+                'label': label(title.name.split(":")[0]),
+                'href': urlresolvers.reverse('chronam_title', kwargs={'lccn': title.lccn}),
+            }
+        ]
+    )
     if date and edition is not None:
         crumbs.append(
-            {'label': label(issue),
-             'href': urlresolvers.reverse('chronam_issue_pages',
-                                          kwargs={'lccn': title.lccn,
-                                                  'date': date,
-                                                  'edition': edition})})
+            {
+                'label': label(issue),
+                'href': urlresolvers.reverse(
+                    'chronam_issue_pages', kwargs={'lccn': title.lccn, 'date': date, 'edition': edition}
+                ),
+            }
+        )
 
     if page is not None:
         crumbs.append(
-            {'label': label(page),
-             'href': urlresolvers.reverse('chronam_page',
-                                          kwargs={'lccn': title.lccn,
-                                                  'date': date,
-                                                  'edition': edition,
-                                                  'sequence': page.sequence})})
+            {
+                'label': label(page),
+                'href': urlresolvers.reverse(
+                    'chronam_page',
+                    kwargs={'lccn': title.lccn, 'date': date, 'edition': edition, 'sequence': page.sequence},
+                ),
+            }
+        )
 
     return crumbs
 

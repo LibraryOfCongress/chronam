@@ -1,5 +1,4 @@
-from urllib import quote
-from urllib import unquote
+from urllib import quote, unquote
 
 
 def quote_underscore(s, safe=''):
