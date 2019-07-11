@@ -146,7 +146,7 @@ class Batch(models.Model):
         b['url'] = request.build_absolute_uri(self.json_url)
         if include_issues:
             b['issues'] = []
-            for issue in self.issues.all():
+            for issue in self.issues.prefetch_related('title'):
                 i = {
                     "title": {
                         "name": issue.title.display_name,
