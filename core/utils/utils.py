@@ -15,9 +15,7 @@ from chronam.core import models
 
 
 def _rdf_base(request):
-    host = request.get_host()
-    path = request.get_full_path().rstrip(".rdf")
-    return "http://%s%s" % (host, path)
+    return request.build_absolute_uri(request.get_full_path().rstrip(".rdf"))
 
 
 def _page_range_short(paginator, page):

@@ -3,8 +3,8 @@ import datetime
 import json
 
 from django.conf import settings
-from django.core import urlresolvers
 from django.core.paginator import InvalidPage, Paginator
+from django.core.urlresolvers import reverse
 from django.db import connection
 from django.db.models import Count, Max, Min
 from django.http import Http404, HttpResponse, HttpResponseNotFound, JsonResponse
@@ -67,21 +67,21 @@ def batches_atom(request, page_number=1):
 @cors
 @never_cache
 def batches_json(request, page_number=1):
-    batches = models.Batch.viewable_batches()
-    paginator = Paginator(batches, 25)
+    viewable_batches = models.Batch.viewable_batches()
+    paginator = Paginator(viewable_batches, 25)
     page = paginator.page(page_number)
-    host = request.get_host()
-    b = [batch.json(serialize=False, include_issues=False, host=host) for batch in page.object_list]
-    j = {'batches': b}
+    batches = [batch.json(request, serialize=False, include_issues=False) for batch in page.object_list]
+    payload = {'batches': batches}
 
     if page.has_next():
-        url_next = urlresolvers.reverse('chronam_batches_json_page', args=[page.next_page_number()])
-        j['next'] = "http://" + host + url_next
+        url_next = reverse('chronam_batches_json_page', args=[page.next_page_number()])
+        payload['next'] = request.build_absolute_uri(url_next)
 
     if page.has_previous():
-        url_prev = urlresolvers.reverse('chronam_batches_json_page', args=[page.previous_page_number()])
-        j['previous'] = "http://" + host + url_prev
-    return HttpResponse(json.dumps(j, indent=2), content_type='application/json')
+        url_prev = reverse('chronam_batches_json_page', args=[page.previous_page_number()])
+        payload['previous'] = request.build_absolute_uri(url_prev)
+
+    return JsonResponse(payload)
 
 
 @never_cache
@@ -157,25 +157,22 @@ def batch_rdf(request, batch_name):
 @never_cache
 def batch_json(request, batch_name):
     batch = get_object_or_404(models.Batch, name=batch_name)
-    host = request.get_host()
-    return HttpResponse(batch.json(host=host), content_type='application/json')
+    return HttpResponse(batch.json(request), content_type='application/json')
 
 
 @cors
 @add_cache_headers(settings.API_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def title_json(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
-    host = request.get_host()
-    return HttpResponse(title.json(host=host), content_type='application/json')
+    return HttpResponse(title.json(request), content_type='application/json')
 
 
 @cors
 @add_cache_headers(settings.API_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def issue_pages_json(request, lccn, date, edition):
     title, issue, page = _get_tip(lccn, date, edition)
-    host = request.get_host()
     if issue:
-        return HttpResponse(issue.json(host=host), content_type='application/json')
+        return HttpResponse(issue.json(request), content_type='application/json')
     else:
         return HttpResponseNotFound()
 
@@ -184,9 +181,8 @@ def issue_pages_json(request, lccn, date, edition):
 @add_cache_headers(settings.API_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def page_json(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
-    host = request.get_host()
     if page:
-        return HttpResponse(page.json(host=host), content_type='application/json')
+        return HttpResponse(page.json(request), content_type='application/json')
     else:
         return HttpResponseNotFound()
 
@@ -413,9 +409,9 @@ def awardees(request):
 @add_cache_headers(settings.METADATA_TTL_SECONDS)
 def awardees_json(request):
     awardees = {"awardees": []}
-    host = request.get_host()
+
     for awardee in models.Awardee.objects.all().order_by('name'):
-        a = {'url': 'http://' + host + awardee.json_url, 'name': awardee.name}
+        a = {'url': request.build_absolute_uri(awardee.json_url), 'name': awardee.name}
         awardees['awardees'].append(a)
 
     return HttpResponse(json.dumps(awardees, indent=2), content_type='application/json')
@@ -435,12 +431,11 @@ def awardee(request, institution_code):
 @add_cache_headers(settings.METADATA_TTL_SECONDS)
 def awardee_json(request, institution_code):
     awardee = get_object_or_404(models.Awardee, org_code=institution_code)
-    host = request.get_host()
-    j = awardee.json(serialize=False, host=host)
+    j = awardee.json(request, serialize=False)
     j['batches'] = []
     for batch in awardee.batches.all():
-        j['batches'].append({"name": batch.name, "url": 'http://' + host + batch.json_url})
-    return HttpResponse(json.dumps(j, indent=2), content_type='application/json')
+        j['batches'].append({"name": batch.name, "url": request.build_absolute_uri(batch.json_url)})
+    return JsonResponse(j)
 
 
 @add_cache_headers(settings.METADATA_TTL_SECONDS)
@@ -517,7 +512,7 @@ def reels(request, page_number=1):
 @add_cache_headers(settings.METADATA_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def reel(request, reel_number):
     crumbs = list(settings.BASE_CRUMBS)
-    crumbs.extend([{'label': 'Reels', 'href': urlresolvers.reverse('chronam_reels')}])
+    crumbs.extend([{'label': 'Reels', 'href': reverse('chronam_reels')}])
     page_title = 'Reel %s' % reel_number
     m_reels = models.Reel.objects.filter(number=reel_number)
     reels = []
@@ -575,10 +570,9 @@ def ocr_atom(request):
 @add_cache_headers(settings.METADATA_TTL_SECONDS)
 def ocr_json(request):
     j = {"ocr": []}
-    host = request.get_host()
     for dump in models.OcrDump.objects.all().order_by("-created"):
-        j["ocr"].append(dump.json(host=host, serialize=False))
-    return HttpResponse(json.dumps(j, indent=2), content_type="application/json")
+        j["ocr"].append(dump.json(request, serialize=False))
+    return JsonResponse(j)
 
 
 @never_cache

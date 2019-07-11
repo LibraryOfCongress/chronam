@@ -53,8 +53,8 @@ class Awardee(models.Model):
     def abstract_url(self):
         return self.url.rstrip('/') + '#awardee'
 
-    def json(self, host="chroniclingamerica.loc.gov", serialize=True):
-        j = {"name": self.name, "url": 'http://' + host + self.json_url}
+    def json(self, request, serialize=True):
+        j = {"name": self.name, "url": request.build_absolute_uri(self.json_url)}
         if serialize:
             return json.dumps(j, indent=2)
         return j
@@ -136,24 +136,24 @@ class Batch(models.Model):
             logging.warning("no OcrDump to delete for %s", self)
         super(Batch, self).delete(*args, **kwargs)
 
-    def json(self, include_issues=True, serialize=True, host="chroniclingamerica.loc.gov"):
+    def json(self, request, include_issues=True, serialize=True):
         b = {}
         b['name'] = self.name
         b['ingested'] = rfc3339(self.created)
         b['page_count'] = self.page_count
         b['lccns'] = self.lccns()
-        b['awardee'] = {"name": self.awardee.name, "url": "http://" + host + self.awardee.json_url}
-        b['url'] = "http://" + host + self.json_url
+        b['awardee'] = {"name": self.awardee.name, "url": request.build_absolute_uri(self.awardee.json_url)}
+        b['url'] = request.build_absolute_uri(self.json_url)
         if include_issues:
             b['issues'] = []
             for issue in self.issues.all():
                 i = {
                     "title": {
                         "name": issue.title.display_name,
-                        "url": "http://" + host + issue.title.json_url,
+                        "url": request.build_absolute_uri(issue.title.json_url),
                     },
                     "date_issued": strftime(issue.date_issued, "%Y-%m-%d"),
-                    "url": "http://" + host + issue.json_url,
+                    "url": request.build_absolute_uri(issue.json_url),
                 }
                 b['issues'].append(i)
         if serialize:
@@ -305,9 +305,9 @@ class Title(models.Model):
 
         return doc
 
-    def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
+    def json(self, request, serialize=True):
         j = {
-            "url": "http://" + host + self.json_url,
+            "url": request.build_absolute_uri(self.json_url),
             "lccn": self.lccn,
             "name": self.display_name,
             "place_of_publication": self.place_of_publication,
@@ -317,7 +317,10 @@ class Title(models.Model):
             "subject": [s.heading for s in self.subjects.all()],
             "place": [p.name for p in self.places.all()],
             "issues": [
-                {"url": "http://" + host + i.json_url, "date_issued": strftime(i.date_issued, "%Y-%m-%d")}
+                {
+                    "url": request.build_absolute_uri(i.json_url),
+                    "date_issued": strftime(i.date_issued, "%Y-%m-%d"),
+                }
                 for i in self.issues.all()
             ],
         }
@@ -588,19 +591,22 @@ class Issue(models.Model):
             self.title.has_issues = False
             self.title.save()
 
-    def json(self, serialize=True, include_pages=True, host='chroniclingamerica.loc.gov'):
+    def json(self, request, serialize=True, include_pages=True):
         j = {
-            'url': 'http://' + host + self.json_url,
             'date_issued': strftime(self.date_issued, "%Y-%m-%d"),
+            'url': request.build_absolute_uri(self.json_url),
             'volume': self.volume,
             'number': self.number,
             'edition': self.edition,
-            'title': {"name": self.title.display_name, "url": 'http://' + host + self.title.json_url},
-            'batch': {"name": self.batch.name, "url": 'http://' + host + self.batch.json_url},
+            'title': {
+                "name": self.title.display_name,
+                "url": request.build_absolute_uri(self.title.json_url),
+            },
+            'batch': {"name": self.batch.name, "url": request.build_absolute_uri(self.batch.json_url)},
         }
 
         j['pages'] = [
-            {"url": "http://" + host + p.json_url, "sequence": p.sequence} for p in self.pages.all()
+            {"url": request.build_absolute_uri(p.json_url), "sequence": p.sequence} for p in self.pages.all()
         ]
 
         if serialize:
@@ -630,20 +636,20 @@ class Page(models.Model):
     indexed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
-    def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
+    def json(self, request, serialize=True):
         j = {
             "sequence": self.sequence,
             "issue": {
                 "date_issued": strftime(self.issue.date_issued, "%Y-%m-%d"),
-                "url": "http://" + host + self.issue.json_url,
+                "url": request.build_absolute_uri(self.issue.json_url),
             },
-            "jp2": "http://" + host + self.jp2_url,
-            "ocr": "http://" + host + self.ocr_url,
-            "text": "http://" + host + self.txt_url,
-            "pdf": "http://" + host + self.pdf_url,
+            "jp2": request.build_absolute_uri(self.jp2_url),
+            "ocr": request.build_absolute_uri(self.ocr_url),
+            "text": request.build_absolute_uri(self.txt_url),
+            "pdf": request.build_absolute_uri(self.pdf_url),
             "title": {
                 "name": self.issue.title.display_name,
-                "url": "http://" + host + self.issue.title.json_url,
+                "url": request.build_absolute_uri(self.issue.title.json_url),
             },
         }
         if serialize:
@@ -1256,13 +1262,13 @@ class OcrDump(models.Model):
     def path(self):
         return os.path.join(settings.OCR_DUMP_STORAGE, self.name)
 
-    def json(self, serialize=True, host="chroniclingamerica.loc.gov"):
+    def json(self, request, serialize=True):
         j = {
             "name": self.name,
             "created": rfc3339(self.created),
             "size": self.size,
             "sha1": self.sha1,
-            "url": "http://" + host + self.url,
+            "url": request.build_absolute_uri(self.url),
         }
 
         if serialize:
