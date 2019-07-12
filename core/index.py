@@ -34,7 +34,7 @@ def solr_escape(value):
     >>> solr_escape(r'foo\\+') == r'foo\\+'
     True
     """
-    return ESCAPE_CHARS_RE.sub(r'\\\g<char>', value)
+    return ESCAPE_CHARS_RE.sub(r"\\\g<char>", value)
 
 
 # TODO: prefix functions that are intended for local use only with _
@@ -42,12 +42,12 @@ def solr_escape(value):
 
 def page_count():
     solr = SolrConnection(settings.SOLR)
-    return solr.query('type:page', fields=['id']).numFound
+    return solr.query("type:page", fields=["id"]).numFound
 
 
 def title_count():
     solr = SolrConnection(settings.SOLR)
-    return solr.query('type:title', fields=['id']).numFound
+    return solr.query("type:title", fields=["id"]).numFound
 
 
 # TODO: use solr.SolrPaginator and update or remove SolrPaginator
@@ -64,22 +64,22 @@ class SolrPaginator(Paginator):
         self.query = query.copy()
 
         # remove words from query as it's not part of the solr query.
-        if 'words' in self.query:
-            del self.query['words']
+        if "words" in self.query:
+            del self.query["words"]
         self._q = page_search(self.query)
 
         try:
-            self._cur_page = int(self.query.get('page', 1))
+            self._cur_page = int(self.query.get("page", 1))
         except ValueError:
             raise InvalidPage
 
         try:
-            self._cur_index = int(self.query.get('index', 0))
+            self._cur_index = int(self.query.get("index", 0))
         except ValueError:
             raise InvalidPage
 
         try:
-            rows = int(self.query.get('rows', 10))
+            rows = int(self.query.get("rows", 10))
         except ValueError:
             raise InvalidPage
 
@@ -88,14 +88,14 @@ class SolrPaginator(Paginator):
 
         self.overall_index = (self._cur_page - 1) * self.per_page + self._cur_index
 
-        self._ocr_list = ['ocr']
-        self._ocr_list.extend(['ocr_%s' % l for l in settings.SOLR_LANGUAGES])
+        self._ocr_list = ["ocr"]
+        self._ocr_list.extend(["ocr_%s" % l for l in settings.SOLR_LANGUAGES])
 
     def _get_count(self):
         "Returns the total number of objects, across all pages."
         if self._count is None:
             solr = SolrConnection(settings.SOLR)  # TODO: maybe keep connection around?
-            solr_response = solr.query(self._q, fields=['id'])
+            solr_response = solr.query(self._q, fields=["id"])
             self._count = int(solr_response.results.numFound)
         return self._count
 
@@ -145,13 +145,13 @@ class SolrPaginator(Paginator):
         start = self.per_page * (number - 1)
         params = {
             "hl.snippets": 100,  # TODO: make this unlimited
-            "hl.requireFieldMatch": 'true',  # limits highlighting slop
-            "hl.maxAnalyzedChars": '102400',  # increased from default 51200
+            "hl.requireFieldMatch": "true",  # limits highlighting slop
+            "hl.maxAnalyzedChars": "102400",  # increased from default 51200
         }
-        sort_field, sort_order = _get_sort(self.query.get('sort'), in_pages=True)
+        sort_field, sort_order = _get_sort(self.query.get("sort"), in_pages=True)
         solr_response = solr.query(
             self._q,
-            fields=['id', 'title', 'date', 'sequence', 'edition_label', 'section_label'],
+            fields=["id", "title", "date", "sequence", "edition_label", "section_label"],
             highlight=self._ocr_list,
             rows=self.per_page,
             sort=sort_field,
@@ -161,11 +161,11 @@ class SolrPaginator(Paginator):
         )
         pages = []
         for result in solr_response.results:
-            page = models.Page.lookup(result['id'])
+            page = models.Page.lookup(result["id"])
             if not page:
                 continue
             words = set()
-            coords = solr_response.highlighting[result['id']]
+            coords = solr_response.highlighting[result["id"]]
             for ocr in self._ocr_list:
                 for s in coords.get(ocr) or []:
                     words.update(find_words(s))
@@ -204,9 +204,9 @@ class SolrPaginator(Paginator):
         q = self.query.copy()
         for p in before + middle + end:
             if last and p - last > 1:
-                pages.append(['...', None])
+                pages.append(["...", None])
             else:
-                q['page'] = p
+                q["page"] = p
                 pages.append([p, urlencode(q)])
             last = p
 
@@ -218,14 +218,14 @@ class SolrPaginator(Paginator):
         """
         d = self.query
         parts = []
-        if d.get('ortext', None):
-            parts.append(' OR '.join(d['ortext'].split(' ')))
-        if d.get('andtext', None):
-            parts.append(' AND '.join(d['andtext'].split(' ')))
-        if d.get('phrasetext', None):
-            parts.append('the phrase "%s"' % d['phrasetext'])
-        if d.get('proxtext', None):
-            parts.append(d['proxtext'])
+        if d.get("ortext", None):
+            parts.append(" OR ".join(d["ortext"].split(" ")))
+        if d.get("andtext", None):
+            parts.append(" AND ".join(d["andtext"].split(" ")))
+        if d.get("phrasetext", None):
+            parts.append('the phrase "%s"' % d["phrasetext"])
+        if d.get("proxtext", None):
+            parts.append(d["proxtext"])
         return parts
 
     # TODO: see ticket #176
@@ -268,12 +268,12 @@ class SolrTitlesPaginator(Paginator):
         q, fields, sort_field, sort_order = get_solr_request_params_from_query(self.query)
 
         try:
-            page = int(self.query.get('page', 1))
+            page = int(self.query.get("page", 1))
         except ValueError:
             raise InvalidPage
 
         try:
-            rows = int(self.query.get('rows', 50))
+            rows = int(self.query.get("rows", 50))
         except ValueError:
             raise InvalidPage
 
@@ -308,7 +308,7 @@ def get_titles_from_solr_documents(solr_response):
     This function turns SOLR documents into chronam.models.Title
     instances
     """
-    lccns = [d['lccn'] for d in solr_response.results]
+    lccns = [d["lccn"] for d in solr_response.results]
     results = []
     for lccn in lccns:
         try:
@@ -321,8 +321,8 @@ def get_titles_from_solr_documents(solr_response):
 
 def get_solr_request_params_from_query(query):
     q = title_search(query)
-    fields = ['id', 'title', 'date', 'sequence', 'edition_label', 'section_label']
-    sort_field, sort_order = _get_sort(query.get('sort'))
+    fields = ["id", "title", "date", "sequence", "edition_label", "section_label"]
+    sort_field, sort_order = _get_sort(query.get("sort"))
     return q, fields, sort_field, sort_order
 
 
@@ -332,7 +332,7 @@ def execute_solr_query(query, fields, sort, sort_order, rows, start):
     solr = SolrConnection(settings.SOLR)  # TODO: maybe keep connection around?
     solr_response = solr.query(
         query,
-        fields=['lccn', 'title', 'edition', 'place_of_publication', 'start_year', 'end_year', 'language'],
+        fields=["lccn", "title", "edition", "place_of_publication", "start_year", "end_year", "language"],
         rows=rows,
         sort=sort,
         sort_order=sort_order,
@@ -347,43 +347,43 @@ def title_search(d):
     a corresponding solr query.
     """
     q = ["+type:title"]
-    if d.get('state'):
-        q.append('+state:"%s"' % d['state'])
-    if d.get('county'):
-        q.append('+county:"%s"' % d['county'])
-    if d.get('city'):
-        q.append('+city:"%s"' % d['city'])
-    for term in d.get('terms', '').replace('"', '').split():
+    if d.get("state"):
+        q.append('+state:"%s"' % d["state"])
+    if d.get("county"):
+        q.append('+county:"%s"' % d["county"])
+    if d.get("city"):
+        q.append('+city:"%s"' % d["city"])
+    for term in d.get("terms", "").replace('"', "").split():
         q.append(
             '+(title:"%s" OR essay:"%s" OR note:"%s" OR edition:"%s" OR place_of_publication:"%s" OR url:"%s" OR publisher:"%s")'
             % (term, term, term, term, term, term, term)
         )
-    if d.get('frequency'):
-        q.append('+frequency:"%s"' % d['frequency'])
-    if d.get('language'):
-        q.append('+language:"%s"' % d['language'])
-    if d.get('ethnicity'):
-        q.append('+' + _expand_ethnicity(d['ethnicity']))
-    if d.get('labor'):
-        q.append('+subject:"%s"' % d['labor'])
-    year1 = d.get('year1', None)
+    if d.get("frequency"):
+        q.append('+frequency:"%s"' % d["frequency"])
+    if d.get("language"):
+        q.append('+language:"%s"' % d["language"])
+    if d.get("ethnicity"):
+        q.append("+" + _expand_ethnicity(d["ethnicity"]))
+    if d.get("labor"):
+        q.append('+subject:"%s"' % d["labor"])
+    year1 = d.get("year1", None)
     if not year1:
-        year1 = '1690'
-    year2 = d.get('year2', None)
+        year1 = "1690"
+    year2 = d.get("year2", None)
     if not year2:
-        year2 = '2009'
+        year2 = "2009"
     # don't add the start_year restriction if it's the lowest allowed year
-    if year1 != '1690':
-        q.append('+end_year:[%s TO 9999]' % year1)
+    if year1 != "1690":
+        q.append("+end_year:[%s TO 9999]" % year1)
     # don't add the end_year restriction if it's the max allowed year
     # particularly important for end_years that are coded as 'current'
-    if year2 != '2009':
-        q.append('+start_year: [0 TO %s]' % year2)
-    if d.get('lccn'):
-        q.append('+lccn:"%s"' % _normal_lccn(d['lccn']))
-    if d.get('material_type'):
-        q.append('+holding_type:"%s"' % d['material_type'])
-    q = ' '.join(q)
+    if year2 != "2009":
+        q.append("+start_year: [0 TO %s]" % year2)
+    if d.get("lccn"):
+        q.append('+lccn:"%s"' % _normal_lccn(d["lccn"]))
+    if d.get("material_type"):
+        q.append('+holding_type:"%s"' % d["material_type"])
+    q = " ".join(q)
     # keep the gap 10 for year range 100, 20 for year range 200 and so on
 
     return q
@@ -394,74 +394,74 @@ def page_search(d):
     Pass in form data for a given page search, and get back
     a corresponding solr query.
     """
-    q = ['+type:page']
+    q = ["+type:page"]
 
-    if d.get('lccn', None):
-        q.append(query_join(d.getlist('lccn'), 'lccn'))
+    if d.get("lccn", None):
+        q.append(query_join(d.getlist("lccn"), "lccn"))
 
-    if d.get('state', None):
-        q.append(query_join(d.getlist('state'), 'state'))
+    if d.get("state", None):
+        q.append(query_join(d.getlist("state"), "state"))
 
-    date_filter_type = d.get('dateFilterType', None)
-    if date_filter_type == 'year' and d.get('year', None):
-        q.append('+date:[%(year)s0101 TO %(year)s1231]' % d)
-    elif date_filter_type in ('range', 'yearRange') and d.get('date1', None) and d.get('date2', None):
-        d1 = _solrize_date(d['date1'])
-        d2 = _solrize_date(d['date2'], is_start=False)
+    date_filter_type = d.get("dateFilterType", None)
+    if date_filter_type == "year" and d.get("year", None):
+        q.append("+date:[%(year)s0101 TO %(year)s1231]" % d)
+    elif date_filter_type in ("range", "yearRange") and d.get("date1", None) and d.get("date2", None):
+        d1 = _solrize_date(d["date1"])
+        d2 = _solrize_date(d["date2"], is_start=False)
         if d1 and d2:
-            q.append('+date:[%i TO %i]' % (d1, d2))
+            q.append("+date:[%i TO %i]" % (d1, d2))
 
-    ocrs = ['ocr_%s' % l for l in settings.SOLR_LANGUAGES]
+    ocrs = ["ocr_%s" % l for l in settings.SOLR_LANGUAGES]
 
-    lang = d.get('language', None)
-    ocr_lang = 'ocr_' + lang if lang else 'ocr'
-    if d.get('ortext', None):
-        q.append('+((' + query_join(solr_escape(d['ortext']).split(' '), "ocr"))
+    lang = d.get("language", None)
+    ocr_lang = "ocr_" + lang if lang else "ocr"
+    if d.get("ortext", None):
+        q.append("+((" + query_join(solr_escape(d["ortext"]).split(" "), "ocr"))
         if lang:
-            q.append(' AND ' + query_join(solr_escape(d['ortext']).split(' '), ocr_lang))
-            q.append(') OR ' + query_join(solr_escape(d['ortext']).split(' '), ocr_lang))
+            q.append(" AND " + query_join(solr_escape(d["ortext"]).split(" "), ocr_lang))
+            q.append(") OR " + query_join(solr_escape(d["ortext"]).split(" "), ocr_lang))
         else:
-            q.append(')')
+            q.append(")")
             for ocr in ocrs:
-                q.append('OR ' + query_join(solr_escape(d['ortext']).split(' '), ocr))
-        q.append(')')
-    if d.get('andtext', None):
-        q.append('+((' + query_join(solr_escape(d['andtext']).split(' '), "ocr", and_clause=True))
+                q.append("OR " + query_join(solr_escape(d["ortext"]).split(" "), ocr))
+        q.append(")")
+    if d.get("andtext", None):
+        q.append("+((" + query_join(solr_escape(d["andtext"]).split(" "), "ocr", and_clause=True))
         if lang:
-            q.append('AND ' + query_join(solr_escape(d['andtext']).split(' '), ocr_lang, and_clause=True))
-            q.append(') OR ' + query_join(solr_escape(d['andtext']).split(' '), ocr_lang, and_clause=True))
+            q.append("AND " + query_join(solr_escape(d["andtext"]).split(" "), ocr_lang, and_clause=True))
+            q.append(") OR " + query_join(solr_escape(d["andtext"]).split(" "), ocr_lang, and_clause=True))
         else:
-            q.append(')')
+            q.append(")")
             for ocr in ocrs:
-                q.append('OR ' + query_join(solr_escape(d['andtext']).split(' '), ocr, and_clause=True))
-        q.append(')')
-    if d.get('phrasetext', None):
-        phrase = solr_escape(d['phrasetext'])
-        q.append('+((' + 'ocr' + ':"%s"^10000' % (phrase))
+                q.append("OR " + query_join(solr_escape(d["andtext"]).split(" "), ocr, and_clause=True))
+        q.append(")")
+    if d.get("phrasetext", None):
+        phrase = solr_escape(d["phrasetext"])
+        q.append("+((" + "ocr" + ':"%s"^10000' % (phrase))
         if lang:
-            q.append('AND ocr_' + lang + ':"%s"' % (phrase))
-            q.append(') OR ocr_' + lang + ':"%s"' % (phrase))
+            q.append("AND ocr_" + lang + ':"%s"' % (phrase))
+            q.append(") OR ocr_" + lang + ':"%s"' % (phrase))
         else:
-            q.append(')')
+            q.append(")")
             for ocr in ocrs:
-                q.append('OR ' + ocr + ':"%s"' % (phrase))
-        q.append(')')
+                q.append("OR " + ocr + ':"%s"' % (phrase))
+        q.append(")")
 
-    if d.get('proxtext', None):
-        distance = d.get('proxdistance', PROX_DISTANCE_DEFAULT)
-        prox = solr_escape(d['proxtext'])
-        q.append('+((' + 'ocr' + ':("%s"~%s)^10000' % (prox, distance))
+    if d.get("proxtext", None):
+        distance = d.get("proxdistance", PROX_DISTANCE_DEFAULT)
+        prox = solr_escape(d["proxtext"])
+        q.append("+((" + "ocr" + ':("%s"~%s)^10000' % (prox, distance))
         if lang:
-            q.append('AND ocr_' + lang + ':"%s"~%s' % (prox, distance))
-            q.append(') OR ocr_' + lang + ':"%s"~%s' % (prox, distance))
+            q.append("AND ocr_" + lang + ':"%s"~%s' % (prox, distance))
+            q.append(") OR ocr_" + lang + ':"%s"~%s' % (prox, distance))
         else:
-            q.append(')')
+            q.append(")")
             for ocr in ocrs:
-                q.append('OR ' + ocr + ':"%s"~%s' % (prox, distance))
-        q.append(')')
-    if d.get('sequence', None):
-        q.append('+sequence:"%s"' % d['sequence'])
-    return ' '.join(q)
+                q.append("OR " + ocr + ':"%s"~%s' % (prox, distance))
+        q.append(")")
+    if d.get("sequence", None):
+        q.append('+sequence:"%s"' % d["sequence"])
+    return " ".join(q)
 
 
 def query_join(values, field, and_clause=False):
@@ -487,15 +487,15 @@ def query_join(values, field, and_clause=False):
     # return the lucene query chunk
     if field.startswith("ocr"):
         if field == "ocr":
-            return "%s:(%s)^10000" % (field, ' '.join(values))
+            return "%s:(%s)^10000" % (field, " ".join(values))
         else:
-            return "%s:(%s)" % (field, ' '.join(values))
+            return "%s:(%s)" % (field, " ".join(values))
     else:
-        return "+%s:(%s)" % (field, ' '.join(values))
+        return "+%s:(%s)" % (field, " ".join(values))
 
 
 def find_words(s):
-    ems = re.findall('<em>.+?</em>', s)
+    ems = re.findall("<em>.+?</em>", s)
     words = map(lambda em: em[4:-5], ems)  # strip <em> and </em>
     return words
 
@@ -510,7 +510,7 @@ def index_titles(since=None):
     if since:
         cursor.execute("SELECT lccn FROM core_title WHERE created >= '%s'" % since)
     else:
-        solr.delete_query('type:title')
+        solr.delete_query("type:title")
         cursor.execute("SELECT lccn FROM core_title")
 
     count = 0
@@ -537,12 +537,12 @@ def index_title(title, solr=None):
     try:
         solr.add(**title.solr_doc)
     except Exception:
-        LOGGER.exception('Unable to index title %s', title)
+        LOGGER.exception("Unable to index title %s", title)
 
 
 def delete_title(title):
     solr = SolrConnection(settings.SOLR)
-    q = '+type:title +id:%s' % title.solr_doc['id']
+    q = "+type:title +id:%s" % title.solr_doc["id"]
     solr.delete_query(q)
     LOGGER.info("deleted title %s from the index", title)
 
@@ -568,7 +568,7 @@ def index_pages():
     """index all the pages that are modeled in the database
     """
     solr = SolrConnection(settings.SOLR)
-    solr.delete_query('type:page')
+    solr.delete_query("type:page")
     cursor = connection.cursor()
     cursor.execute("SELECT id FROM core_page")
     count = 0
@@ -599,12 +599,12 @@ def word_matches_for_page(page_id, words):
     if not isinstance(page_id, str):
         page_id = str(page_id)
 
-    ocr_list = ['ocr']
-    ocr_list.extend(['ocr_%s' % l for l in settings.SOLR_LANGUAGES])
-    ocrs = ' OR '.join([query_join(words, o) for o in ocr_list])
-    q = 'id:%s AND (%s)' % (page_id, ocrs)
-    params = {"hl.snippets": 100, "hl.requireFieldMatch": 'true', "hl.maxAnalyzedChars": '102400'}
-    response = solr.query(q, fields=['id'], highlight=ocr_list, **params)
+    ocr_list = ["ocr"]
+    ocr_list.extend(["ocr_%s" % l for l in settings.SOLR_LANGUAGES])
+    ocrs = " OR ".join([query_join(words, o) for o in ocr_list])
+    q = "id:%s AND (%s)" % (page_id, ocrs)
+    params = {"hl.snippets": 100, "hl.requireFieldMatch": "true", "hl.maxAnalyzedChars": "102400"}
+    response = solr.query(q, fields=["id"], highlight=ocr_list, **params)
 
     if page_id not in response.highlighting:
         return []
@@ -624,21 +624,21 @@ def commit():
 
 def _get_sort(sort, in_pages=False):
     sort_field = sort_order = None
-    if sort == 'state':
-        sort_field = 'country'  # odd artifact of Title model
-        sort_order = 'asc'
-    elif sort == 'title':
+    if sort == "state":
+        sort_field = "country"  # odd artifact of Title model
+        sort_order = "asc"
+    elif sort == "title":
         # important to sort on title_facet since it's the original
         # string, and not the analyzed title
-        sort_field = 'title_normal'
-        sort_order = 'asc'
+        sort_field = "title_normal"
+        sort_order = "asc"
     # sort by the full issue date if we searching pages
-    elif sort == 'date' and in_pages:
-        sort_field = 'date'
-        sort_order = 'asc'
-    elif sort == 'date':
-        sort_field = 'start_year'
-        sort_order = 'asc'
+    elif sort == "date" and in_pages:
+        sort_field = "date"
+        sort_order = "asc"
+    elif sort == "date":
+        sort_field = "start_year"
+        sort_order = "asc"
     return sort_field, sort_order
 
 
@@ -651,7 +651,7 @@ def _expand_ethnicity(e):
     ethnicity = models.Ethnicity.objects.get(name=e)
     for s in ethnicity.synonyms.all():
         parts.append('subject:"%s"' % s.synonym)
-    q = ' OR '.join(parts)
+    q = " OR ".join(parts)
     return "(" + q + ")"
 
 
@@ -665,27 +665,27 @@ def _solrize_date(d, is_start=True):
     d = d.strip()
 
     # 01/01/1900 -> 19000101 ; 1/1/1900 -> 19000101
-    match = re.match(r'(\d\d?)/(\d\d?)/(\d{4})', d)
+    match = re.match(r"(\d\d?)/(\d\d?)/(\d{4})", d)
     if match:
         m, d, y = match.groups()
     else:
         # 01/1900 -> 19000101 | 19000131
-        match = re.match(r'(\d\d?)/(\d{4})', d)
+        match = re.match(r"(\d\d?)/(\d{4})", d)
         if match:
             m, y = match.groups()
             if is_start:
-                d = '01'
+                d = "01"
             else:
-                d = '31'
+                d = "31"
         else:
             # 1900 -> 19000101 | 19001231
-            match = re.match(r'(\d{4})', d)
+            match = re.match(r"(\d{4})", d)
             if match:
                 y = match.group(1)
                 if is_start:
-                    m, d = '01', '01'
+                    m, d = "01", "01"
                 else:
-                    m, d = '12', '31'
+                    m, d = "12", "31"
             else:
                 return None
 
@@ -700,8 +700,8 @@ def get_page_text(page):
     solr = SolrConnection(settings.SOLR)
     query = 'id:"%s"' % page.url
     solr_results = solr.query(query)
-    results_attribute = getattr(solr_results, 'results', None)
+    results_attribute = getattr(solr_results, "results", None)
     if isinstance(results_attribute, list) and len(results_attribute) > 0:
-        return results_attribute[0].get('ocr', no_text)
+        return results_attribute[0].get("ocr", no_text)
     else:
         return no_text
