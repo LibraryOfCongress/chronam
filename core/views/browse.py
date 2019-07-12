@@ -63,8 +63,8 @@ def issues(request, lccn, year=None):
     if year is not None:
         _year = int(year)
     else:
-        issue_stats = title.issues.aggregate(first_issued=Min('date_issued'))
-        first_issued = issue_stats.get('first_issued')
+        issue_stats = title.issues.aggregate(first_issued=Min("date_issued"))
+        first_issued = issue_stats.get("first_issued")
         if first_issued:
             _year = first_issued.year
         else:
@@ -74,7 +74,7 @@ def issues(request, lccn, year=None):
 
     class SelectYearForm(django_forms.Form):
         year = fields.ChoiceField(
-            choices=((d.year, d.year) for d in title.issues.dates('date_issued', 'year')), initial=_year
+            choices=((d.year, d.year) for d in title.issues.dates("date_issued", "year")), initial=_year
         )
 
     select_year_form = SelectYearForm()
@@ -82,7 +82,7 @@ def issues(request, lccn, year=None):
     page_name = "issues"
     crumbs = create_crumbs(title)
     response = render_to_response(
-        'issues.html', dictionary=locals(), context_instance=RequestContext(request)
+        "issues.html", dictionary=locals(), context_instance=RequestContext(request)
     )
     return add_cache_tag(response, "lccn=%s" % lccn)
 
@@ -94,10 +94,10 @@ def title_holdings(request, lccn):
     page_name = "holdings"
     crumbs = create_crumbs(title)
 
-    holdings = title.holdings.select_related('institution').order_by('institution__name')
+    holdings = title.holdings.select_related("institution").order_by("institution__name")
 
     response = render_to_response(
-        'holdings.html', dictionary=locals(), context_instance=RequestContext(request)
+        "holdings.html", dictionary=locals(), context_instance=RequestContext(request)
     )
     return add_cache_tag(response, "lccn=%s" % lccn)
 
@@ -108,7 +108,7 @@ def title_marc(request, lccn):
     page_title = "MARC Bibliographic Record: %s" % label(title)
     page_name = "marc"
     crumbs = create_crumbs(title)
-    response = render_to_response('marc.html', dictionary=locals(), context_instance=RequestContext(request))
+    response = render_to_response("marc.html", dictionary=locals(), context_instance=RequestContext(request))
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
@@ -118,7 +118,7 @@ def title_rdf(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
     graph = title_to_graph(title)
     response = HttpResponse(
-        graph.serialize(base=_rdf_base(request), include_base=True), content_type='application/rdf+xml'
+        graph.serialize(base=_rdf_base(request), include_base=True), content_type="application/rdf+xml"
     )
     return add_cache_tag(response, "lccn=%s" % lccn)
 
@@ -126,7 +126,7 @@ def title_rdf(request, lccn):
 @add_cache_headers(settings.API_TTL_SECONDS)
 def title_atom(request, lccn, page_number=1):
     title = get_object_or_404(models.Title, lccn=lccn)
-    issues = title.issues.all().order_by('-batch__released', '-date_issued')
+    issues = title.issues.all().order_by("-batch__released", "-date_issued")
     paginator = Paginator(issues, 100)
     try:
         page = paginator.page(page_number)
@@ -148,9 +148,9 @@ def title_atom(request, lccn, page_number=1):
 
     host = request.get_host()
     response = render_to_response(
-        'title.xml',
+        "title.xml",
         dictionary=locals(),
-        content_type='application/atom+xml',
+        content_type="application/atom+xml",
         context_instance=RequestContext(request),
     )
     return add_cache_tag(response, "lccn=%s" % lccn)
@@ -159,7 +159,7 @@ def title_atom(request, lccn, page_number=1):
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def title_marcxml(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
-    return HttpResponse(title.marc.xml, content_type='application/marc+xml')
+    return HttpResponse(title.marc.xml, content_type="application/marc+xml")
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
@@ -186,13 +186,13 @@ def issue_pages(request, lccn, date, edition, page_number=1):
         if num_notes >= 1:
             display_label = notes[0].label
             explanation = notes[0].text
-    page_title = 'All Pages: %s, %s' % (label(title), label(issue))
+    page_title = "All Pages: %s, %s" % (label(title), label(issue))
     page_head_heading = "All Pages: %s, %s" % (title.display_name, label(issue))
     page_head_subheading = label(title)
     crumbs = create_crumbs(title, issue, date, edition)
-    profile_uri = 'http://www.openarchives.org/ore/html/'
+    profile_uri = "http://www.openarchives.org/ore/html/"
     response = render_to_response(
-        'issue_pages.html', dictionary=locals(), context_instance=RequestContext(request)
+        "issue_pages.html", dictionary=locals(), context_instance=RequestContext(request)
     )
     return add_cache_tag(response, "lccn=%s" % lccn)
 
@@ -203,13 +203,13 @@ def issue_pages_rdf(request, lccn, date, edition):
     title, issue, page = _get_tip(lccn, date, edition)
     graph = issue_to_graph(issue)
     response = HttpResponse(
-        graph.serialize(base=_rdf_base(request), include_base=True), content_type='application/rdf+xml'
+        graph.serialize(base=_rdf_base(request), include_base=True), content_type="application/rdf+xml"
     )
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
-@vary_on_headers('Referer')
+@vary_on_headers("Referer")
 def page_words(request, lccn, date, edition, sequence, words=None):
     """
     for the case where we have ;words= in the url convert it to a fragment but
@@ -225,15 +225,15 @@ def page_words(request, lccn, date, edition, sequence, words=None):
     warnings.warn('url with ";words=" was called which is deprecated!', category=DeprecationWarning)
 
     path_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
-    url = urlresolvers.reverse('chronam_page', kwargs=path_parts)
-    fragment = urlencode({'words': words})
+    url = urlresolvers.reverse("chronam_page", kwargs=path_parts)
+    fragment = urlencode({"words": words})
     redirect = "%s?%s#%s" % (url, request.GET.urlencode(), fragment)
     response = HttpResponseRedirect(redirect)
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
-@vary_on_headers('Referer')
+@vary_on_headers("Referer")
 def page(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
 
@@ -250,11 +250,11 @@ def page(request, lccn, date, edition, sequence):
     # has the highlighted words in it
     try:
         words = _search_engine_words(request)
-        words = '+'.join(words)
+        words = "+".join(words)
         if len(words) > 0:
             path_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
-            url = '%s?%s#%s' % (
-                urlresolvers.reverse('chronam_page_words', kwargs=path_parts),
+            url = "%s?%s#%s" % (
+                urlresolvers.reverse("chronam_page_words", kwargs=path_parts),
                 request.GET.urlencode(),
                 words,
             )
@@ -310,7 +310,7 @@ def page(request, lccn, date, edition, sequence):
 
     image_credit = issue.batch.awardee.name
     host = request.get_host()
-    profile_uri = 'http://www.openarchives.org/ore/html/'
+    profile_uri = "http://www.openarchives.org/ore/html/"
 
     template = "page.html"
     text = get_page_text(page)
@@ -320,13 +320,13 @@ def page(request, lccn, date, edition, sequence):
 
 @add_cache_headers(settings.LONG_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def titles(request, start=None, page_number=1):
-    page_title = 'Newspaper Titles'
+    page_title = "Newspaper Titles"
     if start:
-        page_title += ' Starting With %s' % start
-        titles = models.Title.objects.order_by('name_normal')
+        page_title += " Starting With %s" % start
+        titles = models.Title.objects.order_by("name_normal")
         titles = titles.filter(name_normal__istartswith=start.upper())
     else:
-        titles = models.Title.objects.all().order_by('name_normal')
+        titles = models.Title.objects.all().order_by("name_normal")
     paginator = Paginator(titles, 50)
     try:
         page = paginator.page(page_number)
@@ -339,7 +339,7 @@ def titles(request, start=None, page_number=1):
     browse_val.extend([str(i) for i in range(10)])
     collapse_search_tab = True
     crumbs = list(settings.BASE_CRUMBS)
-    return render_to_response('titles.html', dictionary=locals(), context_instance=RequestContext(request))
+    return render_to_response("titles.html", dictionary=locals(), context_instance=RequestContext(request))
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
@@ -354,12 +354,12 @@ def title(request, lccn):
     related_titles = title.related_titles()
     succeeding_titles = title.succeeding_titles()
     preceeding_titles = title.preceeding_titles()
-    profile_uri = 'http://www.openarchives.org/ore/html/'
+    profile_uri = "http://www.openarchives.org/ore/html/"
     notes = []
     has_external_link = False
     for note in title.notes.all():
         org_text = html.escape(note.text)
-        text = re.sub(r'(http(s)?://[^\s]+[^\.])', r'<a class="external" href="\1">\1</a>', org_text)
+        text = re.sub(r"(http(s)?://[^\s]+[^\.])", r'<a class="external" href="\1">\1</a>', org_text)
         if text != org_text:
             has_external_link = True
         notes.append(text)
@@ -377,12 +377,12 @@ def title(request, lccn):
         issue_date = first_issue.date_issued
 
     crumbs = create_crumbs(title)
-    response = render_to_response('title.html', dictionary=locals(), context_instance=RequestContext(request))
+    response = render_to_response("title.html", dictionary=locals(), context_instance=RequestContext(request))
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
-def titles_in_city(request, state, county, city, page_number=1, order='name_normal'):
+def titles_in_city(request, state, county, city, page_number=1, order="name_normal"):
     state, county, city = map(unpack_url_path, (state, county, city))
     page_title = "Titles in City: %s, %s" % (city, state)
     titles = models.Title.objects.all()
@@ -406,12 +406,12 @@ def titles_in_city(request, state, county, city, page_number=1, order='name_norm
     page_range_short = list(_page_range_short(paginator, page))
 
     return render_to_response(
-        'reports/city.html', dictionary=locals(), context_instance=RequestContext(request)
+        "reports/city.html", dictionary=locals(), context_instance=RequestContext(request)
     )
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
-def titles_in_county(request, state, county, page_number=1, order='name_normal'):
+def titles_in_county(request, state, county, page_number=1, order="name_normal"):
     state, county = map(unpack_url_path, (state, county))
     page_title = "Titles in County: %s, %s" % (county, state)
     titles = models.Title.objects.all()
@@ -433,12 +433,12 @@ def titles_in_county(request, state, county, page_number=1, order='name_normal')
     page_range_short = list(_page_range_short(paginator, page))
 
     return render_to_response(
-        'reports/county.html', dictionary=locals(), context_instance=RequestContext(request)
+        "reports/county.html", dictionary=locals(), context_instance=RequestContext(request)
     )
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
-def titles_in_state(request, state, page_number=1, order='name_normal'):
+def titles_in_state(request, state, page_number=1, order="name_normal"):
     state = unpack_url_path(state)
     page_title = "Titles in State: %s" % state
     titles = models.Title.objects.all()
@@ -458,7 +458,7 @@ def titles_in_state(request, state, page_number=1, order='name_normal'):
     page_range_short = list(_page_range_short(paginator, page))
 
     return render_to_response(
-        'reports/state.html', dictionary=locals(), context_instance=RequestContext(request)
+        "reports/state.html", dictionary=locals(), context_instance=RequestContext(request)
     )
 
 
@@ -477,20 +477,20 @@ def title_essays(request, lccn):
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def awardees(request):
-    page_title = 'Awardees'
-    awardees = models.Awardee.objects.all().order_by('name')
+    page_title = "Awardees"
+    awardees = models.Awardee.objects.all().order_by("name")
     return render_to_response(
-        'reports/awardees.html', dictionary=locals(), context_instance=RequestContext(request)
+        "reports/awardees.html", dictionary=locals(), context_instance=RequestContext(request)
     )
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def awardee(request, institution_code):
     awardee = get_object_or_404(models.Awardee, org_code=institution_code)
-    page_title = 'Awardee: %s' % awardee.name
+    page_title = "Awardee: %s" % awardee.name
     batches = models.Batch.objects.filter(awardee=awardee)
     return render_to_response(
-        'reports/awardee.html', dictionary=locals(), context_instance=RequestContext(request)
+        "reports/awardee.html", dictionary=locals(), context_instance=RequestContext(request)
     )
 
 
@@ -502,17 +502,17 @@ def _search_engine_words(request):
     returned.
     """
     # get the refering url
-    referer = request.META.get('HTTP_REFERER')
+    referer = request.META.get("HTTP_REFERER")
     if not referer:
         return []
     uri = urlparse.urlparse(referer)
     qs = urlparse.parse_qs(uri.query)
 
     # extract a potential search query from refering url
-    if 'q' in qs:
-        words = qs['q'][0]
-    elif 'p' in qs:
-        words = qs['p'][0]
+    if "q" in qs:
+        words = qs["q"][0]
+    elif "p" in qs:
+        words = qs["p"][0]
     else:
         return []
 
@@ -520,7 +520,7 @@ def _search_engine_words(request):
     # match on the page. For example if we feed in 'buildings' we could get
     # ['building', 'buildings', 'BUILDING', 'Buildings'] depending
     # on the actual OCR for the page id that is passed in
-    words = words.split(' ')
+    words = words.split(" ")
     words = index.word_matches_for_page(request.path, words)
     return words
 
@@ -533,7 +533,7 @@ def page_ocr(request, lccn, date, edition, sequence):
     host = request.get_host()
     text = get_page_text(page)
     response = render_to_response(
-        'page_text.html', dictionary=locals(), context_instance=RequestContext(request)
+        "page_text.html", dictionary=locals(), context_instance=RequestContext(request)
     )
     return add_cache_tag(response, "lccn=%s" % lccn)
 
@@ -572,7 +572,7 @@ def page_ocr_txt(request, lccn, date, edition, sequence):
     except models.OCR.DoesNotExist:
         raise Http404("No OCR for %s" % page)
 
-    response = HttpResponse(text, content_type='text/plain')
+    response = HttpResponse(text, content_type="text/plain")
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
@@ -582,7 +582,7 @@ def page_rdf(request, lccn, date, edition, sequence):
     page = get_page(lccn, date, edition, sequence)
     graph = page_to_graph(page)
     response = HttpResponse(
-        graph.serialize(base=_rdf_base(request), include_base=True), content_type='application/rdf+xml'
+        graph.serialize(base=_rdf_base(request), include_base=True), content_type="application/rdf+xml"
     )
     return add_cache_tag(response, "lccn=%s" % lccn)
 
@@ -608,10 +608,10 @@ def page_print(request, lccn, date, edition, sequence, width, height, x1, y1, x2
         x2=x2,
         y2=y2,
     )
-    url = urlresolvers.reverse('chronam_page_print', kwargs=path_parts)
+    url = urlresolvers.reverse("chronam_page_print", kwargs=path_parts)
 
     response = render_to_response(
-        'page_print.html', dictionary=locals(), context_instance=RequestContext(request)
+        "page_print.html", dictionary=locals(), context_instance=RequestContext(request)
     )
     return add_cache_tag(response, "lccn=%s" % lccn)
 
@@ -634,11 +634,11 @@ def issues_first_pages(request, lccn, page_number=1):
         page = paginator.page(1)
     page_range_short = list(_page_range_short(paginator, page))
 
-    page_title = 'Browse Issues: %s' % label(title)
+    page_title = "Browse Issues: %s" % label(title)
     page_head_heading = "Browse Issues: %s" % title.display_name
     page_head_subheading = label(title)
     crumbs = create_crumbs(title)
     response = render_to_response(
-        'issue_pages.html', dictionary=locals(), context_instance=RequestContext(request)
+        "issue_pages.html", dictionary=locals(), context_instance=RequestContext(request)
     )
     return add_cache_tag(response, "lccn=%s" % lccn)
