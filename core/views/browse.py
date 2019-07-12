@@ -224,7 +224,7 @@ def page_words(request, lccn, date, edition, sequence, words=None):
     """
     warnings.warn('url with ";words=" was called which is deprecated!', category=DeprecationWarning)
 
-    path_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
+    path_parts = {"lccn": lccn, "date": date, "edition": edition, "sequence": sequence}
     url = urlresolvers.reverse("chronam_page", kwargs=path_parts)
     fragment = urlencode({"words": words})
     redirect = "%s?%s#%s" % (url, request.GET.urlencode(), fragment)
@@ -252,7 +252,7 @@ def page(request, lccn, date, edition, sequence):
         words = _search_engine_words(request)
         words = "+".join(words)
         if len(words) > 0:
-            path_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
+            path_parts = {"lccn": lccn, "date": date, "edition": edition, "sequence": sequence}
             url = "%s?%s#%s" % (
                 urlresolvers.reverse("chronam_page_words", kwargs=path_parts),
                 request.GET.urlencode(),
@@ -596,18 +596,18 @@ def page_print(request, lccn, date, edition, sequence, width, height, x1, y1, x2
     crumbs = create_crumbs(title, issue, date, edition, page)
     host = request.get_host()
     image_credit = page.issue.batch.awardee.name
-    path_parts = dict(
-        lccn=lccn,
-        date=date,
-        edition=edition,
-        sequence=sequence,
-        width=width,
-        height=height,
-        x1=x1,
-        y1=y1,
-        x2=x2,
-        y2=y2,
-    )
+    path_parts = {
+        "lccn": lccn,
+        "date": date,
+        "edition": edition,
+        "sequence": sequence,
+        "width": width,
+        "height": height,
+        "x1": x1,
+        "y1": y1,
+        "x2": x2,
+        "y2": y2,
+    }
     url = urlresolvers.reverse("chronam_page_print", kwargs=path_parts)
 
     response = render_to_response(
