@@ -185,14 +185,14 @@
             {% endif %}
 
             {% if title.urls.all %}
-            <dt>Related Links:</dt>
-            <dd>
-                <ul class="bullet_blue">
-                    {% for u in title.urls.all %}
-                    <li><a href="{{u.value}}">{{u.value}}</a></li>
-                    {% endfor %}
-                </ul>
-            </dd>
+                <dt>Related Links:</dt>
+                <dd>
+                    <ul class="bullet_blue">
+                        {% for u in title.urls.all %}
+                        <li><a href="{{u.value}}">{{u.value}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </dd>
             {% endif %}
 
             <dt>Holdings:</dt>
@@ -203,19 +203,19 @@
                 </a>
             </dd>
 
-            {% if title.first_issue.first_page.sequence or title.last_issue.first_page.sequence %}
-            <dt>View</dt>
-            <dd>
-                {% if title.first_issue.first_page.sequence %}
-                <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
-                <a href="{% url 'chronam_page' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page.sequence %}">First Issue</a>
-                {% endif %}
+            {% if first_page_of_first_issue.sequence or first_page_of_last_issue.sequence %}
+                <dt>View</dt>
+                <dd>
+                    {% if first_page_of_first_issue.sequence %}
+                        <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
+                        <a href="{% url 'chronam_page' title.lccn title.first_issue.date_issued title.first_issue.edition first_page_of_first_issue.sequence %}">First Issue</a>
+                    {% endif %}
 
-                {% if title.last_issue.first_page.sequence %}
-                <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
-                <a href="{% url 'chronam_page' title.lccn title.last_issue.date_issued title.last_issue.edition title.last_issue.first_page.sequence %}">Last Issue</a>
-                {% endif %}
-            </dd>
+                    {% if first_page_of_last_issue.sequence %}
+                        <img src="{% static 'img-std/i_arrow_o.gif' %}" width="9" height="9" alt=""/>
+                        <a href="{% url 'chronam_page' title.lccn title.last_issue.date_issued title.last_issue.edition first_page_of_last_issue.sequence %}">Last Issue</a>
+                    {% endif %}
+                </dd>
             {% endif %}
         </dl>
     </div><!-- end id:col2_left -->
@@ -224,40 +224,45 @@
 
     <div id="col2_about_right" class="span6">
         {% if title.has_issues %}
-        <div class="about_issue_right row">
-            <div class="frontpage span2">
-            {% if title.first_issue.first_page_with_image.jp2_filename and title.first_issue.first_page_with_image.sequence %}
-                <a href="{% url 'chronam_page' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page_with_image.sequence %}">
-                    <img class="thumbnail" src="{{ title.first_issue.first_page_with_image.thumb_url }}" alt="" />
-                </a>
-            {% else %}
-                Missing Page: {{explanation}}
-            {% endif %}
-            </div>
-            <div class="info span3">
-              <h3>{{title.display_name}}&nbsp;{{issue_date|date:"F j, Y"}}, Image {{title.first_issue.first_page.sequence}}</h3>
-              <h4 class="browse">Browse:</h4>
+            <div class="about_issue_right row">
+                <div class="frontpage span2">
+                    {% if first_page_with_image.jp2_filename and first_page_with_image.sequence %}
+                        <a href="{% url 'chronam_page' title.lccn title.first_issue.date_issued title.first_issue.edition first_page_with_image.sequence %}">
+                            <img class="thumbnail" src="{{ first_page_with_image.thumb_url }}" />
+                        </a>
+                    {% else %}
+                        Missing Page: {{ explanation }}
+                    {% endif %}
+                </div>
+                <div class="info span3">
+                    <h3>
+                        {{ title.display_name }}&nbsp;{{issue_date|date:"F j, Y"}}
+                        {% if first_page_of_first_issue %}
+                            , Image {{first_page_of_first_issue.sequence}}
+                        {% endif %}
+                    </h3>
+                    <h4 class="browse">Browse:</h4>
 
-              <p><a href="{% url 'chronam_issues' lccn %}" class="view_cal">Calendar View</a></p>
-              <p class="dot-top"><a href="{% url 'chronam_issues_first_pages' title.lccn %}">All front pages</a></p>
-              {% if title.first_issue.first_page.sequence %}
-              <p class="dot-top"><a href="{% url 'chronam_page' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page.sequence %}">First Issue</a>
-              &nbsp;|&nbsp;
-              {% endif %}
-              {% if title.last_issue.first_page.sequence %}
-              <a href="{% url 'chronam_page' title.lccn title.last_issue.date_issued title.last_issue.edition title.last_issue.first_page.sequence %}">Last Issue</a></p>
-              {% endif %}
+                    <p><a href="{% url 'chronam_issues' title.lccn %}" class="view_cal">Calendar View</a></p>
+                    <p class="dot-top"><a href="{% url 'chronam_issues_first_pages' title.lccn %}">All front pages</a></p>
+                    {% if first_page_of_first_issue.sequence %}
+                        <p class="dot-top"><a href="{% url 'chronam_page' title.lccn title.first_issue.date_issued title.first_issue.edition first_page_of_first_issue.sequence %}">First Issue</a>
+                        &nbsp;|&nbsp;
+                    {% endif %}
+                    {% if first_page_of_last_issue.sequence %}
+                        <a href="{% url 'chronam_page' title.lccn title.last_issue.date_issued title.last_issue.edition first_page_of_last_issue.sequence %}">Last Issue</a></p>
+                    {% endif %}
+                </div>
             </div>
-        </div>
         {% endif %}
         {% if first_essay %}
-        <div class="about_issue_more row">
-            <div class="span6">
-            <h4>{{first_essay.title}}</h4>
-            <p>{{first_essay.html|safe}}</p>
-            <p><em>Provided by: <a href="{% url 'chronam_awardee' first_essay.creator.org_code %}">{{ first_essay.creator }}</a></em></p>
-            </div>
-        </div><!-- end class:more -->
+            <div class="about_issue_more row">
+                <div class="span6">
+                <h4>{{first_essay.title}}</h4>
+                <p>{{first_essay.html|safe}}</p>
+                <p><em>Provided by: <a href="{% url 'chronam_awardee' first_essay.creator.org_code %}">{{ first_essay.creator }}</a></em></p>
+                </div>
+            </div><!-- end class:more -->
         {% endif %}
     </div><!-- end id:col2_right -->
 </div>

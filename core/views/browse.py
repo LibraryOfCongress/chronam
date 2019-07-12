@@ -19,7 +19,7 @@ from django.http import (
     HttpResponsePermanentRedirect,
     HttpResponseRedirect,
 )
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render, render_to_response
 from django.template import RequestContext
 from django.template.defaultfilters import filesizeformat
 from django.utils import html
@@ -340,40 +340,47 @@ def titles(request, start=None, page_number=1):
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def title(request, lccn):
-    title = get_object_or_404(models.Title, lccn=lccn)
-    page_title = "About %s" % label(title)
-    page_name = "title"
-    # we call these here, because the query the db, they are not
-    # cached by django's ORM, and we have some conditional logic
-    # in the template that would result in them getting called more
-    # than once. Short story: minimize database hits...
-    related_titles = title.related_titles()
-    succeeding_titles = title.succeeding_titles()
-    preceeding_titles = title.preceeding_titles()
-    profile_uri = "http://www.openarchives.org/ore/html/"
-    notes = []
-    has_external_link = False
+    title = get_object_or_404(
+        models.Title.objects.prefetch_related("subjects", "languages", "places", "publication_dates"),
+        lccn=lccn,
+    )
+
+    context = {
+        "title": title,
+        "page_title": "About %s" % label(title),
+        "page_name": "title",
+        "crumbs": create_crumbs(title),
+        "related_titles": title.related_titles(),
+        "succeeding_titles": title.succeeding_titles(),
+        "preceeding_titles": title.preceeding_titles(),
+    }
+
+    context["notes"] = notes = []
+
     for note in title.notes.all():
         org_text = html.escape(note.text)
         text = re.sub(r"(http(s)?://[^\s]+[^\.])", r'<a class="external" href="\1">\1</a>', org_text)
-        if text != org_text:
-            has_external_link = True
         notes.append(text)
 
     if title.has_issues:
-        rep_notes = title.first_issue.notes.filter(type="noteAboutReproduction")
-        num_notes = rep_notes.count()
-        if num_notes >= 1:
-            explanation = rep_notes[0].text
+        rep_note = title.first_issue.notes.filter(type="noteAboutReproduction").first()
+        if rep_note:
+            context["explanation"] = rep_note.text
 
     # adding essay info on this page if it exists
-    first_essay = title.first_essay
-    first_issue = title.first_issue
-    if first_issue:
-        issue_date = first_issue.date_issued
+    context["first_essay"] = title.first_essay
+    context["first_issue"] = first_issue = title.first_issue
 
-    crumbs = create_crumbs(title)
-    response = render_to_response("title.html", dictionary=locals(), context_instance=RequestContext(request))
+    if first_issue:
+        context["issue_date"] = first_issue.date_issued
+        context["first_page_with_image"] = first_issue.first_page_with_image
+        context["first_page_of_first_issue"] = title.first_issue.first_page
+
+    context["last_issue"] = last_issue = title.last_issue
+    if last_issue:
+        context["first_page_of_last_issue"] = last_issue.first_page
+
+    response = render(request, "title.html", context)
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
