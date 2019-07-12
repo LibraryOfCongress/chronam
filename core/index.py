@@ -4,7 +4,8 @@ from urllib import urlencode
 
 from django.conf import settings
 from django.core.paginator import InvalidPage, Page, Paginator
-from django.db import connection, reset_queries
+from django.db import reset_queries
+from django.db.models import Prefetch
 from more_itertools.more import sliced
 from solr import SolrConnection
 
@@ -571,37 +572,61 @@ def index_missing_pages():
     """
     index all pages that are missing from solr in the database
     """
-    solr = SolrConnection(settings.SOLR)
-    count = 0
-    pages = models.Page.objects.filter(indexed=False).all()
-    number_of_pages = len(pages)
-    for page in pages:
-        LOGGER.info("[%s of %s] indexing page: %s", count, number_of_pages, page.url)
-        solr.add(**page.solr_doc)
-        count += 1
-        page.indexed = True
-        page.save()
-    solr.commit()
+
+    index_pages(only_missing=True)
 
 
-def index_pages():
+def index_pages(only_missing=False):
     """index all the pages that are modeled in the database
     """
     solr = SolrConnection(settings.SOLR)
-    solr.delete_query("type:page")
-    cursor = connection.cursor()
-    cursor.execute("SELECT id FROM core_page")
+
+    pages = models.Page.objects.order_by("issue_id", "pk")
+
+    if only_missing:
+        pages = pages.filter(indexed=False)
+    else:
+        # FIXME: we should not churn the index when documents have not been deleted:
+        solr.delete_query("type:page")
+
+    pages = pages.prefetch_related(
+        Prefetch(
+            "issue",
+            queryset=models.Issue.objects.prefetch_related(
+                "batch",
+                "title",
+                "title__languages",
+                "title__alt_titles",
+                "title__subjects",
+                "title__notes",
+                "title__places",
+                "title__urls",
+                "title__essays",
+                "title__country",
+                "title__holdings",
+            ),
+        )
+    )
+
     count = 0
-    while True:
-        row = cursor.fetchone()
-        if row is None:
-            break
-        page = models.Page.objects.get(id=row[0])
-        LOGGER.info("[%s] indexing page: %s", count, page.url)
-        solr.add(**page.solr_doc)
-        count += 1
-        if count % 100 == 0:
-            reset_queries()
+    for chunk in sliced(pages, 100):
+        for page in chunk:
+            try:
+                solr.add(**page.solr_doc)
+            except EnvironmentError:
+                LOGGER.warning("Unable to index page %s", page.url, exc_info=True)
+                continue
+
+            models.Page.objects.filter(pk=page.pk).update(indexed=True)
+            LOGGER.debug("indexed page %s", page.url)
+
+        solr.commit()
+
+        count += len(chunk)
+
+        reset_queries()
+        LOGGER.info("indexed %d pages", count)
+
     solr.commit()
 
 
