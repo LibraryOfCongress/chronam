@@ -1068,7 +1068,7 @@ class Ethnicity(models.Model):
 
     @property
     def has_issues(self):
-        return self.titles_with_issues().count() > 0
+        return self.titles_with_issues().exists()
 
     def titles_with_issues(self):
         return self.titles().filter(has_issues=True)

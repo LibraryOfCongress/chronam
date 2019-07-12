@@ -121,10 +121,12 @@ def get_newspaper_info():
         languages_with_issues = sorted({(lang.code, lang.name) for lang in _languages})
 
         ethnicities_with_issues = []
-        for e in Ethnicity.objects.all():
-            # filter out a few ethnicities:
-            # https://rdc.lctl.gov/trac/chronam/ticket/724#comment:22
-            if e.has_issues and e.name not in ["African", "Canadian", "Welsh"]:
+
+        # filter out a few ethnicities:
+        # https://rdc.lctl.gov/trac/chronam/ticket/724#comment:22
+        excluded_names = ["African", "Canadian", "Welsh"]
+        for e in Ethnicity.objects.prefetch_related('synonyms'):
+            if e.name not in excluded_names and e.has_issues:
                 ethnicities_with_issues.append(e.name)
 
         info = {
