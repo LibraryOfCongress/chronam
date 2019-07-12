@@ -5,6 +5,7 @@ from urllib import urlencode
 from django.conf import settings
 from django.core.paginator import InvalidPage, Page, Paginator
 from django.db import connection, reset_queries
+from more_itertools.more import sliced
 from solr import SolrConnection
 
 from chronam.core import models
@@ -505,26 +506,38 @@ def index_titles(since=None):
     if you pass in a datetime object as the since parameter only title
     records that have been created since that time will be indexed.
     """
-    cursor = connection.cursor()
+
     solr = SolrConnection(settings.SOLR)
+
+    titles = models.Title.objects.all()
     if since:
-        cursor.execute("SELECT lccn FROM core_title WHERE created >= '%s'" % since)
-    else:
-        solr.delete_query("type:title")
-        cursor.execute("SELECT lccn FROM core_title")
+        titles = titles.filter(created__gte=since)
+
+    titles = titles.prefetch_related(
+        "languages", "alt_titles", "subjects", "notes", "places", "urls", "essays", "country", "holdings"
+    )
 
     count = 0
-    while True:
-        row = cursor.fetchone()
-        if row is None:
-            break
-        title = models.Title.objects.get(lccn=row[0])
-        index_title(title, solr)
-        count += 1
-        if count % 100 == 0:
-            LOGGER.info("indexed %s titles", count)
-            reset_queries()
-            solr.commit()
+
+    for chunk in sliced(titles, 500):
+        for title in chunk:
+            index_title(title, solr=solr)
+
+        reset_queries()
+        solr.commit()
+
+        count += len(chunk)
+        LOGGER.info("indexed %d titles", count)
+
+    lccns = set(models.Title.objects.values_list("lccn", flat=True))
+
+    for result in solr.query("+type:title", fields=["id", "lccn"]):
+        stale_id = result["id"]
+        lccn = result["lccn"]
+        if lccn not in lccns:
+            LOGGER.warning("Removing stale title %s from the search index", stale_id)
+            delete_title(stale_id, solr=solr)
+
     solr.commit()
 
 
@@ -532,7 +545,7 @@ def index_title(title, solr=None):
     if solr is None:
         solr = SolrConnection(settings.SOLR)
 
-    LOGGER.info("indexing title: lccn=%s", title.lccn)
+    LOGGER.debug("indexing title: lccn=%s", title.lccn)
 
     try:
         solr.add(**title.solr_doc)
@@ -540,9 +553,16 @@ def index_title(title, solr=None):
         LOGGER.exception("Unable to index title %s", title)
 
 
-def delete_title(title):
-    solr = SolrConnection(settings.SOLR)
-    q = "+type:title +id:%s" % title.solr_doc["id"]
+def delete_title(title, solr=None):
+    if not solr:
+        solr = SolrConnection(settings.SOLR)
+
+    if isinstance(title, models.Title):
+        title_id = title.url
+    else:
+        title_id = title
+
+    q = "+type:title +id:%s" % title_id
     solr.delete_query(q)
     LOGGER.info("deleted title %s from the index", title)
 
