@@ -685,18 +685,18 @@ class Page(models.Model):
 
     @cached_property
     def iiif_client(self):
-        if not settings.IIIF_IMAGE_BASE_URL:
+        if not settings.IIIF_IMAGE_BASE_URL or not self.jp2_abs_filename:
             return None
         else:
             return IIIFImageClient(
                 settings.IIIF_IMAGE_BASE_URL,
-                quote(os.path.join(self.issue.batch.name, 'data', self.jp2_filename), safe=""),
+                quote(os.path.join(self.issue.batch.name, "data", self.jp2_filename), safe=""),
             )
 
     @property
     def iiif_base_url(self):
         if self.iiif_client:
-            return '%s/%s/' % (self.iiif_client.api_endpoint, self.iiif_client.get_image_id())
+            return "%s/%s/" % (self.iiif_client.api_endpoint, self.iiif_client.get_image_id())
         else:
             return None
 
