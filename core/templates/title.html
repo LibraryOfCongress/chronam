@@ -228,7 +228,7 @@
             <div class="frontpage span2">
             {% if title.first_issue.first_page_with_image.jp2_filename and title.first_issue.first_page_with_image.sequence %}
                 <a href="{% url 'chronam_page' title.lccn title.first_issue.date_issued title.first_issue.edition title.first_issue.first_page_with_image.sequence %}">
-                    <img class="thumbnail" src="{{ page.thumb_url }}" alt="" />
+                    <img class="thumbnail" src="{{ title.first_issue.first_page_with_image.thumb_url }}" alt="" />
                 </a>
             {% else %}
                 Missing Page: {{explanation}}
