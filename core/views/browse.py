@@ -261,11 +261,7 @@ def page(request, lccn, date, edition, sequence):
             response = HttpResponseRedirect(url)
             return add_cache_tag(response, "lccn=%s" % lccn)
     except Exception as exc:
-        LOGGER.error(
-            "Failed to add search highlighting based on the referred search engine query: %s",
-            exc,
-            exc_info=True,
-        )
+        LOGGER.exception("Failed to add search highlighting based on the referred search engine query")
         if settings.DEBUG:
             raise
         # else squish the exception so the page will still get
