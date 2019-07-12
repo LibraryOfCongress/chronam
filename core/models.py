@@ -234,34 +234,22 @@ class Title(models.Model):
 
     @property
     def first_issue(self):
-        try:
-            return self.issues.order_by("date_issued")[0]
-        except IndexError:
-            return None
+        return self.issues.order_by("date_issued").first()
 
     def has_essays(self):
-        return self.essays.count() > 0
+        return self.essays.exists()
 
     @property
     def first_essay(self):
-        try:
-            return self.essays.all()[0]
-        except IndexError:
-            return None
+        return self.essays.all().first()
 
     @property
     def last_issue(self):
-        try:
-            return self.issues.order_by("-date_issued")[0]
-        except IndexError:
-            return None
+        return self.issues.order_by("-date_issued").first()
 
     @property
     def last_issue_released(self):
-        try:
-            return self.issues.order_by("-batch__released")[0]
-        except IndexError:
-            return None
+        return self.issues.order_by("-batch__released").first()
 
     @property
     def holding_types(self):
