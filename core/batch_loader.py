@@ -17,6 +17,7 @@ from datetime import datetime
 import simplejson as json
 from django.conf import settings
 from django.core import management
+from django.core.cache import cache
 from django.db import transaction
 from django.db.models import Q
 from lxml import etree
@@ -135,6 +136,7 @@ class BatchLoader(object):
         event.save()
 
         batch = None
+
         try:
             # build a Batch object for the batch location
             batch = self._get_batch(batch_name, batch_source, create=True)
@@ -197,6 +199,8 @@ class BatchLoader(object):
         if settings.IS_PRODUCTION:
             batch.released = datetime.now()
             batch.save()
+
+        cache.delete("newspaper_info")
 
         return batch
 
