@@ -37,7 +37,7 @@ django-admin.py collectstatic --noinput
 # load sample batch
 if [ ! -d $CHRONAM_HOME/data/batches/batch_uuml_thys_ver01 ]; then
     cd $CHRONAM_HOME/data/
-    wget --recursive --no-host-directories --cut-dirs 1 --reject index.html* --include-directories /data/batches/batch_uuml_thys_ver01/ http://chroniclingamerica.loc.gov/data/batches/batch_uuml_thys_ver01/
+    wget --recursive --no-host-directories --cut-dirs 1 --reject index.html* --include-directories /data/batches/batch_uuml_thys_ver01/ https://chroniclingamerica.loc.gov/data/batches/batch_uuml_thys_ver01/
 fi
 django-admin.py load_batch $CHRONAM_HOME/data/batches/batch_uuml_thys_ver01
 

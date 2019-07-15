@@ -94,7 +94,7 @@ def preprocess_input_file(file_path):
 
 def preprocess_public_feed():
     """
-    reads the public feed - http://chroniclingamerica.loc.gov/batches/feed/
+    reads the public feed - https://chroniclingamerica.loc.gov/batches/feed/
     and returns a dictionary of {batch name: released datetime}
     """
     LOGGER.info("processing public feed for released datetime")
