@@ -496,6 +496,8 @@ class BatchLoader(object):
         event = LoadBatchEvent(batch_name=batch_name, message="starting purge")
         event.save()
 
+        batch_name = _normalize_batch_name(batch_name)
+
         try:
             batch = self._get_batch(batch_name)
             self._purge_batch(batch)
