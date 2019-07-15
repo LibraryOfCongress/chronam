@@ -579,7 +579,7 @@ class Issue(models.Model):
         set to False when the last issue is deleted.
         """
         super(Issue, self).delete(*args, **kwargs)
-        if self.title.issues.all().count() == 0:
+        if not self.title.issues.exists() == 0:
             self.title.has_issues = False
             self.title.save()
 
