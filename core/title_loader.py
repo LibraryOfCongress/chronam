@@ -437,11 +437,13 @@ def _normal_place(value):
 
 
 def _normal_year(value):
-    if value is None:
+    if not isinstance(value, basestring):
+        raise TypeError("Expected %r to be None or a string" % value)
+    if value is None or not value.strip():
         return None
-    elif value == '9999':
-        return 'current'
-    return sub(r'u', '?', value)
+    elif value == "9999":
+        return "current"
+    return sub(r"u", "?", value)
 
 
 def _normal_lccn(value):
