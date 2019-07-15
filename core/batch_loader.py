@@ -162,7 +162,7 @@ class BatchLoader(object):
                 try:
                     issue, pages = self._load_issue(mets_url)
                 except ValueError as e:
-                    LOGGER.exception(e)
+                    LOGGER.exception("Unable to load issue from %s", mets_url)
                     continue
 
                 # commit new changes to the solr index, if we are indexing
@@ -190,9 +190,8 @@ class BatchLoader(object):
             event.save()
             try:
                 self.purge_batch(batch_name)
-            except Exception as pbe:
-                LOGGER.error("purge batch failed for failed load batch: %s", pbe)
-                LOGGER.exception(pbe)
+            except Exception:
+                LOGGER.exception("Unable to purge batch %s after loading failed", batch_name)
             raise BatchLoaderException(msg)
 
         if settings.IS_PRODUCTION:
@@ -285,18 +284,19 @@ class BatchLoader(object):
         for page_div in div.xpath('.//mets:div[@TYPE="np:page"]', namespaces=ns):
             try:
                 pages.append(self._load_page(doc, page_div, issue))
-            except BatchLoaderException as e:
-                LOGGER.error("Failed to load page. doc: %s, page div: %s, issue: %s", doc, page_div, issue)
-                LOGGER.exception(e)
+            except BatchLoaderException:
+                LOGGER.exception(
+                    "Failed to load page. doc: %s, page div: %s, issue: %s", doc, page_div, issue
+                )
 
         return issue, pages
 
     def _load_page(self, doc, div, issue):
-        dmdid = div.attrib['DMDID']
+        dmdid = div.attrib["DMDID"]
         mods = dmd_mods(doc, dmdid)
         page = Page()
 
-        seq_string = mods.xpath('string(.//mods:extent/mods:start)', namespaces=ns)
+        seq_string = mods.xpath("string(.//mods:extent/mods:start)", namespaces=ns)
         try:
             page.sequence = int(seq_string)
         except ValueError:
@@ -313,7 +313,7 @@ class BatchLoader(object):
                 reel.save()
                 page.reel = reel
             else:
-                LOGGER.warn("unable to find reel number in page metadata")
+                LOGGER.warning("unable to find reel number in page metadata")
 
         LOGGER.info("Assigned page sequence: %s", page.sequence)
 
@@ -417,9 +417,9 @@ class BatchLoader(object):
             try:
                 language = models.Language.objects.get(Q(code=lang) | Q(lingvoj__iendswith=lang))
             except models.Language.DoesNotExist:
-                LOGGER.warn("Language %s does not exist in the database. Defaulting to English.", lang)
+                LOGGER.warning("Language %s does not exist in the database. Defaulting to English.", lang)
                 # default to english as per requirement
-                language = models.Language.objects.get(code='eng')
+                language = models.Language.objects.get(code="eng")
             ocr.language_texts.create(language=language)
             lang_text_solr[language.code] = text
 
@@ -442,9 +442,8 @@ class BatchLoader(object):
         try:
             shutil.move(path, final_path)
         except Exception:
-            LOGGER.warn(
-                "Could not move coordinates to [%s]. Waiting 5 seconds and trying again in case of network mount",
-                final_path,
+            LOGGER.warning(
+                'Could not move coordinates to "%s". Waiting 5 seconds before trying again…', final_path
             )
             time.sleep(5)
             shutil.move(path, final_path)
@@ -465,9 +464,10 @@ class BatchLoader(object):
             for issue in batch.issues.all():
                 for page in issue.pages.all():
                     if not page.ocr_filename:
-                        LOGGER.warn(
-                            "Batch [%s] has page [%s] that has no OCR. Skipping processing coordinates for page."
-                            % (batch_name, page)
+                        LOGGER.warning(
+                            "Batch [%s] page [%s] has no OCR; skipping coordinates processing",
+                            batch_name,
+                            page,
                         )
                     else:
                         url = urlparse.urljoin(self.current_batch.storage_url, page.ocr_filename)
