@@ -570,8 +570,7 @@ class Issue(models.Model):
         """override the default save behavior to populate has_issues on title.
         this is an intentional denormalization to speed up some queries.
         """
-        self.title.has_issues = True
-        self.title.save()
+        Title.objects.filter(pk=self.title_id).update(has_issues=self.title.issues.exists())
         super(Issue, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
@@ -579,9 +578,7 @@ class Issue(models.Model):
         set to False when the last issue is deleted.
         """
         super(Issue, self).delete(*args, **kwargs)
-        if not self.title.issues.exists() == 0:
-            self.title.has_issues = False
-            self.title.save()
+        Title.objects.filter(pk=self.title_id).update(has_issues=self.title.issues.exists())
 
     def json(self, request, serialize=True, include_pages=True):
         j = {
