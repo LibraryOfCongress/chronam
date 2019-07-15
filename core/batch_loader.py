@@ -524,7 +524,7 @@ class BatchLoader(object):
         batch_name = batch.name
         # just delete batch causes memory to bloat out
         # so we do it piece-meal
-        for issue in batch.issues.all():
+        for issue in batch.issues.prefetch_related("pages__issue", "pages__issue__title"):
             for page in issue.pages.all():
                 page.delete()
                 # remove coordinates
