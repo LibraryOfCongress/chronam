@@ -259,10 +259,10 @@ class BatchLoader(object):
         lccn = mods.xpath('string(.//mods:identifier[@type="lccn"])', namespaces=ns).strip()
         try:
             title = Title.objects.get(lccn=lccn)
-        except Exception as e:
-            LOGGER.info("attempting to load marc record from %s", url)
-            management.call_command('load_titles', url)
+        except title.DoesNotExist:
             url = "https://chroniclingamerica.loc.gov/lccn/%s/marc.xml" % lccn
+            LOGGER.info("attempting to load MARC record from %s", url)
+            management.call_command("load_titles", url)
             title = Title.objects.get(lccn=lccn)
         issue.title = title
 
