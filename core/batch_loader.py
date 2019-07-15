@@ -493,13 +493,18 @@ class BatchLoader(object):
 
     @transaction.atomic
     def purge_batch(self, batch_name):
-        event = LoadBatchEvent(batch_name=batch_name, message="starting purge")
-        event.save()
-
         batch_name = _normalize_batch_name(batch_name)
 
         try:
             batch = self._get_batch(batch_name)
+        except Batch.DoesNotExist:
+            LOGGER.info("Batch %s does not exist", batch_name)
+            return
+
+        event = LoadBatchEvent(batch_name=batch_name, message="starting purge")
+        event.save()
+
+        try:
             self._purge_batch(batch)
             event = LoadBatchEvent(batch_name=batch_name, message="purged")
             event.save()
