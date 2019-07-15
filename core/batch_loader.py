@@ -28,13 +28,13 @@ from chronam.core.ocr_extractor import ocr_extractor
 
 # some xml namespaces used in batch metadata
 ns = {
-    'ndnp': 'http://www.loc.gov/ndnp',
-    'mods': 'http://www.loc.gov/mods/v3',
-    'mets': 'http://www.loc.gov/METS/',
-    'np': 'urn:library-of-congress:ndnp:mets:newspaper',
-    'xlink': 'http://www.w3.org/1999/xlink',
-    'mix': 'http://www.loc.gov/mix/',
-    'xhtml': 'http://www.w3.org/1999/xhtml',
+    "ndnp": "http://www.loc.gov/ndnp",
+    "mods": "http://www.loc.gov/mods/v3",
+    "mets": "http://www.loc.gov/METS/",
+    "np": "urn:library-of-congress:ndnp:mets:newspaper",
+    "xlink": "http://www.w3.org/1999/xlink",
+    "mix": "http://www.loc.gov/mix/",
+    "xhtml": "http://www.w3.org/1999/xhtml",
 }
 
 LOGGER = logging.getLogger(__name__)
@@ -42,7 +42,7 @@ LOGGER = logging.getLogger(__name__)
 
 def gzip_compress(data):
     bio = io.BytesIO()
-    f = gzip.GzipFile(mode='wb', fileobj=bio, compresslevel=9)
+    f = gzip.GzipFile(mode="wb", fileobj=bio, compresslevel=9)
     f.write(data)
     f.close()
     return bio.getvalue()
@@ -146,9 +146,9 @@ class BatchLoader(object):
             # parse the batch.xml and load up each issue mets file
             doc = etree.parse(batch.validated_batch_url)
 
-            for e in doc.xpath('ndnp:reel', namespaces=ns):
+            for e in doc.xpath("ndnp:reel", namespaces=ns):
 
-                reel_number = e.attrib['reelNumber'].strip()
+                reel_number = e.attrib["reelNumber"].strip()
 
                 try:
                     reel = models.Reel.objects.get(number=reel_number, batch=batch)
@@ -156,7 +156,7 @@ class BatchLoader(object):
                     reel = models.Reel(number=reel_number, batch=batch)
                     reel.save()
 
-            for e in doc.xpath('ndnp:issue', namespaces=ns):
+            for e in doc.xpath("ndnp:issue", namespaces=ns):
                 mets_url = urlparse.urljoin(batch.storage_url, e.text)
 
                 try:
@@ -215,7 +215,7 @@ class BatchLoader(object):
         batch.source = batch_source
         try:
             parts = batch_name.split("_", 3)
-            if len(parts) is 4:
+            if len(parts) == 4:
                 parts = parts[1:]
             awardee_org_code, name_part, version = parts
             batch.awardee = Awardee.objects.get(org_code=awardee_org_code)
@@ -232,7 +232,7 @@ class BatchLoader(object):
 
         # get the mods for the issue
         div = doc.xpath('.//mets:div[@TYPE="np:issue"]', namespaces=ns)[0]
-        dmdid = div.attrib['DMDID']
+        dmdid = div.attrib["DMDID"]
         mods = dmd_mods(doc, dmdid)
 
         # set up a new Issue
@@ -251,8 +251,8 @@ class BatchLoader(object):
         ).strip()
 
         # parse issue date
-        date_issued = mods.xpath('string(.//mods:dateIssued)', namespaces=ns)
-        issue.date_issued = datetime.strptime(date_issued, '%Y-%m-%d')
+        date_issued = mods.xpath("string(.//mods:dateIssued)", namespaces=ns)
+        issue.date_issued = datetime.strptime(date_issued, "%Y-%m-%d")
 
         # attach the Issue to the appropriate Title
         lccn = mods.xpath('string(.//mods:identifier[@type="lccn"])', namespaces=ns).strip()
@@ -270,10 +270,10 @@ class BatchLoader(object):
         LOGGER.debug("saved issue: %s", issue.url)
 
         notes = []
-        for mods_note in mods.xpath('.//mods:note', namespaces=ns):
-            type = mods_note.xpath('string(./@type)')
-            label = mods_note.xpath('string(./@displayLabel)')
-            text = mods_note.xpath('string(.)')
+        for mods_note in mods.xpath(".//mods:note", namespaces=ns):
+            type = mods_note.xpath("string(./@type)")
+            label = mods_note.xpath("string(./@displayLabel)")
+            text = mods_note.xpath("string(.)")
             note = models.IssueNote(type=type, label=label, text=text)
             notes.append(note)
         issue.notes = notes
@@ -335,10 +335,10 @@ class BatchLoader(object):
         page.save()
 
         notes = []
-        for mods_note in mods.xpath('.//mods:note', namespaces=ns):
-            type = mods_note.xpath('string(./@type)')
-            label = mods_note.xpath('string(./@displayLabel)')
-            text = mods_note.xpath('string(.)').strip()
+        for mods_note in mods.xpath(".//mods:note", namespaces=ns):
+            type = mods_note.xpath("string(./@type)")
+            label = mods_note.xpath("string(./@displayLabel)")
+            text = mods_note.xpath("string(.)").strip()
             note = models.PageNote(type=type, label=label, text=text)
             notes.append(note)
         page.notes = notes
@@ -349,23 +349,23 @@ class BatchLoader(object):
         # structmap and then use it to look up the file details in the
         # larger document.
 
-        for fptr in div.xpath('./mets:fptr', namespaces=ns):
-            file_id = fptr.attrib['FILEID']
+        for fptr in div.xpath("./mets:fptr", namespaces=ns):
+            file_id = fptr.attrib["FILEID"]
             file_el = doc.xpath('.//mets:file[@ID="%s"]' % file_id, namespaces=ns)[0]
-            file_type = file_el.attrib['USE']
+            file_type = file_el.attrib["USE"]
 
             # get the filename relative to the storage location
-            file_name = file_el.xpath('string(./mets:FLocat/@xlink:href)', namespaces=ns)
+            file_name = file_el.xpath("string(./mets:FLocat/@xlink:href)", namespaces=ns)
             file_name = urlparse.urljoin(doc.docinfo.URL, file_name)
             file_name = self.storage_relative_path(file_name)
 
-            if file_type == 'master':
+            if file_type == "master":
                 page.tiff_filename = file_name
-            elif file_type == 'service':
+            elif file_type == "service":
                 page.jp2_filename = file_name
                 try:
                     # extract image dimensions from technical metadata for jp2
-                    for admid in file_el.attrib['ADMID'].split(' '):
+                    for admid in file_el.attrib["ADMID"].split(" "):
                         length, width = get_dimensions(doc, admid)
                         if length and width:
                             page.jp2_width = width
@@ -382,9 +382,9 @@ class BatchLoader(object):
                     raise BatchLoaderException("No jp2 width for issue: %s page: %s" % (page.issue, page))
                 if not page.jp2_length:
                     raise BatchLoaderException("No jp2 length for issue: %s page: %s" % (page.issue, page))
-            elif file_type == 'derivative':
+            elif file_type == "derivative":
                 page.pdf_filename = file_name
-            elif file_type == 'ocr':
+            elif file_type == "ocr":
                 page.ocr_filename = file_name
 
         if page.ocr_filename:
@@ -431,9 +431,10 @@ class BatchLoader(object):
     def _process_coordinates(self, page, coords):
         LOGGER.debug("writing out word coords for %s", page.url)
 
-        fd, path = tempfile.mkstemp(
-            text="w", suffix=".coordinates", dir=settings.TEMP_STORAGE
-        )  # get a temp file in case the coordinates dir is a NFS or S3 mount which have poor multiple write performance
+        # We'll use a temporary file in case the coordinates dir is configured
+        # to a network filesystem which has poor update performance
+        # characteristics
+        fd, path = tempfile.mkstemp(text="w", suffix=".coordinates", dir=settings.TEMP_STORAGE)
         f = open(path, "w")
         f.write(gzip_compress(json.dumps(coords)))
         f.close()
@@ -483,7 +484,7 @@ class BatchLoader(object):
         """returns a relative path for a given file path within a batch, so
         that storage can be re-homed without having to rewrite paths in the db
         """
-        rel_path = path.replace(self.current_batch.storage_url, '')
+        rel_path = path.replace(self.current_batch.storage_url, "")
         return rel_path
 
     @transaction.atomic
@@ -541,18 +542,18 @@ def get_dimensions(doc, admid):
     admid
     """
     xpath = './/mets:techMD[@ID="%s"]/mets:mdWrap/mets:xmlData/mix:mix/mix:ImagingPerformanceAssessment/mix:SpatialMetrics/%s'
-    length = doc.xpath(xpath % (admid, 'mix:ImageLength'), namespaces=ns)
-    width = doc.xpath(xpath % (admid, 'mix:ImageWidth'), namespaces=ns)
+    length = doc.xpath(xpath % (admid, "mix:ImageLength"), namespaces=ns)
+    width = doc.xpath(xpath % (admid, "mix:ImageWidth"), namespaces=ns)
     if length and width:
         return length[0].text, width[0].text
     return None, None
 
 
 def _normalize_batch_name(batch_name):
-    batch_name = batch_name.rstrip('/')
+    batch_name = batch_name.rstrip("/")
     batch_name = os.path.basename(batch_name)
-    if not re.match(r'(batch_)?\w+_\w+_ver\d\d', batch_name):
-        msg = 'unrecognized format for batch name %s' % batch_name
+    if not re.match(r"(batch_)?\w+_\w+_ver\d\d", batch_name):
+        msg = "unrecognized format for batch name %s" % batch_name
         LOGGER.error(msg)
         raise BatchLoaderException(msg)
     return batch_name
