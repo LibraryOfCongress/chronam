@@ -318,6 +318,8 @@
     }
 
     function initPage() {
+        addSearchNav();
+
         page_url = $("#page_data").data("page_url");
         tile_url = $("#page_data").data("tile_url");
         iiif_url = $("#page_data").data("iiif-url");
@@ -327,7 +329,9 @@
         height = $("#page_data").data("height");
         static_url = $("#page_data").data("static_url");
 
-        addSearchNav();
+        if (!width || !height) {
+            return;
+        }
 
         var ts;
 

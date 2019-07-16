@@ -11,8 +11,8 @@
 
     <div id="page_data"
 	    data-static_url="{% static '' %}images/"
-	    data-width="{{ page.jp2_width }}"
-	    data-height="{{ page.jp2_length }}"
+	    data-width="{{ page.jp2_width|default_if_none:'' }}"
+	    data-height="{{ page.jp2_length|default_if_none:'' }}"
 	    data-page_url="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}"
 	    data-tile_url="{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}"
         data-iiif-url="{% if page.iiif_client %}{{ page.iiif_client.info }}{% endif %}"
