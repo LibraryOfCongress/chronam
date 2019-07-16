@@ -12,7 +12,7 @@ from django.http import Http404, HttpResponse, HttpResponseServerError
 
 from chronam.core import models
 from chronam.core.decorator import cors
-from chronam.core.utils.utils import get_page, add_cache_tag
+from chronam.core.utils.utils import add_cache_tag, get_page
 
 LOGGER = logging.getLogger(__name__)
 
@@ -74,7 +74,7 @@ def thumbnail(request, lccn, date, edition, sequence):
 def medium(request, lccn, date, edition, sequence):
     page = get_page(lccn, date, edition, sequence)
     try:
-        im = _get_resized_image(page, 550)
+        im = _get_resized_image(page, settings.THUMBNAIL_MEDIUM_WIDTH)
     except IOError as e:
         return HttpResponseServerError("Unable to create thumbnail: %s" % e)
     response = HttpResponse(content_type="image/jpeg")
@@ -84,13 +84,12 @@ def medium(request, lccn, date, edition, sequence):
 
 def page_image(request, lccn, date, edition, sequence, width, height):
     page = get_page(lccn, date, edition, sequence)
-    return page_image_tile(request, lccn, date, edition, sequence,
-                           width, height, 0, 0,
-                           page.jp2_width, page.jp2_length)
+    return page_image_tile(
+        request, lccn, date, edition, sequence, width, height, 0, 0, page.jp2_width, page.jp2_length
+    )
 
 
-def page_image_tile(request, lccn, date, edition, sequence,
-                    width, height, x1, y1, x2, y2):
+def page_image_tile(request, lccn, date, edition, sequence, width, height, x1, y1, x2, y2):
     page = get_page(lccn, date, edition, sequence)
     if 'download' in request.GET and request.GET['download']:
         response = HttpResponse(content_type="binary/octet-stream")

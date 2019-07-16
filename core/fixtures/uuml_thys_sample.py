@@ -6,8 +6,10 @@ including all its page and ocr models as a json fixture for testing purposes
 """
 
 import json
+
 from django.core import serializers
-from chronam.core.models import Title, Batch, OCR, Reel, LanguageText
+
+from chronam.core.models import OCR, Batch, LanguageText, Reel, Title
 
 TITLE_ID = "sn83045396"
 BATCH_NAME = "batch_uuml_thys_ver01"
@@ -30,4 +32,4 @@ data.extend(json.loads(j.serialize(OCR.objects.filter(page__issue=i))))
 data.extend(json.loads(j.serialize(LanguageText.objects.filter(ocr__page__issue=i))))
 
 # write out the collected objects
-open("uuml_thys_sample.json", "w").write(json.dumps(data, indent=2))
+open("uuml_thys_sample.json", "w").write(json.dumps(data))

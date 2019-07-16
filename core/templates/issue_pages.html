@@ -27,17 +27,18 @@
 <div class="search_results_body gallery issues">
     {% if page.object_list %}
     <table class="search_results" cellspacing="0" summary="">
-        <tr> 
+        <tr>
         {% for page in page.object_list %}
         {% url 'chronam_page' title.lccn page.issue.date_issued page.issue.edition page.sequence as url %}
             <td>
                 <div class="highlite">
                     <a href="{{url}}">
                     {% if page.jp2_filename %}
-                    <img src="{% url 'chronam_page_thumbnail' title.lccn page.issue.date_issued page.issue.edition page.sequence %}" alt="Thumbnail for {{page.number}}"/>
+                        <img src="{{ page.thumb_url }}" alt="Thumbnail for {{ page.number }}"/>
                     {% else %}
                         <div style="height: auto; margin-bottom: 3em;">
-                        No Image. {{page.noteAboutReproduction.text}}<br/>
+                            No Image. {{ page.noteAboutReproduction.text }}
+                            <br/>
                         </div>
                     {% endif %}
                     </a>

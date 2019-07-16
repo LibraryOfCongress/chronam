@@ -5,10 +5,15 @@ import re
 
 from django.conf import settings
 from django.core import urlresolvers
-from django.core.paginator import InvalidPage
+from django.core.paginator import EmptyPage, InvalidPage
 from django.db.models import Q
-from django.http import (HttpResponse, HttpResponseBadRequest,
-                         HttpResponseNotFound, HttpResponseRedirect,)
+from django.http import (
+    HttpResponse,
+    HttpResponseBadRequest,
+    HttpResponseNotFound,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from rfc3339 import rfc3339
@@ -43,6 +48,7 @@ def search_pages_results(request, view_type='gallery'):
     page_title = "Search Results"
     paginator = search_pages_paginator(request)
     q = paginator.query
+
     try:
         page = paginator.page(paginator._cur_page)
     except InvalidPage:
@@ -51,8 +57,9 @@ def search_pages_results(request, view_type='gallery'):
         q['page'] = 1
         return HttpResponseRedirect('%s?%s' % (url, q.urlencode()))
     except Exception as exc:
-        logging.error('Solr returned an error: %s', exc, exc_info=True,
-                      extra={'data': {'q': q, 'page': paginator._cur_page}})
+        logging.exception(
+            'Unable to paginate search results', extra={'data': {'q': q, 'page': paginator._cur_page}}
+        )
 
         if getattr(exc, 'httpcode', None) == 400:
             return HttpResponseBadRequest()
@@ -75,15 +82,17 @@ def search_pages_results(request, view_type='gallery'):
     crumbs = list(settings.BASE_CRUMBS)
 
     host = request.get_host()
-    format = request.GET.get('format')
-    if format == 'atom':
-        feed_url = 'http://' + host + request.get_full_path()
+    response_format = request.GET.get('format')
+    if response_format == 'atom':
+        feed_url = request.build_absolute_uri()
         updated = rfc3339(datetime.datetime.now())
-        return render_to_response('search_pages_results.xml',
-                                  dictionary=locals(),
-                                  context_instance=RequestContext(request),
-                                  content_type='application/atom+xml')
-    elif format == 'json':
+        return render_to_response(
+            'search_pages_results.xml',
+            dictionary=locals(),
+            context_instance=RequestContext(request),
+            content_type='application/atom+xml',
+        )
+    elif response_format == 'json':
         results = {
             'startIndex': start,
             'endIndex': end,
@@ -92,8 +101,8 @@ def search_pages_results(request, view_type='gallery'):
             'items': [p.solr_doc for p in page.object_list],
         }
         for i in results['items']:
-            i['url'] = 'http://' + request.get_host() + i['id'].rstrip('/') + '.json'
-        json_text = json.dumps(results, indent=2)
+            i['url'] = request.build_absolute_uri(i['id'].rstrip('/') + '.json')
+        json_text = json.dumps(results)
         # jsonp?
         callback = request.GET.get('callback')
         if callback and is_valid_jsonp_callback(callback):
@@ -177,17 +186,16 @@ def suggest_titles(request):
     titles = []
     descriptions = []
     urls = []
-    host = request.get_host()
 
     lccn_q = Q(lccn__startswith=q)
     title_q = Q(name_normal__startswith=q)
     for t in models.Title.objects.filter(lccn_q | title_q)[0:50]:
         titles.append(unicode(t))
         descriptions.append(t.lccn)
-        urls.append("http://" + host + t.url)
+        urls.append(request.build_absolute_uri(t.url))
 
     suggestions = [q, titles, descriptions, urls]
-    json_text = json.dumps(suggestions, indent=2)
+    json_text = json.dumps(suggestions)
     callback = request.GET.get("callback")
     if callback and is_valid_jsonp_callback(callback):
         json_text = "%s(%s);" % (callback, json_text)
@@ -207,16 +215,23 @@ def search_pages_navigation(request):
 
     search_url = urlresolvers.reverse('chronam_search_pages_results')
 
-    paginator = search_pages_paginator(request)
+    try:
+        paginator = search_pages_paginator(request)
+    except (EmptyPage, InvalidPage):
+        return HttpResponseBadRequest()
 
     search = {}
     search['total'] = paginator.count
     search['current'] = paginator.overall_index + 1  # current is 1-based
     search['results'] = search_url + '?' + paginator.query.urlencode()
-    search['previous_result'] = paginator.previous_result
-    search['next_result'] = paginator.next_result
 
-    return HttpResponse(json.dumps(search), content_type="application/json")
+    try:
+        search['previous_result'] = paginator.previous_result
+        search['next_result'] = paginator.next_result
+    except EmptyPage:
+        pass
+
+    return JsonResponse(search)
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)

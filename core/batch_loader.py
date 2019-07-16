@@ -17,25 +17,25 @@ from datetime import datetime
 import simplejson as json
 from django.conf import settings
 from django.core import management
+from django.core.cache import cache
 from django.db import transaction
 from django.db.models import Q
 from lxml import etree
 from solr import SolrConnection
 
 from chronam.core import models
-from chronam.core.models import (OCR, Awardee, Batch, Issue, LoadBatchEvent,
-                                 Page, Title,)
+from chronam.core.models import OCR, Awardee, Batch, Issue, LoadBatchEvent, Page, Title
 from chronam.core.ocr_extractor import ocr_extractor
 
 # some xml namespaces used in batch metadata
 ns = {
-    'ndnp': 'http://www.loc.gov/ndnp',
-    'mods': 'http://www.loc.gov/mods/v3',
-    'mets': 'http://www.loc.gov/METS/',
-    'np': 'urn:library-of-congress:ndnp:mets:newspaper',
-    'xlink': 'http://www.w3.org/1999/xlink',
-    'mix': 'http://www.loc.gov/mix/',
-    'xhtml': 'http://www.w3.org/1999/xhtml'
+    "ndnp": "http://www.loc.gov/ndnp",
+    "mods": "http://www.loc.gov/mods/v3",
+    "mets": "http://www.loc.gov/METS/",
+    "np": "urn:library-of-congress:ndnp:mets:newspaper",
+    "xlink": "http://www.w3.org/1999/xlink",
+    "mix": "http://www.loc.gov/mix/",
+    "xhtml": "http://www.w3.org/1999/xhtml",
 }
 
 LOGGER = logging.getLogger(__name__)
@@ -43,7 +43,7 @@ LOGGER = logging.getLogger(__name__)
 
 def gzip_compress(data):
     bio = io.BytesIO()
-    f = gzip.GzipFile(mode='wb', fileobj=bio, compresslevel=9)
+    f = gzip.GzipFile(mode="wb", fileobj=bio, compresslevel=9)
     f.write(data)
     f.close()
     return bio.getvalue()
@@ -70,7 +70,14 @@ class BatchLoader(object):
         available in a canonical location?
         """
         # look for batch_1.xml, BATCH_1.xml, etc
-        for alias in ["batch_1.xml", "BATCH_1.xml", "batchfile_1.xml", "batch_2.xml", "BATCH_2.xml", "batch.xml"]:
+        for alias in [
+            "batch_1.xml",
+            "BATCH_1.xml",
+            "batchfile_1.xml",
+            "batch_2.xml",
+            "BATCH_2.xml",
+            "batch.xml",
+        ]:
             # TODO: might we want 'batch.xml' first? Leaving last for now to
             # minimize impact.
             url = urlparse.urljoin(batch.storage_url, alias)
@@ -82,13 +89,15 @@ class BatchLoader(object):
                 continue
         else:
             raise BatchLoaderException(
-                "could not find batch_1.xml (or any of its aliases) in '%s' -- has the batch been validated?" % batch.path)
+                "could not find batch_1.xml (or any of its aliases) in '%s' -- has the batch been validated?"
+                % batch.path
+            )
         return validated_batch_file
 
     def _sanity_check_batch(self, batch):
         # if not os.path.exists(batch.path):
         #    raise BatchLoaderException("batch does not exist at %s" % batch.path)
-        #b = urllib2.urlopen(batch.url)
+        # b = urllib2.urlopen(batch.url)
         batch.validated_batch_file = self._find_batch_file(batch)
 
     def load_batch(self, batch_path, strict=True):
@@ -127,6 +136,7 @@ class BatchLoader(object):
         event.save()
 
         batch = None
+
         try:
             # build a Batch object for the batch location
             batch = self._get_batch(batch_name, batch_source, create=True)
@@ -138,24 +148,23 @@ class BatchLoader(object):
             # parse the batch.xml and load up each issue mets file
             doc = etree.parse(batch.validated_batch_url)
 
-            for e in doc.xpath('ndnp:reel', namespaces=ns):
+            for e in doc.xpath("ndnp:reel", namespaces=ns):
 
-                reel_number = e.attrib['reelNumber'].strip()
+                reel_number = e.attrib["reelNumber"].strip()
 
                 try:
-                    reel = models.Reel.objects.get(number=reel_number,
-                                                   batch=batch)
+                    reel = models.Reel.objects.get(number=reel_number, batch=batch)
                 except models.Reel.DoesNotExist as e:
                     reel = models.Reel(number=reel_number, batch=batch)
                     reel.save()
 
-            for e in doc.xpath('ndnp:issue', namespaces=ns):
+            for e in doc.xpath("ndnp:issue", namespaces=ns):
                 mets_url = urlparse.urljoin(batch.storage_url, e.text)
 
                 try:
                     issue, pages = self._load_issue(mets_url)
                 except ValueError as e:
-                    LOGGER.exception(e)
+                    LOGGER.exception("Unable to load issue from %s", mets_url)
                     continue
 
                 # commit new changes to the solr index, if we are indexing
@@ -183,14 +192,15 @@ class BatchLoader(object):
             event.save()
             try:
                 self.purge_batch(batch_name)
-            except Exception as pbe:
-                LOGGER.error("purge batch failed for failed load batch: %s", pbe)
-                LOGGER.exception(pbe)
+            except Exception:
+                LOGGER.exception("Unable to purge batch %s after loading failed", batch_name)
             raise BatchLoaderException(msg)
 
         if settings.IS_PRODUCTION:
             batch.released = datetime.now()
             batch.save()
+
+        cache.delete("newspaper_info")
 
         return batch
 
@@ -209,7 +219,7 @@ class BatchLoader(object):
         batch.source = batch_source
         try:
             parts = batch_name.split("_", 3)
-            if len(parts) is 4:
+            if len(parts) == 4:
                 parts = parts[1:]
             awardee_org_code, name_part, version = parts
             batch.awardee = Awardee.objects.get(org_code=awardee_org_code)
@@ -226,37 +236,36 @@ class BatchLoader(object):
 
         # get the mods for the issue
         div = doc.xpath('.//mets:div[@TYPE="np:issue"]', namespaces=ns)[0]
-        dmdid = div.attrib['DMDID']
+        dmdid = div.attrib["DMDID"]
         mods = dmd_mods(doc, dmdid)
 
         # set up a new Issue
         issue = Issue()
         issue.volume = mods.xpath(
-            'string(.//mods:detail[@type="volume"]/mods:number[1])',
-            namespaces=ns).strip()
+            'string(.//mods:detail[@type="volume"]/mods:number[1])', namespaces=ns
+        ).strip()
         issue.number = mods.xpath(
-            'string(.//mods:detail[@type="issue"]/mods:number[1])',
-            namespaces=ns).strip()
-        issue.edition = int(mods.xpath(
-            'string(.//mods:detail[@type="edition"]/mods:number[1])',
-            namespaces=ns))
+            'string(.//mods:detail[@type="issue"]/mods:number[1])', namespaces=ns
+        ).strip()
+        issue.edition = int(
+            mods.xpath('string(.//mods:detail[@type="edition"]/mods:number[1])', namespaces=ns)
+        )
         issue.edition_label = mods.xpath(
-            'string(.//mods:detail[@type="edition"]/mods:caption[1])',
-            namespaces=ns).strip()
+            'string(.//mods:detail[@type="edition"]/mods:caption[1])', namespaces=ns
+        ).strip()
 
         # parse issue date
-        date_issued = mods.xpath('string(.//mods:dateIssued)', namespaces=ns)
-        issue.date_issued = datetime.strptime(date_issued, '%Y-%m-%d')
+        date_issued = mods.xpath("string(.//mods:dateIssued)", namespaces=ns)
+        issue.date_issued = datetime.strptime(date_issued, "%Y-%m-%d")
 
         # attach the Issue to the appropriate Title
-        lccn = mods.xpath('string(.//mods:identifier[@type="lccn"])',
-                          namespaces=ns).strip()
+        lccn = mods.xpath('string(.//mods:identifier[@type="lccn"])', namespaces=ns).strip()
         try:
             title = Title.objects.get(lccn=lccn)
-        except Exception as e:
-            url = 'http://chroniclingamerica.loc.gov/lccn/%s/marc.xml' % lccn
-            LOGGER.info("attempting to load marc record from %s", url)
-            management.call_command('load_titles', url)
+        except title.DoesNotExist:
+            url = "https://chroniclingamerica.loc.gov/lccn/%s/marc.xml" % lccn
+            LOGGER.info("attempting to load MARC record from %s", url)
+            management.call_command("load_titles", url)
             title = Title.objects.get(lccn=lccn)
         issue.title = title
 
@@ -265,10 +274,10 @@ class BatchLoader(object):
         LOGGER.debug("saved issue: %s", issue.url)
 
         notes = []
-        for mods_note in mods.xpath('.//mods:note', namespaces=ns):
-            type = mods_note.xpath('string(./@type)')
-            label = mods_note.xpath('string(./@displayLabel)')
-            text = mods_note.xpath('string(.)')
+        for mods_note in mods.xpath(".//mods:note", namespaces=ns):
+            type = mods_note.xpath("string(./@type)")
+            label = mods_note.xpath("string(./@displayLabel)")
+            text = mods_note.xpath("string(.)")
             note = models.IssueNote(type=type, label=label, text=text)
             notes.append(note)
         issue.notes = notes
@@ -276,60 +285,48 @@ class BatchLoader(object):
 
         # attach pages: lots of logging because it's expensive
         pages = []
-        for page_div in div.xpath('.//mets:div[@TYPE="np:page"]',
-                                  namespaces=ns):
+        for page_div in div.xpath('.//mets:div[@TYPE="np:page"]', namespaces=ns):
             try:
                 pages.append(self._load_page(doc, page_div, issue))
-            except BatchLoaderException as e:
-                LOGGER.error("Failed to load page. doc: %s, page div: %s, issue: %s", doc, page_div, issue)
-                LOGGER.exception(e)
+            except BatchLoaderException:
+                LOGGER.exception(
+                    "Failed to load page. doc: %s, page div: %s, issue: %s", doc, page_div, issue
+                )
 
         return issue, pages
 
     def _load_page(self, doc, div, issue):
-        dmdid = div.attrib['DMDID']
+        dmdid = div.attrib["DMDID"]
         mods = dmd_mods(doc, dmdid)
         page = Page()
 
-        seq_string = mods.xpath(
-            'string(.//mods:extent/mods:start)', namespaces=ns)
+        seq_string = mods.xpath("string(.//mods:extent/mods:start)", namespaces=ns)
         try:
             page.sequence = int(seq_string)
         except ValueError:
             raise BatchLoaderException("could not determine sequence number for page from '%s'" % seq_string)
-        page.number = mods.xpath(
-            'string(.//mods:detail[@type="page number"])',
-            namespaces=ns
-        ).strip()
+        page.number = mods.xpath('string(.//mods:detail[@type="page number"])', namespaces=ns).strip()
 
-        reel_number = mods.xpath(
-            'string(.//mods:identifier[@type="reel number"])',
-            namespaces=ns
-        ).strip()
+        reel_number = mods.xpath('string(.//mods:identifier[@type="reel number"])', namespaces=ns).strip()
         try:
-            reel = models.Reel.objects.get(number=reel_number,
-                                           batch=self.current_batch)
+            reel = models.Reel.objects.get(number=reel_number, batch=self.current_batch)
             page.reel = reel
         except models.Reel.DoesNotExist:
             if reel_number:
-                reel = models.Reel(number=reel_number,
-                                   batch=self.current_batch,
-                                   implicit=True)
+                reel = models.Reel(number=reel_number, batch=self.current_batch, implicit=True)
                 reel.save()
                 page.reel = reel
             else:
-                LOGGER.warn("unable to find reel number in page metadata")
+                LOGGER.warning("unable to find reel number in page metadata")
 
         LOGGER.info("Assigned page sequence: %s", page.sequence)
 
-        _section_dmdid = div.xpath(
-            'string(ancestor::mets:div[@TYPE="np:section"]/@DMDID)',
-            namespaces=ns)
+        _section_dmdid = div.xpath('string(ancestor::mets:div[@TYPE="np:section"]/@DMDID)', namespaces=ns)
         if _section_dmdid:
             section_mods = dmd_mods(doc, _section_dmdid)
             section_label = section_mods.xpath(
-                'string(.//mods:detail[@type="section label"]/mods:number[1])',
-                namespaces=ns).strip()
+                'string(.//mods:detail[@type="section label"]/mods:number[1])', namespaces=ns
+            ).strip()
             if section_label:
                 page.section_label = section_label
 
@@ -342,10 +339,10 @@ class BatchLoader(object):
         page.save()
 
         notes = []
-        for mods_note in mods.xpath('.//mods:note', namespaces=ns):
-            type = mods_note.xpath('string(./@type)')
-            label = mods_note.xpath('string(./@displayLabel)')
-            text = mods_note.xpath('string(.)').strip()
+        for mods_note in mods.xpath(".//mods:note", namespaces=ns):
+            type = mods_note.xpath("string(./@type)")
+            label = mods_note.xpath("string(./@displayLabel)")
+            text = mods_note.xpath("string(.)").strip()
             note = models.PageNote(type=type, label=label, text=text)
             notes.append(note)
         page.notes = notes
@@ -356,40 +353,42 @@ class BatchLoader(object):
         # structmap and then use it to look up the file details in the
         # larger document.
 
-        for fptr in div.xpath('./mets:fptr', namespaces=ns):
-            file_id = fptr.attrib['FILEID']
-            file_el = doc.xpath('.//mets:file[@ID="%s"]' % file_id,
-                                namespaces=ns)[0]
-            file_type = file_el.attrib['USE']
+        for fptr in div.xpath("./mets:fptr", namespaces=ns):
+            file_id = fptr.attrib["FILEID"]
+            file_el = doc.xpath('.//mets:file[@ID="%s"]' % file_id, namespaces=ns)[0]
+            file_type = file_el.attrib["USE"]
 
             # get the filename relative to the storage location
-            file_name = file_el.xpath('string(./mets:FLocat/@xlink:href)',
-                                      namespaces=ns)
+            file_name = file_el.xpath("string(./mets:FLocat/@xlink:href)", namespaces=ns)
             file_name = urlparse.urljoin(doc.docinfo.URL, file_name)
             file_name = self.storage_relative_path(file_name)
 
-            if file_type == 'master':
+            if file_type == "master":
                 page.tiff_filename = file_name
-            elif file_type == 'service':
+            elif file_type == "service":
                 page.jp2_filename = file_name
                 try:
                     # extract image dimensions from technical metadata for jp2
-                    for admid in file_el.attrib['ADMID'].split(' '):
+                    for admid in file_el.attrib["ADMID"].split(" "):
                         length, width = get_dimensions(doc, admid)
                         if length and width:
                             page.jp2_width = width
                             page.jp2_length = length
                             break
                 except KeyError:
-                    LOGGER.info("Could not determine dimensions of jp2 for issue: %s page: %s... trying harder...", page.issue, page)
+                    LOGGER.info(
+                        "Could not determine dimensions of jp2 for issue: %s page: %s... trying harder...",
+                        page.issue,
+                        page,
+                    )
 
                 if not page.jp2_width:
                     raise BatchLoaderException("No jp2 width for issue: %s page: %s" % (page.issue, page))
                 if not page.jp2_length:
                     raise BatchLoaderException("No jp2 length for issue: %s page: %s" % (page.issue, page))
-            elif file_type == 'derivative':
+            elif file_type == "derivative":
                 page.pdf_filename = file_name
-            elif file_type == 'ocr':
+            elif file_type == "ocr":
                 page.ocr_filename = file_name
 
         if page.ocr_filename:
@@ -407,8 +406,7 @@ class BatchLoader(object):
     def process_ocr(self, page):
         LOGGER.debug("extracting ocr text and word coords for %s", page.url)
 
-        url = urlparse.urljoin(self.current_batch.storage_url,
-                               page.ocr_filename)
+        url = urlparse.urljoin(self.current_batch.storage_url, page.ocr_filename)
 
         lang_text, coords = ocr_extractor(url)
 
@@ -423,9 +421,9 @@ class BatchLoader(object):
             try:
                 language = models.Language.objects.get(Q(code=lang) | Q(lingvoj__iendswith=lang))
             except models.Language.DoesNotExist:
-                LOGGER.warn("Language %s does not exist in the database. Defaulting to English.", lang)
+                LOGGER.warning("Language %s does not exist in the database. Defaulting to English.", lang)
                 # default to english as per requirement
-                language = models.Language.objects.get(code='eng')
+                language = models.Language.objects.get(code="eng")
             ocr.language_texts.create(language=language)
             lang_text_solr[language.code] = text
 
@@ -437,7 +435,10 @@ class BatchLoader(object):
     def _process_coordinates(self, page, coords):
         LOGGER.debug("writing out word coords for %s", page.url)
 
-        fd, path = tempfile.mkstemp(text="w", suffix=".coordinates", dir=settings.TEMP_STORAGE)  # get a temp file in case the coordinates dir is a NFS or S3 mount which have poor multiple write performance
+        # We'll use a temporary file in case the coordinates dir is configured
+        # to a network filesystem which has poor update performance
+        # characteristics
+        fd, path = tempfile.mkstemp(text="w", suffix=".coordinates", dir=settings.TEMP_STORAGE)
         f = open(path, "w")
         f.write(gzip_compress(json.dumps(coords)))
         f.close()
@@ -446,7 +447,9 @@ class BatchLoader(object):
         try:
             shutil.move(path, final_path)
         except Exception:
-            LOGGER.warn("Could not move coordinates to [%s]. Waiting 5 seconds and trying again in case of network mount", final_path)
+            LOGGER.warning(
+                'Could not move coordinates to "%s". Waiting 5 seconds before trying again…', final_path
+            )
             time.sleep(5)
             shutil.move(path, final_path)
 
@@ -466,10 +469,13 @@ class BatchLoader(object):
             for issue in batch.issues.all():
                 for page in issue.pages.all():
                     if not page.ocr_filename:
-                        LOGGER.warn("Batch [%s] has page [%s] that has no OCR. Skipping processing coordinates for page." % (batch_name, page))
+                        LOGGER.warning(
+                            "Batch [%s] page [%s] has no OCR; skipping coordinates processing",
+                            batch_name,
+                            page,
+                        )
                     else:
-                        url = urlparse.urljoin(self.current_batch.storage_url,
-                                               page.ocr_filename)
+                        url = urlparse.urljoin(self.current_batch.storage_url, page.ocr_filename)
                         LOGGER.debug("Extracting OCR from url %s", url)
                         lang_text, coords = ocr_extractor(url)
                         self._process_coordinates(page, coords)
@@ -482,16 +488,23 @@ class BatchLoader(object):
         """returns a relative path for a given file path within a batch, so
         that storage can be re-homed without having to rewrite paths in the db
         """
-        rel_path = path.replace(self.current_batch.storage_url, '')
+        rel_path = path.replace(self.current_batch.storage_url, "")
         return rel_path
 
     @transaction.atomic
     def purge_batch(self, batch_name):
+        batch_name = _normalize_batch_name(batch_name)
+
+        try:
+            batch = self._get_batch(batch_name)
+        except Batch.DoesNotExist:
+            LOGGER.info("Batch %s does not exist", batch_name)
+            return
+
         event = LoadBatchEvent(batch_name=batch_name, message="starting purge")
         event.save()
 
         try:
-            batch = self._get_batch(batch_name)
             self._purge_batch(batch)
             event = LoadBatchEvent(batch_name=batch_name, message="purged")
             event.save()
@@ -511,7 +524,7 @@ class BatchLoader(object):
         batch_name = batch.name
         # just delete batch causes memory to bloat out
         # so we do it piece-meal
-        for issue in batch.issues.all():
+        for issue in batch.issues.prefetch_related("pages__issue", "pages__issue__title"):
             for page in issue.pages.all():
                 page.delete()
                 # remove coordinates
@@ -540,18 +553,18 @@ def get_dimensions(doc, admid):
     admid
     """
     xpath = './/mets:techMD[@ID="%s"]/mets:mdWrap/mets:xmlData/mix:mix/mix:ImagingPerformanceAssessment/mix:SpatialMetrics/%s'
-    length = doc.xpath(xpath % (admid, 'mix:ImageLength'), namespaces=ns)
-    width = doc.xpath(xpath % (admid, 'mix:ImageWidth'), namespaces=ns)
+    length = doc.xpath(xpath % (admid, "mix:ImageLength"), namespaces=ns)
+    width = doc.xpath(xpath % (admid, "mix:ImageWidth"), namespaces=ns)
     if length and width:
         return length[0].text, width[0].text
     return None, None
 
 
 def _normalize_batch_name(batch_name):
-    batch_name = batch_name.rstrip('/')
+    batch_name = batch_name.rstrip("/")
     batch_name = os.path.basename(batch_name)
-    if not re.match(r'(batch_)?\w+_\w+_ver\d\d', batch_name):
-        msg = 'unrecognized format for batch name %s' % batch_name
+    if not re.match(r"(batch_)?\w+_\w+_ver\d\d", batch_name):
+        msg = "unrecognized format for batch name %s" % batch_name
         LOGGER.error(msg)
         raise BatchLoaderException(msg)
     return batch_name

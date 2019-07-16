@@ -5,7 +5,6 @@ import os
 import sys
 
 from django.conf import settings
-
 from worldcat.request.search import SRURequest
 from worldcat.util.extract import extract_elements
 
@@ -27,7 +26,6 @@ COUNTRIES = (
     'guam',
     '*northern mariana*',
     'american samoa',
-
     # According to MARC states are also countries
     'Alabama',
     'Alaska',
@@ -82,13 +80,7 @@ COUNTRIES = (
 )
 
 # operate map is used in passing the operator to the output file.
-OPERATOR_MAP = {
-    '=': 'e',
-    '<=': 'lte',
-    '>=': 'gte',
-    '>': 'gt',
-    '<': 'lt',
-}
+OPERATOR_MAP = {'=': 'e', '<=': 'lte', '>=': 'gte', '>': 'gt', '<': 'lt'}
 
 
 def str_value(value):
@@ -159,7 +151,7 @@ class TitlePuller(object):
             end = now.year
             year_and_action[str(end)] = '>='
 
-        for year in (range(start + 1, end) + special_yr_cases):
+        for year in range(start + 1, end) + special_yr_cases:
             year_and_action[str(year)] = '='
 
         # example if start & end are passed:
@@ -195,19 +187,29 @@ class TitlePuller(object):
         '''
 
         LOGGER.debug("The query for OCLC is '%s'" % query)
-        bib_rec = SRURequest(wskey=WSKEY,
-                             sortKeys=sortkeys,
-                             recordSchema=recordschema,
-                             recordPacking=recordpacking,
-                             servicelevel=servicelevel,
-                             query=query,
-                             startRecord=1,
-                             maximumRecords=MAX_RECORDS,
-                             frbrGrouping=frbrgrouping)
+        bib_rec = SRURequest(
+            wskey=WSKEY,
+            sortKeys=sortkeys,
+            recordSchema=recordschema,
+            recordPacking=recordpacking,
+            servicelevel=servicelevel,
+            query=query,
+            startRecord=1,
+            maximumRecords=MAX_RECORDS,
+            frbrGrouping=frbrgrouping,
+        )
         return bib_rec
 
-    def generate_requests(self, lccn=None, oclc=None, raw_query=raw_query, countries=COUNTRIES,
-                          start=None, end=None, totals_only=False):
+    def generate_requests(
+        self,
+        lccn=None,
+        oclc=None,
+        raw_query=raw_query,
+        countries=COUNTRIES,
+        start=None,
+        end=None,
+        totals_only=False,
+    ):
         '''
         Generate request(s) is a function that generates a set of requests
         to be executed against the OCLC API. A set of requests can be
@@ -246,8 +248,7 @@ class TitlePuller(object):
                     cntry_count = self.initial_total_count(cntry_req)
                     request_able = self.check_for_doable_bulk_request(cntry_count)
 
-                    LOGGER.info("%s request totals: %s" % (country.title(),
-                                                           cntry_count))
+                    LOGGER.info("%s request totals: %s" % (country.title(), cntry_count))
 
                 if request_able == 0:
                     # There is no valid requests at all. So, we exit.
@@ -255,9 +256,7 @@ class TitlePuller(object):
                 elif request_able:
                     # If we can pull the whole country at once, we will
                     # otherwise we break it up into multiple requests.
-                    bibs_to_req.append((cntry_req, request_able, (
-                                        country.strip('*'), 'all-yrs', '='
-                                        )))
+                    bibs_to_req.append((cntry_req, request_able, (country.strip('*'), 'all-yrs', '=')))
                     total += request_able
                 else:
                     # generate split requests by year
@@ -272,13 +271,14 @@ class TitlePuller(object):
                         yr_count = self.initial_total_count(yr_request)
                         yr_request_able = self.check_for_doable_bulk_request(yr_count)
 
-                        LOGGER.info("%s - %s %s total: %s" % (
-                            country.title(), year, operator, yr_request_able))
+                        LOGGER.info(
+                            "%s - %s %s total: %s" % (country.title(), year, operator, yr_request_able)
+                        )
 
                         if yr_request_able or year == str(datetime.datetime.now().year):
-                            bibs_to_req.append((yr_request, yr_request_able, (
-                                                country.strip('*'), year, operator
-                                                )))
+                            bibs_to_req.append(
+                                (yr_request, yr_request_able, (country.strip('*'), year, operator))
+                            )
                             total += yr_request_able
                         else:
                             LOGGER.warning("There is a problem with request. Exiting.")
@@ -318,8 +318,9 @@ class TitlePuller(object):
                 # grab xml
                 bib_resp = bib_request.get_response()
                 # identify the xml field of next record number from the xml
-                next_record = extract_elements(bib_request.response,
-                                               element='{http://www.loc.gov/zing/srw/}nextRecordPosition')
+                next_record = extract_elements(
+                    bib_request.response, element='{http://www.loc.gov/zing/srw/}nextRecordPosition'
+                )
 
                 # grab the text from next_record to get the actual value
                 try:
@@ -388,7 +389,10 @@ class TitlePuller(object):
         The API could misfire when requesting more than 10k, so we make sure that are requests aren't that large.
         '''
         if not test_totals:
-            LOGGER.error("The total is %s but should be a integer. Check the query to make sure API isn't broken." % test_totals)
+            LOGGER.error(
+                "The total is %s but should be a integer. Check the query to make sure API isn't broken."
+                % test_totals
+            )
             return None
         else:
             # check that the request is managable.
@@ -400,8 +404,7 @@ class TitlePuller(object):
         LOGGER.warning("The total [%s] is > 10,000 and a split needs to occur" % total)
         return None
 
-    def run(self, save_path, lccn=None, oclc=None,
-            start=None, end=None, countries=COUNTRIES):
+    def run(self, save_path, lccn=None, oclc=None, start=None, end=None, countries=COUNTRIES):
         '''
         Function that runs a search against the WorldCat Search API
 
@@ -430,8 +433,7 @@ class TitlePuller(object):
         # Default runs query at the top of the file.
         # If lccn, then it pulls only that lccn, otherwise it will do
         # a bulk download of titles.
-        bib_requests = self.generate_requests(lccn=lccn, oclc=oclc,
-                                              start=start, end=end, countries=countries)
+        bib_requests = self.generate_requests(lccn=lccn, oclc=oclc, start=start, end=end, countries=countries)
         files_saved = self.grab_content(save_path, bib_requests)
 
         return files_saved

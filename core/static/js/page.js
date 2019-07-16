@@ -3,14 +3,41 @@
 (function($) {
     var page_url;
     var tile_url;
+    var iiif_url;
     var coordinates_url;
     var navigation_url;
     var width;
     var height;
     var static_url;
+    var printButtonConfigured = false;
 
-    function fullscreen(viewer) {
-        if (viewer.isFullPage()) {
+    function checkPrintButtonHander() {
+        // We're effectively racing the LOCShare code which is loaded asynchronously
+        // using a convoluted system which does not fire an event when it's completed
+        // and waits until after all page resources have been loaded before triggering. We'll
+
+        if (!printButtonConfigured) {
+            var $pb = $(".locshare-print-button a");
+
+            if ($pb.length > 0) {
+                $(".locshare-print-button a").attr(
+                    "href",
+                    $("#clip").attr("href")
+                );
+
+                $pb.off("click").on("click", function(event) {
+                    event.stopImmediatePropagation();
+                    window.open(this.href, "print");
+                    return false;
+                });
+
+                printButtonConfigured = true;
+            }
+        }
+    }
+
+    function fullscreen(event) {
+        if (event.eventSource.isFullPage()) {
             $.bbq.pushState({ fullscreen: true });
             rewritePagingLinks();
         } else {
@@ -42,7 +69,8 @@
         }
     }
 
-    function resizePrint(viewer) {
+    function resizePrint(event) {
+        var viewer = event.eventSource;
         var image = viewer.source;
         var zoom = viewer.viewport.getZoom();
         var size = new OpenSeadragon.Rect(
@@ -85,12 +113,8 @@
             "," +
             scaledBox.getBottomRight().y;
         $("#clip").attr("href", dimension);
-        $(".locshare-print-button")
-            .find("a:first")
-            .attr("href", dimension)
-            .click(function() {
-                window.open($(this).attr("href"), "print");
-            });
+        $(".locshare-print-button a").attr("href", dimension);
+        checkPrintButtonHander();
     }
 
     function fitWithinBoundingBox(d, max) {
@@ -153,7 +177,8 @@
         viewer.drawer.addOverlay(div, rect);
     }
 
-    function addOverlays(viewer) {
+    function addOverlays(event) {
+        var viewer = event.eventSource;
         var params = $.deparam.fragment();
         var words = params["words"] || "";
 
@@ -215,22 +240,40 @@
         var tile_width = Math.min(parseInt(sx), x2 - x1);
         var tile_height = Math.min(parseInt(sy), y2 - y1);
 
-        return (
-            tile_url +
-            "image_" +
-            tile_width +
-            "x" +
-            tile_height +
-            "_from_" +
-            x1 +
-            "," +
-            y1 +
-            "_to_" +
-            x2 +
-            "," +
-            y2 +
-            ".jpg"
-        );
+        if (iiif_url) {
+            return (
+                iiif_url +
+                x1 +
+                "," +
+                y1 +
+                "," +
+                (x2 - x1) +
+                "," +
+                (y2 - y1) +
+                "/" +
+                tile_width +
+                "," +
+                tile_height +
+                "/0/default.jpg"
+            );
+        } else {
+            return (
+                tile_url +
+                "image_" +
+                tile_width +
+                "x" +
+                tile_height +
+                "_from_" +
+                x1 +
+                "," +
+                y1 +
+                "_to_" +
+                x2 +
+                "," +
+                y2 +
+                ".jpg"
+            );
+        }
     }
 
     function updateSearchNav(data) {
@@ -275,35 +318,45 @@
     }
 
     function initPage() {
+        addSearchNav();
+
         page_url = $("#page_data").data("page_url");
         tile_url = $("#page_data").data("tile_url");
+        iiif_url = $("#page_data").data("iiif-url");
         coordinates_url = $("#page_data").data("coordinates_url");
         navigation_url = $("#page_data").data("navigation_url");
         width = $("#page_data").data("width");
         height = $("#page_data").data("height");
         static_url = $("#page_data").data("static_url");
 
-        var viewer = null;
-        addSearchNav();
+        if (!width || !height) {
+            return;
+        }
 
-        var tileSize = 512;
-        var tileOverlap = 1;
-        var minLevel = 8;
-        var maxLevel = Math.ceil(
-            Math.log(Math.max(width, height)) / Math.log(2)
-        );
+        var ts;
 
-        var ts = new OpenSeadragon.TileSource(
-            width,
-            height,
-            tileSize,
-            tileOverlap,
-            minLevel,
-            maxLevel
-        );
-        ts.getTileUrl = getTileUrl;
+        if (iiif_url) {
+            ts = [iiif_url];
+        } else {
+            var tileSize = 512;
+            var tileOverlap = 1;
+            var minLevel = 8;
+            var maxLevel = Math.ceil(
+                Math.log(Math.max(width, height)) / Math.log(2)
+            );
 
-        viewer = new OpenSeadragon.Viewer({
+            ts = new OpenSeadragon.TileSource(
+                width,
+                height,
+                tileSize,
+                tileOverlap,
+                minLevel,
+                maxLevel
+            );
+            ts.getTileUrl = getTileUrl;
+        }
+
+        var viewer = new OpenSeadragon.Viewer({
             id: "viewer_container",
             toolbar: "item-ctrl",
             prefixUrl: static_url,
@@ -316,7 +369,7 @@
 
         viewer.addHandler("open", addOverlays);
         viewer.addHandler("open", resizePrint);
-        viewer.addHandler("animationfinish", resizePrint);
+        viewer.addHandler("animation-finish", resizePrint);
         viewer.addHandler("resize", fullscreen);
 
         if ($.bbq.getState("fullscreen")) {
@@ -340,5 +393,6 @@
             }
         });
     }
+
     $(initPage);
 })(jQuery);

@@ -12,12 +12,10 @@ from django.utils.encoding import smart_str
 from rfc3339 import rfc3339
 
 from chronam.core import index, models
-from chronam.core.decorator import (add_cache_headers, cors, opensearch_clean,
-                                    rdf_view,)
+from chronam.core.decorator import add_cache_headers, cors, opensearch_clean, rdf_view
 from chronam.core.rdf import titles_to_graph
 from chronam.core.utils.url import unpack_url_path
-from chronam.core.utils.utils import (_page_range_short, _rdf_base,
-                                      is_valid_jsonp_callback)
+from chronam.core.utils.utils import _page_range_short, _rdf_base, is_valid_jsonp_callback
 
 
 @add_cache_headers(settings.METADATA_TTL_SECONDS)
@@ -68,7 +66,7 @@ def newspapers(request, state=None, format='html'):
             pass
 
     _newspapers_by_state = {}
-    for title in titles:
+    for title in titles.prefetch_related('places'):
         if state:
             _newspapers_by_state.setdefault(state, set()).add(title)
         else:
@@ -100,30 +98,38 @@ def newspapers(request, state=None, format='html'):
         writer.writerow(csv_header_labels)
         for state, titles in newspapers_by_state:
             for title in titles:
-                writer.writerow(('http://%s%s' % (request.get_host(),
-                                                  reverse('chronam_issues',
-                                                          kwargs={'lccn': title.lccn}),),
-                                 state, title, title.lccn or '', title.oclc or '',
-                                 title.issn or '', title.issues.count(), title.first,
-                                 title.last,
-                                 'http://%s%s' % (request.get_host(),
-                                                  reverse('chronam_title_essays',
-                                                          kwargs={'lccn': title.lccn}),),))
+                writer.writerow(
+                    (
+                        request.build_absolute_uri(reverse('chronam_issues', kwargs={'lccn': title.lccn})),
+                        state,
+                        title,
+                        title.lccn or '',
+                        title.oclc or '',
+                        title.issn or '',
+                        title.issues.count(),
+                        title.first,
+                        title.last,
+                        request.build_absolute_uri(
+                            reverse('chronam_title_essays', kwargs={'lccn': title.lccn})
+                        ),
+                    )
+                )
         return response
 
     elif format == "json":
-        host = request.get_host()
         results = {"newspapers": []}
         for state, titles in newspapers_by_state:
             for title in titles:
-                results["newspapers"].append({
-                    "lccn": title.lccn,
-                    "title": title.display_name,
-                    "url": "http://" + host + title.json_url,
-                    "state": state
-                })
+                results["newspapers"].append(
+                    {
+                        "lccn": title.lccn,
+                        "title": title.display_name,
+                        "url": request.build_absolute_uri(title.json_url),
+                        "state": state,
+                    }
+                )
 
-        return HttpResponse(json.dumps(results, indent=2), content_type='application/json')
+        return HttpResponse(json.dumps(results), content_type='application/json')
     else:
         return HttpResponseServerError("unsupported format: %s" % format)
 
@@ -216,12 +222,14 @@ def search_titles_results(request):
         page_list.append((page_start, page.object_list[p]))
 
     if format == 'atom':
-        feed_url = 'http://' + host + request.get_full_path()
+        feed_url = request.build_absolute_uri()
         updated = rfc3339(datetime.datetime.now())
-        return render_to_response('search_titles_results.xml',
-                                  dictionary=locals(),
-                                  context_instance=RequestContext(request),
-                                  content_type='application/atom+xml')
+        return render_to_response(
+            'search_titles_results.xml',
+            dictionary=locals(),
+            context_instance=RequestContext(request),
+            content_type='application/atom+xml',
+        )
 
     elif format == 'json':
         results = {
@@ -233,8 +241,8 @@ def search_titles_results(request):
         }
         # add url for the json view
         for i in results['items']:
-            i['url'] = 'http://' + request.get_host() + i['id'].rstrip("/") + ".json"
-        json_text = json.dumps(results, indent=2)
+            i['url'] = request.build_absolute_uri(i['id'].rstrip("/") + ".json")
+        json_text = json.dumps(results)
         # jsonp?
         callback = request.GET.get('callback')
         if callback and is_valid_jsonp_callback(callback):

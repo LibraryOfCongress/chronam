@@ -2,7 +2,6 @@
 
 {% load static from staticfiles %}
 {% load humanize %}
-{% load custom_tags %}
 
 {% block head_content %}{{ block.super }}{% block lc_metadata %}{% endblock lc_metadata %}
     <link title="NDNP Page Search" href="{% url 'chronam_search_pages_opensearch' %}"

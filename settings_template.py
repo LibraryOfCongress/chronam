@@ -19,6 +19,7 @@ USE_L10N = True
 
 MEDIA_ROOT = ""
 MEDIA_URL = ""
+IIIF_IMAGE_BASE_URL = None
 
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.CachedStaticFilesStorage"
 
@@ -78,10 +79,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [os.path.join(DIRNAME, "templates")],
         "OPTIONS": {
-            "context_processors": [
-                "chronam.core.context_processors.extra_request_info",
-                "chronam.core.context_processors.newspaper_info",
-            ],
+            "context_processors": ["chronam.core.context_processors.extra_request_info"],
             "debug": DEBUG,
             "loaders": [
                 (
@@ -111,6 +109,7 @@ SITE_ID = 1
 BROKER_URL = "django://"
 
 THUMBNAIL_WIDTH = 360
+THUMBNAIL_MEDIUM_WIDTH = 550
 
 DEFAULT_TTL_SECONDS = 86400  # 1 day
 LONG_TTL_SECONDS = 60 * 60 * 24 * 7 * 8  # 8 weeks
@@ -138,6 +137,9 @@ IS_PRODUCTION = False
 MAX_BATCHES = 0
 
 SENDFILE_BACKEND = "sendfile.backends.xsendfile"
+#: If set, instead of using Sendfile a redirect will be issued to the path
+#: urljoin()-ed with this value
+SENDFILE_REDIRECT_BATCH_BASE_URL = 'https://chroniclingamerica.loc.gov/data/batches/'
 
 TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
 # TOO_BUSY_LOAD_AVERAGE = 64

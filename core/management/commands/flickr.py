@@ -81,7 +81,7 @@ def chronam_url(photo):
             return tag['raw'].replace('dc:identifier=', '')
 
     # some other photos might have a link in the textual description
-    m = re.search('"(http://chroniclingamerica.loc.gov/.+?)"', photo['photo']['description']['_content'])
+    m = re.search(r'"(https?://chroniclingamerica.loc.gov/.+?)"', photo["photo"]["description"]["_content"])
     if m:
         return m.group(1)
 

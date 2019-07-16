@@ -130,19 +130,16 @@
 	</div>
       </div>
       {% if page.jp2_filename %}
-
-      <div id="viewer_container_container">
-	<div id="dummy"></div>
-	<div id="viewer_container" class="openseadragon span12">
-	  <div id="item-ctrl" class="toolbar span3"></div>
-	</div>
-      </div>
-
-
+        <div id="viewer_container_container">
+	        <div id="dummy"></div>
+            <div id="viewer_container" class="openseadragon span12">
+            <div id="item-ctrl" class="toolbar span3"></div>
+            </div>
+        </div>
       {% else %}
-      <div class="missing">
-        <h3>Missing Page: {{explanation}}</h3>
-      </div>
+            <div class="missing">
+                <h3>Missing Page: {{explanation}}</h3>
+            </div>
       {% endif %}
     </div>
 
@@ -150,7 +147,7 @@
 
 
 {% block javascript %}
-{{ block.super }}
+    {{ block.super }}
     <script src="{% static 'js/openseadragon.min.js' %}"></script>
     <script src="{% static 'js/jquery.ba-bbq.min.js' %}"></script>
 
