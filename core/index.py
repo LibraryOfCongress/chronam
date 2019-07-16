@@ -581,15 +581,20 @@ def index_pages(only_missing=False):
     """
     solr = SolrConnection(settings.SOLR)
 
-    pages = models.Page.objects.order_by("issue_id", "pk")
+    page_qs = models.Page.objects.order_by("pk")
 
     if only_missing:
-        pages = pages.filter(indexed=False)
+        page_qs = page_qs.filter(indexed=False)
     else:
         # FIXME: we should not churn the index when documents have not been deleted:
         solr.delete_query("type:page")
 
-    pages = pages.prefetch_related(
+    # To avoid MySQL limitations, we'll run two queries: the first will only
+    # lookup the primary keys to allow MySQL to satisfy the ORDER BY / LIMIT
+    # using only the index and then we'll use the primary keys to lookup the
+    # full Page objects for each chunk which will actually be indexed.
+
+    full_page_qs = page_qs.prefetch_related(
         Prefetch(
             "issue",
             queryset=models.Issue.objects.prefetch_related(
@@ -609,7 +614,10 @@ def index_pages(only_missing=False):
     )
 
     count = 0
-    for chunk in sliced(pages, 100):
+    for pk_chunk in sliced(page_qs.values_list("pk", flat=True), 100):
+        # We have to force the PKs into a list to work around limitations in
+        # MySQL preventing the use of a subquery which uses LIMIT:
+        chunk = full_page_qs.filter(pk__in=list(pk_chunk))
         for page in chunk:
             try:
                 solr.add(**page.solr_doc)
