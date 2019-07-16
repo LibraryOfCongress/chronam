@@ -521,8 +521,15 @@ def index_titles(since=None):
     count = 0
 
     for chunk in sliced(titles, 500):
+        docs = []
+
         for title in chunk:
-            index_title(title, solr=solr)
+            try:
+                docs.append(title.solr_doc)
+            except Exception:
+                LOGGER.exception("Unable to index title %s", title)
+
+        solr.add_many(docs)
 
         reset_queries()
         solr.commit()
@@ -618,20 +625,24 @@ def index_pages(only_missing=False):
         # We have to force the PKs into a list to work around limitations in
         # MySQL preventing the use of a subquery which uses LIMIT:
         chunk = full_page_qs.filter(pk__in=list(pk_chunk))
+
+        docs = []
+        pks = []
+
         for page in chunk:
             try:
-                solr.add(**page.solr_doc)
+                docs.append(page.solr_doc)
+                pks.append(page.pk)
             except EnvironmentError:
                 LOGGER.warning("Unable to index page %s", page.url, exc_info=True)
                 continue
 
-            models.Page.objects.filter(pk=page.pk).update(indexed=True)
-            LOGGER.debug("indexed page %s", page.url)
+        if docs:
+            solr.add_many(docs)
+            solr.commit()
+            models.Page.objects.filter(pk__in=pks).update(indexed=True)
 
-        solr.commit()
-
-        count += len(chunk)
-
+        count += len(pk_chunk)
         reset_queries()
         LOGGER.info("indexed %d pages", count)
 
