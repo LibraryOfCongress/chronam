@@ -592,6 +592,7 @@ def page_rdf(request, lccn, date, edition, sequence):
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def page_print(request, lccn, date, edition, sequence, width, height, x1, y1, x2, y2):
+    x1, y1, x2, y2 = map(int, (x1, y1, x2, y2))
     page = get_page(lccn, date, edition, sequence)
     title = get_object_or_404(models.Title, lccn=lccn)
     issue = page.issue
@@ -612,6 +613,13 @@ def page_print(request, lccn, date, edition, sequence, width, height, x1, y1, x2
         "y2": y2,
     }
     url = urlresolvers.reverse("chronam_page_print", kwargs=path_parts)
+
+    if page.iiif_client:
+        download_url = page.iiif_client.region(x=x1, y=y1, width=x2 - x1, height=y2 - y1)
+        image_url = download_url.size(width=width, height=height)
+    else:
+        download_url = urlresolvers.reverse("chronam_page_image_tile", kwargs=path_parts)
+        image_url = urlresolvers.reverse("chronam_page_image_tile", kwargs=path_parts)
 
     response = render_to_response(
         "page_print.html", dictionary=locals(), context_instance=RequestContext(request)
