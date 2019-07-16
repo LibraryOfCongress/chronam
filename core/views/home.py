@@ -21,18 +21,22 @@ def home(request, date=None):
 
 
 def _frontpages(request, date):
-    # if there aren't any issues default to the first 20 which
-    # is useful for testing the homepage when there are no issues
-    # for a given date
-    issues = Issue.objects.filter(date_issued=date).prefetch_related("title", "batch")
-    if issues.count() == 0:
-        issues = Issue.objects.all()[0:20]
+    # We'll do a quick filter to see if we have any issues for the specified
+    # date and, if not, fall back to any available issues. We'll then lookup the
+    # fill issue information to avoid choking MySQL with a more complex query:
+    issue_pks = Issue.objects.filter(date_issued=date).values_list("pk", flat=True)
+
+    if len(issue_pks) < 1:
+        issue_pks = Issue.objects.order_by("-pk").values_list("pk", flat=True)[0:20]
+
+    issues = Issue.objects.filter(pk__in=list(issue_pks))
+    issues = issues.prefetch_related("title", "batch")
 
     # Prefetch the page count to avoid O(n) queries during serialization:
     issues = issues.annotate(page_count=Count("pages"))
 
     # To avoid URL generation triggering O(n) queries looking up the first page
-    # and it's issue/batch info, we'll do one subselect to collect lal of the
+    # and it's issue/batch info, we'll do one subselect to collect all of the
     # results in the first pass:
     issues = issues.extra(
         select={
@@ -125,7 +129,7 @@ def get_newspaper_info():
         # filter out a few ethnicities:
         # https://rdc.lctl.gov/trac/chronam/ticket/724#comment:22
         excluded_names = ["African", "Canadian", "Welsh"]
-        for e in Ethnicity.objects.prefetch_related('synonyms'):
+        for e in Ethnicity.objects.prefetch_related("synonyms"):
             if e.name not in excluded_names and e.has_issues:
                 ethnicities_with_issues.append(e.name)
 
