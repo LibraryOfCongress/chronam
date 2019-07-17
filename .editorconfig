@@ -1,4 +1,5 @@
-# http://editorconfig.org
+# See https://editorconfig.org for format details and
+# https://editorconfig.org/#download for editor / IDE integration
 
 root = true
 
@@ -10,7 +11,11 @@ trim_trailing_whitespace = true
 end_of_line = lf
 charset = utf-8
 
-# Minified JavaScript files shouldn't be changed
-[**.min.js]
+# Makefiles always use tabs for indentation
+[Makefile]
+indent_style = tab
+
+# We don't want to apply our defaults to third-party code or minified bundles:
+[**/{external,vendor}/**,**.min.{js,css}]
 indent_style = ignore
-insert_final_newline = ignore
+indent_size = ignore

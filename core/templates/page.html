@@ -148,8 +148,8 @@
 
 {% block javascript %}
     {{ block.super }}
-    <script src="{% static 'js/openseadragon.min.js' %}"></script>
-    <script src="{% static 'js/jquery.ba-bbq.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.1/openseadragon.min.js" integrity="sha256-qIiBj8XqCj196KLyEX8fBJ0HiHUZmXYmYFciVQZ7nls=" crossorigin="anonymous"></script>
+    <script src="{% static 'vendor/jquery.ba-bbq.min.js' %}"></script>
 
     <div id="page_data"
 	 data-static_url="{% static '' %}images/",
