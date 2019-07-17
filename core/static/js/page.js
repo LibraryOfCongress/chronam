@@ -364,7 +364,8 @@
             nextButton: "next",
             previousButton: "previous",
             tileSources: ts,
-            timeout: 60000
+            timeout: 60000,
+            showNavigator: true
         });
 
         viewer.addHandler("open", addOverlays);
