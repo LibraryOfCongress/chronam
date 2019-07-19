@@ -16,17 +16,15 @@ LOGGER = logging.getLogger(__name__)
 
 PROX_DISTANCE_DEFAULT = 5
 
-# Incorporated from this thread
+# Based on this thread:
 # http://groups.google.com/group/solrpy/browse_thread/thread/f4437b885ecb0037?pli=1
+# and updated to match the solrq version which escapes backslashes:
+# https://github.com/swistakm/solrq/blob/cf4f610efbb1c609bb693ece96581931cef67164/src/solrq/__init__.py#L57
 
-ESCAPE_CHARS_RE = re.compile(r'(?<!\\)(?P<char>[&|+\-!(){}[\]^"~*?:])')
+ESCAPE_CHARS_RE = re.compile(r'(?<!\\)(?P<char>[&|+\\\-!(){}[\]^"~*?:])')
 
 
 def solr_escape(value):
-    LOGGER.debug("value: %s", value)
-    if not value:
-        value = ""
-
     """
     Escape un-escaped special characters and return escaped value.
     >>> solr_escape(r'foo+') == r'foo\+'
@@ -36,7 +34,11 @@ def solr_escape(value):
     >>> solr_escape(r'foo\\+') == r'foo\\+'
     True
     """
-    return ESCAPE_CHARS_RE.sub(r"\\\g<char>", value)
+
+    if not value:
+        return ""
+    else:
+        return ESCAPE_CHARS_RE.sub(r"\\\g<char>", value)
 
 
 # TODO: prefix functions that are intended for local use only with _
