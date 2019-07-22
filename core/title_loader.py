@@ -416,10 +416,8 @@ def _extract(record, field, subfield=None):
             value = _clean(record[field][subfield])
         elif field:
             value = _clean(record[field].data)
-    except:
-        # TODO have pymarc emit missing field/subfield exception
-        # which we can catch explicitly
-        pass
+    except Exception:
+        LOGGER.info("Ignoring error cleaning field value", exc_info=True)
     return value
 
 
