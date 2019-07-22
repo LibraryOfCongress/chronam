@@ -635,7 +635,7 @@ def index_pages(only_missing=False):
             try:
                 docs.append(page.solr_doc)
                 pks.append(page.pk)
-            except EnvironmentError:
+            except Exception:
                 LOGGER.warning("Unable to index page %s", page.url, exc_info=True)
                 continue
 
