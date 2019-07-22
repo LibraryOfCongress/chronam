@@ -95,7 +95,7 @@ class TitleLoader(object):
                 LOGGER.debug("    with older timestamp: %s vs %s", title.version, dt)
                 return  # skip over older record
             else:
-                LOGGER.error("Logic error... this should be unreachable.")
+                raise ValueError("It should not be possible to have a version fail <, =, and > checks")
         except models.Title.DoesNotExist:
             self.records_created += 1
             title = models.Title(lccn=lccn)
