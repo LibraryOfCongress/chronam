@@ -47,7 +47,7 @@ def photos_in_set(key, set_id):
     """A generator for all the photos in a set.
     """
     u = (
-        'http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=%s&format=json&nojsoncallback=1'
+        'https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=%s&format=json&nojsoncallback=1'
         % (key, set_id)
     )
     photos = json.loads(urllib.urlopen(u).read())
@@ -59,7 +59,7 @@ def photo(key, photo_id):
     """Return JSON for a given photo.
     """
     u = (
-        'http://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=%s&photo_id=%s&format=json&nojsoncallback=1'
+        'https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=%s&photo_id=%s&format=json&nojsoncallback=1'
         % (key, photo_id)
     )
     return json.loads(urllib.urlopen(u).read())
