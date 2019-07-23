@@ -11,7 +11,7 @@ Example: python extract_marc_values.py /vol/ndnp/chronam/bib/holdings/ 852 a
 
 
 This also useds: Chronam
-Found here: http://github.com/LibraryOfCongress/chronam
+Found here: https://github.com/LibraryOfCongress/chronam
 '''
 
 
@@ -19,10 +19,10 @@ import glob
 import operator
 import os
 import sys
-
 from random import choice
-from pymarc import map_xml
+
 from django.db.models import Count
+from pymarc import map_xml
 
 from chronam.core.models import Country
 from chronam.core.title_loader import _extract as extract

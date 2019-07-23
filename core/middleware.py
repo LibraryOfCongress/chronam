@@ -33,7 +33,7 @@ class TooBusyMiddleware(object):
         <h1>Server Too Busy</h1>
         <div>
             <p>The Chronicling America server is currently too busy to serve your request. Please try your request again shortly.</p>
-            <p><a href="http://www.loc.gov/pictures/resource/ppmsc.01752/"><img src="http://lcweb2.loc.gov/service/pnp/ppmsc/01700/01752r.jpg"/></a></p>
+            <p><a href="https://www.loc.gov/pictures/resource/ppmsc.01752/"><img src="https://memory.loc.gov/service/pnp/ppmsc/01700/01752r.jpg"/></a></p>
         </div>
     </article>
 </body>

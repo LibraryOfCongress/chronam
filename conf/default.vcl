@@ -67,7 +67,7 @@ sub vcl_recv {
             unset req.http.Accept-Encoding;
         }
     }
-    
+
     if(client.ip != "127.0.0.1"){
         #redirect http to https
         if (req.http.X-Forwarded-Proto == "http" && req.http.host ~ "chroniclingamerica.loc.gov") {
@@ -127,7 +127,7 @@ sub vcl_backend_error {
         </head>
     <body>
          <h1>Chronicling America is currently unavailable</h1>
-             <p>The Chronicling America website is currently offline, undergoing maintenance.  We regret the inconvenience, and invite you to visit other collections available on the Library of Congress website at <a href="http://www.loc.gov">www.loc.gov</a> while we are working to restore service.</p>
+             <p>The Chronicling America website is currently offline, undergoing maintenance.  We regret the inconvenience, and invite you to visit other collections available on the Library of Congress website at <a href="https://www.loc.gov">www.loc.gov</a> while we are working to restore service.</p>
     </body>
 </html>
 "});

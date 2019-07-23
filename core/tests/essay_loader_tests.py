@@ -8,7 +8,7 @@ from chronam.core.models import Essay, Title
 
 
 class EssayLoaderTests(TestCase):
-    fixtures = ['countries.json', 'essay_titles.json', 'awardee.json']
+    fixtures = ["countries.json", "essay_titles.json", "awardee.json"]
 
     ESSAYS_EDITOR_URL = settings.ESSAYS_FEED.replace("/feed/", "")
 
@@ -17,7 +17,7 @@ class EssayLoaderTests(TestCase):
         self.assertTrue(len(feed.entries) > 0)
 
     def test_load_essay(self):
-        e = load_essay(EssayLoaderTests.ESSAYS_EDITOR_URL + '/essay/3/', index=False)
+        e = load_essay(EssayLoaderTests.ESSAYS_EDITOR_URL + "/essay/3/", index=False)
         self.assertTrue(isinstance(e, Essay))
 
         # is it in the db now?
@@ -25,17 +25,17 @@ class EssayLoaderTests(TestCase):
         self.assertEqual(len(essays), 1)
 
         # get an essay
-        title = Title.objects.get(lccn='sn83027091')
+        title = Title.objects.get(lccn="sn83027091")
         essay = title.essays.all()[0]
 
-        self.assertEqual(essay.title, 'Colored American')
+        self.assertEqual(essay.title, "Colored American")
         self.assertEqual(essay.created, datetime.datetime(2007, 1, 19, 9, 0))
         self.assertTrue(type(essay.modified), datetime.datetime)
-        self.assertEqual(essay.url, '/essays/3/')
-        self.assertEqual(essay.essay_editor_url, EssayLoaderTests.ESSAYS_EDITOR_URL + '/essay/3/')
-        self.assertEqual(essay.creator.name, 'Library of Congress, Washington, DC')
+        self.assertEqual(essay.url, "/essays/3/")
+        self.assertEqual(essay.essay_editor_url, EssayLoaderTests.ESSAYS_EDITOR_URL + "/essay/3/")
+        self.assertEqual(essay.creator.name, "Library of Congress, Washington, DC")
         self.assertTrue(
-            '<a href="http://chroniclingamerica.loc.gov/lccn/sn82016211/"><cite>Indianapolis Freeman</cite></a>'
+            '<a href="https://chroniclingamerica.loc.gov/lccn/sn82016211/"><cite>Indianapolis Freeman</cite></a>'
             in essay.html
         )
 
@@ -43,11 +43,11 @@ class EssayLoaderTests(TestCase):
         self.assertEqual(Essay.objects.all().count(), 0)
         num_titles = Title.objects.all().count()
 
-        load_essay(EssayLoaderTests.ESSAYS_EDITOR_URL + '/essay/3/', index=False)
+        load_essay(EssayLoaderTests.ESSAYS_EDITOR_URL + "/essay/3/", index=False)
         self.assertEqual(Essay.objects.all().count(), 1)
 
         # purge it
-        purge_essay(EssayLoaderTests.ESSAYS_EDITOR_URL + '/essay/3/', index=False)
+        purge_essay(EssayLoaderTests.ESSAYS_EDITOR_URL + "/essay/3/", index=False)
         self.assertEqual(Essay.objects.all().count(), 0)
 
         # same amount of titles (none should be deleted)
