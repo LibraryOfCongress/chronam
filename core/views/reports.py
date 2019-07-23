@@ -1,4 +1,3 @@
-import csv
 import datetime
 import json
 
@@ -13,6 +12,7 @@ from django.template import RequestContext
 from django.utils import datetime_safe
 from django.views.decorators.cache import never_cache
 from rfc3339 import rfc3339
+from tabular_export.core import export_to_csv_response, flatten_queryset
 
 from chronam.core import index, models
 from chronam.core.decorator import add_cache_headers, cors, rdf_view
@@ -86,14 +86,15 @@ def batches_json(request, page_number=1):
 
 @never_cache
 def batches_csv(request):
-    csv_header_labels = ("Created", "Name", "Awardee", "Total Pages", "Released")
-    response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = 'attachment; filename="chronam_batches.csv"'
-    writer = csv.writer(response)
-    writer.writerow(csv_header_labels)
-    for batch in models.Batch.viewable_batches():
-        writer.writerow((batch.created, batch.name, batch.awardee.name, batch.page_count, batch.released))
-    return response
+    qs = models.Batch.viewable_batches()
+    qs = qs.annotate(page_count=Count("issues__pages"))
+    headers, data = flatten_queryset(
+        qs,
+        field_names=["created", "name", "awardee__name", "page_count", "released"],
+        extra_verbose_names={"awardee__name": "Awardee"},
+    )
+
+    return export_to_csv_response("chronam_batches.csv", headers, data)
 
 
 @never_cache
@@ -211,14 +212,12 @@ def events(request, page_number=1):
 
 @never_cache
 def events_csv(request):
-    csv_header_labels = ("Time", "Batch name", "Message")
-    response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = 'attachment; filename="chronam_events.csv"'
-    writer = csv.writer(response)
-    writer.writerow(csv_header_labels)
-    for event in models.LoadBatchEvent.objects.all().order_by("-created"):
-        writer.writerow((event.created, event.batch_name, event.message))
-    return response
+    headers, data = flatten_queryset(
+        models.LoadBatchEvent.objects.all().order_by("-created"),
+        field_names=["created", "batch_name", "message"],
+        extra_verbose_names={"created": "Time", "batch_name": "Batch name"},
+    )
+    return export_to_csv_response("chronam_events.csv", headers, data)
 
 
 @never_cache

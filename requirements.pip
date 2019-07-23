@@ -22,3 +22,4 @@ beautifulsoup4==4.6.0
 requests==2.9.1
 piffle>=0.3.0
 more-itertools==5.0.0
+django-tabular-export==1.1.0
