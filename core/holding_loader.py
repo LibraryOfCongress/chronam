@@ -48,7 +48,7 @@ class HoldingLoader:
                 if skip > self.records_processed:
                     LOGGER.info("skipped %i" % self.records_processed)
                     return
-                if record.leader[6] == 'y':
+                if record.leader[6] == "y":
                     self.load_xml_holding(record)
 
             except Exception as e:
@@ -61,9 +61,9 @@ class HoldingLoader:
         map_xml(load_xml_record, file(filename, "rb"))
 
     def _get_related_title(self, oclc):
-        '''
+        """
         Match the title via oclc number or record an error.
-        '''
+        """
         try:
             titles = models.Title.objects.filter(oclc=oclc)
             return titles
@@ -74,7 +74,7 @@ class HoldingLoader:
             return None
 
     def _get_related_inst_code(self, inst_code):
-        ''' Match the institutional code or record an error.'''
+        """ Match the institutional code or record an error."""
         try:
             inst = models.Institution.objects.get(code=inst_code)
             return inst
@@ -84,20 +84,20 @@ class HoldingLoader:
             return None
 
     def _extract_holdings_type(self, record):
-        ''' Extract holdings type from 007 field & 856 $u field. '''
-        h856u = _extract(record, '856', 'u')
-        if h856u and h856u.startswith('http://'):
-            h_type = 'Online Resource'
+        """ Extract holdings type from 007 field & 856 $u field. """
+        h856u = _extract(record, "856", "u")
+        if h856u and h856u.startswith("http"):
+            h_type = "Online Resource"
         else:
-            h_type = _holdings_type(_extract(record, '007'))
+            h_type = _holdings_type(_extract(record, "007"))
         return h_type
 
     def _parse_date(self, f008):
-        '''
+        """
         Parse date takes the f008 field and pulls out the date.
         This is shared funciton for both formats (xml & tsv) that holdings
         come in.
-        '''
+        """
         date = None
         if f008:
             y = int(f008[26:28])
@@ -105,7 +105,7 @@ class HoldingLoader:
             if y and m:
                 # Possibly when we hit 2080, if we are still using
                 # this approach, then it maybe buggy -- 1980 or 2080.
-                if y <= int(datetime.strftime(datetime.today(), '%y')):
+                if y <= int(datetime.strftime(datetime.today(), "%y")):
                     y = 2000 + y
                 else:
                     y = 1900 + y
@@ -114,7 +114,7 @@ class HoldingLoader:
 
     def load_xml_holding(self, record):
         # get the oclc number to link to
-        oclc = _normal_oclc(_extract(record, '004'))
+        oclc = _normal_oclc(_extract(record, "004"))
         if not oclc:
             LOGGER.error("holding record missing title: record %s, oclc %s" % (self.records_processed, oclc))
             self.errors += 1
@@ -125,7 +125,7 @@ class HoldingLoader:
             return
 
         # get the institution to link to
-        inst_code = _extract(record, '852', 'a')
+        inst_code = _extract(record, "852", "a")
         inst = self._get_related_inst_code(inst_code)
         if not inst:
             return
@@ -134,11 +134,11 @@ class HoldingLoader:
         holding_type = self._extract_holdings_type(record)
 
         # get the description
-        desc = _extract(record, '866', 'a') or _extract(record, '866', 'z')
-        notes = _extract(record, '852', 'z')
+        desc = _extract(record, "866", "a") or _extract(record, "866", "z")
+        notes = _extract(record, "852", "z")
 
         # get the last modified date
-        f008 = _extract(record, '008')
+        f008 = _extract(record, "008")
         date = self._parse_date(f008)
 
         # persist it
