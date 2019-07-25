@@ -4,7 +4,7 @@ from chronam.core.models import Batch, Issue, Page, Title
 
 
 class BatchesSitemap(sitemaps.Sitemap):
-    changefreq = 'daily'
+    changefreq = "daily"
 
     def items(self):
         return Batch.objects.all()
@@ -17,10 +17,10 @@ class BatchesSitemap(sitemaps.Sitemap):
 
 
 class IssuesSitemap(sitemaps.Sitemap):
-    changefreq = 'daily'
+    changefreq = "daily"
 
     def items(self):
-        return Issue.objects.all()
+        return Issue.objects.prefetch_related("title")
 
     def lastmod(self, issue):
         return issue.created
@@ -30,13 +30,13 @@ class IssuesSitemap(sitemaps.Sitemap):
 
 
 class PagesSitemap(sitemaps.Sitemap):
-    changefreq = 'daily'
+    changefreq = "daily"
     # Reduce the number of pages from the default 50,0000 to reduce the size of
     # some of the database queries:
     limit = 10000
 
     def items(self):
-        return Page.objects.order_by('pk').prefetch_related('issue', 'issue__title')
+        return Page.objects.order_by("pk").prefetch_related("issue", "issue__title")
 
     def lastmod(self, page):
         return page.created
@@ -46,7 +46,7 @@ class PagesSitemap(sitemaps.Sitemap):
 
 
 class TitlesSitemap(sitemaps.Sitemap):
-    changefreq = 'daily'
+    changefreq = "daily"
 
     def items(self):
         return Title.objects.filter(has_issues=True)
