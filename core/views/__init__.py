@@ -48,7 +48,6 @@ from reports import (
     counties_in_state,
     essay,
     essays,
-    event,
     events,
     events_atom,
     events_csv,

@@ -16,7 +16,6 @@
     {% for event in page.object_list %}
     <entry>
         <title>{{event.batch_name}} Event</title>
-        <link rel="alternate" type="text/html" href="{% url 'chronam_event' event.id %}" />
         <id>info:lc/ndnp/event/{{ event.id }}</id>
         <author><name>Library of Congress</name></author>
         <updated>{{ event.created|rfc3339 }}</updated>

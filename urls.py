@@ -244,7 +244,6 @@ urlpatterns += [
     url(r"^events/(?P<page_number>\d+)/$", views.events, name="chronam_events_page"),
     url(r"^events/feed/$", views.events_atom, name="chronam_events_atom"),
     url(r"^events/feed/(?P<page_number>\d+)/$", views.events_atom, name="chronam_events_atom_page"),
-    url(r"^event/(?P<event_id>.+)/$", views.event, name="chronam_event"),
     url(r"^awardees/$", views.awardees, name="chronam_awardees"),
     url(r"^awardees.json$", views.awardees_json, name="chronam_awardees_json"),
     # example: /titles

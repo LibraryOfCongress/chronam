@@ -189,15 +189,6 @@ def page_json(request, lccn, date, edition, sequence):
 
 
 @never_cache
-def event(request, event_id):
-    page_title = "Event"
-    event = get_object_or_404(models.LoadBatchEvent, id=event_id)
-    return render_to_response(
-        "reports/event.html", dictionary=locals(), context_instance=RequestContext(request)
-    )
-
-
-@never_cache
 def events(request, page_number=1):
     page_title = "Events"
     events = models.LoadBatchEvent.objects.all().order_by("-created")
