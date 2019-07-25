@@ -269,7 +269,7 @@ urlpatterns += [
     ),
     # example: /titles/places/pennsylvania;page=1;order=title
     url(
-        r'^titles/places/(?P<state>[^;]+)/;page=(?P<page_number>\d+);(?P<order>\w+)$',
+        r"^titles/places/(?P<state>[^/;]+)/;page=(?P<page_number>\d+);(?P<order>\w+)$",
         views.titles_in_state,
         name='chronam_state_page_number',
     ),

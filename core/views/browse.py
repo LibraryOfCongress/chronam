@@ -386,6 +386,14 @@ def title(request, lccn):
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def titles_in_city(request, state, county, city, page_number=1, order="name_normal"):
+    if not any(i for i in models.Title._meta.local_fields if i.name == order):
+        return HttpResponseRedirect(
+            urlresolvers.reverse(
+                "chronam_city_page_number",
+                kwargs={"state": state, "county": county, "city": city, "page_number": page_number},
+            )
+        )
+
     state, county, city = map(unpack_url_path, (state, county, city))
     page_title = "Titles in City: %s, %s" % (city, state)
     titles = models.Title.objects.all()
@@ -414,7 +422,7 @@ def titles_in_city(request, state, county, city, page_number=1, order="name_norm
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
-def titles_in_county(request, state, county, page_number=1, order="name_normal"):
+def titles_in_county(request, state, county, page_number=1):
     state, county = map(unpack_url_path, (state, county))
     page_title = "Titles in County: %s, %s" % (county, state)
     titles = models.Title.objects.all()
@@ -422,7 +430,7 @@ def titles_in_county(request, state, county, page_number=1, order="name_normal")
         titles = titles.filter(places__county__iexact=county)
     if state:
         titles = titles.filter(places__state__iexact=state)
-    titles = titles.order_by(order)
+    titles = titles.order_by("name_normal")
     titles = titles.distinct()
 
     if titles.count() == 0:
@@ -442,6 +450,13 @@ def titles_in_county(request, state, county, page_number=1, order="name_normal")
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def titles_in_state(request, state, page_number=1, order="name_normal"):
+    if not any(i for i in models.Title._meta.local_fields if i.name == order):
+        return HttpResponseRedirect(
+            urlresolvers.reverse(
+                "chronam_state_page_number", kwargs={"state": state, "page_number": page_number}
+            )
+        )
+
     state = unpack_url_path(state)
     page_title = "Titles in State: %s" % state
     titles = models.Title.objects.all()
