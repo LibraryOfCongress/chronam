@@ -190,7 +190,6 @@ def issue_pages(request, lccn, date, edition, page_number=1):
     page_head_heading = "All Pages: %s, %s" % (title.display_name, label(issue))
     page_head_subheading = label(title)
     crumbs = create_crumbs(title, issue, date, edition)
-    profile_uri = "http://www.openarchives.org/ore/html/"
     response = render_to_response(
         "issue_pages.html", dictionary=locals(), context_instance=RequestContext(request)
     )
@@ -306,7 +305,6 @@ def page(request, lccn, date, edition, sequence):
 
     image_credit = issue.batch.awardee.name
     host = request.get_host()
-    profile_uri = "http://www.openarchives.org/ore/html/"
 
     template = "page.html"
     text = get_page_text(page)
