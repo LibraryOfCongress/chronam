@@ -79,7 +79,10 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [os.path.join(DIRNAME, "templates")],
         "OPTIONS": {
-            "context_processors": ["chronam.core.context_processors.extra_request_info"],
+            "context_processors": [
+                "chronam.core.context_processors.extra_request_info",
+                "chronam.core.context_processors.site_navigation",
+            ],
             "debug": DEBUG,
             "loaders": [
                 (
@@ -139,7 +142,7 @@ MAX_BATCHES = 0
 SENDFILE_BACKEND = "sendfile.backends.xsendfile"
 #: If set, instead of using Sendfile a redirect will be issued to the path
 #: urljoin()-ed with this value
-SENDFILE_REDIRECT_BATCH_BASE_URL = 'https://chroniclingamerica.loc.gov/data/batches/'
+SENDFILE_REDIRECT_BATCH_BASE_URL = "https://chroniclingamerica.loc.gov/data/batches/"
 
 TOO_BUSY_LOAD_AVERAGE = 1.5 * multiprocessing.cpu_count()
 # TOO_BUSY_LOAD_AVERAGE = 64
