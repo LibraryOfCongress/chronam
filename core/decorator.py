@@ -12,7 +12,7 @@ class HttpResponseSeeOther(HttpResponse):
 
     def __init__(self, redirect_to):
         HttpResponse.__init__(self)
-        self['Location'] = encoding.iri_to_uri(redirect_to)
+        self["Location"] = encoding.iri_to_uri(redirect_to)
 
 
 class HttpResponseUnsupportedMediaType(HttpResponse):
@@ -43,27 +43,27 @@ def add_cache_headers(ttl, shared_cache_maxage=None):
 def rdf_view(f):
     def f1(request, **kwargs):
         # construct a http redirect response to html view
-        html_view = f.func_name.replace('_rdf', '')
-        html_url = urlresolvers.reverse('chronam_%s' % html_view, kwargs=kwargs)
+        html_view = f.func_name.replace("_rdf", "")
+        html_url = urlresolvers.reverse("chronam_%s" % html_view, kwargs=kwargs)
         html_redirect = HttpResponseSeeOther(html_url)
 
         # determine the clients preferred representation
-        available = ['text/html', 'application/rdf+xml']
-        accept = request.META.get('HTTP_ACCEPT', 'application/rdf+xml')
+        available = ["text/html", "application/rdf+xml"]
+        accept = request.META.get("HTTP_ACCEPT", "application/rdf+xml")
         match = best_match(available, accept)
 
         # figure out what user agent we are talking to
-        ua = request.META.get('HTTP_USER_AGENT')
+        ua = request.META.get("HTTP_USER_AGENT")
 
-        if request.get_full_path().endswith('.rdf'):
+        if request.get_full_path().endswith(".rdf"):
             return f(request, **kwargs)
-        elif ua and 'MSIE' in ua:
+        elif ua and "MSIE" in ua:
             return html_redirect
-        elif match == 'application/rdf+xml':
+        elif match == "application/rdf+xml":
             response = f(request, **kwargs)
-            response['Vary'] = 'Accept'
+            response["Vary"] = "Accept"
             return response
-        elif match == 'text/html':
+        elif match == "text/html":
             return html_redirect
         else:
             return HttpResponseUnsupportedMediaType()
@@ -86,7 +86,7 @@ def opensearch_clean(f):
     def f1(request, **kwargs):
         new_get = request.GET.copy()
         for k, v in new_get.items():
-            if type(v) == unicode and re.match(r'^\{.+\?\}$', v):
+            if type(v) == unicode and re.match(r"^\{.+\?\}$", v):
                 new_get.pop(k)
         request.GET = new_get
         return f(request, **kwargs)
@@ -106,8 +106,8 @@ def cors(f, *args, **kwargs):
     @wraps(f)
     def new_f(*args, **kwargs):
         response = f(*args, **kwargs)
-        response['Access-Control-Allow-Origin'] = '*'
-        response['Access-Control-Allow-Headers'] = 'X-requested-with'
+        response["Access-Control-Allow-Origin"] = "*"
+        response["Access-Control-Allow-Headers"] = "X-requested-with"
         return response
 
     return new_f
