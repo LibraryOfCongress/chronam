@@ -73,19 +73,19 @@ class SolrPaginator(Paginator):
         self._q = page_search(self.query)
 
         try:
-            self._cur_page = int(self.query.get("page", 1))
+            self._cur_page = int(self.query.get("page", "1"))
         except ValueError:
-            raise InvalidPage
+            self._cur_page = 1
 
         try:
-            self._cur_index = int(self.query.get("index", 0))
+            self._cur_index = int(self.query.get("index", "0"))
         except ValueError:
-            raise InvalidPage
+            self._cur_index = 0
 
         try:
-            rows = int(self.query.get("rows", 10))
+            rows = int(self.query.get("rows", "10"))
         except ValueError:
-            raise InvalidPage
+            rows = 10
 
         # set up some bits that the Paginator expects to be able to use
         Paginator.__init__(self, None, per_page=rows, orphans=0)
