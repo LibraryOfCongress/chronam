@@ -1,90 +1,92 @@
 {% extends "site_base.html" %}
+
 {% load static from staticfiles %}
 {% load custom_filters %}
 
 {% block page_head %}
-<h1>
-{{ page_head_heading }}<br />
-<span>About <a href="{% url 'chronam_title' title.lccn %}">{{page_head_subheading}}</a></span>
-</h1>
+    <h1>
+        {{ page_head_heading }}
+        <br />
+        <span>About <a href="{% url 'chronam_title' title.lccn %}">{{ page_head_subheading }}</a></span>
+    </h1>
 {% endblock %}
 
 {% block extrahead %}
-<link rel="alternate" href="{% url 'chronam_issue_pages_dot_json' title.lccn issue.date_issued issue.edition %}" />
+    <link rel="alternate" href="{% url 'chronam_issue_pages_dot_json' title.lccn issue.date_issued issue.edition %}" />
 {% endblock %}
 
 {% block lc_metadata %}
-{% include "includes/lc_metadata.html" %}
+    {% include "includes/lc_metadata.html" %}
 {% endblock %}
 
 {% block subcontent %}
-{% if first_pages %}
-{% include "includes/issue_frontpages_ctrl.html" %}
-{% else %}
-{% include "includes/issue_pages_ctrl.html" %}
-{% endif %}
-
-<div class="search_results_body gallery issues">
-    {% if page.object_list %}
-    <table class="search_results" cellspacing="0" summary="">
-        <tr>
-        {% for page in page.object_list %}
-        {% url 'chronam_page' title.lccn page.issue.date_issued page.issue.edition page.sequence as url %}
-            <td>
-                <div class="highlite">
-                    <a href="{{url}}">
-                    {% if page.jp2_filename %}
-                        <img src="{{ page.thumb_url }}" alt="Thumbnail for {{ page.number }}"/>
-                    {% else %}
-                        <div style="height: auto; margin-bottom: 3em;">
-                            No Image. {{ page.noteAboutReproduction.text }}
-                            <br/>
-                        </div>
-                    {% endif %}
-                    </a>
-                    <br/>
-                    <a href="{{url}}" shape="rect">{% if page.issue %}{{page.issue|label}}, {% endif %}{% if page %}{{ page|label }}{% endif %}</a>
-                </div>
-            </td>
-            {% if forloop.counter|divisibleby:"4" %}
-            </tr><tr>
-            {% endif %}
-            {% endfor %}
-        </tr>
-    </table>
+    {% if first_pages %}
+        {% include "includes/issue_frontpages_ctrl.html" %}
     {% else %}
-    <div class="missing">
-        <h2>This issue has no available digitized pages{% if display_label %}: {{ display_label }}{% endif %}{% if explanation %}; {{explanation}}{% endif %}.</h2>
-    </div>
+        {% include "includes/issue_pages_ctrl.html" %}
     {% endif %}
-    <br/>
-    <div class="txt_wrapper">
-        <p class="backtotop gallery">
-        <a href="#skip_menu">Top</a>
-        </p>
-    </div>
-</div>
 
-{% if first_pages %}
-{% include "includes/issue_frontpages_ctrl.html" %}
-{% else %}
-{% include "includes/issue_pages_ctrl.html" %}
-{% endif %}
+    <div class="search_results_body gallery issues">
+        {% if page.object_list %}
+        <table class="search_results" cellspacing="0" summary="">
+            <tr>
+            {% for page in page.object_list %}
+            {% url 'chronam_page' title.lccn page.issue.date_issued page.issue.edition page.sequence as url %}
+                <td>
+                    <div class="highlite">
+                        <a href="{{url}}">
+                        {% if page.jp2_filename %}
+                            <img src="{{ page.thumb_url }}" alt="Thumbnail for {{ page.number }}"/>
+                        {% else %}
+                            <div style="height: auto; margin-bottom: 3em;">
+                                No Image. {{ page.noteAboutReproduction.text }}
+                                <br/>
+                            </div>
+                        {% endif %}
+                        </a>
+                        <br/>
+                        <a href="{{url}}" shape="rect">{% if page.issue %}{{page.issue|label}}, {% endif %}{% if page %}{{ page|label }}{% endif %}</a>
+                    </div>
+                </td>
+                {% if forloop.counter|divisibleby:"4" %}
+                </tr><tr>
+                {% endif %}
+                {% endfor %}
+            </tr>
+        </table>
+        {% else %}
+        <div class="missing">
+            <h2>This issue has no available digitized pages{% if display_label %}: {{ display_label }}{% endif %}{% if explanation %}; {{explanation}}{% endif %}.</h2>
+        </div>
+        {% endif %}
+        <br/>
+        <div class="txt_wrapper">
+            <p class="backtotop gallery">
+            <a href="#skip_menu">Top</a>
+            </p>
+        </div>
+    </div>
+
+    {% if first_pages %}
+        {% include "includes/issue_frontpages_ctrl.html" %}
+    {% else %}
+        {% include "includes/issue_pages_ctrl.html" %}
+    {% endif %}
 {% endblock %}
 
 {% block javascript %}
-{{ block.super }}
-<script type="text/javascript">
-jQuery(function($) {
-    $("form[name='page_number_form']").submit(function() {
-        var pageNumber = $("input[type=text]", this).val();
-        {% if first_pages %}
-        window.location.href = '{% url 'chronam_issues_first_pages' title.lccn %}' + pageNumber;
-        {% else %}
-        window.location.href = '{% url 'chronam_issue_pages' issue.title.lccn issue.date_issued issue.edition %}' + pageNumber;
-        {% endif %}
-        return false;
-    });
-});
-</script>
+    {{ block.super }}
+    <script type="text/javascript">
+        jQuery(function($) {
+            $("form[name='page_number_form']").submit(function() {
+                var pageNumber = $("input[type=text]", this).val();
+                {% if first_pages %}
+                window.location.href = '{% url 'chronam_issues_first_pages' title.lccn %}' + pageNumber;
+                {% else %}
+                window.location.href = '{% url 'chronam_issue_pages' issue.title.lccn issue.date_issued issue.edition %}' + pageNumber;
+                {% endif %}
+                return false;
+            });
+        });
+    </script>
 {% endblock %}
