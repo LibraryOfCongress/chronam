@@ -12,7 +12,9 @@
 {% endblock %}
 
 {% block extrahead %}
-    <link rel="alternate" href="{% url 'chronam_issue_pages_dot_json' title.lccn issue.date_issued issue.edition %}" />
+    {% if issue %}
+        <link rel="alternate" href="{% url 'chronam_issue_pages_dot_json' title.lccn issue.date_issued issue.edition %}" />
+    {% endif %}
 {% endblock %}
 
 {% block lc_metadata %}
@@ -20,44 +22,44 @@
 {% endblock %}
 
 {% block subcontent %}
-    {% if first_pages %}
+    {% if VIEW_NAME == "chronam_issues_first_pages" %}
         {% include "includes/issue_frontpages_ctrl.html" %}
     {% else %}
         {% include "includes/issue_pages_ctrl.html" %}
     {% endif %}
 
     <div class="search_results_body gallery issues">
-        {% if page.object_list %}
-        <table class="search_results" cellspacing="0" summary="">
-            <tr>
-            {% for page in page.object_list %}
-            {% url 'chronam_page' title.lccn page.issue.date_issued page.issue.edition page.sequence as url %}
-                <td>
-                    <div class="highlite">
-                        <a href="{{url}}">
-                        {% if page.jp2_filename %}
-                            <img src="{{ page.thumb_url }}" alt="Thumbnail for {{ page.number }}"/>
-                        {% else %}
-                            <div style="height: auto; margin-bottom: 3em;">
-                                No Image. {{ page.noteAboutReproduction.text }}
+        {% if newspaper_pages %}
+            <table class="search_results" cellspacing="0" summary="">
+                <tr>
+                    {% for page in newspaper_pages %}
+                        {% url 'chronam_page' title.lccn page.issue.date_issued page.issue.edition page.sequence as url %}
+                        <td>
+                            <div class="highlite">
+                                <a href="{{ url }}">
+                                {% if page.jp2_filename %}
+                                    <img src="{{ page.thumb_url }}" alt="Thumbnail for {{ page.number }}"/>
+                                {% else %}
+                                    <div style="height: auto; margin-bottom: 3em;">
+                                        No Image. {{ page.noteAboutReproduction.text }}
+                                        <br/>
+                                    </div>
+                                {% endif %}
+                                </a>
                                 <br/>
+                                <a href="{{url}}">{% if page.issue %}{{page.issue|label}}, {% endif %}{% if page %}{{ page|label }}{% endif %}</a>
                             </div>
+                        </td>
+                        {% if forloop.counter|divisibleby:"4" %}
+                            </tr><tr>
                         {% endif %}
-                        </a>
-                        <br/>
-                        <a href="{{url}}" shape="rect">{% if page.issue %}{{page.issue|label}}, {% endif %}{% if page %}{{ page|label }}{% endif %}</a>
-                    </div>
-                </td>
-                {% if forloop.counter|divisibleby:"4" %}
-                </tr><tr>
-                {% endif %}
-                {% endfor %}
-            </tr>
-        </table>
+                    {% endfor %}
+                </tr>
+            </table>
         {% else %}
-        <div class="missing">
-            <h2>This issue has no available digitized pages{% if display_label %}: {{ display_label }}{% endif %}{% if explanation %}; {{explanation}}{% endif %}.</h2>
-        </div>
+            <div class="missing">
+                <h2>This issue has no available digitized pages{% if display_label %}: {{ display_label }}{% endif %}{% if explanation %}; {{explanation}}{% endif %}.</h2>
+            </div>
         {% endif %}
         <br/>
         <div class="txt_wrapper">
@@ -67,7 +69,7 @@
         </div>
     </div>
 
-    {% if first_pages %}
+    {% if VIEW_NAME == "chronam_issues_first_pages" %}
         {% include "includes/issue_frontpages_ctrl.html" %}
     {% else %}
         {% include "includes/issue_pages_ctrl.html" %}
@@ -80,10 +82,10 @@
         jQuery(function($) {
             $("form[name='page_number_form']").submit(function() {
                 var pageNumber = $("input[type=text]", this).val();
-                {% if first_pages %}
-                window.location.href = '{% url 'chronam_issues_first_pages' title.lccn %}' + pageNumber;
+                {% if VIEW_NAME == "chronam_issues_first_pages" %}
+                    window.location.href = '{% url 'chronam_issues_first_pages' title.lccn %}' + pageNumber;
                 {% else %}
-                window.location.href = '{% url 'chronam_issue_pages' issue.title.lccn issue.date_issued issue.edition %}' + pageNumber;
+                    window.location.href = '{% url 'chronam_issue_pages' issue.title.lccn issue.date_issued issue.edition %}' + pageNumber;
                 {% endif %}
                 return false;
             });
