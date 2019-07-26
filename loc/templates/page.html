@@ -35,6 +35,7 @@
 {% endblock %}
 
 {% block extrahead %}
+    <link rel="canonical" href="https://{{host}}{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}" />
     <link rel="primaryTopic" href="{{ page.abstract_url }}" />
     <link rel="resourcemap" type="application/rdf+xml" href="{% url 'chronam_page_dot_rdf' page.issue.title.lccn page.issue.date_issued page.issue.edition page.sequence %}" />
     <link rel="alternate" type="application/json" href="{% url 'chronam_page_dot_json' page.issue.title.lccn page.issue.date_issued page.issue.edition page.sequence %}" />
@@ -42,7 +43,6 @@
     <link rel="alternate" type="application/pdf" href="{% url 'chronam_page_pdf' title.lccn issue.date_issued issue.edition page.sequence %}" />
     <link rel="alternate" type="application/xml" href="{% url 'chronam_page_ocr_xml' title.lccn issue.date_issued issue.edition page.sequence %}" />
     <link rel="alternate" type="text/plain" href="{% url 'chronam_page_ocr_txt' title.lccn issue.date_issued issue.edition page.sequence %}" />
-    <link rel="canonical" href="https://{{host}}{% url 'chronam_page' title.lccn issue.date_issued issue.edition page.sequence %}" />
     <link rel="up" href="{{ issue.url }}" />
     <link rel="up" href="{{ issue.batch.url }}" />
     {% if page.reel.number %}<link rel="up" href="{% url 'chronam_reel' page.reel.number %}" />{% endif %}
