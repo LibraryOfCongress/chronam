@@ -22,10 +22,10 @@
 {% endblock %}
 
 {% block subcontent %}
-    {% if VIEW_NAME == "chronam_issues_first_pages" %}
-        {% include "includes/issue_frontpages_ctrl.html" %}
-    {% else %}
+    {% if issue %}
         {% include "includes/issue_pages_ctrl.html" %}
+    {% else %}
+        {% include "includes/issue_frontpages_ctrl.html" %}
     {% endif %}
 
     <div class="search_results_body gallery issues">
@@ -69,10 +69,10 @@
         </div>
     </div>
 
-    {% if VIEW_NAME == "chronam_issues_first_pages" %}
-        {% include "includes/issue_frontpages_ctrl.html" %}
-    {% else %}
+    {% if issue %}
         {% include "includes/issue_pages_ctrl.html" %}
+    {% else %}
+        {% include "includes/issue_frontpages_ctrl.html" %}
     {% endif %}
 {% endblock %}
 
@@ -82,10 +82,10 @@
         jQuery(function($) {
             $("form[name='page_number_form']").submit(function() {
                 var pageNumber = $("input[type=text]", this).val();
-                {% if VIEW_NAME == "chronam_issues_first_pages" %}
-                    window.location.href = '{% url 'chronam_issues_first_pages' title.lccn %}' + pageNumber;
-                {% else %}
+                {% if issue %}
                     window.location.href = '{% url 'chronam_issue_pages' issue.title.lccn issue.date_issued issue.edition %}' + pageNumber;
+                {% else %}
+                    window.location.href = '{% url 'chronam_issues_first_pages' title.lccn %}' + pageNumber;
                 {% endif %}
                 return false;
             });
