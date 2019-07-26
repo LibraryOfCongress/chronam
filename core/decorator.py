@@ -41,6 +41,7 @@ def add_cache_headers(ttl, shared_cache_maxage=None):
 
 
 def rdf_view(f):
+    @wraps(f)
     def f1(request, **kwargs):
         # construct a http redirect response to html view
         html_view = f.func_name.replace("_rdf", "")
@@ -83,6 +84,7 @@ def opensearch_clean(f):
     present.
     """
 
+    @wraps(f)
     def f1(request, **kwargs):
         new_get = request.GET.copy()
         for k, v in new_get.items():
