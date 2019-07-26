@@ -56,7 +56,7 @@ def rdf_view(f):
         # figure out what user agent we are talking to
         ua = request.META.get("HTTP_USER_AGENT")
 
-        if request.get_full_path().endswith(".rdf"):
+        if request.path.endswith(".rdf"):
             return f(request, **kwargs)
         elif ua and "MSIE" in ua:
             return html_redirect
