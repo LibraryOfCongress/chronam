@@ -16,9 +16,9 @@
         <p class="term">
             {{ titles.count|intcomma }} newspaper{% if titles.count > 1 %}s{% endif %}
             {% if state %}from <strong>{{ state }}</strong>{% endif %}
-            {% if ethnicity %}filtered on <strong>{{ ethnicity }}</strong>{% endif %} 
+            {% if ethnicity %}filtered on <strong>{{ ethnicity }}</strong>{% endif %}
             {% if language_display %}in <strong>{{ language_display }}</strong>{% endif %}
-            {% if titles.count == 1 %}is{% else %}are{% endif %} available for viewing on this site. 
+            {% if titles.count == 1 %}is{% else %}are{% endif %} available for viewing on this site.
         </p>
     </div>
     <table id="newspapers" class="table table-striped table-hover browse_collect tablesorter" cellspacing="0" summary="">
@@ -40,7 +40,7 @@
             <tr>
                 <td class="first left_no_border"><a {% ifchanged state %}name="{{state}}" {% endifchanged %}href="{% url 'chronam_newspapers_state' state|pack_url %}">{{state}}</a></td>
                 <td><a href="{% url 'chronam_title' lccn %}"><strong>{{title.display_name}}</strong></a><br />{{title.place_of_publication}}, {{title.start_year}}-{{title.end_year}}</td>
-                <td><a href="{% url 'chronam_issues' lccn %}" shape="rect"><img src="{% static 'images/calendar_icon.gif' %}" alt="calendar"/></a></td>
+                <td><a href="{% url 'chronam_issues' lccn %}"><img src="{% static 'images/calendar_icon.gif' %}" alt="calendar"/></a></td>
                 <td>{{title.issues.count}}</td>
                 <td><a href="{% url 'chronam_issue_pages' lccn title.first 1 %}">{{title.first|date:'Y-m-d'}}</a></td>
                 <td><a href="{% url 'chronam_issue_pages' lccn title.last 1 %}">{{title.last|date:'Y-m-d'}}</a></td>
@@ -66,15 +66,15 @@
 <script type="text/javascript">
     // Customization for tablesorter. Works in conjunction with jquery.tablsorter.min.js
 
-    // add parser through the tablesorter addParser method 
-    $.tablesorter.addParser({ 
-        // set a unique id 
-        id: 'titles', 
-        is: function(s) { 
-            // return false so this parser is not auto detected 
-            return false; 
-        }, 
-        format: function(s) { 
+    // add parser through the tablesorter addParser method
+    $.tablesorter.addParser({
+        // set a unique id
+        id: 'titles',
+        is: function(s) {
+            // return false so this parser is not auto detected
+            return false;
+        },
+        format: function(s) {
             // format your data for normalization
             s = $.trim(s)     //Make sure there are no leading spaces
             re = /(^The\s+)|(^A\s+)|(^An\s+)/gi;
@@ -82,22 +82,22 @@
                 s = s.replace(re,'');
              }
             return s.toLowerCase();
-        }, 
-        type: 'text' 
-    }); 
+        },
+        type: 'text'
+    });
 
-    $(document).ready(function() { 
-        $("#newspapers").tablesorter({ 
-            headers: { 
+    $(document).ready(function() {
+        $("#newspapers").tablesorter({
+            headers: {
                 {% if state %}0: { sorter: false},{% endif %}
                 1: {sorter: 'titles'},
-                2: { sorter: false }, 
-                6: { sorter: false } 
-            }, 
+                2: { sorter: false },
+                6: { sorter: false }
+            },
             widgets: ['zebra'],
             // for all newspapers, sort on state. If state, then sort on title.
             sortList: [{% if not state %}[0,0]{% else %}[1,0]{% endif %}]
-        }); 
+        });
     });
 
 </script>

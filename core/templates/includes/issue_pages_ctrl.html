@@ -5,7 +5,7 @@
 
 |
 {% if issue.previous %}
-<a href="{% url 'chronam_issue_pages' issue.previous.title.lccn issue.previous.date_issued issue.previous.edition %}" shape="rect"><strong>Previous Issue</strong></a>
+<a href="{% url 'chronam_issue_pages' issue.previous.title.lccn issue.previous.date_issued issue.previous.edition %}"><strong>Previous Issue</strong></a>
 {% else %}
 <span class="off">Previous Issue</span>
 {% endif %}
