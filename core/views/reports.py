@@ -111,7 +111,6 @@ def batch(request, batch_name):
             }
         )
     page_title = "Batch: %s" % batch.name
-    profile_uri = "http://www.openarchives.org/ore/html/"
 
     # maybe when we can prefetch_related when django v1.4 is available
     # https://docs.djangoproject.com/en/dev/ref/models/querysets/#prefetch-related

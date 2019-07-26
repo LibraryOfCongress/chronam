@@ -165,35 +165,48 @@ def title_marcxml(request, lccn):
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def issue_pages(request, lccn, date, edition, page_number=1):
     title = get_object_or_404(models.Title, lccn=lccn)
+
     _year, _month, _day = date.split("-")
     try:
         _date = datetime.date(int(_year), int(_month), int(_day))
     except ValueError:
         raise Http404
+
     try:
         issue = title.issues.filter(date_issued=_date, edition=edition).order_by("-created")[0]
     except IndexError:
         raise Http404
+
     paginator = Paginator(issue.pages.all(), 20)
     try:
         page = paginator.page(page_number)
     except InvalidPage:
         page = paginator.page(1)
-    page_range_short = list(_page_range_short(paginator, page))
+
+    context = {
+        "page_title": "All Pages: %s, %s" % (label(title), label(issue)),
+        "page_head_heading": "All Pages: %s, %s" % (title.display_name, label(issue)),
+        "page_head_subheading": label(title),
+        "crumbs": create_crumbs(title, issue, date, edition),
+        "title": title,
+        "issue": issue,
+        "paginator": paginator,
+        "paginator_page": page,
+        "page_range_short": list(_page_range_short(paginator, page)),
+        # This name allows the same template to be used as in the
+        # issues_first_pages view, where the paginator is *issues* rather than
+        # pages, and for clarity we give it a name which is obviously not
+        # paginator pages:
+        "newspaper_pages": page.object_list,
+    }
+
     if not page.object_list:
-        notes = issue.notes.filter(type="noteAboutReproduction")
-        num_notes = notes.count()
-        if num_notes >= 1:
-            display_label = notes[0].label
-            explanation = notes[0].text
-    page_title = "All Pages: %s, %s" % (label(title), label(issue))
-    page_head_heading = "All Pages: %s, %s" % (title.display_name, label(issue))
-    page_head_subheading = label(title)
-    crumbs = create_crumbs(title, issue, date, edition)
-    profile_uri = "http://www.openarchives.org/ore/html/"
-    response = render_to_response(
-        "issue_pages.html", dictionary=locals(), context_instance=RequestContext(request)
-    )
+        note = issue.notes.filter(type="noteAboutReproduction").first()
+        if note:
+            context["display_label"] = note.label
+            context["explanation"] = note.text
+
+    response = render(request, "issue_pages.html", context=context)
     return add_cache_tag(response, "lccn=%s" % lccn)
 
 
@@ -306,7 +319,6 @@ def page(request, lccn, date, edition, sequence):
 
     image_credit = issue.batch.awardee.name
     host = request.get_host()
-    profile_uri = "http://www.openarchives.org/ore/html/"
 
     template = "page.html"
     text = get_page_text(page)
@@ -646,25 +658,31 @@ def page_print(request, lccn, date, edition, sequence, width, height, x1, y1, x2
 def issues_first_pages(request, lccn, page_number=1):
     title = get_object_or_404(models.Title, lccn=lccn)
     issues = title.issues.all()
-    if not issues.count() > 0:
+    if not issues.exists():
         raise Http404("No issues for %s" % title.display_name)
 
-    first_pages = []
-    for issue in issues:
-        first_pages.append(issue.first_page)
-
-    paginator = Paginator(first_pages, 20)
+    paginator = Paginator(issues, 20)
     try:
         page = paginator.page(page_number)
     except InvalidPage:
         page = paginator.page(1)
-    page_range_short = list(_page_range_short(paginator, page))
 
-    page_title = "Browse Issues: %s" % label(title)
-    page_head_heading = "Browse Issues: %s" % title.display_name
-    page_head_subheading = label(title)
-    crumbs = create_crumbs(title)
-    response = render_to_response(
-        "issue_pages.html", dictionary=locals(), context_instance=RequestContext(request)
+    response = render(
+        request,
+        "issue_pages.html",
+        context={
+            "title": title,
+            "issues": issues,
+            "page_title": "Browse Issues: %s" % label(title),
+            "page_head_heading": "Browse Issues: %s" % title.display_name,
+            "page_head_subheading": label(title),
+            "crumbs": create_crumbs(title),
+            "paginator": paginator,
+            # To avoid confusing aliasing in the templates, we use unambiguous
+            # variable names in the templates:
+            "paginator_page": page,
+            "newspaper_pages": [i.first_page for i in page.object_list],
+            "page_range_short": list(_page_range_short(paginator, page)),
+        },
     )
     return add_cache_tag(response, "lccn=%s" % lccn)

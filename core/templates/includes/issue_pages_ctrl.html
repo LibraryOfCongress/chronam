@@ -1,15 +1,15 @@
 {% load static from staticfiles %}
 
 <div class="search_results_ctrl">
-    <span class="nav"><a href="{% url 'chronam_issues' issue.title.lccn %}" class="ar-back">Back to Browse All Available Issues</a> 
+    <span class="nav"><a href="{% url 'chronam_issues' issue.title.lccn %}" class="ar-back">Back to Browse All Available Issues</a>
 
 |
 {% if issue.previous %}
-<a href="{% url 'chronam_issue_pages' issue.previous.title.lccn issue.previous.date_issued issue.previous.edition %}" shape="rect"><strong>Previous Issue</strong></a>
+<a href="{% url 'chronam_issue_pages' issue.previous.title.lccn issue.previous.date_issued issue.previous.edition %}"><strong>Previous Issue</strong></a>
 {% else %}
 <span class="off">Previous Issue</span>
 {% endif %}
-| 
+|
 <!--Next issue-->
 {% if issue.next %}
 <a href="{% url 'chronam_issue_pages' issue.next.title.lccn issue.next.date_issued issue.next.edition %}"><strong>Next Issue</strong></a>
@@ -23,8 +23,8 @@
 {% if paginator.num_pages > 1 %}
 <span class="pagination">
     |
-    {% if page.has_previous %}
-    <a href="{% url 'chronam_issue_pages_page_number' title.lccn issue.date_issued issue.edition page.previous_page_number %}" class="prev">
+    {% if paginator_page.has_previous %}
+    <a href="{% url 'chronam_issue_pages_page_number' title.lccn issue.date_issued issue.edition paginator_page.previous_page_number %}" class="prev">
         <img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" />
     </a>
     {% endif %}
@@ -33,7 +33,7 @@
         {% ifequal page_number "..." %}
             ...
         {% else %}
-            {% ifequal page_number page.number %}
+            {% ifequal page_number paginator_page.number %}
             <span class="off">{{page_number}}</span>
             {% else %}
             <a href="{% url 'chronam_issue_pages_page_number' title.lccn issue.date_issued issue.edition page_number %}">{{page_number}}</a>
@@ -41,8 +41,8 @@
         {% endifequal %}
     {% endfor %}
 
-    {% if page.has_next %}
-    <a href="{% url 'chronam_issue_pages_page_number' title.lccn issue.date_issued issue.edition page.next_page_number %}" class="next">
+    {% if paginator_page.has_next %}
+    <a href="{% url 'chronam_issue_pages_page_number' title.lccn issue.date_issued issue.edition paginator_page.next_page_number %}" class="next">
     <img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" />
     </a>
     {% endif %}

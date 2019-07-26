@@ -1,13 +1,13 @@
 {% load static from staticfiles %}
 
 <div class="search_results_ctrl">
-    <span class="nav"><a href="{% url 'chronam_issues' issue.title.lccn %}" class="ar-back">Back to Browse All Available Issues</a> 
+    <span class="nav"><a href="{% url 'chronam_issues' title.lccn %}" class="ar-back">Back to Browse All Available Issues</a>
 | Show all front pages</span>
 {% if paginator.num_pages > 1 %}
     <span class="pagination">
 |
-        {% if page.has_previous %}
-        <a href="{% url 'chronam_issues_first_pages_page_number' title.lccn page.previous_page_number %}" class="prev">
+        {% if paginator_page.has_previous %}
+        <a href="{% url 'chronam_issues_first_pages_page_number' title.lccn paginator_page.previous_page_number %}" class="prev">
             <img src="{% static 'images/pag_prev_on.gif' %}" alt="prev" width="13" height="13" />
         </a>
         {% endif %}
@@ -17,7 +17,7 @@
       ...
       {% else %}
 
-        {% ifequal page_number page.number %}
+        {% ifequal page_number paginator_page.number %}
         <span class="off">{{page_number}}</span>
         {% else %}
         <a href="{% url 'chronam_issues_first_pages_page_number' title.lccn page_number %}">{{page_number}}</a>
@@ -27,8 +27,8 @@
 
         {% endfor %}
 
-        {% if page.has_next %}
-        <a href="{% url 'chronam_issues_first_pages_page_number' title.lccn page.next_page_number %}" class="next">
+        {% if paginator_page.has_next %}
+        <a href="{% url 'chronam_issues_first_pages_page_number' title.lccn paginator_page.next_page_number %}" class="next">
         <img src="{% static 'images/pag_next_on.gif' %}" alt="next" width="13" height="13" /></a>
         {% endif %}
     </span>
