@@ -5,7 +5,6 @@
     var tile_url;
     var iiif_url;
     var coordinates_url;
-    var navigation_url;
     var width;
     var height;
     var static_url;
@@ -270,6 +269,7 @@
 
     function addSearchNav() {
         var params, search_qs;
+        var navigation_url = $("#page_data").data("navigation_url");
 
         params = $.extend($.deparam.querystring(), $.deparam.fragment());
         search_qs = $.param(params, true);
@@ -291,7 +291,6 @@
         tile_url = $("#page_data").data("tile_url");
         iiif_url = $("#page_data").data("iiif-url");
         coordinates_url = $("#page_data").data("coordinates_url");
-        navigation_url = $("#page_data").data("navigation_url");
         width = $("#page_data").data("width");
         height = $("#page_data").data("height");
         static_url = $("#page_data").data("static_url");
