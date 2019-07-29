@@ -51,6 +51,9 @@
     <meta property="og:title" content="{{ page_title }}" />
     <meta property="og:description" content="{{ page_title }}, brought to you by {{ image_credit }}, and the National Digital Newspaper Program." />
 
+    <link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.1/openseadragon.min.js">
+    {% if page.iiif_client %}<link rel="preload" as="fetch" href="{{ page.iiif_client.info }}">{% endif %}
+
     <style type="text/css">
        /* viewer */
        #viewer_container
