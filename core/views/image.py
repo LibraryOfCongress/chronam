@@ -104,41 +104,38 @@ def page_image(request, lccn, date, edition, sequence, width, height):
 @add_lccn_cache_tag
 def page_image_tile(request, lccn, date, edition, sequence, width, height, x1, y1, x2, y2):
     page = get_page(lccn, date, edition, sequence)
-    if "download" in request.GET and request.GET["download"]:
-        response = HttpResponse(content_type="binary/octet-stream")
-    else:
-        response = HttpResponse(content_type="image/jpeg")
+    width, height = map(int, (width, height))
+    x1, y1, x2, y2 = map(int, (x1, y1, x2, y2))
 
-    width, height = int(width), int(height)
-    x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
     try:
-        im = _get_image(page)
-    except IOError as e:
+        return serve_image_tile(request, _get_image(page), width, height, x1, y1, x2, y2)
+    except EnvironmentError as e:
+        logging.exception("Unable to create image tile for %s", page)
         return HttpResponseServerError("Unable to create image tile: %s" % e)
+
+
+def image_tile(request, path, width, height, x1, y1, x2, y2):
+    width, height = map(int, (width, height))
+    x1, y1, x2, y2 = map(int, (x1, y1, x2, y2))
+
+    try:
+        p = os.path.join(settings.BATCH_STORAGE, path)
+        im = Image.open(p)
+        return serve_image_tile(request, im, width, height, x1, y1, x2, y2)
+    except EnvironmentError as e:
+        logging.exception("Unable to create image tile for %s", path)
+        return HttpResponseServerError("Unable to create image tile: %s" % e)
+
+
+def serve_image_tile(request, image, width, height, x1, y1, x2, y2):
+    response = HttpResponse(content_type="image/jpeg")
+    if request.GET.get("download"):
+        response["Content-Disposition"] = "attachment"
 
     width = min(width, (x2 - x1))
     height = min(height, (y2 - y1))
 
-    c = im.crop((x1, y1, x2, y2))
-    f = c.resize((width, height))
-    f.save(response, "JPEG")
-    return response
-
-
-def image_tile(request, path, width, height, x1, y1, x2, y2):
-    if "download" in request.GET and request.GET["download"]:
-        response = HttpResponse(content_type="binary/octet-stream")
-    else:
-        response = HttpResponse(content_type="image/jpeg")
-
-    width, height = int(width), int(height)
-    x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-    try:
-        p = os.path.join(settings.BATCH_STORAGE, path)
-        im = Image.open(p)
-    except IOError as e:
-        return HttpResponseServerError("Unable to create image tile: %s" % e)
-    c = im.crop((x1, y1, x2, y2))
+    c = image.crop((x1, y1, x2, y2))
     f = c.resize((width, height))
     f.save(response, "JPEG")
     return response
