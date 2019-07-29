@@ -19,13 +19,6 @@
     <script src="{% static 'vendor/jquery.ba-bbq.min.js' %}"></script>
     <script src="{% static 'js/search.js' %}"></script>
     <script src="{% static 'js/page.js' %}"></script>
-
-    <noscript><!-- without javascript the pageviewer does not work; display OCR in this case instead. -->
-        <h3>Newspaper Page Text</h3>
-        {% if text %}
-        <pre>{{ text|join:" \n\n " |linebreaks }} </pre>
-        {% endif %}
-    </noscript>
 {% endblock javascript %}
 
 {% block lc_metadata %}
@@ -126,6 +119,20 @@
 <span>About <a href="{% url 'chronam_title' title.lccn %}">{{page_head_subheading}}</a></span>
 </h1>
 {% endblock %}
+
+{% block content %}
+    {{ block.super }}
+
+    {% comment %} Without javascript the pageviewer does not work; display OCR in this case instead. {% endcomment %}
+    <noscript>
+        <h3>Newspaper Page Text</h3>
+        {% if text %}
+            <pre>
+                {{ text|join:" \n\n " |linebreaks }}
+            </pre>
+        {% endif %}
+    </noscript>
+{% endblock content %}
 
 {% block subcontent %}
 
