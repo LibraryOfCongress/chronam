@@ -20,6 +20,7 @@ USE_L10N = True
 MEDIA_ROOT = ""
 MEDIA_URL = ""
 IIIF_IMAGE_BASE_URL = None
+REDIRECT_IMAGES_TO_IIIF = False
 
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.CachedStaticFilesStorage"
 
