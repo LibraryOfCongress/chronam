@@ -2,6 +2,11 @@
 {% load static from staticfiles %}
 {% load custom_filters %}
 
+{% block extrahead %}
+    <meta name="robots" content="noindex">
+    {{ block.super }}
+{% endblock extrahead %}
+
 {% block javascript %}
 {{ block.super }}
 <script type="text/javascript" src="{% static 'vendor/jquery.ba-bbq.min.js' %}"></script>

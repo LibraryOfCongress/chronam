@@ -2,6 +2,8 @@
 {% load static from staticfiles %}
 
 {% block extrahead %}
+    <meta name="robots" content="noindex">
+
     {% if page.has_previous %}
     <link rel="prev" href="https://{{host}}{% url 'chronam_search_titles_results' %}{{previous_url}}" />
     {% endif %}
