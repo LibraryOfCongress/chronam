@@ -6,6 +6,7 @@ import os.path
 import urllib2
 import urlparse
 from cStringIO import StringIO
+from functools import wraps
 
 from django.conf import settings
 from django.http import Http404, HttpResponse, HttpResponseServerError
@@ -60,6 +61,15 @@ def _get_resized_image(page, width):
     return im
 
 
+def add_lccn_cache_tag(view_function):
+    @wraps(view_function)
+    def inner(request, lccn, *args, **kwargs):
+        return add_cache_tag(view_function(request, lccn, *args, **kwargs), "lccn=%s" % lccn)
+
+    return inner
+
+
+@add_lccn_cache_tag
 def thumbnail(request, lccn, date, edition, sequence):
     page = get_page(lccn, date, edition, sequence)
     try:
@@ -68,9 +78,10 @@ def thumbnail(request, lccn, date, edition, sequence):
         return HttpResponseServerError("Unable to create thumbnail: %s" % e)
     response = HttpResponse(content_type="image/jpeg")
     im.save(response, "JPEG")
-    return add_cache_tag(response, "lccn=%s" % lccn)
+    return response
 
 
+@add_lccn_cache_tag
 def medium(request, lccn, date, edition, sequence):
     page = get_page(lccn, date, edition, sequence)
     try:
@@ -79,9 +90,10 @@ def medium(request, lccn, date, edition, sequence):
         return HttpResponseServerError("Unable to create thumbnail: %s" % e)
     response = HttpResponse(content_type="image/jpeg")
     im.save(response, "JPEG")
-    return add_cache_tag(response, "lccn=%s" % lccn)
+    return response
 
 
+@add_lccn_cache_tag
 def page_image(request, lccn, date, edition, sequence, width, height):
     page = get_page(lccn, date, edition, sequence)
     return page_image_tile(
@@ -89,6 +101,7 @@ def page_image(request, lccn, date, edition, sequence, width, height):
     )
 
 
+@add_lccn_cache_tag
 def page_image_tile(request, lccn, date, edition, sequence, width, height, x1, y1, x2, y2):
     page = get_page(lccn, date, edition, sequence)
     if "download" in request.GET and request.GET["download"]:
@@ -109,7 +122,7 @@ def page_image_tile(request, lccn, date, edition, sequence, width, height, x1, y
     c = im.crop((x1, y1, x2, y2))
     f = c.resize((width, height))
     f.save(response, "JPEG")
-    return add_cache_tag(response, "lccn=%s" % lccn)
+    return response
 
 
 def image_tile(request, path, width, height, x1, y1, x2, y2):
@@ -132,6 +145,7 @@ def image_tile(request, path, width, height, x1, y1, x2, y2):
 
 
 @cors
+@add_lccn_cache_tag
 def coordinates(request, lccn, date, edition, sequence, words=None):
     url_parts = {"lccn": lccn, "date": date, "edition": edition, "sequence": sequence}
 
@@ -139,8 +153,7 @@ def coordinates(request, lccn, date, edition, sequence, words=None):
 
     try:
         with gzip.open(file_path, "rb") as i:
-            response = HttpResponse(i.read(), content_type="application/json")
-            return add_cache_tag(response, "lccn=%s" % lccn)
+            return HttpResponse(i.read(), content_type="application/json")
     except IOError:
         LOGGER.warning("Word coordinates file %s does not exist", file_path)
         raise Http404
