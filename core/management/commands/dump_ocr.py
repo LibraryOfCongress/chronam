@@ -18,5 +18,5 @@ class Command(LoggingCommand):
             os.makedirs(settings.OCR_DUMP_STORAGE)
 
         for batch in Batch.objects.filter(ocr_dump__isnull=True):
-            self.stdout.write("queueing %s for ocr dump" % batch)
+            self.stdout.write(u"queueing %s for ocr dump" % batch)
             dump_ocr.delay(batch)
