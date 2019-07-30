@@ -45,20 +45,20 @@ urlpatterns = [
         name="chronam_home_date",
     ),
     url(
-        r"^frontpages/(?P<date>\d{4}-\d{1,2}-\d{1,2}).json$",
+        r"^frontpages/(?P<date>\d{4}-\d{1,2}-\d{1,2})\.json$",
         add_cache_headers(settings.DEFAULT_TTL_SECONDS)(views.home.frontpages),
         name="chronam_frontpages_date_json",
     ),
     url(r"^tabs$", views.home.tabs, name="chronam_tabs"),
     url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/thumbnail.jpg$",
+        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/thumbnail\.jpg$",
         add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(
             views.image.thumbnail
         ),
         name="chronam_page_thumbnail",
     ),
     url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/medium.jpg$",
+        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/medium\.jpg$",
         add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(
             views.image.medium
         ),
@@ -66,7 +66,7 @@ urlpatterns = [
     ),
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/image_813x1024_from_0,0_to_6504,8192.jpg
     url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/image_(?P<width>\d+)x(?P<height>\d+)_from_(?P<x1>\d+),(?P<y1>\d+)_to_(?P<x2>\d+),(?P<y2>\d+).jpg$",
+        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/image_(?P<width>\d+)x(?P<height>\d+)_from_(?P<x1>\d+),(?P<y1>\d+)_to_(?P<x2>\d+),(?P<y2>\d+)\.jpg$",
         add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(
             views.image.page_image_tile
         ),
@@ -74,7 +74,7 @@ urlpatterns = [
     ),
     # example: /tiles/batch_dlc_jamaica_ver01/data/sn83030214/00175042143/1903051701/0299.jp2/image_813x1024_from_0,0_to_6504,8192.jpg
     url(
-        r"^images/tiles/(?P<path>.+)/image_(?P<width>\d+)x(?P<height>\d+)_from_(?P<x1>\d+),(?P<y1>\d+)_to_(?P<x2>\d+),(?P<y2>\d+).jpg$",
+        r"^images/tiles/(?P<path>.+)/image_(?P<width>\d+)x(?P<height>\d+)_from_(?P<x1>\d+),(?P<y1>\d+)_to_(?P<x2>\d+),(?P<y2>\d+)\.jpg$",
         add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(
             views.image.image_tile
         ),
@@ -82,7 +82,7 @@ urlpatterns = [
     ),
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/image_813x1024.jpg
     url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/image_(?P<width>\d+)x(?P<height>\d+).jpg$",
+        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/image_(?P<width>\d+)x(?P<height>\d+)\.jpg$",
         add_cache_headers(settings.PAGE_IMAGE_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)(
             views.image.page_image
         ),
@@ -138,7 +138,7 @@ urlpatterns += [
     # example: /lccn/sn85066387/feed/10
     url(r"^lccn/(?P<lccn>\w+)/feed/(?P<page_number>\w+)$", views.title_atom, name="chronam_title_atom_page"),
     # example: /lccn/sn85066387/marc.xml
-    url(r"^lccn/(?P<lccn>\w+)/marc.xml$", views.title_marcxml, name="chronam_title_marcxml"),
+    url(r"^lccn/(?P<lccn>\w+)/marc\.xml$", views.title_marcxml, name="chronam_title_marcxml"),
     # example: /lccn/sn85066387/holdings
     url(r"^lccn/(?P<lccn>\w+)/holdings/$", views.title_holdings, name="chronam_title_holdings"),
     # example: /essays/
@@ -169,25 +169,25 @@ urlpatterns += [
     ),
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4.pdf
     url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+).pdf$",
+        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)\.pdf$",
         views.page_pdf,
         name="chronam_page_pdf",
     ),
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4.jp2
     url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+).jp2$",
+        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)\.jp2$",
         views.page_jp2,
         name="chronam_page_jp2",
     ),
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/ocr.xml
     url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/ocr.xml$",
+        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/ocr\.xml$",
         views.page_ocr_xml,
         name="chronam_page_ocr_xml",
     ),
     # example: /lccn/sn85066387/1907-03-17/ed-1/seq-4/ocr.txt
     url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/ocr.txt$",
+        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)/ocr\.txt$",
         views.page_ocr_txt,
         name="chronam_page_ocr_txt",
     ),
@@ -245,7 +245,7 @@ urlpatterns += [
     url(r"^events/feed/$", views.events_atom, name="chronam_events_atom"),
     url(r"^events/feed/(?P<page_number>\d+)/$", views.events_atom, name="chronam_events_atom_page"),
     url(r"^awardees/$", views.awardees, name="chronam_awardees"),
-    url(r"^awardees.json$", views.awardees_json, name="chronam_awardees_json"),
+    url(r"^awardees\.json$", views.awardees_json, name="chronam_awardees_json"),
     # example: /titles
     url(r"^titles/$", views.titles, name="chronam_titles"),
     # example: /titles;page=5
@@ -358,7 +358,7 @@ urlpatterns += [
     ),
     # awardee
     url(r"^awardees/(?P<institution_code>\w+)/$", views.awardee, name="chronam_awardee"),
-    url(r"^awardees/(?P<institution_code>\w+).json$", views.awardee_json, name="chronam_awardee_json"),
+    url(r"^awardees/(?P<institution_code>\w+)\.json$", views.awardee_json, name="chronam_awardee_json"),
     url(r"^status", views.status, name="chronam_stats"),
 ]
 
@@ -366,20 +366,20 @@ urlpatterns += [
 
 urlpatterns += [
     # newspapers
-    url(r"^newspapers.rdf$", views.newspapers_rdf, name="chronam_newspapers_dot_rdf"),
     url(r"^newspapers$", views.newspapers_rdf, name="chronam_newspapers_rdf"),
+    url(r"^newspapers\.rdf$", views.newspapers_rdf, name="chronam_newspapers_dot_rdf"),
     # title
-    url(r"^lccn/(?P<lccn>\w+).rdf$", views.title_rdf, name="chronam_title_dot_rdf"),
     url(r"^lccn/(?P<lccn>\w+)$", views.title_rdf, name="chronam_title_rdf"),
-    url(r"^lccn/(?P<lccn>\w+).json", views.title_json, name="chronam_title_dot_json"),
+    url(r"^lccn/(?P<lccn>\w+)\.rdf$", views.title_rdf, name="chronam_title_dot_rdf"),
+    url(r"^lccn/(?P<lccn>\w+)\.json", views.title_json, name="chronam_title_dot_json"),
     # issue
     url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+).rdf$",
+        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)\.rdf$",
         views.issue_pages_rdf,
         name="chronam_issue_pages_dot_rdf",
     ),
     url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+).json$",
+        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)\.json$",
         views.issue_pages_json,
         name="chronam_issue_pages_dot_json",
     ),
@@ -390,12 +390,12 @@ urlpatterns += [
     ),
     # page
     url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+).rdf$",
+        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)\.rdf$",
         views.page_rdf,
         name="chronam_page_dot_rdf",
     ),
     url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+).json$",
+        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)\.json$",
         views.page_json,
         name="chronam_page_dot_json",
     ),
@@ -405,8 +405,8 @@ urlpatterns += [
         name="chronam_page_rdf",
     ),
     # awardee
-    url(r"^awardees/(?P<institution_code>\w+).rdf$", views.awardee_rdf, name="chronam_awardee_dot_rdf"),
     url(r"^awardees/(?P<institution_code>\w+)$", views.awardee_rdf, name="chronam_awardee_rdf"),
+    url(r"^awardees/(?P<institution_code>\w+)\.rdf$", views.awardee_rdf, name="chronam_awardee_dot_rdf"),
     # ndnp vocabulary
     url(r"^terms/.*$", views.terms, name="chronam_terms"),
     # flickr report
@@ -421,9 +421,9 @@ urlpatterns += [
     url(r"^batches/feed/(?P<page_number>\d+)/$", views.batches_atom, name="chronam_batches_atom_page"),
     url(r"^batches\.json$", views.batches_json, name="chronam_batches_json"),
     url(r"^batches\.csv$", views.batches_csv, name="chronam_batches_csv"),
-    url(r"^batches/(?P<page_number>\d+).json$", views.batches_json, name="chronam_batches_json_page"),
+    url(r"^batches/(?P<page_number>\d+)\.json$", views.batches_json, name="chronam_batches_json_page"),
     url(r"^batches/(?P<batch_name>.+)/$", views.batch, name="chronam_batch"),
-    url(r"^batches/(?P<batch_name>.+).rdf$", views.batch_rdf, name="chronam_batch_dot_rdf"),
+    url(r"^batches/(?P<batch_name>.+)\.rdf$", views.batch_rdf, name="chronam_batch_dot_rdf"),
     url(r"^batches/(?P<batch_name>.+)\.json$", views.batch_json, name="chronam_batch_dot_json"),
     url(r"^batches/(?P<batch_name>.+)$", views.batch_rdf, name="chronam_batch_rdf"),
     # reels
