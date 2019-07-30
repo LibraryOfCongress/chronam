@@ -18,7 +18,7 @@
                     <strong>Print this image</strong>
                 </a>
                 |
-                <a class="clip_download" download href="{{ download_url }}">
+                <a class="clip_download" download="{{ download_filename }}" href="{{ download_url }}?response-content-disposition={% filter urlencode %}attachment; filename="{{ download_filename }}"{% endfilter %}">
                     <strong>
                         Download this image
                     </strong>
