@@ -15,7 +15,7 @@ from rfc3339 import rfc3339
 from tabular_export.core import export_to_csv_response, flatten_queryset
 
 from chronam.core import index, models
-from chronam.core.decorator import add_cache_headers, cors, rdf_view
+from chronam.core.decorator import add_cache_headers, cors
 from chronam.core.rdf import awardee_to_graph, batch_to_graph
 from chronam.core.utils.url import unpack_url_path
 from chronam.core.utils.utils import _get_tip, _page_range_short, _rdf_base
@@ -142,7 +142,6 @@ def batch(request, batch_name):
     )
 
 
-@rdf_view
 @never_cache
 def batch_rdf(request, batch_name):
     batch = get_object_or_404(models.Batch, name=batch_name)
@@ -428,7 +427,6 @@ def awardee_json(request, institution_code):
 
 
 @add_cache_headers(settings.METADATA_TTL_SECONDS)
-@rdf_view
 def awardee_rdf(request, institution_code):
     awardee = get_object_or_404(models.Awardee, org_code=institution_code)
     graph = awardee_to_graph(awardee)

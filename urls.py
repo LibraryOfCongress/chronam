@@ -366,10 +366,8 @@ urlpatterns += [
 
 urlpatterns += [
     # newspapers
-    url(r"^newspapers$", views.newspapers_rdf, name="chronam_newspapers_rdf"),
     url(r"^newspapers\.rdf$", views.newspapers_rdf, name="chronam_newspapers_dot_rdf"),
     # title
-    url(r"^lccn/(?P<lccn>\w+)$", views.title_rdf, name="chronam_title_rdf"),
     url(r"^lccn/(?P<lccn>\w+)\.rdf$", views.title_rdf, name="chronam_title_dot_rdf"),
     url(r"^lccn/(?P<lccn>\w+)\.json", views.title_json, name="chronam_title_dot_json"),
     # issue
@@ -383,11 +381,6 @@ urlpatterns += [
         views.issue_pages_json,
         name="chronam_issue_pages_dot_json",
     ),
-    url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)$",
-        views.issue_pages_rdf,
-        name="chronam_issue_pages_rdf",
-    ),
     # page
     url(
         r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)\.rdf$",
@@ -399,13 +392,7 @@ urlpatterns += [
         views.page_json,
         name="chronam_page_dot_json",
     ),
-    url(
-        r"^lccn/(?P<lccn>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/ed-(?P<edition>\d+)/seq-(?P<sequence>\d+)$",
-        views.page_rdf,
-        name="chronam_page_rdf",
-    ),
     # awardee
-    url(r"^awardees/(?P<institution_code>\w+)$", views.awardee_rdf, name="chronam_awardee_rdf"),
     url(r"^awardees/(?P<institution_code>\w+)\.rdf$", views.awardee_rdf, name="chronam_awardee_dot_rdf"),
     # ndnp vocabulary
     url(r"^terms/.*$", views.terms, name="chronam_terms"),
@@ -425,7 +412,6 @@ urlpatterns += [
     url(r"^batches/(?P<batch_name>.+)/$", views.batch, name="chronam_batch"),
     url(r"^batches/(?P<batch_name>.+)\.rdf$", views.batch_rdf, name="chronam_batch_dot_rdf"),
     url(r"^batches/(?P<batch_name>.+)\.json$", views.batch_json, name="chronam_batch_dot_json"),
-    url(r"^batches/(?P<batch_name>.+)$", views.batch_rdf, name="chronam_batch_rdf"),
     # reels
     url(r"^reels/$", views.reels, name="chronam_reels"),
     url(r"^reels/;page=(?P<page_number>\d+)$", views.reels, name="chronam_reels_page"),

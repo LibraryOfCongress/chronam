@@ -28,7 +28,7 @@ from django.views.decorators.vary import vary_on_headers
 from sendfile import sendfile
 
 from chronam.core import index, models
-from chronam.core.decorator import add_cache_headers, rdf_view
+from chronam.core.decorator import add_cache_headers
 from chronam.core.index import get_page_text
 from chronam.core.rdf import issue_to_graph, page_to_graph, title_to_graph
 from chronam.core.utils.url import unpack_url_path
@@ -113,7 +113,6 @@ def title_marc(request, lccn):
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
-@rdf_view
 def title_rdf(request, lccn):
     title = get_object_or_404(models.Title, lccn=lccn)
     graph = title_to_graph(title)
@@ -211,7 +210,6 @@ def issue_pages(request, lccn, date, edition, page_number=1):
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
-@rdf_view
 def issue_pages_rdf(request, lccn, date, edition):
     title, issue, page = _get_tip(lccn, date, edition)
     graph = issue_to_graph(issue)
@@ -607,7 +605,6 @@ def page_ocr_txt(request, lccn, date, edition, sequence):
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
-@rdf_view
 def page_rdf(request, lccn, date, edition, sequence):
     page = get_page(lccn, date, edition, sequence)
     graph = page_to_graph(page)

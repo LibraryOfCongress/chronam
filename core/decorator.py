@@ -40,38 +40,6 @@ def add_cache_headers(ttl, shared_cache_maxage=None):
     return decorator
 
 
-def rdf_view(f):
-    @wraps(f)
-    def f1(request, **kwargs):
-        # construct a http redirect response to html view
-        html_view = f.func_name.replace("_rdf", "")
-        html_url = urlresolvers.reverse("chronam_%s" % html_view, kwargs=kwargs)
-        html_redirect = HttpResponseSeeOther(html_url)
-
-        # determine the clients preferred representation
-        available = ["text/html", "application/rdf+xml"]
-        accept = request.META.get("HTTP_ACCEPT", "application/rdf+xml")
-        match = best_match(available, accept)
-
-        # figure out what user agent we are talking to
-        ua = request.META.get("HTTP_USER_AGENT")
-
-        if request.path.endswith(".rdf"):
-            return f(request, **kwargs)
-        elif ua and "MSIE" in ua:
-            return html_redirect
-        elif match == "application/rdf+xml":
-            response = f(request, **kwargs)
-            response["Vary"] = "Accept"
-            return response
-        elif match == "text/html":
-            return html_redirect
-        else:
-            return HttpResponseUnsupportedMediaType()
-
-    return f1
-
-
 def opensearch_clean(f):
     """
     Some opensearch clients send along optional parameters from the opensearch

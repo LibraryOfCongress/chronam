@@ -12,7 +12,7 @@ from django.utils.encoding import smart_str
 from rfc3339 import rfc3339
 
 from chronam.core import index, models
-from chronam.core.decorator import add_cache_headers, cors, opensearch_clean, rdf_view
+from chronam.core.decorator import add_cache_headers, cors, opensearch_clean
 from chronam.core.rdf import titles_to_graph
 from chronam.core.utils.url import unpack_url_path
 from chronam.core.utils.utils import _page_range_short, _rdf_base, is_valid_jsonp_callback
@@ -300,7 +300,6 @@ def search_titles_results(request):
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
-@rdf_view
 def newspapers_rdf(request):
     titles = models.Title.objects.filter(has_issues=True)
     titles = titles.prefetch_related(
