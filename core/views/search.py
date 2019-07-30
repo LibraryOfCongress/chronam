@@ -26,17 +26,17 @@ from chronam.core.utils.utils import _page_range_short, is_valid_jsonp_callback
 def search_pages_paginator(request):
     # front page only
     try:
-        sequence = int(request.GET.get('sequence', '0'))
+        sequence = int(request.GET.get("sequence", "0"))
     except ValueError:
         sequence = 0
     # set results per page value
     try:
-        rows = int(request.GET.get('rows', '20'))
+        rows = int(request.GET.get("rows", "20"))
     except ValueError:
         rows = 20
     q = request.GET.copy()
-    q['rows'] = rows
-    q['sequence'] = sequence
+    q["rows"] = rows
+    q["sequence"] = sequence
     paginator = index.SolrPaginator(q)
     return paginator
 
@@ -44,7 +44,7 @@ def search_pages_paginator(request):
 @cors
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 @opensearch_clean
-def search_pages_results(request, view_type='gallery'):
+def search_pages_results(request, view_type="gallery"):
     page_title = "Search Results"
     paginator = search_pages_paginator(request)
     q = paginator.query
@@ -52,16 +52,16 @@ def search_pages_results(request, view_type='gallery'):
     try:
         page = paginator.page(paginator._cur_page)
     except InvalidPage:
-        url = urlresolvers.reverse('chronam_search_pages_results')
+        url = urlresolvers.reverse("chronam_search_pages_results")
         # Set the page to the first page
-        q['page'] = 1
-        return HttpResponseRedirect('%s?%s' % (url, q.urlencode()))
+        q["page"] = 1
+        return HttpResponseRedirect("%s?%s" % (url, q.urlencode()))
     except Exception as exc:
         logging.exception(
-            'Unable to paginate search results', extra={'data': {'q': q, 'page': paginator._cur_page}}
+            "Unable to paginate search results", extra={"data": {"q": q, "page": paginator._cur_page}}
         )
 
-        if getattr(exc, 'httpcode', None) == 400:
+        if getattr(exc, "httpcode", None) == 400:
             return HttpResponseBadRequest()
         else:
             raise
@@ -71,48 +71,48 @@ def search_pages_results(request, view_type='gallery'):
     # figure out the next page number
     query = request.GET.copy()
     if page.has_next():
-        query['page'] = paginator._cur_page + 1
-        next_url = '?' + query.urlencode()
+        query["page"] = paginator._cur_page + 1
+        next_url = "?" + query.urlencode()
         # and the previous page number
     if page.has_previous():
-        query['page'] = paginator._cur_page - 1
-        previous_url = '?' + query.urlencode()
+        query["page"] = paginator._cur_page - 1
+        previous_url = "?" + query.urlencode()
 
     rows = q["rows"] if "rows" in q else 20
     crumbs = list(settings.BASE_CRUMBS)
 
     host = request.get_host()
-    response_format = request.GET.get('format')
-    if response_format == 'atom':
+    response_format = request.GET.get("format")
+    if response_format == "atom":
         feed_url = request.build_absolute_uri()
         updated = rfc3339(datetime.datetime.now())
         return render_to_response(
-            'search_pages_results.xml',
+            "search_pages_results.xml",
             dictionary=locals(),
             context_instance=RequestContext(request),
-            content_type='application/atom+xml',
+            content_type="application/atom+xml",
         )
-    elif response_format == 'json':
+    elif response_format == "json":
         results = {
-            'startIndex': start,
-            'endIndex': end,
-            'totalItems': paginator.count,
-            'itemsPerPage': rows,
-            'items': [p.solr_doc for p in page.object_list],
+            "startIndex": start,
+            "endIndex": end,
+            "totalItems": paginator.count,
+            "itemsPerPage": rows,
+            "items": [p.solr_doc for p in page.object_list],
         }
-        for i in results['items']:
-            i['url'] = request.build_absolute_uri(i['id'].rstrip('/') + '.json')
+        for i in results["items"]:
+            i["url"] = request.build_absolute_uri(i["id"].rstrip("/") + ".json")
         json_text = json.dumps(results)
         # jsonp?
-        callback = request.GET.get('callback')
+        callback = request.GET.get("callback")
         if callback and is_valid_jsonp_callback(callback):
             json_text = "%s(%s);" % (callback, json_text)
-        return HttpResponse(json_text, content_type='application/json')
+        return HttpResponse(json_text, content_type="application/json")
     page_range_short = list(_page_range_short(paginator, page))
     # copy the current request query without the page and sort
     # query params so we can construct links with it in the template
     q = request.GET.copy()
-    for i in ('page', 'sort'):
+    for i in ("page", "sort"):
         if i in q:
             q.pop(i)
     q = q.urlencode()
@@ -121,11 +121,11 @@ def search_pages_results(request, view_type='gallery'):
     english_search = paginator.englishify()
 
     # get some stuff from the query string for use in the form
-    lccns = query.getlist('lccn')
-    states = query.getlist('state')
+    lccns = query.getlist("lccn")
+    states = query.getlist("state")
 
     # figure out the sort that's in use
-    sort = query.get('sort', 'relevance')
+    sort = query.get("sort", "relevance")
     if view_type == "list":
         template = "search_pages_results_list.html"
     else:
@@ -133,8 +133,7 @@ def search_pages_results(request, view_type='gallery'):
     page_list = []
     for count in range(len(page.object_list)):
         page_list.append((count + start, page.object_list[count]))
-    return render_to_response(template, dictionary=locals(),
-                              context_instance=RequestContext(request))
+    return render_to_response(template, dictionary=locals(), context_instance=RequestContext(request))
 
 
 @add_cache_headers(settings.METADATA_TTL_SECONDS)
@@ -148,36 +147,39 @@ def search_titles(request):
     template = "news_directory.html"
     collapse_search_tab = True
     crumbs = list(settings.BASE_CRUMBS)
-    return render_to_response(template, dictionary=locals(),
-                              context_instance=RequestContext(request))
+    return render_to_response(template, dictionary=locals(), context_instance=RequestContext(request))
 
 
 @add_cache_headers(settings.METADATA_TTL_SECONDS)
 def search_titles_opensearch(request):
     host = request.get_host()
-    return render_to_response('search_titles_opensearch.xml',
-                              content_type='application/opensearchdescription+xml',
-                              dictionary=locals(),
-                              context_instance=RequestContext(request))
+    return render_to_response(
+        "search_titles_opensearch.xml",
+        content_type="application/opensearchdescription+xml",
+        dictionary=locals(),
+        context_instance=RequestContext(request),
+    )
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 def search_pages_opensearch(request):
     host = request.get_host()
-    return render_to_response('search_pages_opensearch.xml',
-                              content_type='application/opensearchdescription+xml',
-                              dictionary=locals(),
-                              context_instance=RequestContext(request))
+    return render_to_response(
+        "search_pages_opensearch.xml",
+        content_type="application/opensearchdescription+xml",
+        dictionary=locals(),
+        context_instance=RequestContext(request),
+    )
 
 
 @cors
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 def suggest_titles(request):
-    q = request.GET.get('q', '')
+    q = request.GET.get("q", "")
     q = q.lower()
 
     # remove initial articles (maybe there are more?)
-    q = re.sub(r'^(the|a|an) ', '', q)
+    q = re.sub(r"^(the|a|an) ", "", q)
 
     # build up the suggestions
     # See http://www.opensearch.org/Specifications/OpenSearch/Extensions/Suggestions/1.0
@@ -199,7 +201,7 @@ def suggest_titles(request):
     callback = request.GET.get("callback")
     if callback and is_valid_jsonp_callback(callback):
         json_text = "%s(%s);" % (callback, json_text)
-    return HttpResponse(json_text, content_type='application/x-suggestions+json')
+    return HttpResponse(json_text, content_type="application/x-suggestions+json")
 
 
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
@@ -210,10 +212,10 @@ def search_pages_navigation(request):
     navigation to a page.
 
     """
-    if not ('page' in request.GET and 'index' in request.GET):
+    if not ("page" in request.GET and "index" in request.GET):
         return HttpResponseNotFound()
 
-    search_url = urlresolvers.reverse('chronam_search_pages_results')
+    search_url = urlresolvers.reverse("chronam_search_pages_results")
 
     try:
         paginator = search_pages_paginator(request)
@@ -221,13 +223,13 @@ def search_pages_navigation(request):
         return HttpResponseBadRequest()
 
     search = {}
-    search['total'] = paginator.count
-    search['current'] = paginator.overall_index + 1  # current is 1-based
-    search['results'] = search_url + '?' + paginator.query.urlencode()
+    search["total"] = paginator.count
+    search["current"] = paginator.overall_index + 1  # current is 1-based
+    search["results"] = search_url + "?" + paginator.query.urlencode()
 
     try:
-        search['previous_result'] = paginator.previous_result
-        search['next_result'] = paginator.next_result
+        search["previous_result"] = paginator.previous_result
+        search["next_result"] = paginator.next_result
     except EmptyPage:
         pass
 
@@ -239,6 +241,5 @@ def search_advanced(request):
     adv_search_form = forms.AdvSearchPagesForm()
     template = "search_advanced.html"
     crumbs = list(settings.BASE_CRUMBS)
-    page_title = 'Advanced Search'
-    return render_to_response(template, dictionary=locals(),
-                              context_instance=RequestContext(request))
+    page_title = "Advanced Search"
+    return render_to_response(template, dictionary=locals(), context_instance=RequestContext(request))

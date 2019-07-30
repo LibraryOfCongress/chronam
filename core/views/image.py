@@ -22,7 +22,7 @@ if settings.USE_TIFF:
 else:
     import NativeImaging
 
-    for backend in ('aware', 'graphicsmagick'):
+    for backend in ("aware", "graphicsmagick"):
         try:
             Image = NativeImaging.get_image_class(backend)
             LOGGER.info("Using NativeImage backend '%s'", backend)
@@ -91,7 +91,7 @@ def page_image(request, lccn, date, edition, sequence, width, height):
 
 def page_image_tile(request, lccn, date, edition, sequence, width, height, x1, y1, x2, y2):
     page = get_page(lccn, date, edition, sequence)
-    if 'download' in request.GET and request.GET['download']:
+    if "download" in request.GET and request.GET["download"]:
         response = HttpResponse(content_type="binary/octet-stream")
     else:
         response = HttpResponse(content_type="image/jpeg")
@@ -113,7 +113,7 @@ def page_image_tile(request, lccn, date, edition, sequence, width, height, x1, y
 
 
 def image_tile(request, path, width, height, x1, y1, x2, y2):
-    if 'download' in request.GET and request.GET['download']:
+    if "download" in request.GET and request.GET["download"]:
         response = HttpResponse(content_type="binary/octet-stream")
     else:
         response = HttpResponse(content_type="image/jpeg")
@@ -138,9 +138,9 @@ def coordinates(request, lccn, date, edition, sequence, words=None):
     file_path = models.coordinates_path(url_parts)
 
     try:
-        with gzip.open(file_path, 'rb') as i:
-            response = HttpResponse(i.read(), content_type='application/json')
+        with gzip.open(file_path, "rb") as i:
+            response = HttpResponse(i.read(), content_type="application/json")
             return add_cache_tag(response, "lccn=%s" % lccn)
     except IOError:
-        LOGGER.warning('Word coordinates file %s does not exist', file_path)
+        LOGGER.warning("Word coordinates file %s does not exist", file_path)
         raise Http404
