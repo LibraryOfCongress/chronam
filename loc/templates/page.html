@@ -15,7 +15,7 @@
 	    data-navigation_url="{% url 'chronam_search_pages_navigation' %}?"
 	></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.1/openseadragon.min.js" integrity="sha256-qIiBj8XqCj196KLyEX8fBJ0HiHUZmXYmYFciVQZ7nls=" crossorigin="anonymous"></script>
+    <script crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.1/openseadragon.min.js" integrity="sha256-qIiBj8XqCj196KLyEX8fBJ0HiHUZmXYmYFciVQZ7nls="></script>
     <script src="{% static 'vendor/jquery.ba-bbq.min.js' %}"></script>
     <script src="{% static 'js/search.js' %}"></script>
     <script src="{% static 'js/page.js' %}"></script>
@@ -51,8 +51,8 @@
     <meta property="og:title" content="{{ page_title }}" />
     <meta property="og:description" content="{{ page_title }}, brought to you by {{ image_credit }}, and the National Digital Newspaper Program." />
 
-    <link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.1/openseadragon.min.js">
-    {% if page.iiif_client %}<link rel="preload" as="fetch" href="{{ page.iiif_client.info }}">{% endif %}
+    <link rel="preload" as="script" crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.1/openseadragon.min.js">
+    {% if page.iiif_client %}<link rel="preload" as="fetch" crossorigin="anonymous" href="{{ page.iiif_client.info }}">{% endif %}
 
     <style type="text/css">
        /* viewer */
