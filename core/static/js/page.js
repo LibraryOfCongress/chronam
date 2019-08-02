@@ -339,5 +339,5 @@
         viewer.addHandler("animation-finish", resizePrint);
     }
 
-    $(initPage);
+    initPage();
 })(jQuery);
