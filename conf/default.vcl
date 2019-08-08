@@ -106,12 +106,13 @@ sub vcl_hit {
     return (fetch);
 }
 
-#Preserve any Vary headers from the backend but ensure that Vary always includes Accept-Encoding since we enable gzip transfer encoding
+# Preserve any Vary headers from the backend but ensure that Vary always
+# includes Accept-Encoding since we enable gzip transfer encoding
 sub vcl_deliver {
     if (!resp.http.Vary) {
         set resp.http.Vary = "Accept-Encoding";
     } else if (resp.http.Vary !~ "(?i)Accept-Encoding") {
-        set resp.http.Vary = resp.http.Vary + ",Accept-Encoding";
+        set resp.http.Vary = "Accept-Encoding," + resp.http.Vary;
     }
 }
 
