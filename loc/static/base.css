@@ -1772,6 +1772,9 @@ img.highlite {
 }
 img.thumbnail {
     border: 2px solid #ccc;
+    background-color: black;
+    object-fit: scale-down;
+    object-position: top;
 }
 .search_results_body ul.results_list {
     list-style: none;
