@@ -322,10 +322,6 @@ form select.sel {
     border: 1px solid #999;
     margin: 2px 0;
 }
-form input.radio,
-form input.check {
-    /* nothing here yet */
-}
 form .error span,
 form .error label,
 form .error .label_alt,
@@ -403,9 +399,6 @@ form textarea.std {
 .req {
     background-color: #eee;
     padding: 5px 7px;
-}
-.required {
-    /*color:#900;*/
 }
 .box-error {
     padding: 9px 9px 0 9px;
@@ -1779,6 +1772,9 @@ img.highlite {
 }
 img.thumbnail {
     border: 2px solid #ccc;
+    background-color: black;
+    object-fit: scale-down;
+    object-position: top;
 }
 .search_results_body ul.results_list {
     list-style: none;
@@ -1999,14 +1995,8 @@ table.marc-record th,
 table.marc-record td {
     padding: 2px 6px 2px 0;
 }
-table.marc-record tr.marc-leader {
-}
-table.marc-record td.marc-field-indicators {
-}
 table.marc-record span.marc-subfield-code {
     color: #690;
-}
-table.marc-record span.marc-subfield-value {
 }
 
 /********************* about *********************/
