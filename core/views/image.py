@@ -6,15 +6,24 @@ import os.path
 import urllib2
 import urlparse
 from cStringIO import StringIO
+from functools import wraps
+from urllib import quote
+from urlparse import urljoin
 
 from django.conf import settings
-from django.http import Http404, HttpResponse, HttpResponseServerError
+from django.core.exceptions import ImproperlyConfigured
+from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpResponseServerError
+from piffle.iiif import IIIFImageClient
 
 from chronam.core import models
 from chronam.core.decorator import cors
 from chronam.core.utils.utils import add_cache_tag, get_page
 
 LOGGER = logging.getLogger(__name__)
+
+
+if settings.REDIRECT_IMAGES_TO_IIIF and not settings.IIIF_IMAGE_BASE_URL:
+    raise ImproperlyConfigured("REDIRECT_IMAGES_TO_IIIF requires IIIF_IMAGE_BASE_URL")
 
 if settings.USE_TIFF:
     LOGGER.info("Configured to use TIFFs. Set USE_TIFF=False if you want to use the JPEG2000s.")
@@ -60,87 +69,125 @@ def _get_resized_image(page, width):
     return im
 
 
+def add_lccn_cache_tag(view_function):
+    @wraps(view_function)
+    def inner(request, lccn, *args, **kwargs):
+        return add_cache_tag(view_function(request, lccn, *args, **kwargs), "lccn=%s" % lccn)
+
+    return inner
+
+
+@add_lccn_cache_tag
 def thumbnail(request, lccn, date, edition, sequence):
     page = get_page(lccn, date, edition, sequence)
-    try:
-        im = _get_resized_image(page, settings.THUMBNAIL_WIDTH)
-    except IOError as e:
-        return HttpResponseServerError("Unable to create thumbnail: %s" % e)
-    response = HttpResponse(content_type="image/jpeg")
-    im.save(response, "JPEG")
-    return add_cache_tag(response, "lccn=%s" % lccn)
+
+    if settings.REDIRECT_IMAGES_TO_IIIF:
+        return HttpResponseRedirect(page.thumb_url)
+    else:
+        try:
+            im = _get_resized_image(page, settings.THUMBNAIL_WIDTH)
+        except IOError as e:
+            return HttpResponseServerError("Unable to create thumbnail: %s" % e)
+        response = HttpResponse(content_type="image/jpeg")
+        im.save(response, "JPEG")
+        return response
 
 
+@add_lccn_cache_tag
 def medium(request, lccn, date, edition, sequence):
     page = get_page(lccn, date, edition, sequence)
-    try:
-        im = _get_resized_image(page, settings.THUMBNAIL_MEDIUM_WIDTH)
-    except IOError as e:
-        return HttpResponseServerError("Unable to create thumbnail: %s" % e)
-    response = HttpResponse(content_type="image/jpeg")
-    im.save(response, "JPEG")
-    return add_cache_tag(response, "lccn=%s" % lccn)
+
+    if settings.REDIRECT_IMAGES_TO_IIIF:
+        return HttpResponseRedirect(page.medium_url)
+    else:
+        try:
+            im = _get_resized_image(page, settings.THUMBNAIL_MEDIUM_WIDTH)
+        except IOError as e:
+            return HttpResponseServerError("Unable to create thumbnail: %s" % e)
+        response = HttpResponse(content_type="image/jpeg")
+        im.save(response, "JPEG")
+        return response
 
 
+@add_lccn_cache_tag
 def page_image(request, lccn, date, edition, sequence, width, height):
     page = get_page(lccn, date, edition, sequence)
-    return page_image_tile(
-        request, lccn, date, edition, sequence, width, height, 0, 0, page.jp2_width, page.jp2_length
-    )
+
+    if settings.REDIRECT_IMAGES_TO_IIIF:
+        # We'll redirect directly to avoid the duplicate database query:
+        return HttpResponseRedirect(page.iiif_client.size(width=width, height=height))
+    else:
+        return page_image_tile(
+            request, lccn, date, edition, sequence, width, height, 0, 0, page.jp2_width, page.jp2_length
+        )
 
 
+@add_lccn_cache_tag
 def page_image_tile(request, lccn, date, edition, sequence, width, height, x1, y1, x2, y2):
     page = get_page(lccn, date, edition, sequence)
-    if "download" in request.GET and request.GET["download"]:
-        response = HttpResponse(content_type="binary/octet-stream")
-    else:
-        response = HttpResponse(content_type="image/jpeg")
+    width, height = map(int, (width, height))
+    x1, y1, x2, y2 = map(int, (x1, y1, x2, y2))
 
-    width, height = int(width), int(height)
-    x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-    try:
-        im = _get_image(page)
-    except IOError as e:
-        return HttpResponseServerError("Unable to create image tile: %s" % e)
+    if settings.REDIRECT_IMAGES_TO_IIIF:
+        return redirect_to_iiif(request, page.iiif_client, width, height, x1, y1, x2, y2)
+    else:
+        try:
+            return serve_image_tile(request, _get_image(page), width, height, x1, y1, x2, y2)
+        except EnvironmentError as e:
+            logging.exception("Unable to create image tile for %s", page)
+            return HttpResponseServerError("Unable to create image tile: %s" % e)
+
+
+def image_tile(request, path, width, height, x1, y1, x2, y2):
+    width, height = map(int, (width, height))
+    x1, y1, x2, y2 = map(int, (x1, y1, x2, y2))
+
+    if settings.REDIRECT_IMAGES_TO_IIIF:
+        iiif_client = IIIFImageClient(settings.IIIF_IMAGE_BASE_URL, quote(path, safe=""))
+        return redirect_to_iiif(request, iiif_client, width, height, x1, y1, x2, y2)
+
+    else:
+        try:
+            p = os.path.join(settings.BATCH_STORAGE, path)
+            im = Image.open(p)
+            return serve_image_tile(request, im, width, height, x1, y1, x2, y2)
+        except EnvironmentError as e:
+            logging.exception("Unable to create image tile for %s", path)
+            return HttpResponseServerError("Unable to create image tile: %s" % e)
+
+
+def redirect_to_iiif(request, iiif_client, width, height, x1, y1, x2, y2):
+    url = str(iiif_client.region(x=x1, y=y1, width=x2 - x1, height=y2 - y1).size(width=width, height=height))
+    if request.GET.get("download"):
+        url = urljoin(url, "?response-content-disposition=attachment")
+
+    return HttpResponseRedirect(url)
+
+
+def serve_image_tile(request, image, width, height, x1, y1, x2, y2):
+    response = HttpResponse(content_type="image/jpeg")
+    if request.GET.get("download"):
+        response["Content-Disposition"] = "attachment"
 
     width = min(width, (x2 - x1))
     height = min(height, (y2 - y1))
 
-    c = im.crop((x1, y1, x2, y2))
-    f = c.resize((width, height))
-    f.save(response, "JPEG")
-    return add_cache_tag(response, "lccn=%s" % lccn)
-
-
-def image_tile(request, path, width, height, x1, y1, x2, y2):
-    if "download" in request.GET and request.GET["download"]:
-        response = HttpResponse(content_type="binary/octet-stream")
-    else:
-        response = HttpResponse(content_type="image/jpeg")
-
-    width, height = int(width), int(height)
-    x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-    try:
-        p = os.path.join(settings.BATCH_STORAGE, path)
-        im = Image.open(p)
-    except IOError as e:
-        return HttpResponseServerError("Unable to create image tile: %s" % e)
-    c = im.crop((x1, y1, x2, y2))
+    c = image.crop((x1, y1, x2, y2))
     f = c.resize((width, height))
     f.save(response, "JPEG")
     return response
 
 
 @cors
+@add_lccn_cache_tag
 def coordinates(request, lccn, date, edition, sequence, words=None):
-    url_parts = dict(lccn=lccn, date=date, edition=edition, sequence=sequence)
+    url_parts = {"lccn": lccn, "date": date, "edition": edition, "sequence": sequence}
 
     file_path = models.coordinates_path(url_parts)
 
     try:
         with gzip.open(file_path, "rb") as i:
-            response = HttpResponse(i.read(), content_type="application/json")
-            return add_cache_tag(response, "lccn=%s" % lccn)
+            return HttpResponse(i.read(), content_type="application/json")
     except IOError:
         LOGGER.warning("Word coordinates file %s does not exist", file_path)
         raise Http404
