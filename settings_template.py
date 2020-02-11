@@ -116,13 +116,13 @@ THUMBNAIL_WIDTH = 360
 THUMBNAIL_MEDIUM_WIDTH = 550
 
 DEFAULT_TTL_SECONDS = 86400  # 1 day
-LONG_TTL_SECONDS = 60 * 60 * 24 * 7 * 8  # 8 weeks
+LONG_TTL_SECONDS = DEFAULT_TTL_SECONDS
 #: Used to cache metadata about publishers, issues, etc. as distinct from HTML
 # pages, images, search results, etc.
 METADATA_TTL_SECONDS = DEFAULT_TTL_SECONDS
-PAGE_IMAGE_TTL_SECONDS = 60 * 60 * 24 * 7 * 2  # 2 weeks
+PAGE_IMAGE_TTL_SECONDS = DEFAULT_TTL_SECONDS
 API_TTL_SECONDS = 60 * 60  # 1 hour
-SHARED_CACHE_MAXAGE_SECONDS = 60 * 60 * 24 * 365  # 1 year, purge from cloudflare and varnish if needed sooner
+SHARED_CACHE_MAXAGE_SECONDS = DEFAULT_TTL_SECONDS
 
 USE_TIFF = False
 
