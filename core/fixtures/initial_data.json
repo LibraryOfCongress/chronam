@@ -83,7 +83,7 @@
         "pk": "ohi",
         "model": "core.Awardee",
         "fields": {
-            "name": "Ohio Historical Society, Columbus, OH",
+            "name": "Ohio History Connection, Columbus, OH",
             "created": "2009-02-09 06:44:45"
         }
     },
@@ -381,6 +381,30 @@
         "fields": {
             "name": "Digital Library of Georgia, a project of GALILEO located at the University of Georgia Libraries",
             "created": "2018-04-05 06:44:45"
+        }
+    },
+    {
+        "pk": "vnstcsc",
+        "model": "core.awardee",
+        "fields": {
+            "name": "University of the Virgin Islands",
+            "created": "2020-02-18 06:44:45"
+        }
+    },
+     {
+        "pk": "wyu",
+        "model": "core.awardee",
+        "fields": {
+            "name": "University of Wyoming Libraries",
+            "created": "2020-02-18 06:44:45"
+        }
+    },
+     {
+        "pk": "rp",
+        "model": "core.awardee",
+        "fields": {
+            "name": "Providence Public Library, Providence, RI",
+            "created": "2020-02-18 06:44:45"
         }
     },
     {
