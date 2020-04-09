@@ -30,18 +30,18 @@ repos:
             args: ["--autofix", "--no-sort-keys", "--indent=4"]
           - id: trailing-whitespace
     - repo: https://github.com/prettier/prettier
-      rev: 1.19.1
+      rev: 2.0.4
       hooks:
           - id: prettier
             files: \.(css|less|scss|ts|tsx|graphql|gql|json|js|jsx|md)$
     - repo: https://github.com/pre-commit/mirrors-eslint
-      rev: v7.0.0-alpha.0
+      rev: v6.8.0
       hooks:
           - id: eslint
             additional_dependencies:
-                - eslint@5.8.0
-                - eslint-plugin-prettier@3.0.0
-                - prettier@1.14.3
+                - eslint@5.16.0
+                - eslint-plugin-prettier@3.1.0
+                - prettier@1.18.2
     - repo: https://gitlab.com/pycqa/flake8
       rev: 3.7.9
       hooks:
