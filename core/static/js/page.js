@@ -1,6 +1,6 @@
 /* globals OpenSeadragon, jQuery, ChronAmSearch */
 
-(function($) {
+(function ($) {
     var page_url;
     var tile_url;
     var iiif_url;
@@ -24,7 +24,7 @@
                     $("#clip").attr("href")
                 );
 
-                $pb.off("click").on("click", function(event) {
+                $pb.off("click").on("click", function (event) {
                     event.stopImmediatePropagation();
                     window.open(this.href, "print");
                     return false;
@@ -148,7 +148,7 @@
         var params = $.deparam.fragment();
         var words = params["words"] || "";
 
-        $.getJSON(coordinates_url, function(all_coordinates) {
+        $.getJSON(coordinates_url, function (all_coordinates) {
             var scale = 1 / all_coordinates["width"];
 
             var matchingWords = ChronAmSearch.matchWords(
@@ -156,8 +156,8 @@
                 all_coordinates
             );
 
-            $.each(matchingWords, function(index, word_on_page) {
-                $.each(all_coordinates["coords"][word_on_page], function(
+            $.each(matchingWords, function (index, word_on_page) {
+                $.each(all_coordinates["coords"][word_on_page], function (
                     index,
                     value
                 ) {
@@ -174,21 +174,24 @@
     }
 
     function getTileUrl(level, column, row) {
+        var tileWidth = this.getTileWidth();
+        var tileHeight = this.getTileHeight();
+
         var px = 0;
         if (column != 0) {
-            px = this.tileSize * column - this.tileOverlap;
+            px = tileWidth * column - this.tileOverlap;
         }
         var py = 0;
         if (row != 0) {
-            py = this.tileSize * row - this.tileOverlap;
+            py = tileHeight * row - this.tileOverlap;
         }
         var scale = this.getLevelScale(level);
         var dimensionsScaled = this.dimensions.times(scale);
 
         // find the dimension of the tile, adjust for no
         // overlap data on top and left edges
-        var sx = this.tileSize + (column == 0 ? 1 : 2) * this.tileOverlap;
-        var sy = this.tileSize + (row == 0 ? 1 : 2) * this.tileOverlap;
+        var sx = tileWidth + (column == 0 ? 1 : 2) * this.tileOverlap;
+        var sy = tileHeight + (row == 0 ? 1 : 2) * this.tileOverlap;
 
         // adjust size for single-tile levels where the image
         // size is smaller than the regular tile size, and for
@@ -280,7 +283,7 @@
             url: navigation_url + search_qs,
             dataType: "json",
             cache: true,
-            success: updateSearchNav
+            success: updateSearchNav,
         });
     }
 
@@ -331,7 +334,7 @@
             previousButton: "previous",
             tileSources: ts,
             timeout: 60000,
-            showNavigator: true
+            showNavigator: true,
         });
 
         viewer.addHandler("open", addOverlays);
