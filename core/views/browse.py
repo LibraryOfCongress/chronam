@@ -28,7 +28,7 @@ from django.views.decorators.vary import vary_on_headers
 from sendfile import sendfile
 
 from chronam.core import index, models
-from chronam.core.decorator import add_cache_headers, rdf_view
+from chronam.core.decorator import add_cache_headers, cors, rdf_view
 from chronam.core.index import get_page_text
 from chronam.core.rdf import issue_to_graph, page_to_graph, title_to_graph
 from chronam.core.utils.url import unpack_url_path
@@ -555,6 +555,7 @@ def _search_engine_words(request):
     return words
 
 
+@cors
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS, settings.SHARED_CACHE_MAXAGE_SECONDS)
 def page_ocr(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
@@ -586,6 +587,7 @@ def page_jp2(request, lccn, date, edition, sequence):
         raise Http404("No jp2 for page %s" % page)
 
 
+@cors
 def page_ocr_xml(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     if page.ocr_filename:
@@ -595,6 +597,7 @@ def page_ocr_xml(request, lccn, date, edition, sequence):
         raise Http404("No ocr for page %s" % page)
 
 
+@cors
 def page_ocr_txt(request, lccn, date, edition, sequence):
     title, issue, page = _get_tip(lccn, date, edition, sequence)
     try:
