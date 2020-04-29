@@ -2,7 +2,7 @@ from __future__ import absolute_import, print_function
 
 from django.conf import settings
 
-from chronam.core.cts import CTS
+from chronam.loc_cts.cts import CTS
 
 from . import LoggingCommand
 

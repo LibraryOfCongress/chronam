@@ -138,12 +138,13 @@ CACHES = {
 
 IS_PRODUCTION = False
 
-CTS_USERNAME = "username"
-CTS_PASSWORD = "password"
-CTS_PROJECT_ID = "ndnp"
-CTS_QUEUE = "ndnpingestqueue"
-CTS_SERVICE_TYPE = "ingest.NdnpIngest.ingest"
-CTS_URL = "https://cts.loc.gov/transfer/"
+# These are only relevant to Library of Congress internal users
+CTS_USERNAME = ""
+CTS_PASSWORD = ""
+CTS_PROJECT_ID = ""
+CTS_QUEUE = ""
+CTS_SERVICE_TYPE = ""
+CTS_URL = ""
 
 MAX_BATCHES = 0
 

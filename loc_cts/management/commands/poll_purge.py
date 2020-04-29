@@ -4,7 +4,7 @@ import logging
 
 from django.core.management.base import CommandError
 
-from chronam.core import tasks
+from chronam.loc_cts.tasks import poll_purge
 
 from . import LoggingCommand
 
@@ -16,7 +16,7 @@ class Command(LoggingCommand):
 
     def handle(self, *args, **options):
         try:
-            tasks.poll_purge.apply()
+            poll_purge.apply()
         except Exception:
             LOGGER.exception("Unable to process purge_batch requests:")
             raise CommandError("Unable to purge batches")

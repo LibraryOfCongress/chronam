@@ -4,7 +4,7 @@ import logging
 
 from django.core.management.base import CommandError
 
-from chronam.core import tasks
+from chronam.loc_cts.tasks import poll_cts
 
 from . import LoggingCommand
 
@@ -16,7 +16,7 @@ class Command(LoggingCommand):
 
     def handle(self, *args, **options):
         try:
-            tasks.poll_cts.apply()
+            poll_cts.apply()
         except Exception:
             LOGGER.exception("Unable to load new batches from CTS")
             raise CommandError("unable to load batches from CTS")

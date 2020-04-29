@@ -1,6 +1,6 @@
 import json
-import urllib
 import logging
+import urllib
 import urlparse
 
 import requests
