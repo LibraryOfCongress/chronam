@@ -14,6 +14,11 @@ CELERYD_LOG_LEVEL = logging.INFO
 CELERYD_CONCURRENCY = 2
 
 CELERYBEAT_SCHEDULE = {
+    "poll_cts": {
+        "task": "chronam.core.tasks.poll_cts",
+        "schedule": datetime.timedelta(hours=4),
+        "args": ()
+    },
     "load_essays": {
         "task": "chronam.core.tasks.load_essays",
         "schedule": crontab(hour=0, minute=0),

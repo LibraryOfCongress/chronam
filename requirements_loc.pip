@@ -1,4 +1,5 @@
 -r requirements.pip
 
 # Otherwise use git+https, provide user id and password
+git+ssh://git@git.loc.gov:7999/ndnp/minicts.git#egg=minicts
 git+ssh://git@git.loc.gov:7999/ndnp/django-lc.git#egg=lc
