@@ -1,11 +1,11 @@
 exclude: ".*/vendor/.*"
 repos:
     - repo: https://github.com/pre-commit/mirrors-isort
-      rev: v5.8.0
+      rev: v5.9.3
       hooks:
           - id: isort
     - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v3.4.0
+      rev: v4.0.1
       hooks:
           - id: check-added-large-files
             args: ["--maxkb=128"]
@@ -30,7 +30,7 @@ repos:
             args: ["--autofix", "--no-sort-keys", "--indent=4"]
           - id: trailing-whitespace
     - repo: https://github.com/pre-commit/mirrors-prettier
-      rev: v2.2.1
+      rev: v2.3.2
       hooks:
           - id: prettier
             files: \.(css|less|scss|ts|tsx|graphql|gql|json|js|jsx|md)$
@@ -43,7 +43,7 @@ repos:
                 - eslint-plugin-prettier@3.1.0
                 - prettier@1.18.2
     - repo: https://gitlab.com/pycqa/flake8
-      rev: 3.9.1
+      rev: 3.9.2
       hooks:
           - id: flake8
             additional_dependencies:
