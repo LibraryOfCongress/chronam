@@ -873,7 +873,7 @@ class OCR(models.Model):
 
 
 class PublicationDate(models.Model):
-    text = models.CharField(max_length=500)
+    text = models.CharField(max_length=500, blank=True, default="")
     titles = models.ForeignKey("Title", related_name="publication_dates")
 
     class Meta:
@@ -914,7 +914,7 @@ class Subject(models.Model):
 
 
 class Note(models.Model):
-    text = models.TextField()
+    text = models.TextField(blank=True, default="")
     type = models.CharField(max_length=3)
     title = models.ForeignKey("Title", related_name="notes")
 
@@ -927,7 +927,7 @@ class Note(models.Model):
 
 class PageNote(models.Model):
     label = models.TextField()
-    text = models.TextField()
+    text = models.TextField(blank=True, default="")
     type = models.CharField(max_length=50)
     page = models.ForeignKey("Page", related_name="notes")
 
@@ -940,7 +940,7 @@ class PageNote(models.Model):
 
 class IssueNote(models.Model):
     label = models.TextField()
-    text = models.TextField()
+    text = models.TextField(blank=True, default="")
     type = models.CharField(max_length=50)
     issue = models.ForeignKey("Issue", related_name="notes")
 
@@ -1142,7 +1142,7 @@ class Institution(models.Model):
 
 
 class PhysicalDescription(models.Model):
-    text = models.TextField()
+    text = models.TextField(blank=True, default="")
     type = models.CharField(max_length=3)
     title = models.ForeignKey("Title", related_name="dates_of_publication")
 
