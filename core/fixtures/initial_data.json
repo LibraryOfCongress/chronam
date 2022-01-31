@@ -403,8 +403,16 @@
         "pk": "rp",
         "model": "core.awardee",
         "fields": {
-            "name": "Providence Public Library, Providence, RI",
+            "name": "Rhode Island Digital Newspaper Project",
             "created": "2020-02-18 06:44:45"
+        }
+    },
+     {
+        "pk": "mb",
+        "model": "core.awardee",
+        "fields": {
+            "name": "Boston Public Library",
+            "created": "2022-01-31 06:44:45"
         }
     },
     {
