@@ -19,7 +19,7 @@ from django.template import RequestContext
 from rfc3339 import rfc3339
 
 from chronam.core import forms, index, models
-from chronam.core.decorator import add_cache_headers, cors, opensearch_clean
+from chronam.core.decorator import add_cache_headers, cors, opensearch_clean, robots_tag
 from chronam.core.utils.utils import _page_range_short, is_valid_jsonp_callback
 
 
@@ -41,6 +41,7 @@ def search_pages_paginator(request):
     return paginator
 
 
+@robots_tag
 @cors
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 @opensearch_clean
@@ -136,6 +137,7 @@ def search_pages_results(request, view_type="gallery"):
     return render_to_response(template, dictionary=locals(), context_instance=RequestContext(request))
 
 
+@robots_tag
 @add_cache_headers(settings.METADATA_TTL_SECONDS)
 def search_titles(request):
     browse_val = [chr(n) for n in range(65, 91)]
@@ -150,6 +152,7 @@ def search_titles(request):
     return render_to_response(template, dictionary=locals(), context_instance=RequestContext(request))
 
 
+@robots_tag
 @add_cache_headers(settings.METADATA_TTL_SECONDS)
 def search_titles_opensearch(request):
     host = request.get_host()
@@ -161,6 +164,7 @@ def search_titles_opensearch(request):
     )
 
 
+@robots_tag
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 def search_pages_opensearch(request):
     host = request.get_host()
@@ -172,6 +176,7 @@ def search_pages_opensearch(request):
     )
 
 
+@robots_tag
 @cors
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 def suggest_titles(request):
@@ -204,6 +209,7 @@ def suggest_titles(request):
     return HttpResponse(json_text, content_type="application/x-suggestions+json")
 
 
+@robots_tag
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 def search_pages_navigation(request):
     """Search results navigation data
@@ -236,6 +242,7 @@ def search_pages_navigation(request):
     return JsonResponse(search)
 
 
+@robots_tag
 @add_cache_headers(settings.DEFAULT_TTL_SECONDS)
 def search_advanced(request):
     adv_search_form = forms.AdvSearchPagesForm()
