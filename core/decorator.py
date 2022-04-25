@@ -117,3 +117,20 @@ def cors(f, *args, **kwargs):
         return response
 
     return new_f
+
+
+def robots_tag(f, tags=("noindex", "nofollow"), *args, **kwargs):
+    """
+    Set the X-Robots-Tag header on a response to tell robots how to process the
+    results.
+
+    https://developers.google.com/search/docs/advanced/robots/robots_meta_tag
+    """
+
+    @wraps(f)
+    def new_f(*args, **kwargs):
+        response = f(*args, **kwargs)
+        response["X-Robots-Tag"] = ", ".join(tags)
+        return response
+
+    return new_f
