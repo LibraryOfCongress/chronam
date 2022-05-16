@@ -2,7 +2,7 @@ import re
 from functools import wraps
 
 from django.core import urlresolvers
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.utils import cache, encoding
 from django.views.decorators.vary import vary_on_headers
 from mimeparse import best_match
@@ -64,7 +64,11 @@ def negotiate_rdf_response(rdf_view_func, request, **kwargs):
     # determine the clients preferred representation
     available = ["text/html", "application/rdf+xml"]
     accept = request.META.get("HTTP_ACCEPT", "application/rdf+xml")
-    match = best_match(available, accept)
+
+    try:
+        match = best_match(available, accept)
+    except ValueError:
+        return HttpResponseBadRequest()
 
     if "MSIE" in request.META.get("HTTP_USER_AGENT", ""):
         return html_redirect
