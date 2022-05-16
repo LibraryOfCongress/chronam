@@ -5,11 +5,11 @@ repos:
       hooks:
           - id: isort
     - repo: https://github.com/psf/black
-      rev: 22.1.0
+      rev: 22.3.0
       hooks:
           - id: black
     - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v4.1.0
+      rev: v4.2.0
       hooks:
           - id: check-added-large-files
             args: ["--maxkb=128"]
@@ -34,12 +34,12 @@ repos:
             args: ["--autofix", "--no-sort-keys", "--indent=4"]
           - id: trailing-whitespace
     - repo: https://github.com/pre-commit/mirrors-prettier
-      rev: v2.5.1
+      rev: v2.6.2
       hooks:
           - id: prettier
             files: \.(css|less|scss|ts|tsx|graphql|gql|json|js|jsx|md)$
     - repo: https://github.com/pre-commit/mirrors-eslint
-      rev: v8.8.0
+      rev: v8.15.0
       hooks:
           - id: eslint
             additional_dependencies:
