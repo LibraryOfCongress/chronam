@@ -11,86 +11,86 @@ from worldcat.util.extract import extract_elements
 LOGGER = logging.getLogger(__name__)
 
 WSKEY = settings.WORLDCAT_KEY
-sortkeys = 'Date,,0'
-recordschema = 'info:srw/schema/1/marcxml'
-recordpacking = 'xml'
-servicelevel = 'full'
-frbrgrouping = 'off'
+sortkeys = "Date,,0"
+recordschema = "info:srw/schema/1/marcxml"
+recordpacking = "xml"
+servicelevel = "full"
+frbrgrouping = "off"
 MAX_RECORDS = 50
 raw_query = 'srw.pc any "y" and srw.mt any "newspaper"'  # and srw.cp exact "united states"
 
 COUNTRIES = (
-    'united states',
-    'puerto rico',
-    'virgin island*',
-    'guam',
-    '*northern mariana*',
-    'american samoa',
+    "united states",
+    "puerto rico",
+    "virgin island*",
+    "guam",
+    "*northern mariana*",
+    "american samoa",
     # According to MARC states are also countries
-    'Alabama',
-    'Alaska',
-    'Arizona',
-    'Arkansas',
-    'California',
-    'Colorado',
-    'Connecticut',
-    'Delaware',
-    'Florida',
-    'Georgia',
-    'Hawaii',
-    'Idaho',
-    'Illinois',
-    'Indiana',
-    'Iowa',
-    'Kansas',
-    'Kentucky',
-    'Louisiana',
-    'Maine',
-    'Maryland',
-    'Massachusetts',
-    'Michigan',
-    'Minnesota',
-    'Mississippi',
-    'Missouri',
-    'Montana',
-    'Nebraska',
-    'Nevada',
-    'New Hampshire',
-    'New Jersey',
-    'New Mexico',
-    'New York',
-    'North Carolina',
-    'North Dakota',
-    'Ohio',
-    'Oklahoma',
-    'Oregon',
-    'Pennsylvania',
-    'Rhode Island',
-    'South Carolina',
-    'South Dakota',
-    'Tennessee',
-    'Texas',
-    'Utah',
-    'Vermont',
-    'Virginia',
-    'Washington',
-    'West Virginia',
-    'Wisconsin',
-    'Wyoming',
+    "Alabama",
+    "Alaska",
+    "Arizona",
+    "Arkansas",
+    "California",
+    "Colorado",
+    "Connecticut",
+    "Delaware",
+    "Florida",
+    "Georgia",
+    "Hawaii",
+    "Idaho",
+    "Illinois",
+    "Indiana",
+    "Iowa",
+    "Kansas",
+    "Kentucky",
+    "Louisiana",
+    "Maine",
+    "Maryland",
+    "Massachusetts",
+    "Michigan",
+    "Minnesota",
+    "Mississippi",
+    "Missouri",
+    "Montana",
+    "Nebraska",
+    "Nevada",
+    "New Hampshire",
+    "New Jersey",
+    "New Mexico",
+    "New York",
+    "North Carolina",
+    "North Dakota",
+    "Ohio",
+    "Oklahoma",
+    "Oregon",
+    "Pennsylvania",
+    "Rhode Island",
+    "South Carolina",
+    "South Dakota",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Vermont",
+    "Virginia",
+    "Washington",
+    "West Virginia",
+    "Wisconsin",
+    "Wyoming",
 )
 
 # operate map is used in passing the operator to the output file.
-OPERATOR_MAP = {'=': 'e', '<=': 'lte', '>=': 'gte', '>': 'gt', '<': 'lt'}
+OPERATOR_MAP = {"=": "e", "<=": "lte", ">=": "gte", ">": "gt", "<": "lt"}
 
 
 def str_value(value):
-    '''
+    """
     Turn the value into at least a 4 digit string.
     This is used in the naming of files.
-    '''
+    """
     str_value = str(value)
     while len(str_value) < 4:
-        str_value = '0' + str_value
+        str_value = "0" + str_value
     return str_value
 
 
@@ -107,7 +107,7 @@ class TitlePuller(object):
     year_breaks = []
 
     def generate_year_dict(self, start=None, end=None):
-        '''
+        """
         Generate a list of years to break up the query. OCLC API queries
         between 1000 and 2030 if not defined. Our main use case is after 1800.
         Since we break up our requests by year, we are starting
@@ -125,7 +125,7 @@ class TitlePuller(object):
         are ignored. This is so the user has control & extra records are
         not added. It should be noted that a date such as 19uu will be
         indexed as 1900 & 195u will be indexed as 1950.
-        '''
+        """
 
         year_and_action = {}
 
@@ -134,25 +134,25 @@ class TitlePuller(object):
         # to start & end values.
         if not start or not end:
             # Numbers are converted to strings, because we want 0000, not 0.
-            special_yr_cases = ['0000', '1000']
+            special_yr_cases = ["0000", "1000"]
         else:
             special_yr_cases = []
 
         if start:
-            year_and_action[str(start)] = '='
+            year_and_action[str(start)] = "="
         else:
             start = 1800
-            year_and_action[str(start)] = '<='
+            year_and_action[str(start)] = "<="
 
         if end:
-            year_and_action[str(end)] = '='
+            year_and_action[str(end)] = "="
         else:
             now = datetime.datetime.now()
             end = now.year
-            year_and_action[str(end)] = '>='
+            year_and_action[str(end)] = ">="
 
         for year in range(start + 1, end) + special_yr_cases:
-            year_and_action[str(year)] = '='
+            year_and_action[str(year)] = "="
 
         # example if start & end are passed:
         # {'1949': '=', '1951': '=', '1950': '=', '1952': '='}
@@ -162,7 +162,7 @@ class TitlePuller(object):
         return year_and_action
 
     def add_to_query(self, oclc_field, value, relationship, query=None):
-        '''
+        """
         Add additional values to the base query
         For example, this:
         self.add_to_query(query, 'srw.la', 'spa', 'exact')
@@ -174,17 +174,17 @@ class TitlePuller(object):
 
         More info on indexes to query:
         http://oclc.org/developer/documentation/worldcat-search-api/complete-list-indexes
-        '''
+        """
         new_query = '%s %s "%s"' % (oclc_field, relationship, value)
         if query:
-            new_query = '%s and %s' % (query, new_query)
+            new_query = "%s and %s" % (query, new_query)
         return new_query
 
     def generate_srurequest(self, query):
-        '''
+        """
         Generates the SRURequest used to query OCLC API.
         Most of the values are static, except for query.
-        '''
+        """
 
         LOGGER.debug("The query for OCLC is '%s'" % query)
         bib_rec = SRURequest(
@@ -210,11 +210,11 @@ class TitlePuller(object):
         end=None,
         totals_only=False,
     ):
-        '''
+        """
         Generate request(s) is a function that generates a set of requests
         to be executed against the OCLC API. A set of requests can be
         just one request, example an lccn, or it can be a larger title pull.
-        '''
+        """
         # create an empty list of bib_recs_to_execute.
         bibs_to_req = []
         # if this request is lccn or oclc specific, create 1 request
@@ -222,9 +222,9 @@ class TitlePuller(object):
         if lccn or oclc:
 
             if lccn:
-                query = self.add_to_query('srw.dn', lccn, 'exact')
+                query = self.add_to_query("srw.dn", lccn, "exact")
             elif oclc:
-                query = self.add_to_query('srw.no', oclc, 'exact')
+                query = self.add_to_query("srw.no", oclc, "exact")
 
             request = self.generate_srurequest(query)
             lccn_count = self.initial_total_count(request)
@@ -234,7 +234,7 @@ class TitlePuller(object):
             grand_total = 0
             for country in countries:
                 total = 0
-                query = self.add_to_query('srw.cp', country, 'exact', raw_query)
+                query = self.add_to_query("srw.cp", country, "exact", raw_query)
 
                 # We want to force this to pass through the year dividing
                 # pass below.
@@ -252,11 +252,11 @@ class TitlePuller(object):
 
                 if request_able == 0:
                     # There is no valid requests at all. So, we exit.
-                    LOGGER.warning('No records returned for: %s' % (country))
+                    LOGGER.warning("No records returned for: %s" % (country))
                 elif request_able:
                     # If we can pull the whole country at once, we will
                     # otherwise we break it up into multiple requests.
-                    bibs_to_req.append((cntry_req, request_able, (country.strip('*'), 'all-yrs', '=')))
+                    bibs_to_req.append((cntry_req, request_able, (country.strip("*"), "all-yrs", "=")))
                     total += request_able
                 else:
                     # generate split requests by year
@@ -266,7 +266,7 @@ class TitlePuller(object):
 
                     for year in sorted(year_dict.iterkeys()):
                         operator = year_dict[year]
-                        query = self.add_to_query('srw.yr', year, operator, base_query)
+                        query = self.add_to_query("srw.yr", year, operator, base_query)
                         yr_request = self.generate_srurequest(query)
                         yr_count = self.initial_total_count(yr_request)
                         yr_request_able = self.check_for_doable_bulk_request(yr_count)
@@ -277,29 +277,29 @@ class TitlePuller(object):
 
                         if yr_request_able or year == str(datetime.datetime.now().year):
                             bibs_to_req.append(
-                                (yr_request, yr_request_able, (country.strip('*'), year, operator))
+                                (yr_request, yr_request_able, (country.strip("*"), year, operator))
                             )
                             total += yr_request_able
                         else:
                             LOGGER.warning("There is a problem with request. Exiting.")
-                            LOGGER.warning('yr_request: %s' % yr_request)
-                            LOGGER.warning('yr_request_able: %s' % yr_request_able)
-                            LOGGER.warning('country: %s' % country.strip('*'))
-                            LOGGER.warning('year: %s' % year)
-                            LOGGER.warning('operator: %s' % operator)
+                            LOGGER.warning("yr_request: %s" % yr_request)
+                            LOGGER.warning("yr_request_able: %s" % yr_request_able)
+                            LOGGER.warning("country: %s" % country.strip("*"))
+                            LOGGER.warning("year: %s" % year)
+                            LOGGER.warning("operator: %s" % operator)
 
                             continue
 
                 grand_total += total
-            LOGGER.info('GRAND TOTAL: %s' % (grand_total))
+            LOGGER.info("GRAND TOTAL: %s" % (grand_total))
 
         return bibs_to_req
 
-    def grab_content(self, save_path, bib_requests, search_name='ndnp'):
-        '''
+    def grab_content(self, save_path, bib_requests, search_name="ndnp"):
+        """
         Loops over all requests, executes request & saves response
         to the designated 'save_path'.
-        '''
+        """
         # Run each request and save content.
         if not bib_requests:
             return
@@ -319,7 +319,7 @@ class TitlePuller(object):
                 bib_resp = bib_request.get_response()
                 # identify the xml field of next record number from the xml
                 next_record = extract_elements(
-                    bib_request.response, element='{http://www.loc.gov/zing/srw/}nextRecordPosition'
+                    bib_request.response, element="{http://www.loc.gov/zing/srw/}nextRecordPosition"
                 )
 
                 # grab the text from next_record to get the actual value
@@ -347,23 +347,23 @@ class TitlePuller(object):
 
                 name_components = []
                 for i in components:
-                    i = i.replace(' ', '-')
+                    i = i.replace(" ", "-")
                     if i in OPERATOR_MAP:
                         i = OPERATOR_MAP[i]
                     name_components.append(i)
 
-                batch_name = '_'.join(name_components)
+                batch_name = "_".join(name_components)
 
-                filename = '_'.join((search_name, batch_name, str_value(start), str_value(end))) + '.xml'
+                filename = "_".join((search_name, batch_name, str_value(start), str_value(end))) + ".xml"
 
                 if counter == 1 and len(bib_requests) > 1:
-                    LOGGER.info('Batch: %s = %s total' % (filename, total))
+                    LOGGER.info("Batch: %s = %s total" % (filename, total))
 
-                file_location = save_path + '/' + filename
+                file_location = save_path + "/" + filename
 
                 save_file = open(file_location, "w")
                 decoded_data = bib_resp.data.decode("utf-8")
-                save_file.write(decoded_data.encode('ascii', 'xmlcharrefreplace'))
+                save_file.write(decoded_data.encode("ascii", "xmlcharrefreplace"))
                 save_file.close()
                 files_saved += 1
 
@@ -377,17 +377,17 @@ class TitlePuller(object):
         return files_saved
 
     def initial_total_count(self, bib_req):
-        '''
+        """
         This is used to access the quality of results returned.
-        '''
+        """
         bib_req.get_response()
-        _total = extract_elements(bib_req.response, element='{http://www.loc.gov/zing/srw/}numberOfRecords')
+        _total = extract_elements(bib_req.response, element="{http://www.loc.gov/zing/srw/}numberOfRecords")
         return _total[0].text
 
     def check_for_doable_bulk_request(self, test_totals):
-        '''
+        """
         The API could misfire when requesting more than 10k, so we make sure that are requests aren't that large.
-        '''
+        """
         if not test_totals:
             LOGGER.error(
                 "The total is %s but should be a integer. Check the query to make sure API isn't broken."
@@ -395,7 +395,7 @@ class TitlePuller(object):
             )
             return None
         else:
-            # check that the request is managable.
+            # check that the request is manageable.
             # requests over 10000 records will cause failure on the OCLC side
             total = int(test_totals)
             if total < 10000:
@@ -405,7 +405,7 @@ class TitlePuller(object):
         return None
 
     def run(self, save_path, lccn=None, oclc=None, start=None, end=None, countries=COUNTRIES):
-        '''
+        """
         Function that runs a search against the WorldCat Search API
 
         The default query is:
@@ -415,18 +415,18 @@ class TitlePuller(object):
         If you pass a string as the query, then it will over ride
         and pull for that query.
         Response is stored in data if no argument is passed.
-        '''
+        """
         # Create directory if it doesn't exist
         if not os.path.exists(save_path):
             try:
                 os.makedirs(save_path)
             except OSError:
-                LOGGER.exception('Issue creating the directory %s.' % save_path)
+                LOGGER.exception("Issue creating the directory %s." % save_path)
                 sys.exit()
         else:
             # Make sure the directory is empty
             if len([f for f in os.listdir(save_path) if os.path.isfile(f)]):
-                LOGGER.exception('Destination directory %s is not empty.' % save_path)
+                LOGGER.exception("Destination directory %s is not empty." % save_path)
                 sys.exit()
 
         files_saved = 0

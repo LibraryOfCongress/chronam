@@ -2,18 +2,19 @@ import os
 
 # DO NOT CHECK-IN WORLDCAT_KEY TO REPO
 from settings import WORLDCAT_KEY  # NOQA
+
 from settings_template import *  # NOQA
 from settings_template import DIRNAME, STORAGE
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'TEST': {'CHARSET': "utf8", 'COLLATION': "utf8_general_ci"},
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "TEST": {"CHARSET": "utf8", "COLLATION": "utf8_general_ci"},
     }
 }
 
 CTS_URL = "https://transferqa.loctest.gov/transfer/"
-# Use different storage pathes to avoid interference with the actual storage for the web app
+# Use different storage paths to avoid interference with the actual storage for the web app
 # some tests purge batch and deletes data (such as word coordinates)
 BIB_STORAGE = os.path.join(STORAGE, "test_bib")
 OCR_DUMP_STORAGE = os.path.join(STORAGE, "test_ocr")

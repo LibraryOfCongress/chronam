@@ -13,12 +13,12 @@ from . import LoggingCommand
 
 class Command(LoggingCommand):
     help = "Load a marcxml file of title records"  # NOQA: A003
-    args = '<location of marcxml>'
+    args = "<location of marcxml>"
     option_list = LoggingCommand.option_list + (
         make_option(
-            '--skip-index',
-            action='store_true',
-            dest='skip_index',
+            "--skip-index",
+            action="store_true",
+            dest="skip_index",
             default=False,
             help="\
                 Skip the index process. Use this if you call this from \
@@ -51,10 +51,10 @@ class Command(LoggingCommand):
         return results
 
     def add_results(self, results):
-        '''
+        """
         The add results functions adds the new set of results to the
-        running totals for the current run & retuns the new results set.
-        '''
+        running totals for the current run & returns the new results set.
+        """
         self.total_processed += results[0]
         self.total_created += results[1]
         self.total_updated += results[2]
@@ -84,7 +84,7 @@ class Command(LoggingCommand):
         self.stdout.write("TOTAL TIME: %s" % str(total_time))
 
     def handle(self, marc_xml_source, *args, **options):
-        skip_index = options['skip_index']
+        skip_index = options["skip_index"]
 
         # check if arg passed is a file or a directory of files
         if os.path.isdir(marc_xml_source):

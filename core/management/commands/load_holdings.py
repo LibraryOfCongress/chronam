@@ -16,11 +16,11 @@ LOGGER = logging.getLogger(__name__)
 
 class Command(LoggingCommand):
     help = "Load a holdings records after title records are all loaded"  # NOQA: A003
-    args = '<location of holdings directory>'
+    args = "<location of holdings directory>"
 
     bib_in_settings = validate_bib_dir()
     if bib_in_settings:
-        default_location = bib_in_settings + '/holdings'
+        default_location = bib_in_settings + "/holdings"
     else:
         default_location = None
 
@@ -30,16 +30,16 @@ class Command(LoggingCommand):
             LOGGER.error("There is no valid holdings source folder defined.")
             set_holdings = [
                 'To load holdings - Add a folder called "holdings"',
-                'to the bib directory that is set in settings',
-                'or pass the location of holdings as an arguement to the loader.',
+                "to the bib directory that is set in settings",
+                "or pass the location of holdings as an argument to the loader.",
             ]
-            LOGGER.error(' '.join(set_holdings))
+            LOGGER.error(" ".join(set_holdings))
             return
 
         # First we want to make sure that our material types are up to date
         material_types = models.MaterialType.objects.all()
         [m.delete() for m in material_types]
-        management.call_command('loaddata', 'material_types.json')
+        management.call_command("loaddata", "material_types.json")
 
         holding_loader = HoldingLoader()
         holding_loader.main(holdings_source)

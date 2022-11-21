@@ -2,10 +2,9 @@ import datetime
 import logging
 import os
 import re
-import urlparse
 import warnings
-from urlparse import urljoin
 
+import urlparse
 from django import forms as django_forms
 from django.conf import settings
 from django.core import urlresolvers
@@ -26,6 +25,7 @@ from django.utils import html
 from django.utils.http import urlencode
 from django.views.decorators.vary import vary_on_headers
 from sendfile import sendfile
+from urlparse import urljoin
 
 from chronam.core import index, models
 from chronam.core.decorator import add_cache_headers, cors, rdf_view
@@ -226,7 +226,7 @@ def issue_pages_rdf(request, lccn, date, edition):
 def page_words(request, lccn, date, edition, sequence, words=None):
     """
     for the case where we have ;words= in the url convert it to a fragment but
-    keep everything else the same so we don't mess up campain codes
+    keep everything else the same so we don't mess up campaign codes
 
     example:
     /lccn/sn83045396/1911-09-17/ed-1/seq-12/;words=foo?bar=ham
@@ -531,14 +531,14 @@ def _search_engine_words(request):
     request didn't come via a search engine result an empty list is
     returned.
     """
-    # get the refering url
+    # get the referring url
     referer = request.META.get("HTTP_REFERER")
     if not referer:
         return []
     uri = urlparse.urlparse(referer)
     qs = urlparse.parse_qs(uri.query)
 
-    # extract a potential search query from refering url
+    # extract a potential search query from referring url
     if "q" in qs:
         words = qs["q"][0]
     elif "p" in qs:

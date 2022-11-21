@@ -8,10 +8,10 @@ import shutil
 import tarfile
 import textwrap
 import time
-import urlparse
-from cStringIO import StringIO
 from urllib import quote, url2pathname
 
+import urlparse
+from cStringIO import StringIO
 from django.conf import settings
 from django.core import urlresolvers
 from django.core.urlresolvers import reverse
@@ -324,7 +324,7 @@ class Title(models.Model):
         return False
 
     # TODO: if we took two passes through the title data during title
-    # loading we could link up the Title objects explictly with each
+    # loading we could link up the Title objects explicitly with each
     # other. This would be 'doing the right thing' from a rdbms perspective
     #
     # For the time being we just extract and store the links, with their
@@ -386,7 +386,7 @@ class Title(models.Model):
 
     def __unicode__(self):
         # TODO: should edition info go in here if present?
-        return u"%s (%s) %s-%s" % (
+        return "%s (%s) %s-%s" % (
             self.display_name,
             self.place_of_publication,
             self.start_year,
@@ -844,7 +844,7 @@ class Page(models.Model):
         return None
 
     def __unicode__(self):
-        parts = [u"%s" % self.issue.title]
+        parts = ["%s" % self.issue.title]
         # little hack to get django's datetime support for stftime
         # when the year is < 1900
         parts.append(strftime(self.issue.date_issued, "%B %d, %Y"))
@@ -853,7 +853,7 @@ class Page(models.Model):
         if self.section_label:
             parts.append(self.section_label)
         parts.append("Image %s" % self.sequence)
-        return u", ".join(parts)
+        return ", ".join(parts)
 
     class Meta:
         ordering = ("sequence",)
@@ -893,7 +893,7 @@ class Place(models.Model):
     longitude = models.FloatField(null=True)
 
     def __unicode__(self):
-        return u"%s, %s, %s" % (self.city, self.county, self.state)
+        return "%s, %s, %s" % (self.city, self.county, self.state)
 
     class Meta:
         ordering = ("name",)
@@ -932,7 +932,7 @@ class PageNote(models.Model):
     page = models.ForeignKey("Page", related_name="notes")
 
     def __unicode__(self):
-        return u"type: %s label: %s text: %s" % (self.type, self.label, self.text)
+        return "type: %s label: %s text: %s" % (self.type, self.label, self.text)
 
     class Meta:
         ordering = ("text",)
@@ -945,7 +945,7 @@ class IssueNote(models.Model):
     issue = models.ForeignKey("Issue", related_name="notes")
 
     def __unicode__(self):
-        return u"type: %s label: %s text: %s" % (self.type, self.label, self.text)
+        return "type: %s label: %s text: %s" % (self.type, self.label, self.text)
 
     class Meta:
         ordering = ("text",)
@@ -1006,7 +1006,7 @@ class Holding(models.Model):
             return [self.description]
 
     def __unicode__(self):
-        return u"%s - %s - %s" % (self.institution.name, self.type, self.description)
+        return "%s - %s - %s" % (self.institution.name, self.type, self.description)
 
     class Meta:
         ordering = ("institution",)
@@ -1135,7 +1135,7 @@ class Institution(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return u"%s, %s, %s" % (self.name, self.city, self.state)
+        return "%s, %s, %s" % (self.name, self.city, self.state)
 
     class Meta:
         ordering = ("name",)
@@ -1188,8 +1188,7 @@ class OcrDump(models.Model):
 
     @classmethod
     def new_from_batch(klass, batch):
-        """Does the work of creating a new OcrDump based on a Batch
-        """
+        """Does the work of creating a new OcrDump based on a Batch"""
         dump = OcrDump(batch=batch)
         event = LoadBatchEvent(batch_name=batch.name, message="starting OCR dump")
         event.save()
@@ -1305,12 +1304,11 @@ class OcrDump(models.Model):
         self.size = os.path.getsize(self.path)
 
     def _calculate_sha1(self):
-        """looks at the dump file and calculates the sha1 digest and stores it
-        """
+        """looks at the dump file and calculates the sha1 digest and stores it"""
         f = open(self.path)
         sha1 = hashlib.sha1()
         while True:
-            buff = f.read(2 ** 16)
+            buff = f.read(2**16)
             if not buff:
                 break
             sha1.update(buff)

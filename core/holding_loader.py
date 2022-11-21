@@ -74,7 +74,7 @@ class HoldingLoader:
             return None
 
     def _get_related_inst_code(self, inst_code):
-        """ Match the institutional code or record an error."""
+        """Match the institutional code or record an error."""
         try:
             inst = models.Institution.objects.get(code=inst_code)
             return inst
@@ -84,7 +84,7 @@ class HoldingLoader:
             return None
 
     def _extract_holdings_type(self, record):
-        """ Extract holdings type from 007 field & 856 $u field. """
+        """Extract holdings type from 007 field & 856 $u field."""
         h856u = _extract(record, "856", "u")
         if h856u and h856u.startswith("http"):
             h_type = "Online Resource"
@@ -95,7 +95,7 @@ class HoldingLoader:
     def _parse_date(self, f008):
         """
         Parse date takes the f008 field and pulls out the date.
-        This is shared funciton for both formats (xml & tsv) that holdings
+        This is shared function for both formats (xml & tsv) that holdings
         come in.
         """
         date = None

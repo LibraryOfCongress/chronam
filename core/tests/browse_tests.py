@@ -1,20 +1,21 @@
 import os
 
-from django.test import TestCase
-from django.db import connection
 from django.conf import settings
+from django.db import connection
+from django.test import TestCase
 
+from chronam.core.batch_loader import Batch, BatchLoader
 from chronam.core.index import get_page_text
-from chronam.core.utils.utils import _get_tip
-from chronam.core.batch_loader import BatchLoader, Batch
 from chronam.core.models import Title
+from chronam.core.utils.utils import _get_tip
 
 
 class BrowseTests(TestCase):
     """
     Tests related to core/views/browse.py
     """
-    fixtures = ['countries.json', 'languages.json', 'awardee.json']
+
+    fixtures = ["countries.json", "languages.json", "awardee.json"]
 
     def test_words_redirect(self):
         """
@@ -30,7 +31,7 @@ class BrowseTests(TestCase):
         query parameters should be preserved for page
         ex: /lccn/sn85066387/1907-03-17/ed-1/seq-4/;words=foo?bar=ham
         should redirect to /lccn/sn85066387/1907-03-17/ed-1/seq-4/?bar=ham#words=foo
-        This is needed so that campain codes work properly
+        This is needed so that campaign codes work properly
         """
         r = self.client.get("/lccn/sn83045396/1911-09-17/ed-1/seq-12/;words=foo?bar=ham")
         self.assertEquals(r.status_code, 302)
@@ -42,9 +43,8 @@ class BrowseTests(TestCase):
             cursor.execute("SHOW COLUMNS FROM core_languagetext")
             rows = cursor.fetchall()
             for row in rows:
-                if row[0] == 'text':
-                    self.fail("core_languagetext.text should not exist. "
-                              "Did you run the migrations?")
+                if row[0] == "text":
+                    self.fail("core_languagetext.text should not exist. " "Did you run the migrations?")
 
     def test_getting_text_from_solr_utah(self):
         """
@@ -52,21 +52,21 @@ class BrowseTests(TestCase):
         First creates a page object 'page' with _get_tip()
         then uses it as an argument to get_page_text()
         """
-        batch_dir = os.path.join(settings.BATCH_STORAGE, 'batch_uuml_thys_ver01')
+        batch_dir = os.path.join(settings.BATCH_STORAGE, "batch_uuml_thys_ver01")
         self.assertTrue(os.path.isdir(batch_dir))
         loader = BatchLoader(process_ocr=True)
         batch = loader.load_batch(batch_dir)
-        self.assertEqual(batch.name, 'batch_uuml_thys_ver01')
-        title, issue, page = _get_tip('sn83045396', '1911-09-17', 1, 1)
+        self.assertEqual(batch.name, "batch_uuml_thys_ver01")
+        title, issue, page = _get_tip("sn83045396", "1911-09-17", 1, 1)
         text = get_page_text(page)
         self.assertIn("Uc nice at tlio slate fair track", text[0])
         self.assertIn("PAGES FIVE CENTS", text[0])
-        self.assertIn('gBter ho had left the grounds that', text[0])
+        self.assertIn("gBter ho had left the grounds that", text[0])
 
         # purge the batch and make sure it's gone from the db
-        loader.purge_batch('batch_uuml_thys_ver01')
+        loader.purge_batch("batch_uuml_thys_ver01")
         self.assertEqual(Batch.objects.all().count(), 0)
-        self.assertEqual(Title.objects.get(lccn='sn83045396').has_issues, False)
+        self.assertEqual(Title.objects.get(lccn="sn83045396").has_issues, False)
 
     def test_getting_text_from_solr_slovenia(self):
         """
@@ -74,17 +74,17 @@ class BrowseTests(TestCase):
         First creates a page object 'page' with _get_tip()
         then uses it as an argument to get_page_text()
         """
-        batch_dir = os.path.join(settings.BATCH_STORAGE, 'batch_iune_oriole_ver01')
+        batch_dir = os.path.join(settings.BATCH_STORAGE, "batch_iune_oriole_ver01")
         self.assertTrue(os.path.isdir(batch_dir))
         loader = BatchLoader(process_ocr=True)
         batch = loader.load_batch(batch_dir)
-        self.assertEqual(batch.name, 'batch_iune_oriole_ver01')
-        title, issue, page = _get_tip('sn83045377', '1906-03-01', 1, 1)
+        self.assertEqual(batch.name, "batch_iune_oriole_ver01")
+        title, issue, page = _get_tip("sn83045377", "1906-03-01", 1, 1)
         text = get_page_text(page)
         self.assertIn("Od Mizo in dale", text[0])
         self.assertIn("To je preecj inoettii tobak! Marsi", text[0])
 
         # purge the batch and make sure it's gone from the db
-        loader.purge_batch('batch_iune_oriole_ver01')
+        loader.purge_batch("batch_iune_oriole_ver01")
         self.assertEqual(Batch.objects.all().count(), 0)
-        self.assertEqual(Title.objects.get(lccn='sn83045377').has_issues, False)
+        self.assertEqual(Title.objects.get(lccn="sn83045377").has_issues, False)

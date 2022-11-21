@@ -10,22 +10,22 @@ import re
 import shutil
 import tempfile
 import time
-import urllib2
-import urlparse
 from datetime import datetime
 
 import simplejson as json
+import urllib2
+import urlparse
 from django.conf import settings
 from django.core import management
 from django.core.cache import cache
 from django.db import transaction
 from django.db.models import Q
 from lxml import etree
-from solr import SolrConnection
 
 from chronam.core import models
 from chronam.core.models import OCR, Awardee, Batch, Issue, LoadBatchEvent, Page, Title
 from chronam.core.ocr_extractor import ocr_extractor
+from solr import SolrConnection
 
 # some xml namespaces used in batch metadata
 ns = {
@@ -542,14 +542,13 @@ class BatchLoaderException(RuntimeError):
 
 
 def dmd_mods(doc, dmdid):
-    """a helper that returns mods inside a dmdSec with a given ID
-    """
+    """a helper that returns mods inside a dmdSec with a given ID"""
     xpath = './/mets:dmdSec[@ID="%s"]/descendant::mods:mods' % dmdid
     return doc.xpath(xpath, namespaces=ns)[0]
 
 
 def get_dimensions(doc, admid):
-    """return length, width for an image from techincal metadata with a given
+    """return length, width for an image from technical metadata with a given
     admid
     """
     xpath = './/mets:techMD[@ID="%s"]/mets:mdWrap/mets:xmlData/mix:mix/mix:ImagingPerformanceAssessment/mix:SpatialMetrics/%s'

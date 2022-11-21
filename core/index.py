@@ -7,10 +7,10 @@ from django.core.paginator import InvalidPage, Page, Paginator
 from django.db import reset_queries
 from django.db.models import Prefetch
 from more_itertools.more import sliced
-from solr import SolrConnection
 
 from chronam.core import models
 from chronam.core.title_loader import _normal_lccn
+from solr import SolrConnection
 
 LOGGER = logging.getLogger(__name__)
 
@@ -331,7 +331,7 @@ def get_solr_request_params_from_query(query):
 
 
 def execute_solr_query(query, fields, sort, sort_order, rows, start):
-    # default arg_separator - underscore wont work if fields to facet on
+    # default arg_separator - underscore won't work if fields to facet on
     # themselves have underscore in them
     solr = SolrConnection(settings.SOLR)  # TODO: maybe keep connection around?
     solr_response = solr.query(
@@ -586,8 +586,7 @@ def index_missing_pages():
 
 
 def index_pages(only_missing=False):
-    """index all the pages that are modeled in the database
-    """
+    """index all the pages that are modeled in the database"""
     solr = SolrConnection(settings.SOLR)
 
     page_qs = models.Page.objects.order_by("pk")
