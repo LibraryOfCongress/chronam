@@ -60,7 +60,7 @@ class HTMLCalendar(calendar.Calendar):
                 _class = "single"
                 lccn, date_issued, edition = issues[0]
                 kw = dict(lccn=lccn, date=date_issued, edition=edition)
-                url = urlresolvers.reverse('chronam_issue_pages', kwargs=kw)
+                url = urlresolvers.reverse("chronam_issue_pages", kwargs=kw)
                 _day = """<a href="%s">%s</a>""" % (url, day)
             elif count > 1:
                 _class = "multiple"
@@ -68,7 +68,7 @@ class HTMLCalendar(calendar.Calendar):
                 _day += "<ul class='unstyled'>"
                 for lccn, date_issued, edition in issues:
                     kw = dict(lccn=lccn, date=date_issued, edition=edition)
-                    url = urlresolvers.reverse('chronam_issue_pages', kwargs=kw)
+                    url = urlresolvers.reverse("chronam_issue_pages", kwargs=kw)
                     _day += """<li><a href="%s">ed-%d</a></li>""" % (url, edition)
                 _day += "</ul>"
             else:
@@ -80,8 +80,8 @@ class HTMLCalendar(calendar.Calendar):
         """
         Return a complete week as a table row.
         """
-        s = ''.join(self.formatday(year, month, d, wd) for (d, wd) in theweek)
-        return '<tr>%s</tr>' % s
+        s = "".join(self.formatday(year, month, d, wd) for (d, wd) in theweek)
+        return "<tr>%s</tr>" % s
 
     def formatweekday(self, day):
         """
@@ -93,7 +93,7 @@ class HTMLCalendar(calendar.Calendar):
         """
         Return a header for a week as a table row.
         """
-        s = ''.join(self.formatweekday(i) for i in self.iterweekdays())
+        s = "".join(self.formatweekday(i) for i in self.iterweekdays())
         return '<tr class="daynames">%s</tr>' % s
 
     def formatmonthname(self, theyear, themonth, withyear=True):
@@ -101,9 +101,9 @@ class HTMLCalendar(calendar.Calendar):
         Return a month name as a table row.
         """
         if withyear:
-            s = '%s %s' % (calendar.month_name[themonth], theyear)
+            s = "%s %s" % (calendar.month_name[themonth], theyear)
         else:
-            s = '%s' % calendar.month_name[themonth]
+            s = "%s" % calendar.month_name[themonth]
         return '<tr><td colspan="7" class="title">%s, %s</td></tr>' % (s, theyear)
 
     def formatmonth(self, theyear, themonth, withyear=True):
@@ -115,21 +115,21 @@ class HTMLCalendar(calendar.Calendar):
         a(
             '<table border="0" cellpadding="0" cellspacing="0" class="month table table-condensed table-bordered">'
         )
-        a('\n')
+        a("\n")
         a(self.formatmonthname(theyear, themonth, withyear=withyear))
-        a('\n')
+        a("\n")
         a(self.formatweekheader())
-        a('\n')
+        a("\n")
         weeks = self.monthdays2calendar(theyear, themonth)
         while len(weeks) < 6:
             # add blank weeks so all calendars are 6 weeks long.
             weeks.append([(0, 0)] * 7)
         for week in weeks:
             a(self.formatweek(theyear, themonth, week))
-            a('\n')
-        a('</table>')
-        a('\n')
-        return ''.join(v)
+            a("\n")
+        a("</table>")
+        a("\n")
+        return "".join(v)
 
     def formatyear(self, theyear, width=4):
         """
@@ -146,10 +146,10 @@ class HTMLCalendar(calendar.Calendar):
             for m in months:
                 a('<div class="span3 calendar_month">')
                 a(self.formatmonth(theyear, m, withyear=False))
-                a('</div>')
-            a('</div>')
-        a('</div>')
-        return ''.join(v)
+                a("</div>")
+            a("</div>")
+        a("</div>")
+        return "".join(v)
 
 
 def get_page(lccn, date, edition, sequence):
@@ -211,10 +211,10 @@ def _stream_file(path, mimetype):
     # calculate len() on the response content!
     if path:
         stat = os.stat(path)
-        r = HttpResponse(wsgiref.util.FileWrapper(file(path)))
-        r['Content-Type'] = mimetype
-        r['Content-Length'] = stat.st_size
-        r['Last-Modified'] = http_date(stat.st_mtime)
+        r = HttpResponse(wsgiref.util.FileWrapper(open(path)))
+        r["Content-Type"] = mimetype
+        r["Content-Length"] = stat.st_size
+        r["Last-Modified"] = http_date(stat.st_mtime)
         return r
     else:
         raise Http404
@@ -222,7 +222,7 @@ def _stream_file(path, mimetype):
 
 def label(instance):
     if isinstance(instance, models.Title):
-        return u'%s (%s) %s-%s' % (
+        return "%s (%s) %s-%s" % (
             instance.display_name,
             instance.place_of_publication,
             instance.start_year,
@@ -231,20 +231,20 @@ def label(instance):
     elif isinstance(instance, models.Issue):
         parts = []
         dt = datetime_safe.new_datetime(instance.date_issued)
-        parts.append(dt.strftime('%B %d, %Y'))
+        parts.append(dt.strftime("%B %d, %Y"))
         if instance.edition_label:
-            parts.append(u"%s" % instance.edition_label)
-        return u', '.join(parts)
+            parts.append("%s" % instance.edition_label)
+        return ", ".join(parts)
     elif isinstance(instance, models.Page):
         parts = []
         if instance.section_label:
             parts.append(instance.section_label)
         if instance.number:
-            parts.append('Page %s' % instance.number)
-        parts.append('Image %s' % instance.sequence)
-        return u', '.join(parts)
+            parts.append("Page %s" % instance.number)
+        parts.append("Image %s" % instance.sequence)
+        return ", ".join(parts)
     else:
-        return u"%s" % instance
+        return "%s" % instance
 
 
 def create_crumbs(title, issue=None, date=None, edition=None, page=None):
@@ -252,17 +252,17 @@ def create_crumbs(title, issue=None, date=None, edition=None, page=None):
     crumbs.extend(
         [
             {
-                'label': label(title.name.split(":")[0]),
-                'href': urlresolvers.reverse('chronam_title', kwargs={'lccn': title.lccn}),
+                "label": label(title.name.split(":")[0]),
+                "href": urlresolvers.reverse("chronam_title", kwargs={"lccn": title.lccn}),
             }
         ]
     )
     if date and edition is not None:
         crumbs.append(
             {
-                'label': label(issue),
-                'href': urlresolvers.reverse(
-                    'chronam_issue_pages', kwargs={'lccn': title.lccn, 'date': date, 'edition': edition}
+                "label": label(issue),
+                "href": urlresolvers.reverse(
+                    "chronam_issue_pages", kwargs={"lccn": title.lccn, "date": date, "edition": edition}
                 ),
             }
         )
@@ -270,10 +270,10 @@ def create_crumbs(title, issue=None, date=None, edition=None, page=None):
     if page is not None:
         crumbs.append(
             {
-                'label': label(page),
-                'href': urlresolvers.reverse(
-                    'chronam_page',
-                    kwargs={'lccn': title.lccn, 'date': date, 'edition': edition, 'sequence': page.sequence},
+                "label": label(page),
+                "href": urlresolvers.reverse(
+                    "chronam_page",
+                    kwargs={"lccn": title.lccn, "date": date, "edition": edition, "sequence": page.sequence},
                 ),
             }
         )
@@ -302,14 +302,14 @@ def add_cache_tag(response, tag_name):
 
     see https://support.cloudflare.com/hc/en-us/articles/206596608-How-to-Purge-Cache-Using-Cache-Tags-Enterprise-only- for more information
     """
-    if response.has_header('Cache-Tag'):
-        response['Cache-Tag'] += ',%s' % tag_name
+    if response.has_header("Cache-Tag"):
+        response["Cache-Tag"] += ",%s" % tag_name
     else:
-        response['Cache-Tag'] = tag_name
+        response["Cache-Tag"] = tag_name
     return response
 
 
-VALID_JSONP_CALLBACK = re.compile(r'^[\w_]{1,100}$')
+VALID_JSONP_CALLBACK = re.compile(r"^[\w_]{1,100}$")
 
 
 def is_valid_jsonp_callback(callback):

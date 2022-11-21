@@ -197,7 +197,7 @@ def suggest_titles(request):
     lccn_q = Q(lccn__startswith=q)
     title_q = Q(name_normal__startswith=q)
     for t in models.Title.objects.filter(lccn_q | title_q)[0:50]:
-        titles.append(unicode(t))
+        titles.append(str(t))
         descriptions.append(t.lccn)
         urls.append(request.build_absolute_uri(t.url))
 

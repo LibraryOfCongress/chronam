@@ -7,7 +7,6 @@ from chronam.core.models import Institution
 
 from . import LoggingCommand
 
-
 """
 Loads the institutions based on a CSV file in the form of:
 <code>, <name>, <city>, <state>, <zip>
@@ -15,11 +14,11 @@ Loads the institutions based on a CSV file in the form of:
 
 
 class Command(LoggingCommand):
-    help = 'loads institution csv data into Institution table'  # NOQA: A003
-    args = '<institution_csv_file>'
+    help = "loads institution csv data into Institution table"  # NOQA: A003
+    args = "<institution_csv_file>"
 
     def handle(self, csv_file, *args, **options):
-        for row in unicode_csv_reader(codecs.open(csv_file, encoding='utf-8')):
+        for row in unicode_csv_reader(codecs.open(csv_file, encoding="utf-8")):
             i = Institution()
             i.code = row[0].upper()
             i.name = row[1]
@@ -38,9 +37,9 @@ class Command(LoggingCommand):
 def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
     csv_reader = csv.reader(utf8_encoder(unicode_csv_data), dialect=dialect, **kwargs)
     for row in csv_reader:
-        yield [unicode(cell, 'utf-8') for cell in row]
+        yield [str(cell, "utf-8") for cell in row]
 
 
 def utf8_encoder(unicode_csv_data):
     for line in unicode_csv_data:
-        yield line.encode('utf-8')
+        yield line.encode("utf-8")

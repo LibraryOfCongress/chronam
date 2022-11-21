@@ -1,10 +1,10 @@
 import datetime
 import logging
-import urllib2
-import urlparse
 from re import sub
 from time import strptime, time
 
+import urllib2
+import urlparse
 from django.db import reset_queries
 from pymarc import map_xml, record_to_xml
 
@@ -432,7 +432,7 @@ def _normal_place(value):
 
 
 def _normal_year(value):
-    if not isinstance(value, basestring):
+    if not isinstance(value, str):
         raise TypeError("Expected %r to be None or a string" % value)
     if value is None or not value.strip():
         return None
@@ -480,7 +480,7 @@ def nsplit(s, n):
     """returns a string split up into sequences of length n
     http://mail.python.org/pipermail/python-list/2005-August/335131.html
     """
-    return [s[k : k + n] for k in xrange(0, len(s), n)]
+    return [s[k : k + n] for k in range(0, len(s), n)]
 
 
 class TitleLoaderException(RuntimeError):

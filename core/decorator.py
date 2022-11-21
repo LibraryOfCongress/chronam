@@ -96,7 +96,7 @@ def opensearch_clean(f):
     def f1(request, **kwargs):
         new_get = request.GET.copy()
         for k, v in new_get.items():
-            if type(v) == unicode and re.match(r"^\{.+\?\}$", v):
+            if type(v) == str and re.match(r"^\{.+\?\}$", v):
                 new_get.pop(k)
         request.GET = new_get
         return f(request, **kwargs)

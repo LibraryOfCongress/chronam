@@ -58,7 +58,7 @@ class HoldingLoader:
 
             _process_time()
 
-        map_xml(load_xml_record, file(filename, "rb"))
+        map_xml(load_xml_record, open(filename, "rb"))
 
     def _get_related_title(self, oclc):
         """
@@ -74,7 +74,7 @@ class HoldingLoader:
             return None
 
     def _get_related_inst_code(self, inst_code):
-        """ Match the institutional code or record an error."""
+        """Match the institutional code or record an error."""
         try:
             inst = models.Institution.objects.get(code=inst_code)
             return inst
@@ -84,7 +84,7 @@ class HoldingLoader:
             return None
 
     def _extract_holdings_type(self, record):
-        """ Extract holdings type from 007 field & 856 $u field. """
+        """Extract holdings type from 007 field & 856 $u field."""
         h856u = _extract(record, "856", "u")
         if h856u and h856u.startswith("http"):
             h_type = "Online Resource"

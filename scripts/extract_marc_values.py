@@ -1,4 +1,4 @@
-'''
+"""
 Demo of an implementation of the pymarc library found here:
 http://pypi.python.org/pypi/pymarc/
 
@@ -12,8 +12,8 @@ Example: python extract_marc_values.py /vol/ndnp/chronam/bib/holdings/ 852 a
 
 This also useds: Chronam
 Found here: https://github.com/LibraryOfCongress/chronam
-'''
-
+"""
+from __future__ import print_function
 
 import glob
 import operator
@@ -42,20 +42,20 @@ values = []
 def parse_record(record, field=FIELD, subfield=SUBFIELD):
     value = extract(record, field, subfield)
     if value:
-        rec_id = extract(record, '010', 'a')
+        rec_id = extract(record, "010", "a")
         if not rec_id:
-            rec_id = extract(record, '004')
+            rec_id = extract(record, "004")
         values.append((rec_id, value))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if os.path.isdir(SOURCE):
         marc_xml_dir = os.listdir(SOURCE)
         for xml_file in marc_xml_dir:
             marc_file = os.path.join(SOURCE, xml_file)
-            map_xml(parse_record, open(marc_file, 'r'))
+            map_xml(parse_record, open(marc_file, "r"))
     else:
-        map_xml(parse_record, open(SOURCE, 'r'))
+        map_xml(parse_record, open(SOURCE, "r"))
 
     # all values
     # for value in values:
@@ -68,8 +68,8 @@ if __name__ == '__main__':
         try:
             random_value = choice(values)
             values.remove(random_value)
-            print ','.join([random_value[0], random_value[1]])
+            print(",".join([random_value[0], random_value[1]]))
         except IndexError:
             continue
 
-    print "TOTAL # OF RECORDS: %s" % total
+    print("TOTAL # OF RECORDS: %s" % total)
