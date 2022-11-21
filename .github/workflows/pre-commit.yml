@@ -2,12 +2,7 @@
 # This GitHub Action assumes that the repo contains a valid .pre-commit-config.yaml file.
 # Using pre-commit.ci is even better that using GitHub Actions for pre-commit.
 name: pre-commit
-on:
-  pull_request:
-    branches: [master]
-  push:
-#    branches: [master]
-  workflow_dispatch:
+on: [push]
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
