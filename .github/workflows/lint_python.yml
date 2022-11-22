@@ -1,0 +1,19 @@
+name: lint_python
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+jobs:
+  lint_python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 2.7
+      - run: pip install --upgrade pip wheel
+      - run: pip install flake8
+      - run: flake8 . --ignore=E203,E722,E741,F401,F403,F405,W503,W605
+                      --max-complexity=24 --max-line-length=335
+                      --show-source --statistics
