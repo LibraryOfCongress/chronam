@@ -5,7 +5,7 @@ import os
 import sys
 
 from django.conf import settings
-from worldcat.request.search import SRURequest
+from chronam.core.worldcat_overrides.request import SRURequestV2 as SRURequest
 from worldcat.util.extract import extract_elements
 
 LOGGER = logging.getLogger(__name__)
