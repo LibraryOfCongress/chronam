@@ -5,7 +5,7 @@ import minicts
 from celery.decorators import task
 from django.conf import settings
 
-from chronam.core import cts
+from chronam.loc_cts import cts
 from chronam.core.models import Batch
 from chronam.core.tasks import load_batch, purge_batch
 
