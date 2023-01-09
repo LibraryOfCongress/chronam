@@ -9,7 +9,7 @@ from chronam.settings import *  # NOQA
 APP_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 
-CELERY_IMPORTS = ("chronam.core.tasks", "chronam.loc_cts.tasks")
+CELERY_IMPORTS = ("chronam.core.tasks")
 CELERYD_LOG_FILE = os.path.join("/var/log/celery", "celery.log")
 CELERYD_LOG_LEVEL = logging.INFO
 CELERYD_CONCURRENCY = 2
@@ -24,7 +24,7 @@ CELERYBEAT_SCHEDULE = {
         "task": "chronam.core.tasks.poll_purge",
         "schedule": crontab(hour=3, minute=0),
         "args": ()
-        },
+    },
 
     "load_essays": {
         "task": "chronam.core.tasks.load_essays",
@@ -48,7 +48,7 @@ if 'chronam.loc_cts' in INSTALLED_APPS:
         "task": "chronam.loc_cts.tasks.poll_purge",
         "schedule": crontab(hour=3, minute=0),
         "args": ()
-        }
+    }
 
 
 CELERYBEAT_LOG_FILE = os.path.join("/var/log/celery", "celerybeat.log")
