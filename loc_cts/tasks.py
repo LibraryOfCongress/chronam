@@ -5,9 +5,10 @@ import minicts
 from celery.decorators import task
 from django.conf import settings
 
-from chronam.core import cts
 from chronam.core.models import Batch
 from chronam.core.tasks import load_batch, purge_batch
+
+from . import cts
 
 logger = logging.getLogger(__name__)
 
@@ -24,17 +25,17 @@ def poll_purge():
             logger.info("no purge service requests")
             break
 
-        logger.info('got purge service request: %s', req.url)
-        bag_instance_key = req.data['requestParameters']['baginstancekey']
+        logger.info("got purge service request: %s", req.url)
+        bag_instance_key = req.data["requestParameters"]["baginstancekey"]
         bag_instance = cts.get_bag_instance(bag_instance_key)
-        batch_name = os.path.basename(bag_instance.data['filepath'])
-        logger.info('purging %s', batch_name)
+        batch_name = os.path.basename(bag_instance.data["filepath"])
+        logger.info("purging %s", batch_name)
 
         # if the batch isn't there no need to purge
         try:
             if Batch.objects.filter(name=batch_name).count() == 0:
-                logger.info('no need to purge %s ; it is not loaded', batch_name)
-                logger.info('batch %s purged', batch_name)
+                logger.info("no need to purge %s ; it is not loaded", batch_name)
+                logger.info("batch %s purged", batch_name)
             else:
                 purge_batch(batch_name, req)
         except Exception as e:
@@ -60,9 +61,9 @@ def poll_cts():
 
     # determine the location of the bag on the filesystem
     logger.info("got service request: %s", sr)
-    bag_instance_id = sr.data['requestParameters']['baginstancekey']
+    bag_instance_id = sr.data["requestParameters"]["baginstancekey"]
     bag = c.get_bag_instance(bag_instance_id)
-    bag_dir = bag.data['filepath']
+    bag_dir = bag.data["filepath"]
 
     try:
         logger.info("loading %s", bag_dir)
