@@ -1,10 +1,10 @@
 {
     "devDependencies": {
-        "eslint": "^5.16.0",
-        "eslint-plugin-prettier": "^3.0.1",
-        "prettier": "^1.17.0",
-        "stylelint": "^10.0.1",
-        "stylelint-config-prettier": "^5.0.0",
-        "stylelint-config-recommended": "^2.2.0"
+        "eslint": "^8.33.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "prettier": "^2.8.3",
+        "stylelint": "^14.16.1",
+        "stylelint-config-prettier": "^9.0.4",
+        "stylelint-config-recommended": "^9.0.0"
     }
 }
