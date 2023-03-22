@@ -61,7 +61,7 @@ to something else:
 #### Solr
 
 The [Ubuntu](install_ubuntu.md) and [Red Hat](install_redhat.md) guides have
-instructions for installing and starting Solr manually. For developmeny you
+instructions for installing and starting Solr manually. For development, you
 may prefer to use Docker:
 
     cd solr
