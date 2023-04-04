@@ -415,6 +415,14 @@
             "created": "2022-01-31 06:44:45"
         }
     },
+     {
+        "pk": "nhd",
+        "model": "core.awardee",
+        "fields": {
+            "name": "Dartmouth College",
+            "created": "2023-04-04 06:44:45"
+        }
+    },
     {
         "pk": "Online Resource",
         "model": "core.materialtype",
