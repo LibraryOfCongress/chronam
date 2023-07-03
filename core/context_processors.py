@@ -10,7 +10,7 @@ def extra_request_info(request):
     fulltext_range = _fulltext_range()
     return {
         "site_title": "Chronicling America",
-        "omniture_url": getattr(settings, "OMNITURE_SCRIPT", None),
+        "adobe_analytics_url": getattr(settings, "ADOBE_ANALYTICS_URL", None),
         "sharetool_url": getattr(settings, "SHARETOOL_URL", None),
         "SENTRY_PUBLIC_DSN": getattr(settings, "SENTRY_PUBLIC_DSN", None),
         "ENVIRONMENT": getattr(

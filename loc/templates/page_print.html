@@ -7,6 +7,9 @@
         <title>Chronicling America - The Library of Congress</title>
         <link rel="stylesheet" href="{% static 'css/ca_print.css' %}" />
         <link rel="canonical" href="https://{{host}}{{url}}" />
+        {% if adobe_analytics_url %}
+            <script async src="{{ adobe_analytics_url }}"></script>
+        {% endif %}
     </head>
     <body id="chronam_page_print">
         <div id="head_nav">
@@ -32,6 +35,5 @@
             <input type="hidden" id="eVar4" value="{{ image_credit }}" />
             <input type="hidden" id="prop13" value="{{ image_credit }}" />
         </div>
-        <script src="{{ omniture_url }}"></script>
     </body>
 </html>
