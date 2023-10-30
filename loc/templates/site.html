@@ -2,31 +2,17 @@
 
 {% load static from staticfiles %}
 
-    {% block extra_crumbs %}
-    <div id="crumb_nav">
-	{% for crumb in crumbs %}
-	<a href="{{crumb.href}}">{{crumb.label}}</a>
-	{% if forloop.last %}{% else %} <span> &gt; </span>{% endif %}
-	{% endfor %}
-    </div>
-    {% endblock extra_crumbs %}
-
-  {% block top_branding %}
-    <div id="top_branding">
-        <div class="neh_logo"><a href="https://www.neh.gov"><img src="{% static 'images/logo_neh.png' %}" width="186" height="46" alt="National Endowment for the Humanities" /></a></div>
-        <div class="chron_logo"><a href="{% url 'chronam_home' %}"><img src="{% static 'images/logo_chron_top.png' %}" width="179" height="31" alt="" /></a></div>
-        <div class="neh_txt">
-            <p>Search America&#39;s historic newspaper pages from {{fulltext_startdate}}-{{fulltext_enddate}} or use the U.S. Newspaper Directory to find information about American newspapers published between 1690-present. Chronicling America is sponsored jointly by the <a href="https://www.neh.gov" class="external">National Endowment for the Humanities<span> external link</span></a> and the Library of Congress. <a href="{% url 'chronam_about' %}" class="ar-more-gray">Learn more</a></p>
-        </div><!-- end id:neh_txt -->
-    </div><!-- end id:top_branding -->
-    <div class="clear"></div>
-
+{% block head_content %}
+    {{ block.super }}
     <style>
         .alert {
-            display: inline-block;
-            background-color: #D1332E;
-            padding: .125rem;
+            clear: both;
+            padding: 10px 14px;
+            border-bottom: 1px solid #000;
+            font: normal 11px Verdana, Arial, Helvetica, sans-serif;
+            background-color: #0076AD;
             margin: .25rem 0 1rem;
+            margin-top: 0px;
             color: #FFF;
         }
 
@@ -39,8 +25,30 @@
             text-decoration: none;
         }
     </style>
+{% endblock head_content %}
+
+{% block extra_crumbs %}
+    <div id="crumb_nav">
+        {% for crumb in crumbs %}
+            <a href="{{crumb.href}}">{{crumb.label}}</a>
+            {% if forloop.last %}{% else %} <span> &gt; </span>{% endif %}
+        {% endfor %}
+    </div>
+{% endblock extra_crumbs %}
+
+{% block pre_content %}
     <div class="alert" role="alert">
         Announcement: In 2024, Chronicling America will transition to a new interface. <a href="https://www.loc.gov/collections/chronicling-america/about-this-collection/">Preview the new site</a>. <a href="https://www.loc.gov/ndnp/migration/">More info</a>.
     </div>
+{% endblock pre_content %}
+
+{% block top_branding %}
+    <div id="top_branding">
+        <div class="neh_logo"><a href="https://www.neh.gov"><img src="{% static 'images/logo_neh.png' %}" width="186" height="46" alt="National Endowment for the Humanities" /></a></div>
+        <div class="chron_logo"><a href="{% url 'chronam_home' %}"><img src="{% static 'images/logo_chron_top.png' %}" width="179" height="31" alt="" /></a></div>
+        <div class="neh_txt">
+            <p>Search America&#39;s historic newspaper pages from {{fulltext_startdate}}-{{fulltext_enddate}} or use the U.S. Newspaper Directory to find information about American newspapers published between 1690-present. Chronicling America is sponsored jointly by the <a href="https://www.neh.gov" class="external">National Endowment for the Humanities<span> external link</span></a> and the Library of Congress. <a href="{% url 'chronam_about' %}" class="ar-more-gray">Learn more</a></p>
+        </div><!-- end id:neh_txt -->
+    </div><!-- end id:top_branding -->
     <div class="clear"></div>
 {% endblock top_branding %}
