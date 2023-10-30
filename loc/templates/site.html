@@ -19,7 +19,28 @@
             <p>Search America&#39;s historic newspaper pages from {{fulltext_startdate}}-{{fulltext_enddate}} or use the U.S. Newspaper Directory to find information about American newspapers published between 1690-present. Chronicling America is sponsored jointly by the <a href="https://www.neh.gov" class="external">National Endowment for the Humanities<span> external link</span></a> and the Library of Congress. <a href="{% url 'chronam_about' %}" class="ar-more-gray">Learn more</a></p>
         </div><!-- end id:neh_txt -->
     </div><!-- end id:top_branding -->
-    <div class="clear"><!-- --></div>
-  {% endblock top_branding %}
+    <div class="clear"></div>
 
+    <style>
+        .alert {
+            display: inline-block;
+            background-color: #D1332E;
+            padding: .125rem;
+            margin: .25rem 0 1rem;
+            color: #FFF;
+        }
 
+        .alert a {
+            color: #FFF;
+            text-decoration: underline;
+        }
+
+        .alert a:hover {
+            text-decoration: none;
+        }
+    </style>
+    <div class="alert" role="alert">
+        Announcement: In 2024, Chronicling America will transition to a new interface. <a href="https://www.loc.gov/collections/chronicling-america/about-this-collection/">Preview the new site</a>. <a href="https://www.loc.gov/ndnp/migration/">More info</a>.
+    </div>
+    <div class="clear"></div>
+{% endblock top_branding %}
