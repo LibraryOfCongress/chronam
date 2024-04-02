@@ -55,3 +55,4 @@ repos:
                 - flake8-builtins
                 - flake8-comprehensions
                 - flake8-logging-format
+                - setuptools

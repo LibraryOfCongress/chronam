@@ -27,21 +27,31 @@ LOGGER = logging.getLogger(__name__)
 
 class Command(LoggingCommand):
     skip_essays = make_option(
-        '--skip-essays', action='store_true', dest='skip_essays', default=True, help='Skip essay loading.'
+        "--skip-essays",
+        action="store_true",
+        dest="skip_essays",
+        default=True,
+        help="Skip essay loading.",
+    )
+    no_skip_essays = make_option(
+        "--no-skip-essays",
+        action="store_false",
+        dest="skip_essays",
+        help="Do not skip essay loading.",
     )
 
     pull_title_updates = make_option(
-        '--pull-title-updates',
-        action='store_true',
-        dest='pull_title_updates',
+        "--pull-title-updates",
+        action="store_true",
+        dest="pull_title_updates",
         default=False,
-        help='Pull down a new set of titles.',
+        help="Pull down a new set of titles.",
     )
 
     option_list = LoggingCommand.option_list + (skip_essays, pull_title_updates)
 
-    help = 'Runs title pull and title load for a complete title refresh.'  # NOQA: A003
-    args = ''
+    help = "Runs title pull and title load for a complete title refresh."  # NOQA: A003
+    args = ""
 
     def find_titles_not_updated(self, limited=True):
         LOGGER.info("Looking for titles not yet updated.")
@@ -50,10 +60,10 @@ class Command(LoggingCommand):
             LOGGER.info("Total number of titles not updated: 0")
             return Title.objects.values()
         elif limited:
-            titles = Title.objects.order_by('-version').values('lccn_orig', 'oclc', 'version')
-            end = titles[0]['version']
+            titles = Title.objects.order_by("-version").values("lccn_orig", "oclc", "version")
+            end = titles[0]["version"]
         else:
-            titles = Title.objects.order_by('-version')
+            titles = Title.objects.order_by("-version")
             end = titles[0].version
 
         start = end - timedelta(weeks=2)
@@ -65,10 +75,10 @@ class Command(LoggingCommand):
     def pull_lccn_updates(self, titles):
         start = datetime.now()
         for t in titles:
-            call_command('pull_titles', lccn=t['lccn_orig'], oclc=t['oclc'])
+            call_command("pull_titles", lccn=t["lccn_orig"], oclc=t["oclc"])
         end = datetime.now()
         total_time = end - start
-        LOGGER.info('total time for pull_lccn_updates: %s' % total_time)
+        LOGGER.info("total time for pull_lccn_updates: %s" % total_time)
         return
 
     def handle(self, *args, **options):
@@ -79,16 +89,16 @@ class Command(LoggingCommand):
         # for folks in the opensource world
         bib_in_settings = validate_bib_dir()
         if bib_in_settings:
-            worldcat_dir = bib_in_settings + '/worldcat_titles/'
+            worldcat_dir = bib_in_settings + "/worldcat_titles/"
 
-            pull_titles = bool(options['pull_title_updates'] and hasattr(settings, "WORLDCAT_KEY"))
+            pull_titles = bool(options["pull_title_updates"] and hasattr(settings, "WORLDCAT_KEY"))
             if pull_titles:
-                call_command('pull_titles')
+                call_command("pull_titles")
 
             LOGGER.info("Starting load of OCLC titles.")
-            bulk_dir = worldcat_dir + 'bulk'
+            bulk_dir = worldcat_dir + "bulk"
             if os.path.isdir(bulk_dir):
-                call_command('load_titles', bulk_dir, skip_index=True)
+                call_command("load_titles", bulk_dir, skip_index=True)
 
             tnu = self.find_titles_not_updated()
 
@@ -98,15 +108,15 @@ class Command(LoggingCommand):
                 self.pull_lccn_updates(tnu)
 
             LOGGER.info("Loading titles from second title pull.")
-            lccn_dir = worldcat_dir + 'lccn'
+            lccn_dir = worldcat_dir + "lccn"
             if os.path.isdir(lccn_dir):
-                call_command('load_titles', lccn_dir, skip_index=True)
+                call_command("load_titles", lccn_dir, skip_index=True)
 
             tnu = self.find_titles_not_updated(limited=False)
             LOGGER.info("Running pre-deletion checks for these titles.")
 
         # Make sure that our essays are up to date
-        if not options['skip_essays']:
+        if not options["skip_essays"]:
             load_essays(settings.ESSAYS_FEED)
 
         if bib_in_settings:
@@ -121,17 +131,17 @@ class Command(LoggingCommand):
 
                     if not essays or not issues:
                         delete_txt = (title.name, title.lccn, title.oclc)
-                        LOGGER.info('TITLE DELETED: %s, lccn: %s, oclc: %s' % delete_txt)
+                        LOGGER.info("TITLE DELETED: %s, lccn: %s, oclc: %s" % delete_txt)
                         title.delete()
                     elif essays:
-                        LOGGER.warning(error + 'essays.' + error_end)
+                        LOGGER.warning(error + "essays." + error_end)
                         continue
                     elif issues:
-                        LOGGER.warning(error + 'issues.' + error_end)
+                        LOGGER.warning(error + "issues." + error_end)
                         continue
 
             # Load holdings for all remaining titles.
-            call_command('load_holdings')
+            call_command("load_holdings")
 
         # overlay place info harvested from dbpedia onto the places table
         try:
@@ -144,23 +154,23 @@ class Command(LoggingCommand):
         # Time of full process run
         end = datetime.now()
         total_time = end - start
-        LOGGER.info('start time: %s' % start)
-        LOGGER.info('end time: %s' % end)
-        LOGGER.info('total time: %s' % total_time)
+        LOGGER.info("start time: %s" % start)
+        LOGGER.info("end time: %s" % end)
+        LOGGER.info("total time: %s" % total_time)
         LOGGER.info("title_sync done.")
 
     def load_place_links(self):
-        LOGGER.info('loading place links')
+        LOGGER.info("loading place links")
         _CORE_ROOT = os.path.abspath(os.path.dirname(core.__file__))
-        filename = os.path.join(_CORE_ROOT, './fixtures/place_links.json')
+        filename = os.path.join(_CORE_ROOT, "./fixtures/place_links.json")
         for p in json.load(open(filename)):
             try:
-                place = Place.objects.get(name=p['name'])
-            except (Place.DoesNotExist):
-                place = Place(name=p['name'])
-            place.longitude = p['longitude']
-            place.latitude = p['latitude']
-            place.geonames = p['geonames']
-            place.dbpedia = p['dbpedia']
+                place = Place.objects.get(name=p["name"])
+            except Place.DoesNotExist:
+                place = Place(name=p["name"])
+            place.longitude = p["longitude"]
+            place.latitude = p["latitude"]
+            place.geonames = p["geonames"]
+            place.dbpedia = p["dbpedia"]
             place.save()
-        LOGGER.info('finished loading place links')
+        LOGGER.info("finished loading place links")
