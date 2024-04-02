@@ -38,14 +38,6 @@ def load_batch(batch_dir, service_request=None, process_coordinates=True):
 
 
 @task
-def load_essays():
-    try:
-        management.call_command("load_essays")
-    except Exception:
-        logger.exception("Unable to load essays")
-
-
-@task
 def purge_batch(batch, service_request=None):
     try:
         management.call_command("purge_batch", batch)

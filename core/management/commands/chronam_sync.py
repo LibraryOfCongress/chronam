@@ -16,7 +16,7 @@ class Command(LoggingCommand):
     verbose = make_option('--verbose', action='store_true', dest='verbose', default=False, help='')
 
     skip_essays = make_option(
-        '--skip-essays', action='store_true', dest='skip_essays', default=False, help='Skip essay loading.'
+        '--skip-essays', action='store_true', dest='skip_essays', default=True, help='Skip essay loading.'
     )
 
     pull_title_updates = make_option(
