@@ -16,11 +16,6 @@ CELERYD_LOG_LEVEL = logging.INFO
 CELERYD_CONCURRENCY = 2
 
 CELERYBEAT_SCHEDULE = {
-    "load_essays": {
-        "task": "chronam.core.tasks.load_essays",
-        "schedule": crontab(hour=0, minute=0),
-        "args": (),
-    },
     "delete_django_cache": {
         "task": "chronam.core.tasks.delete_django_cache",
         "schedule": crontab(hour=5, minute=0),
