@@ -69,7 +69,7 @@ class Command(LoggingCommand):
         start = end - timedelta(weeks=2)
         titles = titles.exclude(version__range=(start, end))
 
-        LOGGER.info("Total number of titles not updated: %s" % len(titles))
+        LOGGER.info("Total number of titles not updated: %s", len(titles))
         return titles
 
     def pull_lccn_updates(self, titles):
@@ -78,7 +78,7 @@ class Command(LoggingCommand):
             call_command("pull_titles", lccn=t["lccn_orig"], oclc=t["oclc"])
         end = datetime.now()
         total_time = end - start
-        LOGGER.info("total time for pull_lccn_updates: %s" % total_time)
+        LOGGER.info("total time for pull_lccn_updates: %s", total_time)
         return
 
     def handle(self, *args, **options):
@@ -126,18 +126,21 @@ class Command(LoggingCommand):
                     essays = title.essays.all()
                     issues = title.issues.all()
 
-                    error = "DELETION ERROR: Title %s has " % title
-                    error_end = "It will not be deleted."
+                    error = "DELETION ERROR: Title %s has %s. It will not be deleted."
 
                     if not essays or not issues:
-                        delete_txt = (title.name, title.lccn, title.oclc)
-                        LOGGER.info("TITLE DELETED: %s, lccn: %s, oclc: %s" % delete_txt)
+                        LOGGER.info(
+                            "TITLE DELETED: %s, lccn: %s, oclc: %s",
+                            title.name,
+                            title.lccn,
+                            title.oclc,
+                        )
                         title.delete()
                     elif essays:
-                        LOGGER.warning(error + "essays." + error_end)
+                        LOGGER.warning(error, title, "essays")
                         continue
                     elif issues:
-                        LOGGER.warning(error + "issues." + error_end)
+                        LOGGER.warning(error, title, "issues")
                         continue
 
             # Load holdings for all remaining titles.
@@ -146,17 +149,17 @@ class Command(LoggingCommand):
         # overlay place info harvested from dbpedia onto the places table
         try:
             self.load_place_links()
-        except Exception as e:
-            LOGGER.exception(e)
+        except Exception:
+            LOGGER.exception("Unhandled exception loading place links")
 
         index.index_titles()
 
         # Time of full process run
         end = datetime.now()
         total_time = end - start
-        LOGGER.info("start time: %s" % start)
-        LOGGER.info("end time: %s" % end)
-        LOGGER.info("total time: %s" % total_time)
+        LOGGER.info("start time: %s", start)
+        LOGGER.info("end time: %s", end)
+        LOGGER.info("total time: %s", total_time)
         LOGGER.info("title_sync done.")
 
     def load_place_links(self):
