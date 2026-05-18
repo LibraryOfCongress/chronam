@@ -1,8 +1,12 @@
 # chronam
 
-chronam is the [Django](https://djangoproject.com) application that the
-Library of Congress uses to make its
-[Chronicling America](https://chroniclingamerica.loc.gov) website.
+
+*This software project is no longer being actively developed at the Library of Congress. Consider using the [Open-ONI](https://github.com/open-oni) fork of the chronam software. Project mailing list: [http://listserv.loc.gov/archives/chronam-users.html].*
+
+
+chronam was the [Django](https://djangoproject.com) application that the
+Library of Congress used from 2011-2025 to make its
+Chronicling America website.
 The Chronicling America website makes millions of pages of historic American
 newspapers that have been digitized by the
 [National Digital Newspaper Program (NDNP)](https://www.loc.gov/ndnp/)
